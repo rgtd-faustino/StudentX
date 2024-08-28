@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #ffffff;
     margin: 0;
     font-size: 22px;
+    padding: 0;
+    font-weight:normal;
 }
 
 
@@ -14,7 +19,7 @@ h1 {
 }
 
 
-img{
+#image1 {
     position: relative;
     width: 100%;
     /*width: 1920.175px;*/
@@ -22,10 +27,14 @@ img{
     pointer-events: none;
 }
 
-body, ul {
-    margin: 0;
-    padding: 0;
+#image2 {
+    position: absolute;
+    top: 87%; /* Adjust this value to position vertically */
+    left: 50%; /* Center the container horizontally */
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Ensure it's on top */
 }
+
 
 /* Style the navigation bar */
 nav {
@@ -44,7 +53,8 @@ nav {
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 69px;
+    gap: 50px;
+
 }
 
 /* Style the links */
@@ -53,7 +63,9 @@ nav {
     color: #000;
     text-align: center;
     text-decoration: none;
-    font-weight: bold;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
 /* Change color on hover */
@@ -66,7 +78,7 @@ nav {
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 69px;
+    gap: 40px;
 
 }
 
@@ -86,6 +98,7 @@ nav {
     border: none;
     cursor: pointer;
     white-space: nowrap;
+    
 }
 
 
@@ -122,13 +135,17 @@ nav {
 
 /* Style the Contact Us button */
 .contact-button {
-    padding: 10px 25px;
+    padding: 5px 35px;
     background-color: #007BFF;
     color: white;
     text-decoration: none;
     border-radius: 10px;
     font-weight: bold;
     white-space: nowrap;
+    text-align: center;
+    font-size: 25px;
+    font-size: normal;
+    font-weight: 400;
 }
 
 .contact-button:hover {
@@ -148,6 +165,7 @@ nav {
 #slogan {
     width: 100%;
     height: auto;
+    opacity: 0.05;
 }
 
 .slogan-buttons {
@@ -162,12 +180,21 @@ nav {
     color: #fff; /* White text color */
 }
 
-.watch-button button{
-    background-color: transparent; /* Blue background */
+.watch-button button {
+    font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
+    padding: 12px 25px; /* Padding inside the button */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: transparent; /* Maintain the existing transparent background */
+    font-size: 25px; /* New font size */
+    font-style: normal; /* Ensure the font-style is normal */
+    font-weight: 600; /* Set the font-weight to 600 */
+    line-height: normal; /* Ensure the line-height is normal */
+    letter-spacing: 0.5px; /* Add the specified letter-spacing */
 }
 
-
-.start-button button, .watch-button button {
+.start-button button {
+    font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
     padding: 12px 25px; /* Padding inside the button */
     border: none; /* Remove default border */
     border-radius: 25px; /* Rounded corners */
