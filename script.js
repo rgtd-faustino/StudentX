@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var languageSelector = document.querySelector(".language-selector");
+    var languageSelector = document.querySelector(".dropdown-content");
     var currentLanguageButton = document.querySelector(".current-language");
-    var navActions = document.querySelector(".nav-actions");
-    var navItems = document.querySelector(".nav-items");
+    var hamburger = document.querySelector(".hamburger");  // Define the hamburger variable
 
     // Language Selector Toggle
     currentLanguageButton.addEventListener("click", function(event) {
@@ -17,18 +16,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Toggle Navigation Menu for Mobile
-    navActions.addEventListener("click", function(event) {
-        // Only toggle if the click is not on the language selector or contact button
-        if (!languageSelector.contains(event.target) && !event.target.closest('.contact-button')) {
-            navItems.style.display = navItems.style.display === 'block' ? 'none' : 'block';
-        }
+    // Toggle the navigation menu when hamburger is clicked
+    hamburger.addEventListener("click", function() {
+        toggleMenu();  // Call the toggleMenu function when the hamburger icon is clicked
     });
 
-    // Close the nav items if clicked outside (optional enhancement)
-    document.addEventListener("click", function(event) {
-        if (!navActions.contains(event.target) && navItems.style.display === 'block') {
-            navItems.style.display = 'none';
-        }
-    });
+    function toggleMenu() {
+        const menuContent = document.querySelector('.menu-content');
+        menuContent.classList.toggle('active');
+    }
 });

@@ -52,25 +52,32 @@
     <img id="image1" src="ELIPSE GRADIENTE.png" alt="blue gradient background">
 
     <nav>
-        <ul class="nav-items">
-            <li><a href="#Home" style="color: #108CEC;">Início</a></li>
-            <li><a href="#Opportunities">Oportunidades</a></li>
-            <li><a href="#Calendar">Calendário</a></li>
-            <li><a href="#MO">Modus Operandi</a></li>
-            <li><a href="#FAQ">FAQ</a></li>
-        </ul>
-        
-        <div class="nav-actions">
-            <div class="language-selector">
+        <!-- Hamburger Menu for Mobile -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+    
+        <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
+        <div class="menu-content">
+            <ul class="nav-items">
+                <li><a href="#Home">Início</a></li>
+                <li><a href="#Opportunities">Oportunidades</a></li>
+                <li><a href="#Calendar">Calendário</a></li>
+                <li><a href="#MO">Modus Operandi</a></li>
+                <li><a href="#FAQ">FAQ</a></li>
+            </ul>
+            <div class="right-side-nav">
                 <button class="current-language">Português &#9662;</button>
                 <ul class="dropdown-content">
                     <li><a href="#">English</a></li>
                 </ul>
+                <a href="#Contact" class="contact-button">Contact Us</a>
             </div>
-            <a href="#Contact" class="contact-button">Contact Us</a>
         </div>
-        
     </nav>
+    
 
     <div class="slogan-container">
         <!-- Video showing the slogan -->

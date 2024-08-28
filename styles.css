@@ -42,6 +42,14 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    white-space: nowrap;
+
+}
+
+.menu-content {
+    display: flex;
+    align-items: center;
+    gap: 52%; /* Adjust gap between elements in the right side nav */
 }
 
 /* Style the unordered list */
@@ -50,8 +58,7 @@ nav {
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 50px;
-
+    gap: 50px; /* Gap between nav items */
 }
 
 /* Style the links */
@@ -68,42 +75,50 @@ nav {
 /* Change color on hover */
 .nav-items li a:hover {
     color: #108CEC;
-
 }
 
-/* Style the nav-actions div */
-.nav-actions {
+/* Style for the right-side navigation */
+.right-side-nav {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 15px; /* Adjust gap between elements in the right side nav */
+}
 
+/* Style the Contact Us button */
+.contact-button {
+    padding: 5px 35px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 25px;
+    font-size: normal;
+    font-weight: 400;
+}
+.contact-button:hover {
+    background-color: #0056b3;
 }
 
 
-/* Style the language dropdown */
-.language-selector {
-    position: relative;
-}
-
+/* Button styling */
 .current-language {
-    font-family: inherit;  /* Inherit the font from the body */
-    font-size: inherit;    /* Inherit the font size from the body */
+    font-family: inherit;
+    font-size: inherit;
     background-color: transparent;
     color: black;
     text-decoration: none;
     font-weight: 600;
     border: none;
     cursor: pointer;
-    white-space: nowrap;
-    
+    margin-right: 40px;
 }
-
 
 /* Dropdown content */
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 100%; /* Position it below the button */
+    top: 100%;
     left: 0;
     background-color: white;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -125,29 +140,6 @@ nav {
     background-color: #f1f1f1;
 }
 
-/* Show the dropdown when active */
-.language-selector.active .dropdown-content {
-    display: block;
-}
-
-/* Style the Contact Us button */
-.contact-button {
-    padding: 5px 35px;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: 400;
-    white-space: nowrap;
-    text-align: center;
-    font-size: 25px;
-    font-size: normal;
-    font-weight: 400;
-}
-
-.contact-button:hover {
-    background-color: #0056b3;
-}
 
 .slogan-container {
     position: absolute;
@@ -201,70 +193,66 @@ nav {
     background-color: #111; /* Darker black on click */
 }
 
-@media(max-width: 768px) {
+.hamburger{
+    display:none;
+    cursor:pointer;
+}
 
-    .nav-items {
-        display: none;
-    }
-    
-    /* Add a hamburger menu icon */
-    .nav-actions::before {
-        content: '☰'; /* Hamburger icon */
-        cursor: pointer;
-        padding: 15px 100%;
-    }
-    
-    /* Adjust the position of the language selector and contact button */
-    .nav-actions {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    /* Hide the default navigation items */
+.hamburger-line{
+    display:block;
+    width:35px;
+    height:3px;
+    margin:9px auto;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(0, 0, 0);
+}
+
+@media (max-width: 768px) {
     nav {
+        background-color: #bfdeff;
+        position: fixed; /* or absolute */
         top: 0;
         left: 0;
-        width: 100%;
-        padding: 10px 20px;
-        display: flex;
+        width: calc(100% - 40px);
         flex-direction: column;
         align-items: flex-start;
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000; /* Ensure it stays on top of other elements */
     }
 
-    /* Adjust the nav-actions container */
-    .nav-actions {
+    .hamburger {
+        display: block;
+        
+    }
+
+    .menu-content {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
         width: 100%;
-        justify-content: space-between;
     }
 
     .nav-items {
-        display: block;
-        position: absolute;
-        top: 60px; /* Adjust this value as needed */
-        left: 0;
+        flex-direction: column;
+        gap: 20px;
         width: 100%;
-        background-color: #fff;
-        padding: 10px 0;
-        z-index: 1000;
+        align-items: flex-start;
+        
     }
 
-    /* Adjust the link styles for mobile */
-    .nav-items li {
-        text-align: left;
-        padding: 10px 20px;
-    }
-    
-    .nav-items li a {
-        display: block;
-        padding: 10px;
-        color: #000;
+    .right-side-nav {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
     }
 
-    .nav-items li a:hover {
-        background-color: #f1f1f1;
-        color: #108CEC;
+    .contact-button {
+        text-align: center;
+    }
+
+    .menu-content.active {
+        display: flex;
+        
     }
 }
-    
