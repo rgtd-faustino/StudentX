@@ -19,17 +19,17 @@ h1 {
 #image1 {
     position: relative;
     width: 100%;
-    /*width: 1920.175px;*/
-    height: 995px; /*talvez 806px ficava melhor*/
+    height: 100%;
     pointer-events: none;
 }
 
 #image2 {
+    height: 73%;
     position: absolute;
-    top: 87%; /* Adjust this value to position vertically */
-    left: 50%; /* Center the container horizontally */
-    transform: translate(-50%, -50%);
+    top: 50%; /* Adjust this value to position vertically */
+    left: 23%;
     z-index: 2; /* Ensure it's on top */
+    pointer-events: none;
 }
 
 
@@ -201,13 +201,70 @@ nav {
     background-color: #111; /* Darker black on click */
 }
 
-@media(max-width: 768px){
-    body {
-        margin-left: 0px;
-        margin-right: 0px;
-        margin-top: 0%;
+@media(max-width: 768px) {
+
+    .nav-items {
+        display: none;
+    }
+    
+    /* Add a hamburger menu icon */
+    .nav-actions::before {
+        content: '☰'; /* Hamburger icon */
+        cursor: pointer;
+        padding: 15px 100%;
+    }
+    
+    /* Adjust the position of the language selector and contact button */
+    .nav-actions {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    /* Hide the default navigation items */
+    nav {
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
+    /* Adjust the nav-actions container */
+    .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-items {
+        display: block;
+        position: absolute;
+        top: 60px; /* Adjust this value as needed */
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        padding: 10px 0;
+        z-index: 1000;
+    }
+
+    /* Adjust the link styles for mobile */
+    .nav-items li {
+        text-align: left;
+        padding: 10px 20px;
+    }
     
+    .nav-items li a {
+        display: block;
+        padding: 10px;
+        color: #000;
+    }
+
+    .nav-items li a:hover {
+        background-color: #f1f1f1;
+        color: #108CEC;
+    }
 }
     
