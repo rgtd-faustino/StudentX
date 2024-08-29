@@ -33,23 +33,25 @@ h1 {
 }
 
 
-/* Style the navigation bar */
 nav {
     position: absolute;
     top: 35px;
-    left: 50px;
-    width: calc(100% - 100px);
+    left: 0; /* Ensure nav starts from the very left of the viewport */
+    width: 100%; /* Make the nav bar fill the entire width */
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Space elements evenly */
     white-space: nowrap;
-
+    padding: 0 50px; /* Optional: Adjust padding as needed */
+    box-sizing: border-box; /* Include padding in the width calculation */
 }
 
+/* Style the menu content */
 .menu-content {
     display: flex;
     align-items: center;
-    gap: 52%; /* Adjust gap between elements in the right side nav */
+    justify-content: space-between; /* Automatically space out the content */
+    width: 100%;
 }
 
 /* Style the unordered list */
@@ -81,7 +83,7 @@ nav {
 .right-side-nav {
     display: flex;
     align-items: center;
-    gap: 15px; /* Adjust gap between elements in the right side nav */
+    gap: 50px; /* Adjust gap between elements in the right-side nav */
     position: relative; /* Set position to relative to contain the dropdown within this area */
 }
 
@@ -94,13 +96,11 @@ nav {
     border-radius: 10px;
     font-weight: 400;
     font-size: 25px;
-    font-size: normal;
-    font-weight: 400;
 }
+
 .contact-button:hover {
     background-color: #0056b3;
 }
-
 
 /* Button styling */
 .current-language {
@@ -112,10 +112,8 @@ nav {
     font-weight: 600;
     border: none;
     cursor: pointer;
-    margin-right: 40px;
     position: relative; /* Ensure the button is a reference point for the dropdown */
 }
-
 /* Dropdown content */
 .dropdown-content {
     display: none;
@@ -275,88 +273,88 @@ nav {
    }
 
 
-   nav {
-    background-color: #c8f7ff;
-    position: fixed; /* or absolute */
-    top: 0;
-    left: 0;
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    z-index: 1000; /* Ensure it stays on top of other elements */
+    nav {
+        background-color: #c8f7ff;
+        position: fixed; /* or absolute */
+        top: 0;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        z-index: 1000; /* Ensure it stays on top of other elements */
 
-}
+    }
 
-.hamburger {
-    display: block;
-    margin: 0;
-    padding: 0;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100%; /* Full height of the container */
-    width: 100%; /* Full width of the container */
-}
+    .hamburger {
+        display: block;
+        margin: 0;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
+        width: 100%; /* Full width of the container */
+    }
 
-.menu-content {
-    display: none;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
+    .menu-content {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
 
-.nav-items {
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    align-items: flex-start;
-    margin-top: 20px;
-    padding: 0;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100%; /* Full height of the container */
-}
+    .nav-items {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        margin-top: 20px;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
+    }
 
-.right-side-nav {
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    align-items: flex-start;
-    margin: 0;
-    padding: 0;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100%; /* Full height of the container */
+    .right-side-nav {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        margin: 0;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
 
-}
+    }
 
-.contact-button {
-    text-align: center;
+    .contact-button {
+        text-align: center;
 
-}
+    }
 
-.menu-content.active {
-    display: flex;
-    
-}
+    .menu-content.active {
+        display: flex;
+        
+    }
 
-.current-language{
-    margin-left:10%;
-}
+    .current-language{
+        margin-left:10%;
+    }
 
-.dropdown-content {
-    display: none;
-    position: relative;
-    top: 100%; /* Position dropdown below the button */
-    left: 0;
-    background-color: white;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 1;
-    list-style-type: none;
-    width: max-content; /* Adjust to fit content */
-    padding: 0;
-    margin-top: 8px; /* Slight gap between button and dropdown */
-}
+    .dropdown-content {
+        display: none;
+        position: relative;
+        top: 100%; /* Position dropdown below the button */
+        left: 0;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        z-index: 1;
+        list-style-type: none;
+        width: max-content; /* Adjust to fit content */
+        padding: 0;
+        margin-top: 8px; /* Slight gap between button and dropdown */
+    }
 }
 
 @media (max-width: 768px) {
