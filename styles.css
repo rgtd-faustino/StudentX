@@ -1,494 +1,372 @@
-html, body, h1, h2, h3, p, ul, ol, li {
-    padding: 0;
-    font-family: "Source Sans Pro", sans-serif;
-}
-
-
-.titulo{
-    text-align: left;
-    margin-top: 0px;
-    margin-left: 15px;
-    margin-right: 15px;
-    font-size: 2.5em;
-    color: #000000;
-    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.3);
-    background-color: white;
-    padding: 0px 2%; /* Add padding to create space between the text and shadow box */
-    border-radius: 10px; /* Adjust the border-radius to make the vertices curved */
-}
-
-
-h2{
-    font-size: 40px;
-    margin-bottom: -20px;
-}
-
 body {
-    background: linear-gradient(to bottom, #fff5f5, #fff5f5);
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    font-size: 22px;
+    padding: 0;
+    font-weight:normal;
+}
+
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
     color: #333;
-    line-height: 2;
-    margin-left: 22%;
-    margin-right:5%;
-    margin-top: 4%;
 }
 
 
-.image-container {
-    
-    position: absolute;
-    top: 110px;
-    left: 50%;
-    transform: translate(-50%, -20%);
-    z-index: 999; /* Ensure the image stays above other content */
-    text-align: center; /* Center-align the content */
-}
-
-.image-container img {
-    max-width: 100%;
-    border-radius: 100%; /* Make the image round-shaped */
-}
-
-.image-label {
-    margin-top: 0px;
-    font-size: 17px; /* Adjust the font size */
-    color: #f2f2f2; /* Change the text color to match the buttons */
-}
-
-.name{
-    font-size: 23px;
-    font-weight: bold;
-    margin-bottom: 0px;
-}
-
-
-
-.navbar .top-heading a {
-    font-size: 115%;
-    display: block;
-    padding: 10px 0px;
-    color: #f2f2f2;
-    text-decoration: none;
-    position: relative; /* Add relative positioning to create pseudo-elements */
-    transition: background-color 0.3s, transform 0.3s; /* Add transform to the transition */
-    margin: 20px;
-
-}
-
-.navbar .top-heading a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-left: -7%;
-    width: 125%;
+#image1 {
+    position: relative;
+    width: 100%;
     height: 100%;
-    background-color: #4a4aaf; /* Pinkish color */
-    border-radius: 200px; /* Adjust the border-radius to smooth out the curves */
-    z-index: -1; /* Ensure it's behind the text */
-    transition: transform 0.155s; /* Add transition for animation */
-    transform: scaleX(0); /* Initially hide the background */
-    transform-origin: right; /* Set transform origin to right for animation */
+    pointer-events: none;
+}
+
+#image2 {
+    height: 73%;
+    position: absolute;
+    top: 50%; /* Adjust this value to position vertically */
+    left: 23%;
+    z-index: 2; /* Ensure it's on top */
+    pointer-events: none;
 }
 
 
+/* Style the navigation bar */
+nav {
+    position: absolute;
+    top: 35px;
+    left: 50px;
+    width: calc(100% - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
 
-.top-heading a img {
-        display: inline-block;
-        vertical-align: middle;
-        width: 1.7em; /* Set the width equal to the font size */
-        height: 1.5em; /* Set the height equal to the font size */
-        margin-right: 0.5em; /* Adjust spacing between icon and text */
-        margin-top: -0.23em; /* Adjust the margin-top to place the icon higher */
 }
 
-
-
-
-.navbar:hover{
-    box-shadow: 9px 0px 10px rgba(0, 0, 0, 0.2), 9px 0px 10px rgba(194, 215, 223, 0.2); /* Add shadow for depth */}
-
-    .navbar .top-heading a:hover::before {
-    transform: scaleX(1); /* Expand the background on hover */
-    transform-origin: left; /* Set transform origin to left for animation */
+.menu-content {
+    display: flex;
+    align-items: center;
+    gap: 52%; /* Adjust gap between elements in the right side nav */
 }
 
-.navbar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 18%;
-    background-color: #7171db;
-    overflow-y: auto;
-    box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+/* Style the unordered list */
+.nav-items {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 50px; /* Gap between nav items */
 }
 
-.nav-menu{
-    margin-left: 20%;
-}
-
-.navbar a {
+/* Style the links */
+.nav-items li a {
     display: block;
-    color: #f2f2f2;
+    color: #000;
+    text-align: center;
     text-decoration: none;
-    transition: background-color 0.3s;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
-.hamburguer{
+/* Change color on hover */
+.nav-items li a:hover {
+    color: #108CEC;
+}
+
+/* Style for the right-side navigation */
+.right-side-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adjust gap between elements in the right side nav */
+}
+
+/* Style the Contact Us button */
+.contact-button {
+    padding: 5px 35px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 25px;
+    font-size: normal;
+    font-weight: 400;
+}
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Button styling */
+.current-language {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-right: 40px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+    list-style-type: none;
+    margin-top: 10%;
+}
+
+.dropdown-content li a {
+    padding: 12px 30px;
+    display: block;
+    color: black;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.dropdown-content li a:hover {
+    background-color: #f1f1f1;
+}
+
+
+.slogan-container {
+    position: absolute;
+    top: 32%; /* Adjust this value to position vertically */
+    left: 50%; /* Center the container horizontally */
+    transform: translate(-50%, -50%);
+    height: auto; /* Keep the aspect ratio */
+    width: auto;
+    z-index: 2; /* Ensure it's on top */
+}
+
+#slogan {
+    width: 100%;
+    height: auto;
+    opacity: 0.05;
+}
+
+.slogan-buttons {
+    display: flex; /* Display as a flex container */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 7%; /* Space between the buttons */
+    margin-top: 5%; /* Increase this value to move the buttons further down */
+}
+
+.start-button button{
+    background-color: #000; /* Black background */
+    color: #fff; /* White text color */
+}
+
+.watch-button button{
+    background-color: transparent; /* Maintain the existing transparent background */
+}
+
+
+.start-button button, .watch-button button {
+    font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
+    padding: 12px 25px; /* Padding inside the button */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    font-size: 25px; /* Font size */
+    font-weight: 600; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.start-button button:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+}
+
+.start-button button:active {
+    background-color: #111; /* Darker black on click */
+}
+
+.hamburger{
     display:none;
     cursor:pointer;
-    padding-top: 8px;
 }
 
-.bar{
+.hamburger-line{
     display:block;
-    width:25px;
+    width:35px;
     height:3px;
-    margin:5px auto;
+    margin:9px auto;
     transition: all 0.3s ease-in-out;
-    background-color: white;
+    background-color: rgb(0, 0, 0);
 }
 
-
-.top-heading{
-    margin-top: 425px;
-    margin-bottom: 50px;
-}
-
-.container-wrapper {
-    margin-top:7%;
-    display: flex;
-    flex-wrap: wrap;  
-}
-
-.container1:hover,.container2:hover,.container3:hover,.container4:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-}
-
-.about-me:hover{
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-}
-  
-.container1,.container2,.container3,.container4 {
-    flex: 1;
-    width: 25%; /* Set the width to 25% to make them equal */
-    margin: 15px; /* Add margin to create space between containers */
-    text-align: center;
-    border-radius: 7px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-
-.container {
-    background-color: white;
-    flex: 1;
-    padding: 20px;
-    margin: 15px; /* Add margin to create space between containers */
-    box-sizing: border-box; /* Ensure padding is included in the width calculation */
-    text-align: center;
-    border-radius: 7px; /* Add border-radius to containers */
-}
-  
-
-
-.about-me {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-    width:100%;
-    order: -1;
-    background-color: #4a4aaf;
-    padding: 200px;
-    padding-top: 2%;
-    padding-bottom: 5%;
-    color: #fff;  
-    border-radius: 5px;
-    text-align: center;
-    margin-top: -20px;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    clear: both;
-    margin-bottom: 10px;
-}
-
-
-/*
-the headshots and categories of the different edits
-*/
-
-.image-editing-expertise {
-    background-color: #f7f7f7;
-    padding: 40px;
-  }
-  
-  .section-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .section-subtitle {
-    font-size: 18px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-  }
-  
-  .category {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .category:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-  }
-  
-  .category img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-  }
-  
-  .category-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .category-description {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  .category-link {
-    font-size: 14px;
-    color: #337ab7;
-    text-decoration: none;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .category-link:hover {
-    color: #23527c;
-  }
-
-
-@media(max-width: 768px){
-
-
-
-
-    body {
-        background: linear-gradient(to bottom, #fff5f5, #fff5f5);
-        color: #333;
-        line-height: 2;
-        margin-left: 0px;
-        margin-right: 0px;
-        margin-top: 0%;
+@media (max-width: 600px) {
+    body{
+        margin: 0;
+        padding: 0;
+        background-color:#33ff00;
     }
 
-    .image-container {
-        position: relative;
-        margin-top: 5%;
-        top: 0;
-        left: 0;
-        transform: translate(0, 0);
-        z-index: 1;
-    }
-    .image-container img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
+    #image1{
+        display: none;
     }
 
-    .navbar{
-        background-color: #4a4aaf;
-        position: fixed; /* Add this to fix logo overlapping issue */
-        left: 0;
-        top: 0;
-        height: 70px; /* Adjust height as needed */
-        width: 100%;
-        padding-top: 20px; /* Adjust padding-top as needed */
-        transition: none; 
-        margin-top: 0%;
-        margin-bottom: 100%;
+    #image2{
+        display: none;
+    }
+    #slogan {
+        opacity: 1;
+        box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);
+
     }
 
-    .nav-menu{
-        position: fixed;
-        padding-top: 5px;
-        padding-bottom: 10px;
-        left: 0;
-        top: -100%;
-        gap: 0;
-        flex-direction: column;
-        background-color: #7171db;
-        width: 100%;
-        text-align: center;
-        transition: opacity 0.3s, transform 0.3s ease-in-out;
-        opacity: 0;
-        transform: translateY(-10px);
-        overflow-y: auto;
-        touch-action: auto;
-        max-height: calc(100vh - 70px); /* Add this property ISTO É O SCROLL NAO APAGAR*/
-        margin-left: 0%;
-    }
-
-    
-
-    .navbar:hover {
-        width: 100%; 
-        box-shadow: 9px 0px 10px rgba(0, 0, 0, 0.2), 9px 0px 10px rgba(194, 215, 223, 0.2); /* Add shadow for depth */
-        transition: none; /* Remove transition */
-    }
-
-    .navbar .top-heading a::before {
-        margin-left: 0;
-        transition: 0.1s;
-        width: 100%;
-    }
-    
-    .hamburguer{
-        margin-top: 0%;
-        display:block;
-    }
-    
-    .hamburguer.active .bar:nth-child(2){
-        opacity: 0;
-    }
-    .hamburguer.active .bar:nth-child(1){
-        transform: translateY(8px) rotate(45deg);
-    }
-    .hamburguer.active .bar:nth-child(3){
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
-    .top-heading{
-        margin: 1px 0;
-        margin-top: 5%;
-    }
-
-
-    .nav-menu.active{
-        top: 70px; /* Move the nav menu down */
-        opacity: 1; /* Show the nav menu */
-        transform: translateY(0); /* Reset the transform */
-    }
-
-
-
-    .navbar .top-heading a {
-        font-weight: bold;
-        font-size: 18px;
-        display: block;
-        padding: 10px 20px;
-        color: #f2f2f2;
-        text-decoration: none;
-        position: relative; /* Add relative positioning to create pseudo-elements */
-        transition: background-color 0.3s, transform 0.3s; /* Add transform to the transition */
-    }
-    
-    .navbar .top-heading a::before {
-        content: '';
+    .slogan-container {
         position: absolute;
+        top: 20%; /* Adjust this value to position vertically */
+        left: 50%; /* Center the container horizontally */
+        transform: translate(-50%, -50%);
+        width: 90%; /* Set the width to 100% of its container */
+    }
+
+    .slogan-buttons{
+        display: none;
+   }
+
+
+    nav {
+        background-color: #ff0000;
+        position: fixed; /* or absolute */
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
-        background-color: #4a4aaf; /* Pinkish color */
-        border-radius: 200px; /* Adjust the border-radius to smooth out the curves */
-        z-index: -1; /* Ensure it's behind the text */
-        transition: transform 0.1s; /* Add transition for animation */
-        transform: scaleX(0); /* Initially hide the background */
-        transform-origin: right; /* Set transform origin to right for animation */
-    }
-    
-    .navbar .top-heading a:hover::before {
-        transform: scaleX(1); /* Expand the background on hover */
-        transform-origin: left; /* Set transform origin to left for animation */
+        flex-direction: column;
+        align-items: flex-start;
+        z-index: 1000; /* Ensure it stays on top of other elements */
     }
 
-    .container{
-        margin-top: 0%;
-        margin-left: 0%;
-        margin-right: 0%;
-        margin-left: 0%;
-
+    .hamburger {
+        display: block;
+        
     }
 
-    .container1, .container3{
-        margin-right: 3%;
-        margin-left: 2%;
-    }
-
-    .container2, .container4{
-        margin-right: 3%;
-    }
-
-      
-      .row {
-        display: flex;
-        justify-content: space-between;
+    .menu-content {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
         width: 100%;
-        clear: both;
-        margin-bottom: 0px;
-      }
+    }
 
+    .nav-items {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
 
-        .about-me {
-            flex-basis: auto;/* Added margin to create space between containers */
-            margin-top: 0;
-            padding-top: 0;
-            padding: 4%;
-            margin-right: 3%;
-            margin-left: 2%;
-          }
+    .right-side-nav {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
 
-        .ultimate{
-            margin-top:0%;
-            font-size: 120%;
-
-        }
-      
-      .titulo {
-        position: relative; 
-        z-index: -1;
+    .contact-button {
         text-align: center;
-        margin-top: 18vh;
-        margin-bottom: -3%;
-        margin-left: 2.1%;
-        margin-right: 3.2%;
-        font-size: 180%;
-      }
-      
-      .container4 {
-        text-align: center;
+    }
+
+    .menu-content.active {
         display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+        
+    }
+}
 
-      .palavras{
-            margin: 0;
-            margin-top: 10px;
-            line-height: 1.4;
-            font-size: 35px;
-      }
+@media (max-width: 600px) {
+    body{
+        margin: 0;
+        padding: 0;
+        background-color:#33ff00;
+    }
 
-      .tituloh2{
-        font-size: 120%;
-      }
+    #image1{
+        display: none;
+    }
+
+    #image2{
+        display: none;
+    }
+    #slogan {
+        opacity: 1;
+        box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);
+
+    }
+
+    .slogan-container {
+        position: absolute;
+        top: 20%; /* Adjust this value to position vertically */
+        left: 50%; /* Center the container horizontally */
+        transform: translate(-50%, -50%);
+        width: 90%; /* Set the width to 100% of its container */
+    }
+
+    .slogan-buttons{
+        display: none;
+   }
+
+
+    nav {
+        background-color: #ff0000;
+        position: fixed; /* or absolute */
+        top: 0;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        z-index: 1000; /* Ensure it stays on top of other elements */
+    }
+
+    .hamburger {
+        display: block;
+        
+    }
+
+    .menu-content {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .nav-items {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
+
+    .right-side-nav {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
+
+    .contact-button {
+        text-align: center;
+    }
+
+    .menu-content.active {
+        display: flex;
+        
+    }
 }
