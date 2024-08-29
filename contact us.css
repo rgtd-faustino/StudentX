@@ -21,6 +21,7 @@ h1 {
     pointer-events: none;
     position: fixed;
     z-index: 1;
+    position: relative;
 }
 
 .nav-color-filler {
@@ -152,6 +153,41 @@ nav {
     transition: all 0.3s ease-in-out;
     background-color: rgb(0, 0, 0);
 }
+
+.contactUsTitle {
+    color: #FFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 62px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 70px;
+    position: relative; /* Changed to relative */
+    margin-left: -49%; /* Adjusted to match the container */
+    margin-top: -3.2%; /* Adjust as needed */
+    margin-bottom: -0.5%;
+    z-index: 2;
+}
+
+.contactUsText {
+    color: #FFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+
+}
+
+.contactContainerText {
+    max-width: 485px;
+    padding: 20px;
+    margin-left: 14.3%; /* Ensure this matches the margin-left of .contactUsTitle */
+    z-index: 2;
+    position: relative; /* Changed to relative */
+}
+
+
+
 
 /* Footer styles */
 .footer {
