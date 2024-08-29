@@ -1,0 +1,372 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    font-size: 22px;
+    padding: 0;
+    font-weight:normal;
+}
+
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+#image1 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#image2 {
+    height: 73%;
+    position: absolute;
+    top: 50%; /* Adjust this value to position vertically */
+    left: 23%;
+    z-index: 2; /* Ensure it's on top */
+    pointer-events: none;
+}
+
+
+/* Style the navigation bar */
+nav {
+    position: absolute;
+    top: 35px;
+    left: 50px;
+    width: calc(100% - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+
+}
+
+.menu-content {
+    display: flex;
+    align-items: center;
+    gap: 52%; /* Adjust gap between elements in the right side nav */
+}
+
+/* Style the unordered list */
+.nav-items {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 50px; /* Gap between nav items */
+}
+
+/* Style the links */
+.nav-items li a {
+    display: block;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+/* Change color on hover */
+.nav-items li a:hover {
+    color: #108CEC;
+}
+
+/* Style for the right-side navigation */
+.right-side-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adjust gap between elements in the right side nav */
+}
+
+/* Style the Contact Us button */
+.contact-button {
+    padding: 5px 35px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 25px;
+    font-size: normal;
+    font-weight: 400;
+}
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Button styling */
+.current-language {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-right: 40px;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+    list-style-type: none;
+    margin-top: 10%;
+}
+
+.dropdown-content li a {
+    padding: 12px 30px;
+    display: block;
+    color: black;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.dropdown-content li a:hover {
+    background-color: #f1f1f1;
+}
+
+
+.slogan-container {
+    position: absolute;
+    top: 32%; /* Adjust this value to position vertically */
+    left: 50%; /* Center the container horizontally */
+    transform: translate(-50%, -50%);
+    height: auto; /* Keep the aspect ratio */
+    width: auto;
+    z-index: 2; /* Ensure it's on top */
+}
+
+#slogan {
+    width: 100%;
+    height: auto;
+    opacity: 0.05;
+}
+
+.slogan-buttons {
+    display: flex; /* Display as a flex container */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 7%; /* Space between the buttons */
+    margin-top: 5%; /* Increase this value to move the buttons further down */
+}
+
+.start-button button{
+    background-color: #000; /* Black background */
+    color: #fff; /* White text color */
+}
+
+.watch-button button{
+    background-color: transparent; /* Maintain the existing transparent background */
+}
+
+
+.start-button button, .watch-button button {
+    font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
+    padding: 12px 25px; /* Padding inside the button */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    font-size: 25px; /* Font size */
+    font-weight: 600; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.start-button button:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+}
+
+.start-button button:active {
+    background-color: #111; /* Darker black on click */
+}
+
+.hamburger{
+    display:none;
+    cursor:pointer;
+}
+
+.hamburger-line{
+    display:block;
+    width:35px;
+    height:3px;
+    margin:9px auto;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(0, 0, 0);
+}
+
+@media (max-width: 600px) {
+    body{
+        margin: 0;
+        padding: 0;
+        background-color:#33ff00;
+    }
+
+    #image1{
+        display: none;
+    }
+
+    #image2{
+        display: none;
+    }
+    #slogan {
+        opacity: 1;
+        box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);
+
+    }
+
+    .slogan-container {
+        position: absolute;
+        top: 20%; /* Adjust this value to position vertically */
+        left: 50%; /* Center the container horizontally */
+        transform: translate(-50%, -50%);
+        width: 90%; /* Set the width to 100% of its container */
+    }
+
+    .slogan-buttons{
+        display: none;
+   }
+
+
+    nav {
+        background-color: #ff0000;
+        position: fixed; /* or absolute */
+        top: 0;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        z-index: 1000; /* Ensure it stays on top of other elements */
+    }
+
+    .hamburger {
+        display: block;
+        
+    }
+
+    .menu-content {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .nav-items {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
+
+    .right-side-nav {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
+
+    .contact-button {
+        text-align: center;
+    }
+
+    .menu-content.active {
+        display: flex;
+        
+    }
+}
+
+@media (max-width: 600px) {
+    body{
+        margin: 0;
+        padding: 0;
+        background-color:#33ff00;
+    }
+
+    #image1{
+        display: none;
+    }
+
+    #image2{
+        display: none;
+    }
+    #slogan {
+        opacity: 1;
+        box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);
+
+    }
+
+    .slogan-container {
+        position: absolute;
+        top: 20%; /* Adjust this value to position vertically */
+        left: 50%; /* Center the container horizontally */
+        transform: translate(-50%, -50%);
+        width: 90%; /* Set the width to 100% of its container */
+    }
+
+    .slogan-buttons{
+        display: none;
+   }
+
+
+    nav {
+        background-color: #ff0000;
+        position: fixed; /* or absolute */
+        top: 0;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        z-index: 1000; /* Ensure it stays on top of other elements */
+    }
+
+    .hamburger {
+        display: block;
+        
+    }
+
+    .menu-content {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .nav-items {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
+
+    .right-side-nav {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
+        
+    }
+
+    .contact-button {
+        text-align: center;
+    }
+
+    .menu-content.active {
+        display: flex;
+        
+    }
+}
