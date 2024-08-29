@@ -82,6 +82,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 15px; /* Adjust gap between elements in the right side nav */
+    position: relative; /* Set position to relative to contain the dropdown within this area */
 }
 
 /* Style the Contact Us button */
@@ -112,20 +113,28 @@ nav {
     border: none;
     cursor: pointer;
     margin-right: 40px;
+    position: relative; /* Ensure the button is a reference point for the dropdown */
 }
 
 /* Dropdown content */
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 100%;
+    top: 100%; /* Position dropdown below the button */
     left: 0;
     background-color: white;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     z-index: 1;
     list-style-type: none;
-    margin-top: 10%;
+    width: max-content; /* Adjust to fit content */
+    padding: 0;
+    margin-top: 8px; /* Slight gap between button and dropdown */
+}
+
+.dropdown-content li {
+    margin: 0;
+    padding: 0;
 }
 
 .dropdown-content li a {
@@ -139,6 +148,12 @@ nav {
 .dropdown-content li a:hover {
     background-color: #f1f1f1;
 }
+
+/* Show the dropdown when active */
+.dropdown-content.active {
+    display: block;
+}
+
 
 
 .slogan-container {
@@ -207,29 +222,49 @@ nav {
     background-color: rgb(0, 0, 0);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
     body{
         margin: 0;
         padding: 0;
-        background-color:#33ff00;
+        background-color:#ffffff;
     }
 
-    #image1{
-        display: none;
+    #image1 {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 75%;
+        width: 100%; 
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1; /* Ensure it is below image2 */
     }
 
-    #image2{
-        display: none;
+    #image2 {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 50%; /* Full height of the container */
+        width: 80%; /* Full width of the container */
+        position: absolute;
+        top: 42.5%;
+        left: 10%;
+        z-index: 2; /* Ensure it is above image1 */
     }
     #slogan {
         opacity: 1;
-        box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);
+        /*box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);*/
 
     }
 
     .slogan-container {
         position: absolute;
-        top: 20%; /* Adjust this value to position vertically */
+        top: 25%; /* Adjust this value to position vertically */
         left: 50%; /* Center the container horizontally */
         transform: translate(-50%, -50%);
         width: 90%; /* Set the width to 100% of its container */
@@ -240,72 +275,127 @@ nav {
    }
 
 
-    nav {
-        background-color: #ff0000;
-        position: fixed; /* or absolute */
-        top: 0;
-        left: 0;
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        z-index: 1000; /* Ensure it stays on top of other elements */
-    }
+   nav {
+    background-color: #c8f7ff;
+    position: fixed; /* or absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 1000; /* Ensure it stays on top of other elements */
 
-    .hamburger {
-        display: block;
-        
-    }
-
-    .menu-content {
-        display: none;
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
-
-    .nav-items {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-        align-items: flex-start;
-        
-    }
-
-    .right-side-nav {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-        align-items: flex-start;
-        
-    }
-
-    .contact-button {
-        text-align: center;
-    }
-
-    .menu-content.active {
-        display: flex;
-        
-    }
 }
 
-@media (max-width: 600px) {
+.hamburger {
+    display: block;
+    margin: 0;
+    padding: 0;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%; /* Full height of the container */
+    width: 100%; /* Full width of the container */
+}
+
+.menu-content {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.nav-items {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: flex-start;
+    margin-top: 20px;
+    padding: 0;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%; /* Full height of the container */
+}
+
+.right-side-nav {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%; /* Full height of the container */
+
+}
+
+.contact-button {
+    text-align: center;
+
+}
+
+.menu-content.active {
+    display: flex;
+    
+}
+
+.current-language{
+    margin-left:10%;
+}
+
+.dropdown-content {
+    display: none;
+    position: relative;
+    top: 100%; /* Position dropdown below the button */
+    left: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+    list-style-type: none;
+    width: max-content; /* Adjust to fit content */
+    padding: 0;
+    margin-top: 8px; /* Slight gap between button and dropdown */
+}
+}
+
+@media (max-width: 768px) {
     body{
         margin: 0;
         padding: 0;
-        background-color:#33ff00;
+        background-color:#ffffff;
     }
 
-    #image1{
-        display: none;
+    #image1 {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 50%; /* Full height of the container */
+        width: 100%; /* Full width of the container */
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1; /* Ensure it is below image2 */
     }
 
-    #image2{
-        display: none;
+    #image2 {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 35%; /* Full height of the container */
+        width: 85%; /* Full width of the container */
+        position: absolute;
+        top: 30%;
+        left: 7.5%;
+        z-index: 2; /* Ensure it is above image1 */
     }
     #slogan {
         opacity: 1;
-        box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);
+        /*box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);*/
 
     }
 
@@ -323,7 +413,7 @@ nav {
 
 
     nav {
-        background-color: #ff0000;
+        background-color: #c8f7ff;
         position: fixed; /* or absolute */
         top: 0;
         left: 0;
@@ -331,11 +421,17 @@ nav {
         flex-direction: column;
         align-items: flex-start;
         z-index: 1000; /* Ensure it stays on top of other elements */
+
     }
 
     .hamburger {
         display: block;
-        
+        margin: 0;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
+        width: 100%; /* Full width of the container */
     }
 
     .menu-content {
@@ -350,7 +446,11 @@ nav {
         gap: 20px;
         width: 100%;
         align-items: flex-start;
-        
+        margin-top: 20px;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
     }
 
     .right-side-nav {
@@ -358,15 +458,40 @@ nav {
         gap: 20px;
         width: 100%;
         align-items: flex-start;
-        
+        margin: 0;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
+
     }
 
     .contact-button {
         text-align: center;
+
     }
 
     .menu-content.active {
         display: flex;
         
+    }
+
+    .current-language{
+        margin-left:10%;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: relative;
+        top: 100%; /* Position dropdown below the button */
+        left: 0;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        z-index: 1;
+        list-style-type: none;
+        width: max-content; /* Adjust to fit content */
+        padding: 0;
+        margin-top: 8px; /* Slight gap between button and dropdown */
     }
 }

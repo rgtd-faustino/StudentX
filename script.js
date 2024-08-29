@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     var languageSelector = document.querySelector(".dropdown-content");
     var currentLanguageButton = document.querySelector(".current-language");
-    var hamburger = document.querySelector(".hamburger");  // Define the hamburger variable
+    var hamburger = document.querySelector(".hamburger");
 
     // Language Selector Toggle
     currentLanguageButton.addEventListener("click", function(event) {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Close the language options if clicked outside
     document.addEventListener("click", function(event) {
-        if (!languageSelector.contains(event.target)) {
+        if (!languageSelector.contains(event.target) && !currentLanguageButton.contains(event.target)) {
             languageSelector.classList.remove("active");
         }
     });
