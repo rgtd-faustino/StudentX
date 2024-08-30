@@ -550,12 +550,6 @@ nav {
     }
 
     .footer {
-        height: auto; /* Adjust height based on content */
-        padding: 20px 0; /* Add padding for spacing */
-    }
-
-    /* Footer text hidden */
-    .footer-text {
         display: none;
     }
 
