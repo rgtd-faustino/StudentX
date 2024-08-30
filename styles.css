@@ -259,7 +259,7 @@ nav {
         margin-top: 10%; /* Center vertically */
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%);
-        width: 80%; /* Set the width to 80% of its container */
+        width: 90%; /* Set the width to 80% of its container */
         display: flex;
         flex-direction: column;
         align-items: center;

@@ -526,6 +526,10 @@ nav {
         width: 90%; /* Full width with small margins */
         height: auto; /* Allow height to adjust based on content */
         border-radius: 20px; /* Smaller border radius */
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15), 
+                    5px 0px 10px rgba(0, 0, 0, 0.15), 
+                    -5px 0px 10px rgba(0, 0, 0, 0.15);
+        margin-bottom: 8%;
     }
 
     /* Message Box Title Adjustments */
