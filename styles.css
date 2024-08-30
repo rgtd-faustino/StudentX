@@ -246,7 +246,7 @@ nav {
         display: flex;
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
-        height: 80%; /* Full height of the container */
+        height: 55%; /* Full height of the container */
         width: 100%; /* Full width of the container */
         position: absolute;
         top: 0;
@@ -256,7 +256,7 @@ nav {
 
     #image2 {
         position: relative;
-        margin-top: 10%; /* Center vertically */
+        margin-top: 13%; /* Center vertically */
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%);
         width: 90%; /* Set the width to 80% of its container */
@@ -274,7 +274,7 @@ nav {
 
     .slogan-container {
         position: relative;
-        margin-top: 45%; /* Center vertically */
+        margin-top: 40%; /* Center vertically */
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%);
         width: 80%; /* Set the width to 80% of its container */
@@ -289,7 +289,7 @@ nav {
         justify-content: center; /* Center the buttons horizontally */
         align-items: center; /* Center the buttons vertically */
         gap: 10px; /* Adjust gap between buttons as needed */
-        margin-top: 30%; /* Adjust margin as needed */
+        margin-top: 25%; /* Adjust margin as needed */
     }
     
     .slogan-buttons button {
