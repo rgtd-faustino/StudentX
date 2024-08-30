@@ -269,21 +269,40 @@ nav {
 
 /* Styles for the right-side white box */
 .message-box {
-    position: fixed; /* Keep it fixed on the right side as the user scrolls */
-    top: 15%; /* Center it vertically on the screen */
-    right: 5%; /* Align it to the right edge */
-    width: 40%; /* Adjust the width as needed */
-    height: 65%; /* Adjust the height as needed */
-    background-color: white; /* White background for the box */
-    padding: 20px; /* Add padding inside the box */
-    z-index: 100; /* Ensure it sits above other elements */
-    box-sizing: border-box; /* Include padding in the width/height */
+    position: fixed;
+    top: 10%; /* Slightly reduce the top margin to make space */
+    right: 5%;
+    width: 40%;
+    height: 70%; /* Increased height to fit the new title and subtitle */
+    background-color: white;
+    padding: 20px;
+    z-index: 100;
+    box-sizing: border-box;
     border-radius: 60px 60px 0px 0px;
-    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), /* Top shadow */
-                5px 0px 10px rgba(0, 0, 0, 0.05),  /* Right shadow */
-                -5px 0px 10px rgba(0, 0, 0, 0.05); /* Left shadow */
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), 
+                5px 0px 10px rgba(0, 0, 0, 0.05), 
+                -5px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Title styles */
+.message-box h1 {
+    font-size: 24px; /* Large title */
+    font-weight: 700; /* Bold */
+    margin-bottom: 10px; /* Space below the title */
+    color: #156CF7; /* Blue color */
+    font-family: 'Inter', sans-serif;
+}
+
+/* Subtitle styles */
+.message-box h2 {
+    font-size: 16px; /* Smaller subtitle */
+    font-weight: 400; /* Normal weight */
+    margin-bottom: 20px; /* Space below the subtitle */
+    color: #333; /* Dark gray color */
+    font-family: 'Inter', sans-serif;
+}
+
+/* Other styles remain the same... */
 .message-box form {
     display: flex;
     flex-direction: column;
@@ -291,40 +310,86 @@ nav {
 
 .message-box label {
     margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .message-box input[type="text"],
 .message-box input[type="email"],
 .message-box textarea {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 8px 14px; /* Reduced padding to save space */
+    margin-bottom: 15px; /* Reduced margin to save space */
+    border: 2px solid #D5D8E2;
+    border-radius: 10px;
+    font-size: 14px;
     width: 100%;
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 .message-box textarea {
-    resize: vertical;
-    min-height: 100px;
+    min-height: 150px; /* Reduced height to save space */
+    resize: none; /* Prevents resizing */
 }
 
 .message-box input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    display: flex;
+    width: 150px;
+    padding: 10px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 12px;
+    border: 1px solid #156CF7;
+    background-color: white;
+    color: #156CF7;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    align-self: flex-end;
 }
 
 .message-box input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #108CEC;
+    color: white;
+}
+
+.name-container {
+    display: flex;
+    gap: 7%;
+}
+
+.name-container input[type="text"] {
+    flex: 1;
+    margin-top: 5px;
+}
+
+.message-box input[type="text"]::placeholder,
+.message-box input[type="email"]::placeholder,
+.message-box textarea::placeholder {
+    font-size: 14px;
+}
+
+.message-box .title {
+    font-family: 'Inter', sans-serif;
+    color: #000;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.message-box .subtitle {
+    text-align: center; /* Center the subtitle */
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #5D5D5D;
+    margin-bottom: 5%;
+
 }
 
 @media (max-width: 1024px) {
