@@ -193,7 +193,7 @@ nav {
 .footer {
     width: 100%;
     height: 20%; /* Adjust the height as needed */
-    background-color: white;
+    background-color: #F6F7F9;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -208,10 +208,124 @@ nav {
     font-weight: 400;
     line-height: 22px;
     position: fixed; 
-    bottom: 0%;
+    bottom: -1.5%;
     left: 5%;
 }
 
+/* Style the Contact Us button */
+.backButton {
+    position: fixed; 
+    bottom: 2%;
+    right: 5%;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 24px */
+    text-decoration-line: underline;
+    color: black;
+}
+
+.social-media-container {
+    display: flex;
+    align-items: center; /* Center items horizontally */
+    gap: 10%; /* Adjust the gap between each social media item */
+    margin-top: 30px; /* Optional: Add some top margin if needed */
+    margin-left: 20%;
+}
+
+.social-media-container a {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    gap: 10px; /* Adjust the gap between the icon and the text */
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit text color */
+}
+
+.social-media-icon {
+    width: 50px; /* Set a fixed width for the icons */
+    height: auto;
+    background-color: black;
+}
+
+.social-media-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px; /* Adjust the font size as needed */
+    color: #000; /* Set the text color */
+}
+
+.profile-name {
+    font-family: 'Inter', sans-serif;
+    font-weight:200; /* Set the font weight to 400 */
+    color: rgba(2, 2, 4, 0.50);
+    text-align: center;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 26.4px */
+    letter-spacing: -0.44px;
+}
+
+/* Styles for the right-side white box */
+.message-box {
+    position: fixed; /* Keep it fixed on the right side as the user scrolls */
+    top: 15%; /* Center it vertically on the screen */
+    right: 5%; /* Align it to the right edge */
+    width: 40%; /* Adjust the width as needed */
+    height: 65%; /* Adjust the height as needed */
+    background-color: white; /* White background for the box */
+    padding: 20px; /* Add padding inside the box */
+    z-index: 100; /* Ensure it sits above other elements */
+    box-sizing: border-box; /* Include padding in the width/height */
+    border-radius: 60px 60px 0px 0px;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), /* Top shadow */
+                5px 0px 10px rgba(0, 0, 0, 0.05),  /* Right shadow */
+                -5px 0px 10px rgba(0, 0, 0, 0.05); /* Left shadow */
+}
+
+.message-box form {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-box label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.message-box input[type="text"],
+.message-box input[type="email"],
+.message-box textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.message-box textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.message-box input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.message-box input[type="submit"]:hover {
+    background-color: #45a049;
+}
 
 @media (max-width: 1024px) {
     body{
