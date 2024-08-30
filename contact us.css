@@ -146,13 +146,17 @@ nav {
     cursor:pointer;
 }
 
-.hamburger-line{
+.hamburger-line1,.hamburger-line2,.hamburger-line3{
     display:block;
     width:35px;
     height:3px;
     margin:9px auto;
     transition: all 0.3s ease-in-out;
     background-color: rgb(0, 0, 0);
+}
+
+.hamburger-line1{
+    background-color: #108CEC;
 }
 
 .contactUsTitle {
@@ -421,8 +425,6 @@ nav {
     .nav-color-filler {
         display: none;
     }
-
-    /* Adjust nav */
     nav {
         background-color: #ffffff;
         position: relative;
@@ -435,7 +437,6 @@ nav {
         
     }
 
-    /* Hamburger menu visible */
     .hamburger {
         display: block;
         margin: 0;
@@ -444,43 +445,69 @@ nav {
         align-items: center; /* Center vertically */
         height: 100%; /* Full height of the container */
         width: 100%; /* Full width of the container */
-
-        
     }
 
-    /* Adjust menu content */
     .menu-content {
         display: none;
         flex-direction: column;
-        gap: 20px;
+        gap: 14px;
         width: 100%;
     }
 
-    /* Nav items stack vertically */
     .nav-items {
         flex-direction: column;
         gap: 20px;
         width: 100%;
-        align-items: center;
+        align-items: flex-start;
         margin-top: 20px;
         padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
     }
 
-    /* Right-side navigation stacks vertically */
     .right-side-nav {
-        flex-direction: unset;
-        width: unset;
-        justify-content: unset;
-        align-items: unset;
-        height: unset;
-        
-        gap: unset;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
         margin: 0;
         padding: 0;
-        position: unset;
-        display: unset;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
+
     }
 
+    .contact-button {
+        text-align: center;
+
+    }
+
+    .menu-content.active {
+        display: flex;
+        
+    }
+
+    .current-language{
+        margin-left:5%;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: relative;
+        top: 100%; /* Position dropdown below the button */
+        left: 0;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        z-index: 1;
+        list-style-type: none;
+        width: max-content; /* Adjust to fit content */
+        padding: 0;
+        margin-top: 8px; /* Slight gap between button and dropdown */
+    }
+    
     /* Footer text hidden */
     .footer-text {
         display: none;

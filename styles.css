@@ -255,18 +255,17 @@ nav {
     }
 
     #image2 {
-        margin: 0;
-        padding: 0;
+        position: relative;
+        margin-top: 10%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%);
+        width: 80%; /* Set the width to 80% of its container */
         display: flex;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 45%; /* Full height of the container */
-        width: 85%; /* Full width of the container */
-        position: absolute;
-        top: 50%;
-        left: 7.5%;
-        z-index: 2; /* Ensure it is above image1 */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
+    
     #slogan {
         opacity: 1;
         /*box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);*/
@@ -274,25 +273,23 @@ nav {
     }
 
     .slogan-container {
-        position: absolute;
-        top: 20%; /* Adjust this value to position vertically */
-        left: 50%; /* Center the container horizontally */
-        transform: translate(-50%, -50%);
-        width: 80%; /* Set the width to 100% of its container */
-    }
-
-    .slogan-buttons {
         position: relative;
+        margin-top: 45%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%);
+        width: 80%; /* Set the width to 80% of its container */
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
+    }
+    
+    .slogan-buttons {
+        display: flex;
+        justify-content: center; /* Center the buttons horizontally */
         align-items: center; /* Center the buttons vertically */
-        flex-direction: row;
-        white-space: nowrap;
-        gap: 20%;
-        margin: 0;
-        padding: 0;
-        margin-top: 10%;
-        margin-left: 10%;
+        gap: 10px; /* Adjust gap between buttons as needed */
+        margin-top: 30%; /* Adjust margin as needed */
     }
     
     .slogan-buttons button {
@@ -369,7 +366,7 @@ nav {
     }
 
     .current-language{
-        margin-left:10%;
+        margin-left:5%;
     }
 
     .dropdown-content {
