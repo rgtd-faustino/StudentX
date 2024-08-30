@@ -348,6 +348,7 @@ nav {
     font-size: 14px;
     font-weight: 600;
     align-self: flex-end;
+    cursor: pointer;
 }
 
 .message-box input[type="submit"]:hover {
@@ -415,7 +416,6 @@ nav {
     }
 
 
-
     /* Hide the nav color filler */
     .nav-color-filler {
         display: none;
@@ -423,7 +423,7 @@ nav {
 
     /* Adjust nav */
     nav {
-        background-color: #c8f7ff;
+        background-color: #ffffff;
         position: fixed;
         top: 0;
         left: 0;
@@ -492,10 +492,9 @@ nav {
 
     /* Message Box Adjustments */
     .message-box {
-        top: 8%; /* Reduce top margin to make more space */
+        margin-top: 0%; /* Reduce top margin to make more space */
         width: 90%; /* Full width with small margins */
         height: auto; /* Allow height to adjust based on content */
-        padding: 15px; /* Reduce padding */
         border-radius: 20px; /* Smaller border radius */
     }
 
