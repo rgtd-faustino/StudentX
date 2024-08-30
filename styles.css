@@ -282,7 +282,7 @@ nav {
     }
 
     .slogan-buttons {
-        position: fixed;
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center; /* Center the buttons vertically */
@@ -306,14 +306,14 @@ nav {
 
     nav {
         background-color: #ffffff;
-        position: fixed; /* or absolute */
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;
         flex-direction: column;
         align-items: flex-start;
-        z-index: 1000; /* Ensure it stays on top of other elements */
-
+        z-index: 1000;
+        
     }
 
     .hamburger {

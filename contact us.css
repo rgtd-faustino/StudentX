@@ -1,4 +1,5 @@
 body {
+    
     font-family: 'Poppins', sans-serif;
     background-color: #108CEC;
     margin: 0;
@@ -424,7 +425,7 @@ nav {
     /* Adjust nav */
     nav {
         background-color: #ffffff;
-        position: fixed;
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;
@@ -492,6 +493,8 @@ nav {
 
     /* Message Box Adjustments */
     .message-box {
+        position: unset;
+        margin-left: 5%;
         margin-top: 0%; /* Reduce top margin to make more space */
         width: 90%; /* Full width with small margins */
         height: auto; /* Allow height to adjust based on content */
