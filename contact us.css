@@ -192,7 +192,7 @@ nav {
 /* Footer styles */
 .footer {
     width: 100%;
-    height: 20%; /* Adjust the height as needed */
+    height: 15%; /* Adjust the height as needed */
     background-color: #F6F7F9;
     position: fixed;
     bottom: 0;
@@ -231,7 +231,7 @@ nav {
     align-items: center; /* Center items horizontally */
     gap: 10%; /* Adjust the gap between each social media item */
     margin-top: 30px; /* Optional: Add some top margin if needed */
-    margin-left: 20%;
+    margin-left: 23%;
 }
 
 .social-media-container a {
@@ -243,7 +243,7 @@ nav {
 }
 
 .social-media-icon {
-    width: 50px; /* Set a fixed width for the icons */
+    width: 40px; /* Set a fixed width for the icons */
     height: auto;
     background-color: black;
 }
@@ -270,7 +270,7 @@ nav {
 /* Styles for the right-side white box */
 .message-box {
     position: fixed;
-    top: 10%; /* Slightly reduce the top margin to make space */
+    top: 15%; /* Slightly reduce the top margin to make space */
     right: 5%;
     width: 40%;
     height: 70%; /* Increased height to fit the new title and subtitle */
@@ -392,155 +392,49 @@ nav {
 
 }
 
-@media (max-width: 1024px) {
-    body{
-        margin: 0;
-        padding: 0;
-        background-color:#ffffff;
-    }
-
-    .nav-color-filler {
-        /*background: linear-gradient(to bottom, #ffffff96, #108CEC);
-        height: 15%;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;*/
-        display:none;
-    }
-
-    .footer-text{
-        display:none;
-    }
-
-    #contact{
-        display: none;
-    }
-    
-
-    nav {
-        background-color: #c8f7ff;
-        position: fixed; /* or absolute */
-        top: 0;
-        left: 0;
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        z-index: 1000; /* Ensure it stays on top of other elements */
-
-    }
-
-    .hamburger {
-        display: block;
-        margin: 0;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-        width: 100%; /* Full width of the container */
-    }
-
-    .menu-content {
-        display: none;
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
-
-    .nav-items {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-        align-items: flex-start;
-        margin-top: 20px;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-    }
-
-    .right-side-nav {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-        align-items: flex-start;
-        margin: 0;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-
-    }
-
-    .contact-button {
-        text-align: center;
-
-    }
-
-    .menu-content.active {
-        display: flex;
-        
-    }
-
-    .current-language{
-        margin-left:10%;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: relative;
-        top: 100%; /* Position dropdown below the button */
-        left: 0;
-        background-color: white;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        z-index: 1;
-        list-style-type: none;
-        width: max-content; /* Adjust to fit content */
-        padding: 0;
-        margin-top: 8px; /* Slight gap between button and dropdown */
-    }
-}
-
 @media (max-width: 768px) {
-    body{
+    body {
         margin: 0;
         padding: 0;
-        background-color:#ffffff;
+        background-color: #108CEC;
+        font-size: 18px; /* Slightly smaller font size for better readability on small screens */
+
+        
     }
 
-    
-    .nav-color-filler {
-        /*background: linear-gradient(to bottom, #ffffff96, #108CEC);
-        height: 15%;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;*/
-        display:none;
-    }
-
-    .footer-text{
-        display:none;
-    }
-
-    #contact{
+    .backButton{
         display: none;
     }
-    
 
+    .contactUsTitle{
+        display:none;
+    }
+
+    .contactUsText{
+        display:none;
+    }
+
+
+
+    /* Hide the nav color filler */
+    .nav-color-filler {
+        display: none;
+    }
+
+    /* Adjust nav */
     nav {
         background-color: #c8f7ff;
-        position: fixed; /* or absolute */
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         flex-direction: column;
         align-items: flex-start;
-        z-index: 1000; /* Ensure it stays on top of other elements */
-
+        z-index: 1000;
+        
     }
 
+    /* Hamburger menu visible */
     .hamburger {
         display: block;
         margin: 0;
@@ -549,8 +443,11 @@ nav {
         align-items: center; /* Center vertically */
         height: 100%; /* Full height of the container */
         width: 100%; /* Full width of the container */
+
+        
     }
 
+    /* Adjust menu content */
     .menu-content {
         display: none;
         flex-direction: column;
@@ -558,57 +455,123 @@ nav {
         width: 100%;
     }
 
+    /* Nav items stack vertically */
     .nav-items {
         flex-direction: column;
         gap: 20px;
         width: 100%;
-        align-items: flex-start;
+        align-items: center;
         margin-top: 20px;
         padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
     }
 
+    /* Right-side navigation stacks vertically */
     .right-side-nav {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-        align-items: flex-start;
+        flex-direction: unset;
+        width: unset;
+        justify-content: unset;
+        align-items: unset;
+        height: unset;
+        
+        gap: unset;
         margin: 0;
         padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-
+        position: unset;
+        display: unset;
     }
 
-    .contact-button {
-        text-align: center;
-
-    }
-
-    .menu-content.active {
-        display: flex;
-        
-    }
-
-    .current-language{
-        margin-left:10%;
-    }
-
-    .dropdown-content {
+    /* Footer text hidden */
+    .footer-text {
         display: none;
-        position: relative;
-        top: 100%; /* Position dropdown below the button */
-        left: 0;
-        background-color: white;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        z-index: 1;
-        list-style-type: none;
-        width: max-content; /* Adjust to fit content */
-        padding: 0;
-        margin-top: 8px; /* Slight gap between button and dropdown */
+    }
+
+    /* Contact section hidden */
+    #contact {
+        display: none;
+    }
+
+    /* Message Box Adjustments */
+    .message-box {
+        top: 8%; /* Reduce top margin to make more space */
+        width: 90%; /* Full width with small margins */
+        height: auto; /* Allow height to adjust based on content */
+        padding: 15px; /* Reduce padding */
+        border-radius: 20px; /* Smaller border radius */
+    }
+
+    /* Message Box Title Adjustments */
+    .message-box h1 {
+        font-size: 20px; /* Smaller title size */
+        margin-bottom: 8px;
+    }
+
+    /* Message Box Subtitle Adjustments */
+    .message-box h2 {
+        font-size: 14px; /* Smaller subtitle */
+        margin-bottom: 15px;
+    }
+
+    /* Adjust form elements */
+    .message-box input[type="text"],
+    .message-box input[type="email"],
+    .message-box textarea {
+        font-size: 14px; /* Smaller font size */
+        padding: 10px; /* Adjust padding */
+    }
+
+    /* Adjust submit button */
+    .message-box input[type="submit"] {
+        width: 100px; /* Smaller button */
+        padding: 8px 12px; /* Adjust padding */
+    }
+
+    /* Adjust the name container to stack vertically */
+    .name-container {
+        flex-direction: column;
+        gap: 0px; /* Adjust gap between fields */
+    }
+
+    .name-container input[type="text"] {
+        width: 100%;
+    }
+
+    /* Adjust text and input field placeholders */
+    .message-box input[type="text"]::placeholder,
+    .message-box input[type="email"]::placeholder,
+    .message-box textarea::placeholder {
+        font-size: 12px; /* Smaller font size */
+    }
+
+    /* Back Button Adjustments */
+    .backButton {
+        font-size: 18px; /* Slightly smaller font size */
+        bottom: 10px; /* Adjust positioning */
+        right: 10px; /* Adjust positioning */
+    }
+
+    .footer {
+        height: auto; /* Adjust height based on content */
+        padding: 20px 0; /* Add padding for spacing */
+    }
+
+    /* Footer text hidden */
+    .footer-text {
+        display: none;
+    }
+
+    /* Social Media Icons - Mobile */
+    .social-media-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        gap: 20px; /* Adjust gap between items */
+        margin-left: 0; /* Reset left margin */
+    }
+
+    .social-media-icon {
+        width: 40px; /* Smaller icon size for mobile */
+    }
+
+    .social-media-text {
+        font-size: 14px; /* Adjust font size for mobile */
     }
 }
