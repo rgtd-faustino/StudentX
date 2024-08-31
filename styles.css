@@ -36,6 +36,10 @@ h1 {
     pointer-events: none;
 }
 
+#videoP2{
+    margin-top: 2%;
+}
+
 .starslogoscontainer{
     all:unset;
 }
@@ -328,6 +332,147 @@ nav {
     line-height: 50px;
 }
 
+/* Container for title and background */
+.title-container {
+    display: flex;
+    align-items: flex-start; /* Align items to the start of the container */
+    position: relative;
+    margin-top: 70%; /* Adjust as needed */
+    flex-direction: column;
+    text-align: left;
+    margin-left: 5%;
+
+
+}
+
+/* Adjusting the subtitle and title styles */
+#subtitle {
+    position: relative;
+    color: #108CEC;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 0px;
+}
+
+#titleP3 {
+    color: #08192B;
+    font-family: 'Poppins', sans-serif;
+    font-size: 65px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 0px;
+    margin-top:3%;
+}
+
+#titleP3Background {
+    z-index: -1;
+    position: absolute;
+    margin-top: 2.4%;
+    margin-left: 6.7%;
+}
+
+.highlightP3 {
+    color: #FFF;
+}
+
+.carousel-container-mobile{
+    display:none;
+}
+
+.carousel-container {
+    position: relative;
+    width: 800px;
+    overflow: hidden;
+    margin-top: 80%;
+    margin-left: 40%;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.item-group {
+    display: flex;
+    flex-direction: row;
+    min-width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.item-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.item-container button {
+    background-color: #108CEC; /* Blue background */
+    color: #FFF; /* White text */
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Add some padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-family: 'Poppins', sans-serif; /* Font family */
+    font-size: 16px; /* Font size */
+}
+
+.button-carousel {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+#prev, #next {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.active {
+    background-color: #007bff;
+}
+
 @media (max-width: 768px) {
     body{
         margin: 0;
@@ -364,6 +509,61 @@ nav {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+    }
+
+    #videoP2{
+        display: none;
+    }
+
+    
+    /* Container for title and background */
+    .title-container {
+        display: flex;
+        align-items: flex-start; /* Align items to the start of the container */
+        position: relative;
+        margin-top: 0%; /* Adjust as needed */
+        flex-direction: column;
+        text-align: left;
+        margin-left: 5%;
+
+
+    }
+
+    /* Adjusting the subtitle and title styles */
+    #subtitle {
+        position: relative;
+        color: #108CEC;
+        text-align: left;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 0px;
+        
+    }
+
+    #titleP3 {
+        color: #08192B;
+        font-family: 'Poppins', sans-serif;
+        font-size: 25px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 0px;
+        margin-top:6%;
+        
+    }
+
+    #titleP3Background {
+        z-index: -1;
+        position: absolute;
+        margin-top: 8%;
+        margin-left: 15%;
+        width: 85%;
+        height: auto;
+    }
+
+    .highlightP3 {
+        color: #FFF;
     }
 
     .starsText {
@@ -567,4 +767,103 @@ nav {
         padding: 0;
         margin-top: 8px; /* Slight gap between button and dropdown */
     }
+
+    
+    .carousel-container {
+        display:none;
+    }
+    
+
+
+    .carousel-container-mobile {
+        display: unset;
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        margin-top: 20%;
+        margin-left: 0;
+    }
+
+    .carousel-mobile {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+    
+    .item-group-mobile {
+        display: flex;
+        flex-direction: row;
+        width: 100%; /* Make sure it spans the full width of the container */
+    }
+    
+    .item-container-mobile {
+        flex: 0 0 100%; /* Each container takes up 100% of the carousel's width */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 0; /* No need for extra margin */
+        box-sizing: border-box;
+    }
+    
+    .item-container-mobile img {
+        width: 100%; /* Image should take up the full width */
+        height: auto; /* Adjust height automatically */
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .item-container-mobile button {
+        background-color: #108CEC; /* Blue background */
+        color: #FFF; /* White text */
+        border: none; /* Remove default border */
+        padding: 10px 20px; /* Add some padding */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-family: 'Poppins', sans-serif; /* Font family */
+        font-size: 16px; /* Font size */
+    }
+    
+    .button-carousel-mobile {
+        margin: 10px 0;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    
+    .controls-mobile {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+    
+    #prev-mobile, #next-mobile {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    .indicators-mobile {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .dot-mobile {
+        height: 10px;
+        width: 10px;
+        margin: 0 5px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    
+    .dot-mobile.active {
+        background-color: #007bff;
+    }
+
+
 }
