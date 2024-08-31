@@ -36,9 +36,13 @@ h1 {
     pointer-events: none;
 }
 
+.starslogoscontainer{
+    all:unset;
+}
+
 #parentContainer {
     position: absolute;
-    margin-top: 20%;
+    margin-top: 30%;
     width: 100%;
     height: 100%;
 }
@@ -51,18 +55,60 @@ h1 {
     height: 100%;
     pointer-events: none;
     z-index: 1; /* Lower z-index */
+    margin-top:-10%;
+
 }
 
 #tlmP2 {
     position: absolute;
     top: 0;
     left: 0;
-    margin-top:-5%;
+    margin-top:-15%;
     margin-left:-5%;
     width: 60%;
     height: auto;
     pointer-events: none;
     z-index: 2; /* Higher z-index to be on top */
+}
+
+#starsContainer {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 35%;
+    pointer-events: none;
+    z-index: 2; /* Higher z-index to be on top */
+    margin-top: -8%;
+}
+
+
+#stars {
+    height: auto;
+}
+
+#logos{
+    width: 100%;
+    height: auto;
+    position: absolute; /* Ensure it can move freely within the parent */
+    z-index: 1;
+    margin-top: -11%;
+}
+
+#logo1,#logo2,#logo3,#logo4{
+    display:none;
+}
+
+.starsText {
+    margin-left: 10px; /* Adjust spacing between stars and text */
+    color: #08192B;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 50px;
 }
 
 nav {
@@ -287,6 +333,7 @@ nav {
         margin: 0;
         padding: 0;
         background-color:#ffffff;
+        
     }
 
     #image1{
@@ -319,17 +366,74 @@ nav {
         justify-content: center;
     }
 
+    .starsText {
+        margin-left: 10px; /* Adjust spacing between stars and text */
+        color: #08192B;
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 50px;
+    }
+
+    #starsContainer {
+        display: flex;
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-left: 0%;
+        pointer-events: none;
+        z-index: 2; /* Higher z-index to be on top */
+        margin-top: 5%;
+
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    
+    #stars {
+        width: 25%;
+        height: auto;
+    }
+
+    #parentContainer {
+        position: unset;
+        margin-top: -25%;
+        margin-left: 0%;
+        width: unset;
+        height: unset;
+
+        margin-bottom: 7%;
+        
+    }
+
+    #logoWrapper {
+        display: flex; /* Add this line */
+        flex-direction: row; /* Add this line */
+        align-items: center; /* Add this line */
+        justify-content: center; /* Add this line */
+
+        gap:3%;
+    }
+    
+    #logo1, #logo2, #logo3, #logo4 {
+        display:unset;
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-left: 0%;
+        pointer-events: none;
+        z-index: 2; /* Higher z-index to be on top */
+
+        width:20%;
+
+    }
 
     
     #gradienteP2 {
-        position: absolute;
-        margin-top: -40%;
-        left: 0;
-        width: 100%;
-        height: auto; /* Allow the height to adjust proportionally */
-        pointer-events: none;
-        z-index: 1; /* Lower z-index to place it below tlmP2 */
-        object-fit: cover; /* Ensure the image covers its container */
+        display: none;
     }
     
     #tlmP2 {
@@ -337,8 +441,8 @@ nav {
 
     }
 
-    #parentContainer {
-        display: none;
+    #logos{
+        display:none;
     }
 
     .secondPText{
