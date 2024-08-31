@@ -59,7 +59,7 @@ h1 {
     height: 100%;
     pointer-events: none;
     z-index: 1; /* Lower z-index */
-    margin-top:-10%;
+    margin-top:-5%;
 
 }
 
@@ -67,7 +67,7 @@ h1 {
     position: absolute;
     top: 0;
     left: 0;
-    margin-top:-15%;
+    margin-top:-10%;
     margin-left:-5%;
     width: 60%;
     height: auto;
@@ -84,7 +84,7 @@ h1 {
     margin-left: 35%;
     pointer-events: none;
     z-index: 2; /* Higher z-index to be on top */
-    margin-top: -8%;
+    margin-top: -5%;
 }
 
 
@@ -97,7 +97,7 @@ h1 {
     height: auto;
     position: absolute; /* Ensure it can move freely within the parent */
     z-index: 1;
-    margin-top: -11%;
+    margin-top: -9%;
 }
 
 #logo1,#logo2,#logo3,#logo4{
@@ -310,13 +310,13 @@ nav {
     color: rgba(0, 0, 24, 0.50);
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 45px;
+    font-size: 30px;
     font-style: normal;
     font-weight: 400;
     line-height: 50px; 
 
     position: absolute;
-    margin-top: 35%;
+    margin-top: 38%;
     margin-left: 50%;
     width: 40%;
     height: auto;
@@ -326,7 +326,7 @@ nav {
 .highlight {
     color: #108CEC;
     font-family: 'Poppins', sans-serif;
-    font-size: 45px;
+    font-size: 30px;
     font-style: normal;
     font-weight: 700;
     line-height: 50px;
@@ -556,9 +556,9 @@ nav {
     #titleP3Background {
         z-index: -1;
         position: absolute;
-        margin-top: 8%;
-        margin-left: 15%;
-        width: 85%;
+        margin-top: 7.5%;
+        margin-left: 12%;
+        width: 70%;
         height: auto;
     }
 
@@ -793,6 +793,7 @@ nav {
         display: flex;
         flex-direction: row;
         width: 100%; /* Make sure it spans the full width of the container */
+        margin-top:5%;
     }
     
     .item-container-mobile {
@@ -805,10 +806,11 @@ nav {
     }
     
     .item-container-mobile img {
-        width: 100%; /* Image should take up the full width */
+        width: 90%; /* Image should take up the full width */
         height: auto; /* Adjust height automatically */
         border-radius: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 5%;
+        margin-top:0%;
     }
     
     .item-container-mobile button {
@@ -823,33 +825,44 @@ nav {
     }
     
     .button-carousel-mobile {
-        margin: 10px 0;
         padding: 10px;
         font-size: 16px;
         cursor: pointer;
     }
     
     .controls-mobile {
-        position: absolute;
-        top: 50%;
+        position: relative;
         width: 100%;
         display: flex;
         justify-content: space-between;
         transform: translateY(-50%);
     }
     
+    
     #prev-mobile, #next-mobile {
         background-color: #007bff;
         color: white;
         border: none;
-        padding: 10px;
+        padding: 15px 30px; /* Increased padding on left and right */
         cursor: pointer;
+        margin-top:15%;
+        border-radius: 20px;
+        margin-bottom: -13.5%;
     }
-    
+
+    #prev-mobile{
+        margin-left: 15%;
+    }
+
+
+    #next-mobile{
+        margin-right: 15%;
+    }
+
+
     .indicators-mobile {
         display: flex;
         justify-content: center;
-        margin-top: 10px;
     }
     
     .dot-mobile {
