@@ -301,7 +301,7 @@ nav {
 .hamburger-line1,
 .hamburger-line2,
 .hamburger-line3 {
-    display: block;
+    display: none;
     width: 10vw;
     height: 0.5vh;
     margin: 1vh auto;
@@ -497,6 +497,12 @@ nav {
 }
 
 @media (max-width: 768px) {
+    .hamburger-line1,
+    .hamburger-line2,
+    .hamburger-line3 {
+        display: block;
+    }
+    
     body{
         margin: 0;
         padding: 0;
