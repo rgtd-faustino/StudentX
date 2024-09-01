@@ -337,42 +337,50 @@ nav {
     display: flex;
     align-items: flex-start; /* Align items to the start of the container */
     position: relative;
-    margin-top: 75%; /* Adjust as needed */
+    margin-top: 80%; /* Adjust as needed */
     flex-direction: column;
     text-align: left;
     margin-left: 5%;
-
-
 }
 
-/* Adjusting the subtitle and title styles */
-#subtitle {
+.title-background-container {
     position: relative;
-    color: #108CEC;
-    text-align: left;
-    font-family: 'Poppins', sans-serif;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 0px;
 }
 
 #titleP3 {
-    color: #08192B;
-    font-family: 'Poppins', sans-serif;
-    font-size: 45px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 0px;
-    margin-top:3%;
+    font-size: 3vw; /* Reduce font size */
+    line-height: 1.1; /* Adjust line height */
+    margin-top: 5%; /* Increase top margin to create space */
+    text-align: center; /* Center text on small screens */
+    position: relative; /* Ensure it is positioned relative to the container */
+    z-index: 1; /* Ensure it is above the background */
+    white-space: nowrap; /* Prevent text from wrapping */
+
 }
 
 #titleP3Background {
-    z-index: -1;
-    position: absolute;
-    width: 27.5%;
-    margin-top: 3.3%;
-    margin-left: 4.3%;
+    position: absolute; /* Position it absolutely within the container */
+    top: 0; /* Align to the top of the container */
+    left: 0; /* Align to the left of the container */
+    margin-top: 3.5%; /* Adjust margin-top for better spacing */
+    margin-left: 14%; /* Reduce left margin to fit smaller screens */
+    width: 90%; /* Increase width to cover more of the screen */
+    height: auto;
+    z-index: 0; /* Ensure it is below the title */
+}
+
+#subtitle {
+    margin-top: -5%; /* Reduce top margin to bring subtitle closer to the title */
+    margin-bottom: 0%;
+    line-height: 1.1; /* Adjust line height for better spacing */
+    text-align: center; /* Center text on small screens */
+    color: #108CEC;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5vw;
+    font-style: normal;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent text from wrapping */
+
 }
 
 .highlightP3 {
@@ -518,50 +526,42 @@ nav {
     }
 
     
-    /* Container for title and background */
-    .title-container {
-        display: flex;
-        align-items: flex-start; /* Align items to the start of the container */
-        position: relative;
-        margin-top: 0%; /* Adjust as needed */
-        flex-direction: column;
-        text-align: left;
-        margin-left: 5%;
-
-
-    }
-
-    /* Adjusting the subtitle and title styles */
     #subtitle {
-        position: relative;
+        line-height: 1.1; /* Adjust line height for better spacing */
+        text-align: center; /* Center text on small screens */
+        font-size: 4vw; /* Reduce font size */
+        margin-bottom: 3%;
+
         color: #108CEC;
-        text-align: left;
         font-family: 'Poppins', sans-serif;
-        font-size: 15px;
         font-style: normal;
         font-weight: 500;
-        line-height: 0px;
-        
     }
 
     #titleP3 {
+        font-size: 6vw; /* Reduce font size */
+        line-height: 1.1; /* Adjust line height */
+        margin-top: 10%; /* Increase top margin to create space */
+        text-align: center; /* Center text on small screens */
+        margin-bottom: 0%;
+        margin-top: 0%; /* Increase top margin to create space */
+
         color: #08192B;
         font-family: 'Poppins', sans-serif;
-        font-size: 25px;
         font-style: normal;
         font-weight: 700;
-        line-height: 0px;
-        margin-top:6%;
-        
     }
 
     #titleP3Background {
-        z-index: -1;
-        position: absolute;
-        margin-top: 7.5%;
-        margin-left: 12%;
-        width: 70%;
+        margin-top: -1%; /* Adjust margin-top for better spacing */
+        margin-left: 14%; /* Reduce left margin to fit smaller screens */
+        width: 90%; /* Increase width to cover more of the screen */
         height: auto;
+    }
+
+    .title-container {
+        padding: 10px; /* Add padding to container for better spacing */
+        margin-top:0;
     }
 
     .highlightP3 {
@@ -855,6 +855,11 @@ nav {
         margin: 0 15px; /* Adjust margin to fit within the new container */
         width: 100px; /* Fixed width for consistency */
         text-align: center; /* Center text within the button */
+    }
+
+    #prev-mobile:hover, #next-mobile:hover{
+        background-color: #0056b3;
+
     }
 
     .indicators-mobile {
