@@ -337,7 +337,7 @@ nav {
     display: flex;
     align-items: flex-start; /* Align items to the start of the container */
     position: relative;
-    margin-top: 70%; /* Adjust as needed */
+    margin-top: 75%; /* Adjust as needed */
     flex-direction: column;
     text-align: left;
     margin-left: 5%;
@@ -360,7 +360,7 @@ nav {
 #titleP3 {
     color: #08192B;
     font-family: 'Poppins', sans-serif;
-    font-size: 65px;
+    font-size: 45px;
     font-style: normal;
     font-weight: 700;
     line-height: 0px;
@@ -370,8 +370,9 @@ nav {
 #titleP3Background {
     z-index: -1;
     position: absolute;
-    margin-top: 2.4%;
-    margin-left: 6.7%;
+    width: 27.5%;
+    margin-top: 3.3%;
+    margin-left: 4.3%;
 }
 
 .highlightP3 {
@@ -478,7 +479,8 @@ nav {
         margin: 0;
         padding: 0;
         background-color:#ffffff;
-        
+        padding-bottom: 30px; /* Adjust the value as needed */
+
     }
 
     #image1{
@@ -772,8 +774,6 @@ nav {
     .carousel-container {
         display:none;
     }
-    
-
 
     .carousel-container-mobile {
         display: unset;
@@ -797,12 +797,15 @@ nav {
     }
     
     .item-container-mobile {
-        flex: 0 0 100%; /* Each container takes up 100% of the carousel's width */
-        display: flex;
+        flex: 0 0 100%;
+        display: none; /* Hide all items by default */
         flex-direction: column;
         align-items: center;
-        margin-right: 0; /* No need for extra margin */
         box-sizing: border-box;
+    }
+
+    .item-container-mobile.active {
+        display: flex; /* Show only the active item */
     }
     
     .item-container-mobile img {
@@ -811,9 +814,10 @@ nav {
         border-radius: 10px;
         margin-bottom: 5%;
         margin-top:0%;
+        
     }
-    
-    .item-container-mobile button {
+
+    .button-carousel-mobile {
         background-color: #108CEC; /* Blue background */
         color: #FFF; /* White text */
         border: none; /* Remove default border */
@@ -822,49 +826,43 @@ nav {
         cursor: pointer; /* Pointer cursor on hover */
         font-family: 'Poppins', sans-serif; /* Font family */
         font-size: 16px; /* Font size */
+        text-decoration: none; /* Remove underline */
+
+    }
+
+    .button-carousel-mobile:hover {
+        background-color: #0056b3;
     }
     
-    .button-carousel-mobile {
-        padding: 10px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    
-    .controls-mobile {
-        position: relative;
-        width: 100%;
+    /* New container for arrows and dots */
+    .arrows-and-dots {
         display: flex;
         justify-content: space-between;
-        transform: translateY(-50%);
+        align-items: center;
+        margin-top: 10%;
     }
-    
-    
+
+    /* Adjust existing styles */
     #prev-mobile, #next-mobile {
-        background-color: #007bff;
+        background-color: #108CEC;
         color: white;
         border: none;
-        padding: 15px 30px; /* Increased padding on left and right */
+        font-size: 14px; /* Reduced font size */
+        font-weight: bold;
+        padding: 15px 20px; /* Reduced padding */
         cursor: pointer;
-        margin-top:15%;
         border-radius: 20px;
-        margin-bottom: -13.5%;
+        margin: 0 15px; /* Adjust margin to fit within the new container */
+        width: 100px; /* Fixed width for consistency */
+        text-align: center; /* Center text within the button */
     }
-
-    #prev-mobile{
-        margin-left: 15%;
-    }
-
-
-    #next-mobile{
-        margin-right: 15%;
-    }
-
 
     .indicators-mobile {
         display: flex;
         justify-content: center;
+        flex-grow: 1; /* Allow the dots to take up remaining space */
     }
-    
+
     .dot-mobile {
         height: 10px;
         width: 10px;
@@ -873,7 +871,7 @@ nav {
         border-radius: 50%;
         display: inline-block;
     }
-    
+
     .dot-mobile.active {
         background-color: #007bff;
     }

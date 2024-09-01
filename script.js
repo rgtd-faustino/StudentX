@@ -78,11 +78,17 @@ document.getElementById('prev-mobile').addEventListener('click', () => {
 });
 
 function updateCarouselMobile() {
-    carouselMobile.style.transform = `translateX(-${currentIndexMobile * 100}%)`;
+    const items = document.querySelectorAll('.item-container-mobile');
+    
+    items.forEach((item, index) => {
+        item.classList.toggle('active', index === currentIndexMobile);
+    });
+
     dotsMobile.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentIndexMobile);
     });
 }
+
 
 dotsMobile.forEach((dot, index) => {
     dot.addEventListener('click', () => {
