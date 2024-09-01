@@ -278,6 +278,7 @@ nav {
     font-weight: 600; /* Bold text */
     cursor: pointer; /* Pointer cursor on hover */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    white-space: nowrap;
 }
 
 .start-button button:hover {
@@ -295,9 +296,9 @@ nav {
 
 .hamburger-line1,.hamburger-line2,.hamburger-line3{
     display:block;
-    width:35px;
-    height:3px;
-    margin:9px auto;
+    width:10vw;
+    height:0.5vh;
+    margin:1vh auto;
     transition: all 0.3s ease-in-out;
     background-color: rgb(0, 0, 0);
 }
@@ -501,7 +502,9 @@ nav {
         display: flex;
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
-        height: 55%; /* Full height of the container */
+        height: auto; /* Full height of the container */
+        min-height: 70vh; /* Minimum height */
+        max-height: calc(100vh - 13%); /* Maximum height calculated dynamically */
         width: 100%; /* Full width of the container */
         position: absolute;
         top: 0;
@@ -524,6 +527,7 @@ nav {
     #videoP2{
         display: none;
     }
+
 
     
     #subtitle {
@@ -676,16 +680,20 @@ nav {
         align-items: center; /* Center the buttons vertically */
         gap: 10px; /* Adjust gap between buttons as needed */
         margin-top: 25%; /* Adjust margin as needed */
+
     }
     
     .slogan-buttons button {
-        padding: 10px 20px; /* Adjust padding to make buttons smaller */
-        font-size: 18px; /* Adjust font size to make text smaller */
+        padding: 1.5vh 8vw; /* Adjust padding to make buttons smaller */
+        font-size: 5vw; /* Adjust font size to make text smaller */
         width: auto; /* Adjust width as needed */
         height: auto; /* Adjust height as needed */
         border-radius: 20px; /* Optional: Adjust border radius */
     }
 
+    .start-button button{
+        padding: 2vh 5vw;
+    }
 
     nav {
         background-color: #ffffff;
@@ -778,22 +786,23 @@ nav {
     .carousel-container-mobile {
         display: unset;
         position: relative;
-        width: 100%;
+        width: 70%; /* Adjust width as needed */
         overflow: hidden;
-        margin-top: 20%;
-        margin-left: 0;
+        margin: 20% auto 0 auto; /* Center the carousel horizontally */
+        
     }
-
+    
     .carousel-mobile {
         display: flex;
         transition: transform 0.5s ease-in-out;
+        
     }
     
     .item-group-mobile {
         display: flex;
         flex-direction: row;
-        width: 100%; /* Make sure it spans the full width of the container */
-        margin-top:5%;
+        width: 100%; /* Ensure it spans the full width of the container */
+        margin-top: 5%;
     }
     
     .item-container-mobile {
@@ -802,8 +811,10 @@ nav {
         flex-direction: column;
         align-items: center;
         box-sizing: border-box;
+        position: relative; /* Make the container relative for absolute positioning of arrows */
     }
-
+    
+    
     .item-container-mobile.active {
         display: flex; /* Show only the active item */
     }
@@ -813,23 +824,26 @@ nav {
         height: auto; /* Adjust height automatically */
         border-radius: 10px;
         margin-bottom: 5%;
-        margin-top:0%;
-        
-    }
+        margin-top: 0%;
 
+    }
+    
     .button-carousel-mobile {
+        all: unset; /* Reset all inherited properties */
         background-color: #108CEC; /* Blue background */
         color: #FFF; /* White text */
         border: none; /* Remove default border */
-        padding: 10px 20px; /* Add some padding */
-        border-radius: 5px; /* Rounded corners */
+        padding: 2vh 8vw; /* Add some padding */
+        border-radius: 10px; /* Rounded corners */
         cursor: pointer; /* Pointer cursor on hover */
         font-family: 'Poppins', sans-serif; /* Font family */
-        font-size: 16px; /* Font size */
+        font-size: 5vw; /* Font size */
         text-decoration: none; /* Remove underline */
-
+        white-space: nowrap;
+        display: flex; /* Display as a flex container */
+        justify-content: center; /* Center the buttons horizontally */
     }
-
+    
     .button-carousel-mobile:hover {
         background-color: #0056b3;
     }
@@ -839,47 +853,52 @@ nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 10%;
+        margin-top: 3vh;
     }
-
+    
     /* Adjust existing styles */
     #prev-mobile, #next-mobile {
-        background-color: #108CEC;
-        color: white;
-        border: none;
-        font-size: 14px; /* Reduced font size */
-        font-weight: bold;
-        padding: 15px 20px; /* Reduced padding */
-        cursor: pointer;
-        border-radius: 20px;
-        margin: 0 15px; /* Adjust margin to fit within the new container */
-        width: 100px; /* Fixed width for consistency */
-        text-align: center; /* Center text within the button */
+        position: relative;
+        margin-top:-130%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        color: #FFF; /* White color */
+        border: none; /* Remove default border */
+        padding: 10px; /* Add some padding */
+        border-radius: 50%; /* Rounded shape */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-size: 20px; /* Font size */
     }
-
-    #prev-mobile:hover, #next-mobile:hover{
+    
+    #prev-mobile {
+        left: 1%; /* Position to the left, slightly outside the carousel */
+    }
+    
+    #next-mobile {
+        right: 1%; /* Position to the right, slightly outside the carousel */
+    }
+    
+    #prev-mobile:hover, #next-mobile:hover {
         background-color: #0056b3;
-
     }
-
+    
     .indicators-mobile {
         display: flex;
         justify-content: center;
         flex-grow: 1; /* Allow the dots to take up remaining space */
     }
-
+    
     .dot-mobile {
-        height: 10px;
-        width: 10px;
-        margin: 0 5px;
+        height: 2vw;
+        width: 2vw;
+        margin: 0 1vw;
         background-color: #bbb;
         border-radius: 50%;
         display: inline-block;
     }
-
+    
     .dot-mobile.active {
         background-color: #007bff;
     }
-
 
 }
