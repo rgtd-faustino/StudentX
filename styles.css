@@ -289,22 +289,35 @@ nav {
     background-color: #111; /* Darker black on click */
 }
 
-.hamburger{
-    display:none;
-    cursor:pointer;
+.hamburger {
+    display: block;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-.hamburger-line1,.hamburger-line2,.hamburger-line3{
-    display:block;
-    width:10vw;
-    height:0.5vh;
-    margin:1vh auto;
+.hamburger-line1,
+.hamburger-line2,
+.hamburger-line3 {
+    display: block;
+    width: 10vw;
+    height: 0.5vh;
+    margin: 1vh auto;
     transition: all 0.3s ease-in-out;
     background-color: rgb(0, 0, 0);
 }
 
-.hamburger-line1{
+.hamburger-line1 {
     background-color: #108CEC;
+}
+
+/* The expanded state for the hamburger lines */
+.hamburger.open .hamburger-line1,
+.hamburger.open .hamburger-line2,
+.hamburger.open .hamburger-line3 {
+    width: 100%;
 }
 
 .secondPText{
@@ -795,13 +808,14 @@ nav {
     .carousel-mobile {
         display: flex;
         transition: transform 0.5s ease-in-out;
-        
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
     }
     
     .item-group-mobile {
         display: flex;
         flex-direction: row;
-        width: 100%; /* Ensure it spans the full width of the container */
+        width: 90%; /* Ensure it spans the full width of the container */
         margin-top: 5%;
     }
     
@@ -830,7 +844,7 @@ nav {
     
     .button-carousel-mobile {
         all: unset; /* Reset all inherited properties */
-        background-color: #108CEC; /* Blue background */
+        background-color: #108CEC;
         color: #FFF; /* White text */
         border: none; /* Remove default border */
         padding: 2vh 8vw; /* Add some padding */
@@ -854,32 +868,42 @@ nav {
         justify-content: space-between;
         align-items: center;
         margin-top: 3vh;
+        
     }
     
     /* Adjust existing styles */
     #prev-mobile, #next-mobile {
         position: relative;
-        margin-top:-130%;
-        transform: translateY(-50%);
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        color: #FFF; /* White color */
+        margin-top:-135%;
+        color: unset;
         border: none; /* Remove default border */
-        padding: 10px; /* Add some padding */
-        border-radius: 50%; /* Rounded shape */
         cursor: pointer; /* Pointer cursor on hover */
-        font-size: 20px; /* Font size */
+        background: none; /* Remove background */
+
     }
     
     #prev-mobile {
         left: 1%; /* Position to the left, slightly outside the carousel */
+        
     }
     
     #next-mobile {
         right: 1%; /* Position to the right, slightly outside the carousel */
+        transform: rotate(180deg); /* Rotate the image horizontally */
     }
+
+    #prev-mobile img, #next-mobile img {
+        width: 5vw;
+        height: auto;
+        color: unset;
+        border: none; /* Remove default border */
+        
+    }
+
     
-    #prev-mobile:hover, #next-mobile:hover {
-        background-color: #0056b3;
+    #prev-mobile:hover img, #next-mobile:hover img {
+        filter: brightness(0) saturate(100%) invert(29%) sepia(92%) saturate(748%) hue-rotate(186deg) brightness(150%) contrast(101%);
+        
     }
     
     .indicators-mobile {

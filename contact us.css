@@ -141,22 +141,35 @@ nav {
 
 
 
-.hamburger{
-    display:none;
-    cursor:pointer;
+.hamburger {
+    display: block;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-.hamburger-line1,.hamburger-line2,.hamburger-line3{
-    display:block;
-    width:35px;
-    height:3px;
-    margin:9px auto;
+.hamburger-line1,
+.hamburger-line2,
+.hamburger-line3 {
+    display: block;
+    width: 10vw;
+    height: 0.5vh;
+    margin: 1vh auto;
     transition: all 0.3s ease-in-out;
     background-color: rgb(0, 0, 0);
 }
 
-.hamburger-line1{
+.hamburger-line1 {
     background-color: #108CEC;
+}
+
+/* The expanded state for the hamburger lines */
+.hamburger.open .hamburger-line1,
+.hamburger.open .hamburger-line2,
+.hamburger.open .hamburger-line3 {
+    width: 100%;
 }
 
 .contactUsTitle {
@@ -450,9 +463,10 @@ nav {
     .menu-content {
         display: none;
         flex-direction: column;
-        gap: 14px;
+        gap: 20px;
         width: 100%;
     }
+
 
     .nav-items {
         flex-direction: column;
@@ -465,6 +479,8 @@ nav {
         align-items: center; /* Center vertically */
         height: 100%; /* Full height of the container */
     }
+
+
 
     .right-side-nav {
         flex-direction: column;

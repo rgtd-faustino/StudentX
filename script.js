@@ -24,6 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
     function toggleMenu() {
         const menuContent = document.querySelector('.menu-content');
         menuContent.classList.toggle('active');
+        var hamburger = document.querySelector('.hamburger');
+        
+        // Toggle the 'open' class on the hamburger to animate the lines
+        hamburger.classList.toggle('open');
+    
+        // Toggle the visibility of the menu content (optional)
+        menuContent.classList.toggle('show');
+        
     }
 });
 
@@ -98,3 +106,4 @@ dotsMobile.forEach((dot, index) => {
 });
 
 updateCarouselMobile();
+
