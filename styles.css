@@ -766,7 +766,7 @@ nav {
         background-color: #108CEC;
         color: #FFF; /* White text */
         border: none; /* Remove default border */
-        padding: 2vh 8vw; /* Add some padding */
+        padding: 2vh 15vw; /* Add some padding */
         border-radius: 10px; /* Rounded corners */
         cursor: pointer; /* Pointer cursor on hover */
         font-family: 'Poppins', sans-serif; /* Font family */
@@ -846,7 +846,7 @@ nav {
     .opp-place-mobile {
         position: relative;
         margin-top:-5%;
-        margin-bottom: 5%;
+        margin-bottom: 1%;
     }
 
     .opp-place-mobile img {
