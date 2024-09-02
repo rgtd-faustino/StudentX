@@ -384,6 +384,7 @@ nav {
 }
 
 #titleP3Background {
+    pointer-events: none;
     position: absolute; /* Position it absolutely within the container */
     top: 0; /* Align to the top of the container */
     left: 0; /* Align to the left of the container */
@@ -410,6 +411,194 @@ nav {
 
 .highlightP3 {
     color: #FFF;
+}
+
+
+.carousel-container-mobile {
+    display: unset;
+    position: relative;
+    width: 70%; /* Adjust width as needed */
+    overflow: hidden;
+    margin: 20% auto 0 auto; /* Center the carousel horizontally */
+    
+}
+
+.carousel-mobile {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.item-group-mobile {
+    display: flex;
+    flex-direction: row;
+    width: 90%; /* Ensure it spans the full width of the container */
+    margin-top: 5%;
+}
+
+.item-container-mobile {
+    flex: 0 0 100%;
+    display: none; /* Hide all items by default */
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative; /* Make the container relative for absolute positioning of arrows */
+}
+
+
+.item-container-mobile.active {
+    display: flex; /* Show only the active item */
+}
+
+.item-container-mobile img {
+    width: 90%; /* Image should take up the full width */
+    height: auto; /* Adjust height automatically */
+    border-radius: 10px;
+    margin-bottom: 5%;
+    margin-top: 0%;
+
+}
+
+.button-carousel-mobile {
+    all: unset; /* Reset all inherited properties */
+    background-color: #108CEC;
+    color: #FFF; /* White text */
+    border: none; /* Remove default border */
+    padding: 1vh 18vw; /* Add some padding */
+    border-radius: 10px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-family: 'Poppins', sans-serif; /* Font family */
+    font-size: 5vw; /* Font size */
+    text-decoration: none; /* Remove underline */
+    white-space: nowrap;
+    display: flex; /* Display as a flex container */
+    justify-content: center; /* Center the buttons horizontally */
+}
+
+.button-carousel-mobile:hover {
+    background-color: #0056b3;
+}
+
+/* New container for arrows and dots */
+.arrows-and-dots {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3vh;
+    
+}
+
+/* Adjust existing styles */
+#prev-mobile, #next-mobile {
+    position: relative;
+    margin-top:-135%;
+    color: unset;
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor on hover */
+    background: none; /* Remove background */
+
+}
+
+#prev-mobile {
+    left: 1%; /* Position to the left, slightly outside the carousel */
+    
+}
+
+#next-mobile {
+    right: 1%; /* Position to the right, slightly outside the carousel */
+    transform: rotate(180deg); /* Rotate the image horizontally */
+}
+
+#prev-mobile img, #next-mobile img {
+    width: 5vw;
+    height: auto;
+    color: unset;
+    border: none; /* Remove default border */
+    
+}
+
+
+#prev-mobile:hover img, #next-mobile:hover img {
+    filter: brightness(0) saturate(100%) invert(29%) sepia(92%) saturate(748%) hue-rotate(186deg) brightness(150%) contrast(101%);
+    
+}
+
+.description-mobile{
+
+    margin-top:-3vh;
+}
+
+.description-subtitle-mobile {
+    margin-top: -2vh;
+}
+
+.description-title-mobile, .opp-place-title-mobile {
+    font-weight: bold;
+    font-size: 5vw;
+}
+
+.description-subtitle-mobile, .opp-place-subtitle-mobile {
+    font-size: 4vw;
+    color: grey;
+}
+    
+.opp-place-mobile {
+    position: relative;
+    margin-top: 0vh;
+}
+
+.opp-place-container {
+    display: flex;
+    align-items: center;
+    margin-left: -35vw;
+
+}
+
+.opp-place-container img {
+    width: 15vw;
+    height: auto;
+
+}
+
+.opp-place-texts {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5vw;
+
+}
+
+.opp-place-title-mobile {
+    margin-top: 1vh;
+    margin-bottom: 0vh;
+}
+    
+.opp-place-subtitle-mobile {
+    margin-top: 0vh;
+}
+
+.description-mobile, .opp-place-mobile {
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+.indicators-mobile {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1; /* Allow the dots to take up remaining space */
+}
+
+.dot-mobile {
+    height: 2vw;
+    width: 2vw;
+    margin: 0 1vw;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-mobile.active {
+    background-color: #007bff;
 }
 
 
