@@ -5,7 +5,6 @@ body {
     font-size: 22px;
     padding: 0;
     font-weight:normal;
-    margin-bottom:5%;
 }
 
 
@@ -599,6 +598,82 @@ nav {
 
 .dot-mobile.active {
     background-color: #007bff;
+}
+
+
+.footer {
+    width: 100%;
+    background-color: #F6F7F9;
+    position: relative;
+    z-index: 2;
+    padding: 2vh 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.footer-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Align items to the bottom of the footer */
+    padding: 0 2.5vw; /* Add padding to align with the social media container */
+}
+
+.copyright-text {
+    color: #515978;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 400;
+
+}
+
+.backButton {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration-line: underline;
+    color: black;
+}
+
+.social-media-container {
+    display: flex;
+    align-items: center;
+    gap: 10%;
+    margin-top: 0vh;
+    margin-left: 26vw;
+}
+
+/* Social media links */
+.social-media-container a {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    text-decoration: none;
+    color: inherit;
+}
+
+.social-media-icon {
+    width: 40px;
+    height: auto;
+    background-color: black;
+}
+
+.social-media-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #000;
+}
+
+.profile-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    color: rgba(2, 2, 4, 0.50);
+    text-align: center;
+    line-height: 120%;
 }
 
 
