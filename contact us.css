@@ -153,7 +153,7 @@ nav {
 .hamburger-line1,
 .hamburger-line2,
 .hamburger-line3 {
-    display: block;
+    display: none;
     width: 10vw;
     height: 0.5vh;
     margin: 1vh auto;
@@ -419,6 +419,12 @@ nav {
         font-size: 18px; /* Slightly smaller font size for better readability on small screens */
 
         
+    }
+
+    .hamburger-line1,
+    .hamburger-line2,
+    .hamburger-line3 {
+        display: block;
     }
 
     .backButton{
