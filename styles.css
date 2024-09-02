@@ -5,6 +5,7 @@ body {
     font-size: 22px;
     padding: 0;
     font-weight:normal;
+    margin-bottom:5%;
 }
 
 
@@ -298,6 +299,16 @@ nav {
     cursor: pointer;
 }
 
+.carousel-line{
+    width: 75vw;
+    height: 0.3vh;
+    margin: 1vh auto;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(173, 173, 173);
+    margin-top:-2%;
+    margin-bottom:3%;
+}
+
 .hamburger-line1,
 .hamburger-line2,
 .hamburger-line3 {
@@ -362,7 +373,7 @@ nav {
 }
 
 #titleP3 {
-    font-size: 3vw; /* Reduce font size */
+    font-size: 2.5vw; /* Reduce font size */
     line-height: 1.1; /* Adjust line height */
     margin-top: 5%; /* Increase top margin to create space */
     text-align: center; /* Center text on small screens */
@@ -401,100 +412,6 @@ nav {
     color: #FFF;
 }
 
-.carousel-container-mobile{
-    display:none;
-}
-
-.carousel-container {
-    position: relative;
-    width: 800px;
-    overflow: hidden;
-    margin-top: 80%;
-    margin-left: 40%;
-}
-
-.carousel {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.item-group {
-    display: flex;
-    flex-direction: row;
-    min-width: 800px;
-    padding: 20px;
-    border-radius: 10px;
-    box-sizing: border-box;
-    white-space: nowrap;
-}
-
-.item-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 20px;
-}
-
-.item-container img {
-    width: 150px;
-    height: 150px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.item-container button {
-    background-color: #108CEC; /* Blue background */
-    color: #FFF; /* White text */
-    border: none; /* Remove default border */
-    padding: 10px 20px; /* Add some padding */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-family: 'Poppins', sans-serif; /* Font family */
-    font-size: 16px; /* Font size */
-}
-
-.button-carousel {
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.controls {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-}
-
-#prev, #next {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.dot {
-    height: 10px;
-    width: 10px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.dot.active {
-    background-color: #007bff;
-}
 
 @media (max-width: 768px) {
     .hamburger-line1,
@@ -502,7 +419,7 @@ nav {
     .hamburger-line3 {
         display: block;
     }
-    
+
     body{
         margin: 0;
         padding: 0;
@@ -797,10 +714,6 @@ nav {
         margin-top: 8px; /* Slight gap between button and dropdown */
     }
 
-    
-    .carousel-container {
-        display:none;
-    }
 
     .carousel-container-mobile {
         display: unset;
@@ -910,6 +823,57 @@ nav {
     #prev-mobile:hover img, #next-mobile:hover img {
         filter: brightness(0) saturate(100%) invert(29%) sepia(92%) saturate(748%) hue-rotate(186deg) brightness(150%) contrast(101%);
         
+    }
+    
+    .description-subtitle-mobile{
+        margin-top:-5%;
+    }
+
+    .description-mobile, .opp-place-mobile{
+        margin-top:-7%;
+    }
+
+    .description-title-mobile, .opp-place-title-mobile {
+        font-weight: bold;
+        font-size: 5vw;
+    }
+
+    .description-subtitle-mobile, .opp-place-subtitle-mobile {
+        font-size: 4vw;
+        color: grey;
+    }
+
+    .opp-place-mobile {
+        position: relative;
+        margin-top:-5%;
+        margin-bottom: 5%;
+    }
+
+    .opp-place-mobile img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: -130%;
+        margin-top: 25%;
+        width: 80%;
+        height: auto;
+        z-index: 1;
+    }
+
+    .opp-place-title-mobile, .opp-place-subtitle-mobile {
+        position: relative;
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.7); /* Optional: Add background to make text more readable */
+        margin-left:-30%;
+    }
+
+    .description-title-mobile, .opp-place-title-mobile, 
+    .description-subtitle-mobile, .opp-place-subtitle-mobile {
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+
+    .opp-place-title-mobile{
+        margin-bottom: -20%;
     }
     
     .indicators-mobile {

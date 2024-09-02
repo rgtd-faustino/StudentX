@@ -35,38 +35,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-let currentIndex = 0;
-
-const carousel = document.querySelector('.carousel');
-const dots = document.querySelectorAll('.dot');
-
-document.getElementById('next').addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % 3;
-    updateCarousel();
-});
-
-document.getElementById('prev').addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + 3) % 3;
-    updateCarousel();
-});
-
-function updateCarousel() {
-    carousel.style.transform = `translateX(-${currentIndex * 800}px)`;
-    dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-    });
-}
-
-dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-        currentIndex = index;
-        updateCarousel();
-    });
-});
-
-updateCarousel();
-
-
 
 
 let currentIndexMobile = 0;
