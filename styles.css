@@ -934,6 +934,10 @@ nav {
         align-items: center;
         box-sizing: border-box;
         position: relative; /* Make the container relative for absolute positioning of arrows */
+        border: 0.5vw solid rgba(52, 52, 52, 0.25);
+        border-radius: 5vh;
+        padding-top:3vh;
+        padding-bottom:3vh;
     }
     
     
