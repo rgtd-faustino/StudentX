@@ -824,58 +824,65 @@ nav {
         filter: brightness(0) saturate(100%) invert(29%) sepia(92%) saturate(748%) hue-rotate(186deg) brightness(150%) contrast(101%);
         
     }
+
+    .description-mobile{
+
+        margin-top:-3vh;
+    }
+
+    .description-subtitle-mobile {
+        margin-top: -2vh;
+    }
     
-    .description-subtitle-mobile{
-        margin-top:-5%;
-    }
-
-    .description-mobile, .opp-place-mobile{
-        margin-top:-7%;
-    }
-
     .description-title-mobile, .opp-place-title-mobile {
         font-weight: bold;
         font-size: 5vw;
     }
-
+    
     .description-subtitle-mobile, .opp-place-subtitle-mobile {
         font-size: 4vw;
         color: grey;
     }
-
+        
     .opp-place-mobile {
         position: relative;
-        margin-top:-5%;
-        margin-bottom: 1%;
+        margin-top: 0vh;
     }
 
-    .opp-place-mobile img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin-left: -25vw;
-        margin-top: 25%;
+    .opp-place-container {
+        display: flex;
+        align-items: center;
+        margin-left: -35vw;
+
+    }
+    
+    .opp-place-container img {
         width: 15vw;
         height: auto;
-        z-index: 1;
+
+    }
+    
+    .opp-place-texts {
+        display: flex;
+        flex-direction: column;
+        margin-left: 5vw;
+
+    }
+    
+    .opp-place-title-mobile {
+        margin-top: 1vh;
+        margin-bottom: 0vh;
+    }
+        
+    .opp-place-subtitle-mobile {
+        margin-top: 0vh;
     }
 
-    .opp-place-title-mobile, .opp-place-subtitle-mobile {
-        position: relative;
-        z-index: 2;
-        background: rgba(255, 255, 255, 0.7); /* Optional: Add background to make text more readable */
-        margin-left:-30%;
-    }
-
-    .description-title-mobile, .opp-place-title-mobile, 
-    .description-subtitle-mobile, .opp-place-subtitle-mobile {
+    .description-mobile, .opp-place-mobile {
         white-space: nowrap; /* Prevent text from wrapping */
     }
 
-    .opp-place-title-mobile{
-        margin-bottom: -20%;
-    }
-    
+
     .indicators-mobile {
         display: flex;
         justify-content: center;
