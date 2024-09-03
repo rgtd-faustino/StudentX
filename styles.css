@@ -1080,7 +1080,7 @@ nav {
     }
 
     #prev-mobile img, #next-mobile img {
-        width: 5vw;
+        width:11vw;
         height: auto;
         color: unset;
         border: none; /* Remove default border */
@@ -1090,7 +1090,7 @@ nav {
     
     #prev-mobile:hover img, #next-mobile:hover img {
         filter: brightness(0) saturate(100%) invert(29%) sepia(92%) saturate(748%) hue-rotate(186deg) brightness(150%) contrast(101%);
-        
+        filter: unset;
     }
 
     .description-mobile{
@@ -1169,5 +1169,12 @@ nav {
     .dot-mobile.active {
         background-color: #007bff;
     }
+
+
+    
+.footer {
+    display: none;
+}
+
 
 }
