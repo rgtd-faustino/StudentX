@@ -1076,7 +1076,7 @@ nav {
     
     #next-mobile {
         right: 1%; /* Position to the right, slightly outside the carousel */
-        transform: rotate(180deg); /* Rotate the image horizontally */
+        transform: unset;
     }
 
     #prev-mobile img, #next-mobile img {

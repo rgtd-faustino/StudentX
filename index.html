@@ -247,42 +247,37 @@
             <button id="prev-mobile">
                 <img id="prev-mobile-img" src="leftarrow.png" alt="Previous">
             </button>
-            
+        
             <script>
                 document.getElementById('prev-mobile').addEventListener('click', function() {
                     var img = document.getElementById('prev-mobile-img');
-                    img.src = 'leftarrowclicked.png';
-                    img.classList.add('mirrored');
+                    img.src = 'leftarrowclicked-mirrored.png'; // Use the mirrored image
                     setTimeout(function() {
-                        img.src = 'leftarrow.png';
-                        img.classList.remove('mirrored');
-                    }, 300); // 500 milliseconds = 0.5 seconds
+                        img.src = 'leftarrow.png'; // Revert back to the original image
+                    }, 300); // 300 milliseconds = 0.3 seconds
                 });
             </script>
-            
+        
             <div class="indicators-mobile">
                 <span class="dot-mobile"></span>
                 <span class="dot-mobile"></span>
                 <span class="dot-mobile"></span>
                 <span class="dot-mobile"></span>
             </div>
-                <button id="next-mobile">
-                    <img id="next-mobile-img" src="leftarrow.png" alt="Previous">
-                </button>   
-
-                <script>
-                    document.getElementById('next-mobile').addEventListener('click', function() {
-                        var img = document.getElementById('next-mobile-img');
-                        img.src = 'leftarrowclicked.png';
-                        img.classList.add('mirrored');
-                        setTimeout(function() {
-                            img.src = 'leftarrow.png';
-                            img.classList.remove('mirrored');
-                        }, 300); // 500 milliseconds = 0.5 seconds
-                    });
-                </script>
-
-            </div>
+            
+            <button id="next-mobile">
+                <img id="next-mobile-img" src="rightarrow.png" alt="Next">
+            </button>
+        
+            <script>
+                document.getElementById('next-mobile').addEventListener('click', function() {
+                    var img = document.getElementById('next-mobile-img');
+                    img.src = 'rightarrowclicked-mirrored.png'; // Use the mirrored image
+                    setTimeout(function() {
+                        img.src = 'rightarrow.png'; // Revert back to the original image
+                    }, 300); // 300 milliseconds = 0.3 seconds
+                });
+            </script>
         </div>
 
 
@@ -313,11 +308,6 @@
 
     </footer>
 
-    <style>
-        .mirrored {
-            transform: scaleX(-1);
-        }
-    </style>
 
 
 
