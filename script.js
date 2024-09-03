@@ -82,8 +82,10 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     let currentIndexDesktop = 0;
     const itemsToShow = 4; // Number of items to move at a time
     const carouselDesktop = document.querySelector('.item-group-mobile');
-    const totalItemsDesktop = document.querySelectorAll('.item-container-mobile').length;
-    const itemWidthPercentage = 46.7 / itemsToShow;
+    const itemContainersDesktop = document.querySelectorAll('.item-container-mobile');
+    const totalItemsDesktop = itemContainersDesktop.length;
+    const itemWidthPercentage = 0;
+    const dots = document.querySelectorAll('.dot-pc'); // Select dot elements
 
     document.getElementById('next-mobile').addEventListener('click', () => {
         // Move right: Increase index by itemsToShow
@@ -98,8 +100,27 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     });
 
     function updateCarouselDesktop() {
+        // Hide all items first
+        itemContainersDesktop.forEach((item, index) => {
+            item.style.display = 'none';
+        });
+
+        // Show only the current set of items
+        for (let i = 0; i < itemsToShow; i++) {
+            const itemIndex = (currentIndexDesktop + i) % totalItemsDesktop;
+            itemContainersDesktop[itemIndex].style.display = 'block';
+        }
+
         const offset = -currentIndexDesktop * itemWidthPercentage; /* Calculate the offset in percentage */
         carouselDesktop.style.transform = `translateX(${offset}%)`; /* Move the item group */
+
+        // Update dots
+        dots.forEach((dot, index) => {
+            dot.classList.remove('active');
+        });
+        
+        const activeDotIndex = Math.floor(currentIndexDesktop / itemsToShow);
+        dots[activeDotIndex].classList.add('active');
     }
 
     updateCarouselDesktop(); // Initialize the carousel position
