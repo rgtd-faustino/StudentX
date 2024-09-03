@@ -37,41 +37,70 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-let currentIndexMobile = 0;
+// Mobile-specific code
+if (window.matchMedia("(max-width: 768px)").matches) {
+    let currentIndexMobile = 0;
 
-const carouselMobile = document.querySelector('.carousel-mobile');
-const dotsMobile = document.querySelectorAll('.dot-mobile');
-const totalItems = document.querySelectorAll('.item-container-mobile').length;
+    const carouselMobile = document.querySelector('.carousel-mobile');
+    const dotsMobile = document.querySelectorAll('.dot-mobile');
+    const totalItemsMobile = document.querySelectorAll('.item-container-mobile').length;
 
-document.getElementById('next-mobile').addEventListener('click', () => {
-    currentIndexMobile = (currentIndexMobile + 1) % totalItems;
-    updateCarouselMobile();
-});
-
-document.getElementById('prev-mobile').addEventListener('click', () => {
-    currentIndexMobile = (currentIndexMobile - 1 + totalItems) % totalItems;
-    updateCarouselMobile();
-});
-
-function updateCarouselMobile() {
-    const items = document.querySelectorAll('.item-container-mobile');
-    
-    items.forEach((item, index) => {
-        item.classList.toggle('active', index === currentIndexMobile);
-    });
-
-    dotsMobile.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndexMobile);
-    });
-}
-
-
-dotsMobile.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-        currentIndexMobile = index;
+    document.getElementById('next-mobile').addEventListener('click', () => {
+        currentIndexMobile = (currentIndexMobile + 1) % totalItemsMobile;
         updateCarouselMobile();
     });
-});
 
-updateCarouselMobile();
+    document.getElementById('prev-mobile').addEventListener('click', () => {
+        currentIndexMobile = (currentIndexMobile - 1 + totalItemsMobile) % totalItemsMobile;
+        updateCarouselMobile();
+    });
 
+    function updateCarouselMobile() {
+        const items = document.querySelectorAll('.item-container-mobile');
+        
+        items.forEach((item, index) => {
+            item.classList.toggle('active', index === currentIndexMobile);
+        });
+
+        dotsMobile.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndexMobile);
+        });
+    }
+
+    dotsMobile.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentIndexMobile = index;
+            updateCarouselMobile();
+        });
+    });
+
+    updateCarouselMobile();
+}
+
+// Desktop-specific code
+if (window.matchMedia("(min-width: 769px)").matches) {
+    let currentIndexDesktop = 0;
+    const itemsToShow = 4; // Number of items to move at a time
+    const carouselDesktop = document.querySelector('.item-group-mobile');
+    const totalItemsDesktop = document.querySelectorAll('.item-container-mobile').length;
+    const itemWidthPercentage = 46.7 / itemsToShow;
+
+    document.getElementById('next-mobile').addEventListener('click', () => {
+        // Move right: Increase index by itemsToShow
+        currentIndexDesktop = (currentIndexDesktop + itemsToShow) % totalItemsDesktop;
+        updateCarouselDesktop();
+    });
+
+    document.getElementById('prev-mobile').addEventListener('click', () => {
+        // Move left: Decrease index by itemsToShow
+        currentIndexDesktop = (currentIndexDesktop - itemsToShow + totalItemsDesktop) % totalItemsDesktop;
+        updateCarouselDesktop();
+    });
+
+    function updateCarouselDesktop() {
+        const offset = -currentIndexDesktop * itemWidthPercentage; /* Calculate the offset in percentage */
+        carouselDesktop.style.transform = `translateX(${offset}%)`; /* Move the item group */
+    }
+
+    updateCarouselDesktop(); // Initialize the carousel position
+}

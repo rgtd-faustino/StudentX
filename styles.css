@@ -298,15 +298,6 @@ nav {
     cursor: pointer;
 }
 
-.carousel-line{
-    width: 75vw;
-    height: 0.3vh;
-    margin: 1vh auto;
-    transition: all 0.3s ease-in-out;
-    background-color: rgb(173, 173, 173);
-    margin-top:-2%;
-    margin-bottom:3%;
-}
 
 .hamburger-line1,
 .hamburger-line2,
@@ -413,50 +404,69 @@ nav {
 }
 
 
+
+
 .carousel-container-mobile {
-    display: unset;
-    position: relative;
-    width: 70%; /* Adjust width as needed */
-    overflow: hidden;
-    margin: 20% auto 0 auto; /* Center the carousel horizontally */
-    
+    width: 100%; /* Full width of the container */
+    overflow: hidden; /* Hide any overflow to keep it neat */
+    margin-top:1%;
 }
 
 .carousel-mobile {
     display: flex;
-    transition: transform 0.5s ease-in-out;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    flex-direction: row;
+    width: 100%;
+    justify-content: center; /* Center the items within the group */
+}
+
+.item-group-mobile img{
+    width: 95%;
+    margin-left: 2.5%;
+    margin-top: 1.9%;
 }
 
 .item-group-mobile {
     display: flex;
-    flex-direction: row;
-    width: 90%; /* Ensure it spans the full width of the container */
-    margin-top: 5%;
+    flex-wrap: nowrap;
+    transition: transform 0.3s ease-in-out; /* Smooth transition when changing the transform property */
+    margin-left:112%;
 }
+
 
 .item-container-mobile {
-    flex: 0 0 100%;
-    display: none; /* Hide all items by default */
-    flex-direction: column;
-    align-items: center;
+    flex: 0 0 0%; /* Each item takes up 25% of the container width */
     box-sizing: border-box;
-    position: relative; /* Make the container relative for absolute positioning of arrows */
+    padding: 1vw; /* Optional: space between items */
+    margin: 0.5%; /* Add margin to create space between items */
+    border: 0.1vw solid rgba(52, 52, 52, 0.25);
+    border-radius: 1vw;
+}
+
+.description-mobile {
+    text-align: center; /* Center text within each item */
 }
 
 
-.item-container-mobile.active {
-    display: flex; /* Show only the active item */
-}
 
-.item-container-mobile img {
-    width: 90%; /* Image should take up the full width */
-    height: auto; /* Adjust height automatically */
-    border-radius: 10px;
-    margin-bottom: 5%;
-    margin-top: 0%;
 
+
+
+
+
+
+
+
+
+
+
+.carousel-line{
+    width: 98%;
+    height: 0.2vh;
+    margin: 1vh auto;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(173, 173, 173);
+    margin-top:-2%;
+    margin-bottom:3%;
 }
 
 .button-carousel-mobile {
@@ -464,11 +474,11 @@ nav {
     background-color: #108CEC;
     color: #FFF; /* White text */
     border: none; /* Remove default border */
-    padding: 1vh 18vw; /* Add some padding */
+    padding: 1vh 1vw; /* Add some padding */
     border-radius: 10px; /* Rounded corners */
     cursor: pointer; /* Pointer cursor on hover */
     font-family: 'Poppins', sans-serif; /* Font family */
-    font-size: 5vw; /* Font size */
+    font-size: 1vw; /* Font size */
     text-decoration: none; /* Remove underline */
     white-space: nowrap;
     display: flex; /* Display as a flex container */
@@ -491,7 +501,7 @@ nav {
 /* Adjust existing styles */
 #prev-mobile, #next-mobile {
     position: relative;
-    margin-top:-135%;
+    margin-top:unset;
     color: unset;
     border: none; /* Remove default border */
     cursor: pointer; /* Pointer cursor on hover */
@@ -506,11 +516,11 @@ nav {
 
 #next-mobile {
     right: 1%; /* Position to the right, slightly outside the carousel */
-    transform: rotate(180deg); /* Rotate the image horizontally */
+    transform: unset;
 }
 
 #prev-mobile img, #next-mobile img {
-    width: 5vw;
+    width:unset;
     height: auto;
     color: unset;
     border: none; /* Remove default border */
@@ -520,7 +530,7 @@ nav {
 
 #prev-mobile:hover img, #next-mobile:hover img {
     filter: brightness(0) saturate(100%) invert(29%) sepia(92%) saturate(748%) hue-rotate(186deg) brightness(150%) contrast(101%);
-    
+    filter: unset;
 }
 
 .description-mobile{
@@ -528,17 +538,28 @@ nav {
     margin-top:-3vh;
 }
 
-.description-subtitle-mobile {
-    margin-top: -2vh;
-}
 
-.description-title-mobile, .opp-place-title-mobile {
+
+
+.description-title-mobile  {
     font-weight: bold;
-    font-size: 5vw;
+    font-size: 1.5vw;
 }
 
-.description-subtitle-mobile, .opp-place-subtitle-mobile {
-    font-size: 4vw;
+.opp-place-title-mobile{
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+.description-subtitle-mobile  {
+    font-size: 0.9vw;
+    color: grey;
+    margin-top: -2.3vh;
+
+}
+
+.opp-place-subtitle-mobile{
+    font-size: 0.8vw;
     color: grey;
 }
     
@@ -550,12 +571,13 @@ nav {
 .opp-place-container {
     display: flex;
     align-items: center;
-    margin-left: -35vw;
-
+    margin-left: 0vw;
+    margin-top:0vw;
+    margin-bottom: 0.5vw;
 }
 
 .opp-place-container img {
-    width: 15vw;
+    width: 3.3vw;
     height: auto;
 
 }
@@ -563,8 +585,8 @@ nav {
 .opp-place-texts {
     display: flex;
     flex-direction: column;
-    margin-left: 5vw;
-
+    margin-left: 0.8vw;
+    margin-top:0.8vh;
 }
 
 .opp-place-title-mobile {
@@ -585,12 +607,13 @@ nav {
     display: flex;
     justify-content: center;
     flex-grow: 1; /* Allow the dots to take up remaining space */
+    margin-top: -4%;
 }
 
 .dot-mobile {
-    height: 2vw;
-    width: 2vw;
-    margin: 0 1vw;
+    height: 0.5vw;
+    width: 0.5vw;
+    margin: 0 0.4vw;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
@@ -599,6 +622,26 @@ nav {
 .dot-mobile.active {
     background-color: #007bff;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .footer {
@@ -628,15 +671,6 @@ nav {
 
 }
 
-.backButton {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1vw;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
-    text-decoration-line: underline;
-    color: black;
-}
 
 .social-media-container {
     display: flex;
@@ -683,6 +717,13 @@ nav {
     .hamburger-line3 {
         display: block;
     }
+
+
+
+
+
+
+
 
     body{
         margin: 0;
@@ -994,15 +1035,30 @@ nav {
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
     }
+
+    .carousel-line{
+        width: 90%;
+        height: 0.2vh;
+        margin: 1vh auto;
+        transition: all 0.3s ease-in-out;
+        background-color: rgb(173, 173, 173);
+        margin-top:-2%;
+        margin-bottom:3%;
+    }
     
     .item-group-mobile {
         display: flex;
         flex-direction: row;
         width: 90%; /* Ensure it spans the full width of the container */
         margin-top: 5%;
+
+        flex-wrap: unset;
+        margin-left:unset;
     }
     
     .item-container-mobile {
+        padding: unset;
+        margin: unset;
         flex: 0 0 100%;
         display: none; /* Hide all items by default */
         flex-direction: column;
@@ -1013,6 +1069,13 @@ nav {
         border-radius: 5vh;
         padding-top:3vh;
         padding-bottom:3vh;
+
+    }
+
+    
+    .item-group-mobile img{
+        width: unset;
+        margin-left: unset;
     }
     
     
@@ -1102,22 +1165,36 @@ nav {
         margin-top: -2vh;
     }
     
-    .description-title-mobile, .opp-place-title-mobile {
+    .description-title-mobile {
+
         font-weight: bold;
         font-size: 5vw;
     }
+
+    .opp-place-title-mobile{
+        font-weight: bold;
+        font-size: 4.5vw;
+    }
+
+    .opp-place-subtitle-mobile{
+        font-size: 3.5vw;
+        color: grey;
+    }
     
-    .description-subtitle-mobile, .opp-place-subtitle-mobile {
+    .description-subtitle-mobile  {
+
         font-size: 4vw;
         color: grey;
     }
         
     .opp-place-mobile {
+
         position: relative;
         margin-top: 0vh;
     }
 
     .opp-place-container {
+
         display: flex;
         align-items: center;
         margin-left: -35vw;
@@ -1125,28 +1202,34 @@ nav {
     }
     
     .opp-place-container img {
+
         width: 15vw;
         height: auto;
 
     }
     
     .opp-place-texts {
+
         display: flex;
         flex-direction: column;
         margin-left: 5vw;
+        margin-top:-0.7vh;
 
     }
     
     .opp-place-title-mobile {
+
         margin-top: 1vh;
         margin-bottom: 0vh;
     }
         
     .opp-place-subtitle-mobile {
+
         margin-top: 0vh;
     }
 
     .description-mobile, .opp-place-mobile {
+
         white-space: nowrap; /* Prevent text from wrapping */
     }
 
@@ -1155,9 +1238,11 @@ nav {
         display: flex;
         justify-content: center;
         flex-grow: 1; /* Allow the dots to take up remaining space */
+        margin-top:unset;
     }
     
     .dot-mobile {
+
         height: 2vw;
         width: 2vw;
         margin: 0 1vw;
