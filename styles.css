@@ -412,10 +412,23 @@ nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 .carousel-container-mobile {
-    width: 100%; /* Full width of the container */
+    width: 80%; /* 80% width of the container */
+    margin: 0 10%; /* 10% margin to the right and left */
     overflow: hidden; /* Hide overflowing items */
-    margin-top: 1%;
+    margin-top: 2%;
     margin-bottom: 2%;
 }
 
@@ -426,7 +439,7 @@ nav {
     justify-content: flex-start; /* Start the items from the beginning */
 }
 
-.item-group-mobile img{
+.item-group-mobile img {
     width: 100%;
 }
 
@@ -434,23 +447,22 @@ nav {
     display: flex;
     flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
     transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
-    width: 100%; /* 12 items * 25% width each = 300% total width */
+    width: 100%;
 }
 
-
 .item-container-mobile {
-    flex: 0 0 25%; /* Each item takes up 25% of the container, so 4 items are visible */
+    flex: 0 0 20%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
     box-sizing: border-box;
-    padding: 1vw; /* Optional: space between items */
+    padding: 1vw; /* Optional: space inside each item */
     border: 0.1vw solid rgba(52, 52, 52, 0.25);
     border-radius: 1vw;
     transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
+    margin-right: 4%; /* Space between items */
 }
 
 .description-mobile {
     text-align: center; /* Center text within each item */
 }
-
 
 
 
@@ -509,16 +521,16 @@ nav {
     border: none; /* Remove default border */
     cursor: pointer; /* Pointer cursor on hover */
     background: none; /* Remove background */
-    margin-top:-68vw;
+    margin-top:-67vw;
 }
 
 #prev-mobile {
-    margin-left: 83vw; /* Position to the left, slightly outside the carousel */
+    margin-left: 73.5vw; /* Position to the left, slightly outside the carousel */
     
 }
 
 #next-mobile {
-    margin-left: 86.5vw; /* Position to the right, slightly outside the carousel */
+    margin-left: 76.5vw; /* Position to the right, slightly outside the carousel */
     transform: unset;
 }
 
@@ -610,7 +622,10 @@ nav {
     display: flex;
     justify-content: center;
     flex-grow: 1; /* Allow the dots to take up remaining space */
-    margin-top: 0vw;
+    margin-top: 2vw;
+    margin-left:-0.5vw;
+    margin-right: 0;
+    
 }
 
 .dot-pc {
@@ -1026,6 +1041,76 @@ nav {
         margin-top: 8px; /* Slight gap between button and dropdown */
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .carousel-container-mobile {
+        width: 100%; /* Full width of the container */
+        overflow: hidden; /* Hide any overflow to keep it neat */
+        margin-top:1%;
+        margin-bottom:2%;
+    }
+    
+    .carousel-mobile {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center; /* Center the items within the group */
+        margin-left:-2vw;
+    }
+    
+    .item-group-mobile img{
+        width: 100%;
+    }
+    
+    .item-group-mobile {
+        display: flex;
+        flex-wrap: nowrap;
+        transition: transform 0.3s ease-in-out; /* Smooth transition when changing the transform property */
+    
+    }
+    
+    
+    .item-container-mobile {
+        flex: 0 0 0;
+        box-sizing: border-box;
+        padding: 1vw; /* Optional: space between items */
+        margin: 2%;
+        border: 0.1vw solid rgba(52, 52, 52, 0.25);
+        border-radius: 1vw;
+        transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
+    
+    }
+    
+    .description-mobile {
+        text-align: center; /* Center text within each item */
+    }
+    
+    
 
     .carousel-container-mobile {
         display: unset;
