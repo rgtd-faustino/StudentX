@@ -28,13 +28,17 @@ h1 {
 }
 
 #image2 {
-    height: 73%;
+
+    max-width: 50vw; /* Limit max width to viewport width */
+    height: auto; /* Maintain aspect ratio */
     position: absolute;
-    top: 50%; /* Adjust this value to position vertically */
-    left: 23%;
-    z-index: 2; /* Ensure it's on top */
-    pointer-events: none;
+    margin-top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the image horizontally and vertically */
+    z-index: 2;
+    pointer-events: none; /* Prevent the image from interfering with other elements */
 }
+
 
 #videoP2{
     margin-top: 2%;
@@ -257,7 +261,8 @@ nav {
     display: flex; /* Display as a flex container */
     justify-content: center; /* Center the buttons horizontally */
     gap: 7%; /* Space between the buttons */
-    margin-top: 5%; /* Increase this value to move the buttons further down */
+    margin-top: 10%; /* Increase this value to move the buttons further down */
+    margin-bottom: -7%;
 }
 
 .start-button button{
@@ -326,7 +331,7 @@ nav {
     color: rgba(0, 0, 24, 0.50);
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 30px;
+    font-size: 100%;
     font-style: normal;
     font-weight: 400;
     line-height: 50px; 
@@ -409,43 +414,37 @@ nav {
 
 .carousel-container-mobile {
     width: 100%; /* Full width of the container */
-    overflow: hidden; /* Hide any overflow to keep it neat */
-    margin-top:1%;
-    margin-bottom:2%;
-
+    overflow: hidden; /* Hide overflowing items */
+    margin-top: 1%;
+    margin-bottom: 2%;
 }
 
 .carousel-mobile {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: center; /* Center the items within the group */
-    margin-left:-1.5%;
+    justify-content: flex-start; /* Start the items from the beginning */
 }
 
 .item-group-mobile img{
-    width: 95%;
-    margin-left: 2.5%;
-    margin-top: 1.9%;
+    width: 100%;
 }
 
 .item-group-mobile {
     display: flex;
-    flex-wrap: nowrap;
-    transition: transform 0.3s ease-in-out; /* Smooth transition when changing the transform property */
-
+    flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
+    transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
+    width: 100%; /* 12 items * 25% width each = 300% total width */
 }
 
 
 .item-container-mobile {
-    flex: 0 0 0; /* Each item takes up 25% of the container width */
+    flex: 0 0 25%; /* Each item takes up 25% of the container, so 4 items are visible */
     box-sizing: border-box;
     padding: 1vw; /* Optional: space between items */
-    margin: 2%; /* Add margin to create space between items */
     border: 0.1vw solid rgba(52, 52, 52, 0.25);
     border-radius: 1vw;
     transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
-
 }
 
 .description-mobile {
@@ -514,17 +513,17 @@ nav {
 }
 
 #prev-mobile {
-    left: 83.5%; /* Position to the left, slightly outside the carousel */
+    margin-left: 83vw; /* Position to the left, slightly outside the carousel */
     
 }
 
 #next-mobile {
-    right: 10%; /* Position to the right, slightly outside the carousel */
+    margin-left: 86.5vw; /* Position to the right, slightly outside the carousel */
     transform: unset;
 }
 
 #prev-mobile img, #next-mobile img {
-    width:unset;
+    width:2.5vw;
     height: auto;
     color: unset;
     border: none; /* Remove default border */
@@ -755,15 +754,18 @@ nav {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1; /* Ensure it is below image2 */
+        z-index: 1;
     }
 
+
     #image2 {
+        max-width: unset;
         position: relative;
-        margin-top: 13%; /* Center vertically */
+        top: 0%; /* Center vertically */
+        margin-bottom: -50%;
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%);
-        width: 90%; /* Set the width to 80% of its container */
+        width: 100%; /* Set the width to 80% of its container */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -878,7 +880,7 @@ nav {
         margin-left: 0%;
         pointer-events: none;
         z-index: 2; /* Higher z-index to be on top */
-
+        margin-bottom:-9%;
         width:20%;
 
     }
@@ -905,12 +907,12 @@ nav {
     #slogan {
         opacity: 1;
         /*box-shadow: 0 4px 8px 0 rgba(16, 140, 236, 0.2), 0 6px 20px 0 rgba(16, 140, 236, 0.19);*/
-
+        z-index: 321312312312312;
     }
 
     .slogan-container {
         position: relative;
-        margin-top: 40%; /* Center vertically */
+        margin-top: 60%; /* Center vertically */
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%);
         width: 80%; /* Set the width to 80% of its container */
@@ -924,14 +926,14 @@ nav {
         display: flex;
         justify-content: center; /* Center the buttons horizontally */
         align-items: center; /* Center the buttons vertically */
-        gap: 10px; /* Adjust gap between buttons as needed */
+        gap: 10vw; /* Adjust gap between buttons as needed */
         margin-top: 25%; /* Adjust margin as needed */
-
+        margin-bottom: 0;
     }
     
     .slogan-buttons button {
-        padding: 1.5vh 8vw; /* Adjust padding to make buttons smaller */
-        font-size: 5vw; /* Adjust font size to make text smaller */
+        padding: 0.8vw 4vw; /* Adjust padding to make buttons smaller */
+        font-size: 4vw; /* Adjust font size to make text smaller */
         width: auto; /* Adjust width as needed */
         height: auto; /* Adjust height as needed */
         border-radius: 20px; /* Optional: Adjust border radius */
@@ -1131,7 +1133,7 @@ nav {
     /* Adjust existing styles */
     #prev-mobile, #next-mobile {
         position: relative;
-        margin-top:-135%;
+        margin-top:0%;
         color: unset;
         border: none; /* Remove default border */
         cursor: pointer; /* Pointer cursor on hover */
@@ -1140,11 +1142,13 @@ nav {
     }
     
     #prev-mobile {
+        margin: unset;
         left: 1%; /* Position to the left, slightly outside the carousel */
         
     }
     
     #next-mobile {
+        margin: unset;
         right: 1%; /* Position to the right, slightly outside the carousel */
         transform: unset;
     }

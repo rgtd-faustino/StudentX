@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Selectors
     var languageSelector = document.querySelector(".dropdown-content");
     var currentLanguageButton = document.querySelector(".current-language");
     var hamburger = document.querySelector(".hamburger");
@@ -24,104 +25,36 @@ document.addEventListener("DOMContentLoaded", function() {
     function toggleMenu() {
         const menuContent = document.querySelector('.menu-content');
         menuContent.classList.toggle('active');
-        var hamburger = document.querySelector('.hamburger');
-        
-        // Toggle the 'open' class on the hamburger to animate the lines
-        hamburger.classList.toggle('open');
-    
-        // Toggle the visibility of the menu content (optional)
-        menuContent.classList.toggle('show');
-        
+        hamburger.classList.toggle('open'); // Toggle the 'open' class to animate lines
+        menuContent.classList.toggle('show'); // Toggle the visibility of the menu content (optional)
     }
+
+    // Close the navigation menu if clicked outside
+    document.addEventListener("click", function(event) {
+        const menuContent = document.querySelector('.menu-content');
+        if (!menuContent.contains(event.target) && !hamburger.contains(event.target)) {
+            menuContent.classList.remove('active');
+            hamburger.classList.remove('open');
+            menuContent.classList.remove('show');
+        }
+    });
+
+    let currentIndex = 0;
+    const itemsPerView = 4;
+    const totalItems = 12;
+
+    document.getElementById('next-mobile').addEventListener('click', () => {
+        if (currentIndex < totalItems - itemsPerView) {
+            currentIndex += itemsPerView;
+            document.querySelector('.item-group-mobile').style.transform = `translateX(-${(100 / itemsPerView) * currentIndex}%)`;
+        }
+    });
+
+    document.getElementById('prev-mobile').addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex -= itemsPerView;
+            document.querySelector('.item-group-mobile').style.transform = `translateX(-${(100 / itemsPerView) * currentIndex}%)`;
+        }
+    });
 });
 
-
-
-// Mobile-specific code
-if (window.matchMedia("(max-width: 768px)").matches) {
-    let currentIndexMobile = 0;
-
-    const carouselMobile = document.querySelector('.carousel-mobile');
-    const dotsMobile = document.querySelectorAll('.dot-mobile');
-    const totalItemsMobile = document.querySelectorAll('.item-container-mobile').length;
-
-    document.getElementById('next-mobile').addEventListener('click', () => {
-        currentIndexMobile = (currentIndexMobile + 1) % totalItemsMobile;
-        updateCarouselMobile();
-    });
-
-    document.getElementById('prev-mobile').addEventListener('click', () => {
-        currentIndexMobile = (currentIndexMobile - 1 + totalItemsMobile) % totalItemsMobile;
-        updateCarouselMobile();
-    });
-
-    function updateCarouselMobile() {
-        const items = document.querySelectorAll('.item-container-mobile');
-        
-        items.forEach((item, index) => {
-            item.classList.toggle('active', index === currentIndexMobile);
-        });
-
-        dotsMobile.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndexMobile);
-        });
-    }
-
-    dotsMobile.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            currentIndexMobile = index;
-            updateCarouselMobile();
-        });
-    });
-
-    updateCarouselMobile();
-}
-
-// Desktop-specific code
-if (window.matchMedia("(min-width: 769px)").matches) {
-    let currentIndexDesktop = 0;
-    const itemsToShow = 4; // Number of items to move at a time
-    const carouselDesktop = document.querySelector('.item-group-mobile');
-    const itemContainersDesktop = document.querySelectorAll('.item-container-mobile');
-    const totalItemsDesktop = itemContainersDesktop.length;
-    const itemWidthPercentage = 0;
-    const dots = document.querySelectorAll('.dot-pc'); // Select dot elements
-
-    document.getElementById('next-mobile').addEventListener('click', () => {
-        // Move right: Increase index by itemsToShow
-        currentIndexDesktop = (currentIndexDesktop + itemsToShow) % totalItemsDesktop;
-        updateCarouselDesktop();
-    });
-
-    document.getElementById('prev-mobile').addEventListener('click', () => {
-        // Move left: Decrease index by itemsToShow
-        currentIndexDesktop = (currentIndexDesktop - itemsToShow + totalItemsDesktop) % totalItemsDesktop;
-        updateCarouselDesktop();
-    });
-
-    function updateCarouselDesktop() {
-        // Hide all items first
-        itemContainersDesktop.forEach((item, index) => {
-            item.style.display = 'none';
-        });
-
-        // Show only the current set of items
-        for (let i = 0; i < itemsToShow; i++) {
-            const itemIndex = (currentIndexDesktop + i) % totalItemsDesktop;
-            itemContainersDesktop[itemIndex].style.display = 'block';
-        }
-
-        const offset = -currentIndexDesktop * itemWidthPercentage; /* Calculate the offset in percentage */
-        carouselDesktop.style.transform = `translateX(${offset}%)`; /* Move the item group */
-
-        // Update dots
-        dots.forEach((dot, index) => {
-            dot.classList.remove('active');
-        });
-        
-        const activeDotIndex = Math.floor(currentIndexDesktop / itemsToShow);
-        dots[activeDotIndex].classList.add('active');
-    }
-
-    updateCarouselDesktop(); // Initialize the carousel position
-}
