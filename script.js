@@ -42,19 +42,52 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentIndex = 0;
     const itemsPerView = 4;
     const totalItems = 12;
-
+    const itemWidth = 20; // Width of each item container in percentage
+    const itemGap = 5.9; // Gap between items in percentage
+    
+    const itemGroup = document.querySelector('.item-group-mobile');
+    const dots = document.querySelectorAll('.dot-pc');
+    
+    // Calculate total width including gaps
+    const totalWidth = (itemWidth + itemGap) * totalItems - itemGap; // Subtract the last gap
+    
+    function updateTransform() {
+        itemGroup.style.transform = `translateX(-${(itemWidth + itemGap) * currentIndex}%)`;
+        updateDots();
+    }
+    
+    function updateDots() {
+        dots.forEach((dot, index) => {
+            if (index === Math.floor(currentIndex / itemsPerView)) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    // Initial call to set the correct active dot
+    updateDots();
+    
     document.getElementById('next-mobile').addEventListener('click', () => {
-        if (currentIndex < totalItems - itemsPerView) {
+        if (currentIndex >= totalItems - itemsPerView) {
+            // Reset to the beginning
+            currentIndex = 0;
+        } else {
             currentIndex += itemsPerView;
-            document.querySelector('.item-group-mobile').style.transform = `translateX(-${(100 / itemsPerView) * currentIndex}%)`;
         }
+        updateTransform();
     });
-
+    
     document.getElementById('prev-mobile').addEventListener('click', () => {
-        if (currentIndex > 0) {
+        if (currentIndex <= 0) {
+            // Move to the end
+            currentIndex = totalItems - itemsPerView;
+        } else {
             currentIndex -= itemsPerView;
-            document.querySelector('.item-group-mobile').style.transform = `translateX(-${(100 / itemsPerView) * currentIndex}%)`;
         }
+        updateTransform();
     });
+    
 });
 
