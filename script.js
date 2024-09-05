@@ -39,20 +39,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    let currentIndex = 0;
-    const itemsPerView = 4;
-    const totalItems = 12;
-    const itemWidth = 21; // Width of each item container in percentage
-    const itemGap = 4; // Gap between items in percentage
     
     const itemGroup = document.querySelector('.item-group-mobile');
     const dots = document.querySelectorAll('.dot-pc');
-    
-    // Calculate total width including gaps
-    const totalWidth = (itemWidth + 4*itemGap) * totalItems - 4*itemGap; // Subtract the last gap
+    let currentIndex = 0;
+    const itemsPerView = 4;
+    const totalItems = 12;
+    let currentTransformClass = 0;
+    const totalTransforms = 3; // Total number of transform classes defined in CSS
     
     function updateTransform() {
-        itemGroup.style.transform = `translateX(-${(itemWidth + itemGap) * currentIndex}%)`;
+        // Remove the previous transform class
+        itemGroup.classList.remove(`transform-${currentTransformClass}`);
+       
+        // Apply the new transform class
+        itemGroup.classList.add(`transform-${currentTransformClass}`);
         updateDots();
     }
     
@@ -73,8 +74,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (currentIndex >= totalItems - itemsPerView) {
             // Reset to the beginning
             currentIndex = 0;
+            currentTransformClass = 0;
         } else {
             currentIndex += itemsPerView;
+            currentTransformClass = (currentTransformClass + 1) % totalTransforms;
         }
         updateTransform();
     });
@@ -83,11 +86,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (currentIndex <= 0) {
             // Move to the end
             currentIndex = totalItems - itemsPerView;
+            currentTransformClass = totalTransforms - 1;
         } else {
             currentIndex -= itemsPerView;
+            currentTransformClass = (currentTransformClass - 1 + totalTransforms) % totalTransforms;
         }
         updateTransform();
     });
-    
 });
 

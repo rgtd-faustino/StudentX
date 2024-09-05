@@ -421,13 +421,21 @@ nav {
 
 
 
+.transform-0 {
+    transform: translateX(0);
+}
 
+.transform-1 {
+    transform: translateX(-100%);
+}
+
+.transform-2 {
+    transform: translateX(-200%);
+}
 
 
 .carousel-container-mobile {
-    width: 80%; /* 80% width of the container */
-    margin: 0 10%; /* 10% margin to the right and left */
-    overflow: hidden; /* Hide overflowing items */
+    width: 100%;
     margin-top: 2%;
     margin-bottom: 2%;
     z-index: 3;
@@ -436,51 +444,56 @@ nav {
 .carousel-mobile {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 90%; /* Ensure it takes the full width of its container */
     justify-content: flex-start; /* Start the items from the beginning */
     z-index: 3;
+    margin: 0 auto; /* Center the element horizontally */
+    overflow: hidden; /* Hide overflow to create a carousel effect */
+}
+
+.item-group-mobile {
+    width: 100%; /* Ensure it takes the full width of its container */
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping, so all items are in a row */
+    transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
+    z-index: 3;
+    gap: 5%;
 
 }
+
+.item-container-mobile {
+    flex: 0 0 20%;
+    box-sizing: border-box;
+    padding: 0.7%; /* Optional: space inside each item */
+    border: 0.1vw solid rgba(52, 52, 52, 0.25);
+    border-radius: 1vw;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
+}
+
+.item-container-mobile:first-child {
+    margin-left: 2.5%; /* Apply margin-left to the first item */
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .item-group-mobile img {
     width: 100%;
 }
 
-.item-group-mobile {
-    display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
-    transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
-    width: 100%;
-    z-index: 3;
-
-}
-
-.item-container-mobile {
-    flex: 0 0 21%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
-    box-sizing: border-box;
-    padding: 0.7vw; /* Optional: space inside each item */
-    border: 0.1vw solid rgba(52, 52, 52, 0.25);
-    border-radius: 1vw;
-    transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
-    margin-right: 4%; /* Space between items */
-}
-
-
-
-
-
-
-
-
-
-
-
 .description-mobile {
     text-align: center; /* Center text within each item */
 }
-
-
 
 .carousel-line{
     width: 98%;
@@ -533,12 +546,12 @@ nav {
 }
 
 #prev-mobile {
-    margin-left: 70.5vw; /* Position to the left, slightly outside the carousel */
+    margin-left: 85vw; /* Position to the left, slightly outside the carousel */
     
 }
 
 #next-mobile {
-    margin-left: 74vw; /* Position to the right, slightly outside the carousel */
+    margin-left: 88vw; /* Position to the right, slightly outside the carousel */
     transform: unset;
 }
 
@@ -637,8 +650,8 @@ nav {
 }
 
 .dot-pc {
-    height: 0.8vw;
-    width: 0.8vw;
+    height: 0.7vw;
+    width: 0.7vw;
     margin: 0 0.3vw;
     background-color: #FFF;
     border: 0.1vw solid rgba(52, 52, 52, 0.5); /* Added 1 pixel border */
@@ -786,42 +799,6 @@ nav {
         pointer-events: none; /* Prevent the image from interfering with other elements */
     }
 
-    .carousel-container-mobile {
-        width: 80%; /* 80% width of the container */
-        margin: 0 10%; /* 10% margin to the right and left */
-        overflow: hidden; /* Hide overflowing items */
-        margin-top: 2%;
-        margin-bottom: 2%;
-        z-index: 3;
-    }
-    
-    .carousel-mobile {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        justify-content: flex-start; /* Start the items from the beginning */
-        z-index: 3;
-    
-    }
-    
-    .item-group-mobile {
-        display: flex;
-        flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
-        transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
-        width: 100%;
-        z-index: 3;
-    
-    }
-    
-    .item-container-mobile {
-        flex: 0 0 21%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
-        box-sizing: border-box;
-        padding: 0.7vw; /* Optional: space inside each item */
-        border: 0.1vw solid rgba(52, 52, 52, 0.25);
-        border-radius: 1vw;
-        transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
-        margin-right: 4%; /* Space between items */
-    }
     
     
 
@@ -894,42 +871,6 @@ nav {
         pointer-events: none; /* Prevent the image from interfering with other elements */
     }
 
-    .carousel-container-mobile {
-        width: 80%; /* 80% width of the container */
-        margin: 0 10%; /* 10% margin to the right and left */
-        overflow: hidden; /* Hide overflowing items */
-        margin-top: 2%;
-        margin-bottom: 2%;
-        z-index: 3;
-    }
-    
-    .carousel-mobile {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        justify-content: flex-start; /* Start the items from the beginning */
-        z-index: 3;
-    
-    }
-    
-    .item-group-mobile {
-        display: flex;
-        flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
-        transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
-        width: 100%;
-        z-index: 3;
-    
-    }
-    
-    .item-container-mobile {
-        flex: 0 0 21%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
-        box-sizing: border-box;
-        padding: 0.7vw; /* Optional: space inside each item */
-        border: 0.1vw solid rgba(52, 52, 52, 0.25);
-        border-radius: 1vw;
-        transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
-        margin-right: 4%; /* Space between items */
-    }
     
     
 
@@ -1040,43 +981,6 @@ nav {
         z-index: 2; /* Ensure it's on top */
     }
 
-    .carousel-container-mobile {
-        width: 80%; /* 80% width of the container */
-        margin: 0 10%; /* 10% margin to the right and left */
-        overflow: hidden; /* Hide overflowing items */
-        margin-top: 2%;
-        margin-bottom: 2%;
-        z-index: 3;
-    }
-    
-    .carousel-mobile {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        justify-content: flex-start; /* Start the items from the beginning */
-        z-index: 3;
-    
-    }
-    
-    .item-group-mobile {
-        display: flex;
-        flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
-        transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
-        width: 100%;
-        z-index: 3;
-    
-    }
-    
-    .item-container-mobile {
-        flex: 0 0 21%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
-        box-sizing: border-box;
-        padding: 0.7vw; /* Optional: space inside each item */
-        border: 0.1vw solid rgba(52, 52, 52, 0.25);
-        border-radius: 1vw;
-        transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
-        margin-right: 4%; /* Space between items */
-    }
-    
     
     
 
@@ -1425,43 +1329,6 @@ nav {
         margin-top: 8px; /* Slight gap between button and dropdown */
     }
 
-
-    .carousel-container-mobile {
-        width: 80%; /* 80% width of the container */
-        margin: 0 10%; /* 10% margin to the right and left */
-        overflow: hidden; /* Hide overflowing items */
-        margin-top: 2%;
-        margin-bottom: 2%;
-        z-index: 3;
-    }
-    
-    .carousel-mobile {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        justify-content: flex-start; /* Start the items from the beginning */
-        z-index: 3;
-    
-    }
-    
-    .item-group-mobile {
-        display: flex;
-        flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
-        transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
-        width: 100%;
-        z-index: 3;
-    
-    }
-    
-    .item-container-mobile {
-        flex: 0 0 21%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
-        box-sizing: border-box;
-        padding: 0.7vw; /* Optional: space inside each item */
-        border: 0.1vw solid rgba(52, 52, 52, 0.25);
-        border-radius: 1vw;
-        transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
-        margin-right: 4%; /* Space between items */
-    }
     
     
 
