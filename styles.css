@@ -629,13 +629,13 @@ nav {
 }
 
 .dot-pc {
-    height: 0.5vw;
-    width: 0.5vw;
-    margin: 0 0.4vw;
-    background-color: #bbb;
+    height: 1vw;
+    width: 1vw;
+    margin: 0 0.3vw;
+    background-color: #FFF;
+    border: 0.1vw solid rgba(52, 52, 52, 0.5); /* Added 1 pixel border */
     border-radius: 50%;
     display: inline-block;
-
 }
 
 .dot-pc.active {
