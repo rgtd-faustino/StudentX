@@ -277,10 +277,10 @@ nav {
 
 .start-button button, .watch-button button {
     font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
-    padding: 12px 25px; /* Padding inside the button */
+    padding: 0.8vw 1.5vw; /* Padding inside the button */
     border: none; /* Remove default border */
     border-radius: 25px; /* Rounded corners */
-    font-size: 25px; /* Font size */
+    font-size: 1.3vw; /* Font size */
     font-weight: 600; /* Bold text */
     cursor: pointer; /* Pointer cursor on hover */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
@@ -430,6 +430,7 @@ nav {
     overflow: hidden; /* Hide overflowing items */
     margin-top: 2%;
     margin-bottom: 2%;
+    z-index: 10;
 }
 
 .carousel-mobile {
@@ -521,7 +522,7 @@ nav {
     border: none; /* Remove default border */
     cursor: pointer; /* Pointer cursor on hover */
     background: none; /* Remove background */
-    margin-top:-67vw;
+    margin-top:-68vw;
 }
 
 #prev-mobile {
@@ -640,6 +641,7 @@ nav {
 
 .dot-pc.active {
     background-color: #007bff;
+    border-color:#007bff;
 }
 
 
@@ -709,7 +711,7 @@ nav {
 }
 
 .social-media-icon {
-    width: 40px;
+    width: 2vw;
     height: auto;
     background-color: black;
 }
@@ -729,8 +731,128 @@ nav {
     line-height: 120%;
 }
 
+/* 1920x1080 */
+@media (max-width: 1920px) and (min-width: 1081px) {
+    
+}
 
-@media (max-width: 768px) {
+/* 1366x768 */
+@media (max-width: 1366px) and (min-width: 769px) {
+    nav{
+        font-size: 80%;
+    }
+
+    .right-side-nav {
+        display: flex;
+        align-items: center;
+        gap: 35px; /* Adjust gap between elements in the right-side nav */
+        position: relative; /* Set position to relative to contain the dropdown within this area */
+    }
+
+    /* Style the Contact Us button */
+    .contact-button {
+        padding: 0.3vw 2vw;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 400;
+        font-size: 22px;
+    }
+    
+    .start-button button, .watch-button button {
+        font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
+        padding: 0.8vw 1.5vw; /* Padding inside the button */
+        border: none; /* Remove default border */
+        border-radius: 25px; /* Rounded corners */
+        font-size: 1.5vw; /* Font size */
+        font-weight: 600; /* Bold text */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+        white-space: nowrap;
+    }
+
+    #image2 {
+
+        max-width: 60vw; /* Limit max width to viewport width */
+        height: auto; /* Maintain aspect ratio */
+        position: absolute;
+        margin-top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the image horizontally and vertically */
+        z-index: 2;
+        pointer-events: none; /* Prevent the image from interfering with other elements */
+    }
+
+    .carousel-container-mobile {
+        width: 80%; /* 80% width of the container */
+        margin: 0 10%; /* 10% margin to the right and left */
+        overflow: hidden; /* Hide overflowing items */
+        margin-top: 2%;
+        margin-bottom: 2%;
+        z-index: 10;
+    }
+    
+    .carousel-mobile {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-start; /* Start the items from the beginning */
+    }
+    
+    .item-group-mobile {
+        display: flex;
+        flex-wrap: nowrap; /* Prevent wrapping, so all 12 items are in a row */
+        transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
+        width: 100%;
+    }
+    
+    .item-container-mobile {
+        flex: 0 0 20%; /* Each item takes up 24% of the container, adjusted to accommodate the gap */
+        box-sizing: border-box;
+        padding: 1vw; /* Optional: space inside each item */
+        border: 0.1vw solid rgba(52, 52, 52, 0.25);
+        border-radius: 1vw;
+        transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
+        margin-right: 3.96%; /* Space between items */
+    }
+
+
+    
+
+    .social-media-container {
+        display: flex;
+        align-items: center;
+        gap: 10%;
+        margin-top: 0vh;
+        margin-left: 20vw;
+    }
+
+    .social-media-icon {
+        width: 3vw;
+        height: auto;
+        background-color: black;
+    }
+
+    
+}
+
+/* 1440x900 */
+@media (max-width: 1440px) and (min-width: 901px) {
+    /* Add your styles here */
+}
+
+/* 1280x720 */
+@media (max-width: 1280px) and (min-width: 721px) {
+    /* Add your styles here */
+}
+
+/* 1280x1024 */
+@media (max-width: 1280px) and (min-width: 1025px) {
+    /* Add your styles here */
+}
+
+@media (max-width: 480px) {
     .hamburger-line1,
     .hamburger-line2,
     .hamburger-line3 {
