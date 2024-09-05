@@ -42,14 +42,14 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentIndex = 0;
     const itemsPerView = 4;
     const totalItems = 12;
-    const itemWidth = 20; // Width of each item container in percentage
-    const itemGap = 5.9; // Gap between items in percentage
+    const itemWidth = 21; // Width of each item container in percentage
+    const itemGap = 4; // Gap between items in percentage
     
     const itemGroup = document.querySelector('.item-group-mobile');
     const dots = document.querySelectorAll('.dot-pc');
     
     // Calculate total width including gaps
-    const totalWidth = (itemWidth + itemGap) * totalItems - itemGap; // Subtract the last gap
+    const totalWidth = (itemWidth + 4*itemGap) * totalItems - 4*itemGap; // Subtract the last gap
     
     function updateTransform() {
         itemGroup.style.transform = `translateX(-${(itemWidth + itemGap) * currentIndex}%)`;
