@@ -331,15 +331,15 @@ nav {
     color: rgba(0, 0, 24, 0.50);
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 100%;
+    font-size: 1.4vw;
     font-style: normal;
     font-weight: 400;
-    line-height: 50px; 
+    line-height: 2.2vw; 
 
     position: absolute;
     margin-top: 38%;
-    margin-left: 50%;
-    width: 40%;
+    margin-left: 48%;
+    width: 45%;
     height: auto;
     z-index: 2; /* Higher z-index to be on top */
 }
@@ -836,6 +836,8 @@ nav {
     }
 
     
+
+    
 }
 
 /* 1440x900 */
@@ -946,6 +948,23 @@ nav {
         z-index: 1; /* Lower z-index */
         margin-top:-10%;
     
+    }
+
+    .secondPText{
+        color: rgba(0, 0, 24, 0.50);
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.4vw;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 2.4vw; 
+    
+        position: absolute;
+        margin-top: 38%;
+        margin-left: 47%;
+        width: 46%;
+        height: auto;
+        z-index: 2; /* Higher z-index to be on top */
     }
 }
 
@@ -1075,7 +1094,14 @@ nav {
     }
 }
 
-@media (max-width: 480px) {
+/* For tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+
+  }
+
+
+  /* For mobile phones */
+@media (max-width: 600px) {
     .hamburger-line1,
     .hamburger-line2,
     .hamburger-line3 {
