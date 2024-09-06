@@ -421,18 +421,6 @@ nav {
 
 
 
-.transform-0 {
-    transform: translateX(0);
-}
-
-.transform-1 {
-    transform: translateX(-100%);
-}
-
-.transform-2 {
-    transform: translateX(-200%);
-}
-
 
 .carousel-container-mobile {
     width: 100%;
@@ -449,6 +437,7 @@ nav {
     z-index: 3;
     margin: 0 auto; /* Center the element horizontally */
     overflow: hidden; /* Hide overflow to create a carousel effect */
+    transform: translateY(0); /* Ensure it stays at the same vertical position */
 }
 
 .item-group-mobile {
@@ -458,7 +447,6 @@ nav {
     transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
     z-index: 3;
     gap: 5%;
-
 }
 
 .item-container-mobile {
@@ -474,7 +462,9 @@ nav {
     margin-left: 2.5%; /* Apply margin-left to the first item */
 }
 
-
+.item {
+    width: calc(100% / 4); /* Adjust based on the itemsPerView */
+}
 
 
 
@@ -540,7 +530,7 @@ nav {
     border: none; /* Remove default border */
     cursor: pointer; /* Pointer cursor on hover */
     background: none; /* Remove background */
-    margin-top:-68vw;
+    margin-top:-74vw;
     z-index: 3;
 
 }
@@ -1201,6 +1191,22 @@ nav {
     #logos{
         display:none;
     }
+    
+    #ArrowLanguageButton{
+        width:9%;
+        position:absolute;
+        margin-top:10.5%;
+    }
+
+    #ArrowStartButton{
+        width:10%;
+        margin-left:-5%;
+        margin-bottom: -1%;
+    }
+
+    #ArrowWatchButton{
+        width:20%;
+    }
 
     .secondPText{
         display: none;
@@ -1235,7 +1241,7 @@ nav {
     }
     
     .slogan-buttons button {
-        padding: 0.8vw 4vw; /* Adjust padding to make buttons smaller */
+        padding: 1vh 5vw; /* Adjust padding to make buttons smaller */
         font-size: 4vw; /* Adjust font size to make text smaller */
         width: auto; /* Adjust width as needed */
         height: auto; /* Adjust height as needed */
@@ -1243,7 +1249,7 @@ nav {
     }
 
     .start-button button{
-        padding: 2vh 5vw;
+        padding: 1vh 5vw;
     }
 
     nav {
@@ -1354,6 +1360,8 @@ nav {
         margin: 0 auto;
         overflow: hidden;
         z-index: 3;
+        transform: translateY(0); /* Ensure it stays at the same vertical position */
+
     }
     
     .item-group-mobile {
@@ -1406,7 +1414,7 @@ nav {
         background-color: #108CEC;
         color: #FFF;
         border: none;
-        padding: 2vw 4vw;
+        padding: 2vw 13vw;
         border-radius: 5vw;
         cursor: pointer;
         font-family: 'Poppins', sans-serif;
@@ -1509,11 +1517,15 @@ nav {
         white-space: nowrap; /* Prevent text from wrapping */
     }
 
+    .dot-pc{
+        display:none;
+    }
+
 
     .dot-mobile {
-        height: 0.8vw;
-        width: 0.8vw;
-        margin: 0 0.3vw;
+        height: 1vw;
+        width: 1vw;
+        margin: 0 1vw;
         background-color: #FFF;
         border: 0.1vw solid rgba(52, 52, 52, 0.5); /* Added 1 pixel border */
         border-radius: 50%;
@@ -1529,9 +1541,8 @@ nav {
         display: flex;
         justify-content: center;
         flex-grow: 1; /* Allow the dots to take up remaining space */
+        margin: 0 auto;
         margin-top: 5vw;
-        margin-left:-0.5vw;
-        margin-right: 0;
         
     }
 

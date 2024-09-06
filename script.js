@@ -39,59 +39,112 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    
+
+
     const itemGroup = document.querySelector('.item-group-mobile');
-    const dots = document.querySelectorAll('.dot-pc');
-    let currentIndex = 0;
-    const itemsPerView = 4;
-    const totalItems = 12;
-    let currentTransformClass = 0;
-    const totalTransforms = 3; // Total number of transform classes defined in CSS
+    const dotsPC = document.querySelectorAll('.dot-pc');
+    const dotsMobile = document.querySelectorAll('.dot-mobile');
+
+    let currentIndexMobile = 0;  // Current index for the mobile carousel
+    let currentIndexPC = 0;      // Current index for the PC carousel
+
+    const itemsPerViewPC = 4;    // Number of items per view for PC
+    const itemsPerViewMobile = 1; // Mobile only shows 1 item per view
+    const totalItems = 12;        // Total number of items
     
-    function updateTransform() {
-        // Remove the previous transform class
-        itemGroup.classList.remove(`transform-${currentTransformClass}`);
-       
-        // Apply the new transform class
-        itemGroup.classList.add(`transform-${currentTransformClass}`);
-        updateDots();
-    }
-    
-    function updateDots() {
-        dots.forEach((dot, index) => {
-            if (index === Math.floor(currentIndex / itemsPerView)) {
-                dot.classList.add('active');
+    if (window.innerWidth >= 600) {
+        function updateTransformPC() {
+            // Calculate the percentage translation based on currentIndex
+            const translatePercentage = -(currentIndexPC / totalItems) * 100 * (totalItems / itemsPerViewPC);
+            
+            // Apply the transform inline to the itemGroup element, ensuring no scaling is applied
+            itemGroup.style.transform = `translateX(${translatePercentage}%)`;
+            
+            updateDotsPC();
+        }
+        
+        function updateDotsPC() {
+            dotsPC.forEach((dot, index) => {
+                if (index === Math.floor(currentIndexPC / itemsPerViewPC)) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        // Initial call to set the correct active dot
+        updateTransformPC();
+        
+        document.getElementById('next-mobile').addEventListener('click', () => {
+            if (currentIndexPC >= totalItems - itemsPerViewPC) {
+                // Reset to the beginning
+                currentIndexPC = 0;
             } else {
-                dot.classList.remove('active');
+                currentIndexPC += itemsPerViewPC;
             }
+            updateTransformPC();
+        });
+        
+        document.getElementById('prev-mobile').addEventListener('click', () => {
+            if (currentIndexPC <= 0) {
+                // Move to the end
+                currentIndexPC = totalItems - itemsPerViewPC;
+            } else {
+                currentIndexPC -= itemsPerViewPC;
+            }
+            updateTransformPC();
+        });
+    }
+
+
+
+
+
+
+
+    if (window.innerWidth <= 600) {
+        function updateTransformMobile() {
+            // Calculate the percentage translation based on currentIndex
+            const translatePercentage = -(currentIndexMobile / totalItems) * 100 * (totalItems / itemsPerViewMobile);
+            
+            // Apply the transform inline to the itemGroup element, ensuring no scaling is applied
+            itemGroup.style.transform = `translateX(${translatePercentage}%)`;
+            
+            updateDotsMobile();
+        }
+        
+        function updateDotsMobile() {
+            dotsMobile.forEach((dot, index) => {
+                if (index === Math.floor(currentIndexMobile / itemsPerViewMobile)) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        // Initial call to set the correct active dot
+        updateTransformMobile();
+        
+        document.getElementById('next-mobile').addEventListener('click', () => {
+            if (currentIndexMobile >= totalItems - itemsPerViewMobile) {
+                // Reset to the beginning
+                currentIndexMobile = 0;
+            } else {
+                currentIndexMobile += itemsPerViewMobile;
+            }
+            updateTransformMobile();
+        });
+        
+        document.getElementById('prev-mobile').addEventListener('click', () => {
+            if (currentIndexMobile <= 0) {
+                // Move to the end
+                currentIndexMobile = totalItems - itemsPerViewMobile;
+            } else {
+                currentIndexMobile -= itemsPerViewMobile;
+            }
+            updateTransformMobile();
         });
     }
     
-    // Initial call to set the correct active dot
-    updateDots();
-    
-    document.getElementById('next-mobile').addEventListener('click', () => {
-        if (currentIndex >= totalItems - itemsPerView) {
-            // Reset to the beginning
-            currentIndex = 0;
-            currentTransformClass = 0;
-        } else {
-            currentIndex += itemsPerView;
-            currentTransformClass = (currentTransformClass + 1) % totalTransforms;
-        }
-        updateTransform();
-    });
-    
-    document.getElementById('prev-mobile').addEventListener('click', () => {
-        if (currentIndex <= 0) {
-            // Move to the end
-            currentIndex = totalItems - itemsPerView;
-            currentTransformClass = totalTransforms - 1;
-        } else {
-            currentIndex -= itemsPerView;
-            currentTransformClass = (currentTransformClass - 1 + totalTransforms) % totalTransforms;
-        }
-        updateTransform();
-    });
 });
 
