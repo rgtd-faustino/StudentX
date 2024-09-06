@@ -1,0 +1,148 @@
+{
+    "items": [
+      {
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      {
+        "imageSrc": "image3.png",
+        "altText": "Image 3 mobile",
+        "descriptionTitle": "Job Insights 3",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 3 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image4.png",
+        "altText": "Image 4 mobile",
+        "descriptionTitle": "Job Insights 4",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image4logo.png",
+        "logoAlt": "ImageLogo 4 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      ,
+      {
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Quarta Feira, 28 de Outubro às 14:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE FEUP",
+        "oppPlaceSubtitle": "Porto, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+      
+      
+    ]
+  }
+  

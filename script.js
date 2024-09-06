@@ -146,5 +146,123 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+
+    function addEvent(day, startTime, endTime, title) {
+        const calendar = document.getElementById('calendar');
+  
+        const eventElement = document.createElement('div');
+        eventElement.className = 'event';
+        eventElement.innerHTML = title;
+  
+        const startHour = parseInt(startTime.split(':')[0]);
+        const endHour = parseInt(endTime.split(':')[0]);
+  
+        eventElement.style.gridRowStart = startHour + 1;
+        eventElement.style.gridRowEnd = endHour + 1;
+  
+        const dayElement = calendar.querySelector(`[data-day="${day}"]`);
+        if (dayElement) {
+          dayElement.appendChild(eventElement);
+        }
+      }
+  
+      // Fetch events from the JSON file
+      fetch('events.json')
+        .then(response => response.json())
+        .then(events => {
+          events.forEach(event => {
+            addEvent(event.day, event.startTime, event.endTime, event.title);
+          });
+        })
+        .catch(error => console.error('Error loading events:', error));
+
+
+        
+    
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to create carousel items dynamically
+    function createCarouselItems(data) {
+      const container = document.getElementById('item-group-1-mobile');
+  
+      data.items.forEach(item => {
+        const itemContainer = document.createElement('div');
+        itemContainer.className = 'item-container-mobile';
+  
+        // Item Image
+        const img = document.createElement('img');
+        img.src = item.imageSrc;
+        img.alt = item.altText;
+        itemContainer.appendChild(img);
+  
+        // Description
+        const description = document.createElement('div');
+        description.className = 'description-mobile';
+  
+        const descriptionTitle = document.createElement('p');
+        descriptionTitle.className = 'description-title-mobile';
+        descriptionTitle.textContent = item.descriptionTitle;
+  
+        const descriptionSubtitle = document.createElement('p');
+        descriptionSubtitle.className = 'description-subtitle-mobile';
+        descriptionSubtitle.textContent = item.descriptionSubtitle;
+  
+        description.appendChild(descriptionTitle);
+        description.appendChild(descriptionSubtitle);
+        itemContainer.appendChild(description);
+  
+        // Carousel Line
+        const carouselLine = document.createElement('div');
+        carouselLine.className = 'carousel-line';
+        itemContainer.appendChild(carouselLine);
+  
+        // Opportunity Place
+        const oppPlace = document.createElement('div');
+        oppPlace.className = 'opp-place-mobile';
+  
+        const oppPlaceContainer = document.createElement('div');
+        oppPlaceContainer.className = 'opp-place-container';
+  
+        const logoImg = document.createElement('img');
+        logoImg.src = item.logoSrc;
+        logoImg.alt = item.logoAlt;
+  
+        const oppPlaceTexts = document.createElement('div');
+        oppPlaceTexts.className = 'opp-place-texts';
+  
+        const oppPlaceTitle = document.createElement('p');
+        oppPlaceTitle.className = 'opp-place-title-mobile';
+        oppPlaceTitle.textContent = item.oppPlaceTitle;
+  
+        const oppPlaceSubtitle = document.createElement('p');
+        oppPlaceSubtitle.className = 'opp-place-subtitle-mobile';
+        oppPlaceSubtitle.textContent = item.oppPlaceSubtitle;
+  
+        oppPlaceTexts.appendChild(oppPlaceTitle);
+        oppPlaceTexts.appendChild(oppPlaceSubtitle);
+        oppPlaceContainer.appendChild(logoImg);
+        oppPlaceContainer.appendChild(oppPlaceTexts);
+        oppPlace.appendChild(oppPlaceContainer);
+        itemContainer.appendChild(oppPlace);
+  
+        // More Info Button
+        const moreInfoBtn = document.createElement('a');
+        moreInfoBtn.href = item.moreInfoLink;
+        moreInfoBtn.className = 'button-carousel-mobile';
+        moreInfoBtn.textContent = 'Mais Informações';
+  
+        itemContainer.appendChild(moreInfoBtn);
+  
+        // Append item container to the carousel container
+        container.appendChild(itemContainer);
+      });
+    }
+  
+    // Fetch the JSON file and populate the carousel
+    fetch('carousel-data.json')
+      .then(response => response.json())
+      .then(data => createCarouselItems(data))
+      .catch(error => console.error('Error loading carousel data:', error));
+  });
+  
