@@ -1,6 +1,7 @@
 [
     { "day": 1, "startTime": "10:00", "endTime": "12:00", "title": "Workshop A" },
     { "day": 5, "startTime": "14:00", "endTime": "16:00", "title": "Workshop B" },
-    { "day": 7, "startTime": "09:00", "endTime": "11:00", "title": "Conference" }
+    { "day": 7, "startTime": "09:00", "endTime": "11:00", "title": "ConferenceA" },
+    { "day": 9, "startTime": "02:00", "endTime": "5:00", "title": "ConferenceB" }
   ]
   

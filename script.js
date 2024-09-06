@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
     function addEvent(day, startTime, endTime, title) {
-        const calendar = document.getElementById('calendar');
+        const calendar = document.getElementById('calendar-carousel');
   
         const eventElement = document.createElement('div');
         eventElement.className = 'event';
@@ -180,6 +180,11 @@ document.addEventListener("DOMContentLoaded", function() {
         
     
 });
+
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     // Function to create carousel items dynamically
@@ -266,3 +271,96 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => console.error('Error loading carousel data:', error));
   });
   
+
+
+
+
+
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth(); // Current month
+    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Days in month
+    const firstDay = new Date(year, month, 1).getDay(); // First day of the month (0 = Sunday)
+    const weeks = [];
+    const dayNames = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+  
+    let currentDay = 1;
+    
+    // Create weeks
+    while (currentDay <= daysInMonth) {
+      const week = [];
+      
+      for (let i = 0; i < 7; i++) {
+        if (currentDay > daysInMonth) break;
+        week.push(currentDay++);
+      }
+      
+      weeks.push(week);
+    }
+    
+    const carouselWeek = document.getElementById('carousel-week');
+    let currentWeekIndex = 0;
+    let events = [];
+
+    
+    // Fetch events from the JSON file
+    fetch('events.json')
+    .then(response => response.json())
+    .then(data => {
+    events = data;
+    renderWeek(); // Initial rendering of the first week after loading events
+    })
+    .catch(error => console.error('Error loading events:', error));
+
+    // Function to render the current week
+    function renderWeek() {
+        carouselWeek.innerHTML = ''; // Clear the current content
+        const week = weeks[currentWeekIndex];
+        const weekDiv = document.createElement('div');
+        weekDiv.classList.add('week');
+        
+        week.forEach(day => {
+        const dayDiv = document.createElement('div');
+        dayDiv.classList.add('day');
+        dayDiv.textContent = `${dayNames[(firstDay + day - 1) % 7]} ${day}`;
+        
+        // Filter events for the current day
+        const dayEvents = events.filter(event => event.day === day);
+        
+        // Add event details to the day div
+        dayEvents.forEach(event => {
+            const eventDiv = document.createElement('div');
+            eventDiv.classList.add('event');
+            eventDiv.innerHTML = `
+            <div class="event-title">${event.title}</div>
+            <div class="event-time">${event.startTime} - ${event.endTime}</div>
+            `;
+            dayDiv.appendChild(eventDiv);
+        });
+    
+        weekDiv.appendChild(dayDiv);
+        });
+    
+        carouselWeek.appendChild(weekDiv);
+    }
+    
+    // Navigation controls
+    document.getElementById('prevWeek').addEventListener('click', () => {
+        if (currentWeekIndex > 0) {
+        currentWeekIndex--;
+        renderWeek();
+        }
+    });
+    
+    document.getElementById('nextWeek').addEventListener('click', () => {
+        if (currentWeekIndex < weeks.length - 1) {
+        currentWeekIndex++;
+        renderWeek();
+        }
+    });
+});
