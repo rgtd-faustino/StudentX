@@ -1,7 +1,174 @@
-[
-    { "day": 1, "startTime": "10:00", "endTime": "12:00", "title": "Workshop A" },
-    { "day": 5, "startTime": "14:00", "endTime": "16:00", "title": "Workshop B" },
-    { "day": 7, "startTime": "09:00", "endTime": "11:00", "title": "ConferenceA" },
-    { "day": 9, "startTime": "02:00", "endTime": "5:00", "title": "ConferenceB" }
-  ]
+{
+    "items": [
+      {
+        "day": 1,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "0:00",
+        "endTime": "1:00"
+      },      {
+        "day": 1,
+        "imageSrc": "image2.png",
+        "altText": "Image 2 mobile",
+        "descriptionTitle": "Job Insights 2",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image2logo.png",
+        "logoAlt": "ImageLogo 2 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "15:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": 1,
+        "imageSrc": "image3.png",
+        "altText": "Image 3 mobile",
+        "descriptionTitle": "Job Insights 3",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image4logo.png",
+        "logoAlt": "ImageLogo 4 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "16:00",
+        "endTime": "21:00"
+      },
+      {
+        "day": 2,
+        "imageSrc": "image4.png",
+        "altText": "Image 4 mobile",
+        "descriptionTitle": "Job Insights 4",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image4logo.png",
+        "logoAlt": "ImageLogo 4 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": 2,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "5:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": 6,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "13:00",
+        "endTime": "14:00"
+      },
+      {
+        "day": 7,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": 8,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": 9,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": 10,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": 11,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": 12,
+        "imageSrc": "image1.png",
+        "altText": "Image 1 mobile",
+        "descriptionTitle": "Job Insights 1",
+        "descriptionSubtitle": "Terça Feira, 27 de Outubro às 13:00",
+        "logoSrc": "image1logo.png",
+        "logoAlt": "ImageLogo 1 mobile",
+        "oppPlaceTitle": "AE IST",
+        "oppPlaceSubtitle": "Lisboa, PT",
+        "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+      
+      
+    ]
+  }
   

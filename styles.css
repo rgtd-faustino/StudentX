@@ -438,7 +438,7 @@ nav {
 .carousel-container-mobile {
     width: 100%;
     margin-top: 2%;
-    margin-bottom: 2%;
+    margin-bottom: 5vw;
     z-index: 3;
 }
 
@@ -680,71 +680,54 @@ nav {
 
 
 
-.day {
-    grid-row: 1; /* Position day labels in the first row */
+
+
+
+
+
+
+.calendar-container {
+    width: 90%; /* Adjusted width */
+    margin: 0 auto;
+    margin-bottom: 20vw;
+    
+}
+
+.calendar-container {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin: 20px 0;
+}
+.week-row {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ddd;
-    background-color: #f1f1f1; /* Slight background for day labels */
-    font-weight: bold;
+    grid-gap: 2%;
 }
 
-.hour-label {
-    grid-column: 1 / span 7; /* Span across all day columns */
-    grid-row: auto; /* Place hour labels in the appropriate row */
+.empty-day {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+.day-names .day-name {
+    font-weight: bold;  
+    background-color: #ddd;
+    padding: 10px;
+}
+
+.calendar-week-buttons{
+    
     display: flex;
-    border: 1px solid #ddd;
-    font-size: 0.8vw; /* Font size */
-
+    gap: 1vw;
+    margin-top: 2vw;
 }
 
-.event {
-    grid-column: auto; /* Place event in the appropriate day */
-    grid-row: auto; /* Place event in the appropriate hour */
-    background-color: rgba(0, 123, 255, 0.5); /* Semi-transparent background for events */
-    border: 1px solid #007bff; /* Border color for events */
-    border-radius: 4px; /* Rounded corners for events */
-    padding: 0.5vw; /* Padding inside the event box */
-    margin: 0.2vw; /* Margin around the event box */
-}
-
-.calendar-carousel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    font-size: 0.8vw; /* Font size */
-
-  }
-  
-.carousel-week {
-  display: flex;
-  overflow: hidden;
-  width: 80%;
-  justify-content: center;
-}
-
-.week {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  width: 100%;
-}
-
-.day {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-}
-
-.hidden {
-  display: none;
-}
-
-.calendar-carousel button{
-    background-color: #108CEC;
-    color: #FFF; /* White text */
+.day-button {
+    display: flex; /* Display as a flex container */
     border: none; /* Remove default border */
     padding: 1vh 1vw; /* Add some padding */
     border-radius: 0.7vw; /* Rounded corners */
@@ -753,23 +736,46 @@ nav {
     font-size: 1vw; /* Font size */
     text-decoration: none; /* Remove underline */
     white-space: nowrap;
-    display: flex; /* Display as a flex container */
+    width: 8vw; /* Fixed width for all buttons */
     justify-content: center; /* Center the buttons horizontally */
+
+    height: 120%; /* Height of the button */
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    background: rgba(102, 102, 102, 0.05);
 }
 
-#prevWeek {
-    margin-left: 2%; /* Adjust the value as needed */
+.day-button.selected {
+    background-color: #108CEC;
+    color: white;
 }
 
-#nextWeek {
-    margin-right: 2%; /* Adjust the value as needed */
+#prevWeek, #nextWeek{
+    all:unset;
+    width: unset;
+    cursor: pointer;
+    user-select: none;
 
 }
 
-.calendar-carousel button:hover {
-    background-color: #0056b3;
+#weekRange{
+    width: 13vw; /* Adjust the width as needed */
+    display: inline-block; /* Ensures the width is respected */
+    text-align: center; /* Optional: Center the text */
+    white-space: nowrap;
 }
 
+.opportunityTitle{
+    all:unset;
+    font-size: 2.5vw;
+    margin-left:5vw;
+    position:relative;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+}
 
 
 
