@@ -154,10 +154,9 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener('DOMContentLoaded', function() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = now.getMonth(); // This returns a zero-based index (0 = January)
+    const month = now.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
-    const nextMonthDays = [];
     const weeks = [];   
     const dayNames = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
@@ -195,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to render the week
     function renderWeek() {
         const calendar = document.getElementById('calendar');
-        const weekRange = document.getElementById('weekRange'); // Get the weekRange element
+        const weekRange = document.getElementById('weekRange');
         calendar.innerHTML = ''; // Clear existing days
         const week = weeks[currentWeekIndex];
     
@@ -206,7 +205,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const dayElement = document.createElement('button');
             dayElement.classList.add('day-button');
     
-            // Merge day name and number
             if (day !== null) {
                 dayElement.innerHTML = `${dayNames[index]}<br>${day}`;
             } else {
@@ -220,48 +218,104 @@ document.addEventListener('DOMContentLoaded', function() {
         calendar.appendChild(weekRow);
     
         // Update the week range display
-        const firstDayOfWeek = week.find(day => day !== null);  // First non-null day
-        const lastDayOfWeek = [...week].reverse().find(day => day !== null);  // Last non-null day
+        const firstDayOfWeek = week.find(day => day !== null);
+        const lastDayOfWeek = [...week].reverse().find(day => day !== null);
     
-        // Use the `month` index to get the month name in Portuguese
         const translatedMonthName = monthNamesInPortuguese[month];
     
-        // Get the first and last day indexes and map them to Portuguese day names
         const firstDayIndex = week.indexOf(firstDayOfWeek);
         const lastDayIndex = week.indexOf(lastDayOfWeek);
     
-        const translatedFirstDayOfWeek = dayNames[firstDayIndex]; // Day in Portuguese
-        const translatedLastDayOfWeek = dayNames[lastDayIndex]; // Day in Portuguese
+        const translatedFirstDayOfWeek = dayNames[firstDayIndex];
+        const translatedLastDayOfWeek = dayNames[lastDayIndex];
     
-        // Display the week range with month and year
         weekRange.textContent = `${firstDayOfWeek} - ${lastDayOfWeek} ${translatedMonthName} ${year}`;
+    }
+
+    // Function to create and display the grid
+    function displayGrid(showGrid) {
+        const calendar = document.getElementById('calendar-grid-events');
+        
+        // Remove the grid if `showGrid` is false
+        if (!showGrid) {
+            const existingGrid = calendar.querySelector('.grid-container');
+            if (existingGrid) {
+                calendar.removeChild(existingGrid);
+            }
+            return;
+        }
+
+        // Create and display the grid
+        const gridContainer = document.createElement('div');
+        gridContainer.classList.add('grid-container');
+
+        for (let i = 0; i < 5; i++) {
+            const column = document.createElement('div');
+            column.classList.add('grid-column');
+            column.textContent = `Column ${i + 1}`;
+            gridContainer.appendChild(column);
+        }
+
+        // Remove any existing grid before adding a new one
+        const existingGrid = calendar.querySelector('.grid-container');
+        if (existingGrid) {
+            calendar.removeChild(existingGrid);
+        }
+
+        calendar.appendChild(gridContainer);
     }
 
     // Function to attach event listeners to day buttons
     function attachDayButtonListeners() {
-        // Select all elements with the class 'day-button'
         const dayButtons = document.querySelectorAll('.day-button');
 
-        // Add click event listener to each button
         dayButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // Remove 'selected' class from all buttons
                 dayButtons.forEach(btn => btn.classList.remove('selected'));
-                
-                // Add 'selected' class to the clicked button
                 this.classList.add('selected');
+
+                // Display grid when a day is selected, or remove it if no button is selected
+                if (this.classList.contains('selected')) {
+                    displayGrid(true); // Display grid
+                } else {
+                    displayGrid(false); // Hide grid
+                }
             });
         });
+
+        // Additional logic to hide the grid if no buttons are selected
+        document.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('day-button')) {
+                dayButtons.forEach(btn => btn.classList.remove('selected'));
+                displayGrid(false); // Hide grid if no day button is selected
+            }
+        });
+
+        
     }
-    
+
+    // Function to create and display the hours column
+    function displayHoursColumn() {
+        const hoursColumn = document.querySelector('.hours-column');
+        
+        for (let i = 0; i < 24; i++) {
+            const hourDiv = document.createElement('div');
+            hourDiv.className = 'hour';
+            hourDiv.textContent = `${i.toString().padStart(2, '0')}:00`;
+            hoursColumn.appendChild(hourDiv);
+        }
+    }
+
+    // Call the function to display the hours column
+    displayHoursColumn();
+
 
     // Button event listeners for previous and next weeks
     document.getElementById('prevWeek').addEventListener('click', () => {
         if (currentWeekIndex > 0) {
             currentWeekIndex--;
             renderWeek();
-            attachDayButtonListeners(); // Re-attach listeners after rendering
-
+            attachDayButtonListeners();
         }
     });
 
@@ -269,69 +323,36 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentWeekIndex < weeks.length - 1) {
             currentWeekIndex++;
             renderWeek();
-            attachDayButtonListeners(); // Re-attach listeners after rendering
-
+            attachDayButtonListeners();
         }
     });
-    
-
-
 
     // Initial render of the first week
     renderWeek();
-    attachDayButtonListeners(); 
+    attachDayButtonListeners();
 });
 
 document.addEventListener('DOMContentLoaded', function() {
     // Select all elements with the class 'day-button'
     const dayButtons = document.querySelectorAll('.day-button');
 
-    // Add click event listener to each button
-    dayButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        // Add 'selected' class to the first button
+        if (dayButtons.length > 0) {
+            dayButtons[0].classList.add('selected');
+        }
+
+        // Add click event listener to each button
+        dayButtons.forEach(button => {
+            button.addEventListener('click', function() {
             // Remove 'selected' class from all buttons
             dayButtons.forEach(btn => btn.classList.remove('selected'));
             
             // Add 'selected' class to the clicked button
             this.classList.add('selected');
+
         });
     });
 });
-
-
-/*function showEventDetails(event) {
-    const modal = document.createElement('div');
-    modal.classList.add('event-modal');
-    modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <img src="${event.imageSrc}" alt="${event.altText}" class="event-image">
-            <div class="event-details">
-                <div class="event-title">${event.descriptionTitle}</div>
-                <div class="event-subtitle">${event.descriptionSubtitle}</div>
-                <div class="event-place">
-                    <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
-                    <div>
-                        <div class="opp-title">${event.oppPlaceTitle}</div>
-                        <div class="opp-subtitle">${event.oppPlaceSubtitle}</div>
-                    </div>
-                </div>
-                <div class="event-time">${event.startTime} - ${event.endTime}</div>
-                <a href="${event.moreInfoLink}" class="more-info" target="_blank">More Info</a>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    const closeButton = modal.querySelector('.close-modal');
-    closeButton.addEventListener('click', () => {
-        document.body.removeChild(modal);
-    });
-}*/
-
-
-
 
 
 
@@ -420,13 +441,8 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(response => response.json())
       .then(data => createCarouselItems(data))
       .catch(error => console.error('Error loading carousel data:', error));
-  });
+    });
   
-
-
-
-
-
 
 
 
