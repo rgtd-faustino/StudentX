@@ -231,8 +231,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
         weekRange.textContent = `${firstDayOfWeek} - ${lastDayOfWeek} ${translatedMonthName} ${year}`;
     }
+    // Sample JSON data for events (you would typically load this from a file or API)
+    const eventsData = [
+        { id: 1, title: "Meeting 1", start: "09:00", end: "10:30", column: 1 },
+        { id: 2, title: "Lunch", start: "12:00", end: "13:00", column: 3 },
+        { id: 3, title: "Presentation", start: "14:00", end: "15:30", column: 2 },
+        { id: 4, title: "Team Building", start: "11:00", end: "12:30", column: 4 },
+        { id: 5, title: "Project Review", start: "16:00", end: "17:00", column: 5 }
+    ];
 
-    // Function to create and display the grid
+    // Function to create and display the grid with events
     function displayGrid(showGrid) {
         const calendar = document.getElementById('calendar-grid-events');
         
@@ -252,7 +260,21 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < 5; i++) {
             const column = document.createElement('div');
             column.classList.add('grid-column');
-            column.textContent = `Column ${i + 1}`;
+            column.innerHTML = `<div class="column-header">Column ${i + 1}</div>`;
+
+            // Add events to the column
+            eventsData.forEach(event => {
+                if (event.column === i + 1) {
+                    const eventElement = document.createElement('div');
+                    eventElement.classList.add('event');
+                    eventElement.innerHTML = `
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-time">${event.start} - ${event.end}</div>
+                    `;
+                    column.appendChild(eventElement);
+                }
+            });
+
             gridContainer.appendChild(column);
         }
 
@@ -261,9 +283,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingGrid) {
             calendar.removeChild(existingGrid);
         }
-
         calendar.appendChild(gridContainer);
     }
+
+    // Call the function to display the grid
+    displayGrid(true);
 
     // Function to attach event listeners to day buttons
     function attachDayButtonListeners() {
@@ -283,13 +307,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Additional logic to hide the grid if no buttons are selected
+        /*// Additional logic to hide the grid if no buttons are selected
         document.addEventListener('click', function(event) {
             if (!event.target.classList.contains('day-button')) {
                 dayButtons.forEach(btn => btn.classList.remove('selected'));
                 displayGrid(false); // Hide grid if no day button is selected
             }
-        });
+        });*/
 
         
     }
@@ -445,4 +469,26 @@ document.addEventListener('DOMContentLoaded', function () {
   
 
 
-
+    document.addEventListener("DOMContentLoaded", function() {
+        var questions = document.querySelectorAll(".faq-question");
+    
+        questions.forEach(function(question) {
+            question.addEventListener("click", function() {
+                var answer = this.nextElementSibling;
+    
+                if (answer.classList.contains("show")) {
+                    answer.classList.remove("show");
+                    this.classList.remove("active");
+                } else {
+                    // Hide other answers
+                    document.querySelectorAll(".faq-answer.show").forEach(function(item) {
+                        item.classList.remove("show");
+                        item.previousElementSibling.classList.remove("active");
+                    });
+    
+                    answer.classList.add("show");
+                    this.classList.add("active");
+                }
+            });
+        });
+    });
