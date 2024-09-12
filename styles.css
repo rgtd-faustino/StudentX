@@ -2070,7 +2070,7 @@ nav {
         color: #7EB4CB;
         transition: transform 0.3s, color 0.3s;
         z-index: 1000;
-    
+        font-size: 5vw;
     }
     
     .faq-question.active::after {
