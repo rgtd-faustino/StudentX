@@ -1048,78 +1048,135 @@ nav {
 
 
 
-.footer {
-    width: 100%;
-    background-color: #F6F7F9;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.footer-image-container {
     position: relative;
-    z-index: 2;
-    padding: 2vh 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-
-
-
-    
-    display: none; /* Hide the footer */
-
 }
 
-.footer-text {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end; /* Align items to the bottom of the footer */
-    padding: 0 2.5vw; /* Add padding to align with the social media container */
+#gradienteFooter {
+    width: 100%;
+    height: auto;
 }
 
-.copyright-text {
-    color: #515978;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1vw;
+#footerlogoStudentX {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4%; /* Adjust size as needed */
+}
+
+.footer-links-text {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+}
+
+.footer-links-text ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-text li {
+    margin: 0 1vw;
+}
+
+.footer-links-text a {
+    color: #666;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8vw;
     font-style: normal;
     font-weight: 400;
-
+    line-height: normal;
+    text-decoration: none;
 }
 
+.footer-links-text a:hover {
+    text-decoration: underline;
+}
 
 .social-media-container {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10%;
-    margin-top: 0vh;
-    margin-left: 26vw;
-}
-
-/* Social media links */
-.social-media-container a {
-    display: flex;
-    align-items: center;
-    gap: 0.5vw;
-    text-decoration: none;
-    color: inherit;
 }
 
 .social-media-icon {
-    width: 2vw;
-    height: auto;
-    background-color: black;
+    width: 2.6vw; /* Adjust size as needed */
+    margin: 0 0.5vw;
 }
 
-.social-media-text {
-    font-family: 'Montserrat', sans-serif;
+.blue-box {
+    background-color: #108CEC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:1vw;
+}
+
+.left-text {
+    color: #FFF;
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8vw;
+    font-style: normal;
     font-weight: 400;
-    font-size: 16px;
-    color: #000;
+    line-height: normal;
+    margin: 0 auto;
 }
 
-.profile-name {
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    color: rgba(2, 2, 4, 0.50);
-    text-align: center;
-    line-height: 120%;
+.right-text button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8vw;
+    white-space: nowrap;
+
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0 auto;
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /* 1366x768 */
 @media (max-width: 1366px) and (min-width: 769px) {
