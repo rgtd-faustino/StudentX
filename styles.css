@@ -1936,7 +1936,7 @@ nav {
     }
     
     #studentx-ajuda-title{
-        font-size: 5vw;
+        font-size: 5.5vw;
         position:relative;
         color: #08192B;
         text-align: center; 
@@ -1950,7 +1950,7 @@ nav {
     }
     
     #studentx-ajuda-subtitle {
-        font-size: 3vw;
+        font-size: 3.5vw;
         position: relative;
         color: rgba(0, 0, 24, 0.60);
         width: 90%;
@@ -1989,7 +1989,7 @@ nav {
     }
     
     #questoes-frequentes-title{
-        font-size: 5vw;
+        font-size: 5.5vw;
         position:relative;
         color: #08192B;
         text-align: center; 
@@ -2003,7 +2003,7 @@ nav {
     }
     
     #questoes-frequentes-subtitle {
-        font-size: 2.7vw;
+        font-size: 3.5vw;
         position: relative;
         color: rgba(0, 0, 24, 0.60);
         text-align: center;
@@ -2058,7 +2058,7 @@ nav {
         position: relative;
         transition: color 0.3s;
         z-index: 1000;
-        font-size: 3vw;
+        font-size: 3.5vw;
         padding-right: 6vw; /* Add padding to the right to make space for the ::after content */
 
     }
@@ -2088,7 +2088,7 @@ nav {
         transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
         color:rgba(94, 94, 94, 0.87);
         z-index: 1000;
-        font-size: 2.5vw;
+        font-size: 3vw;
 
     }
     
