@@ -23,15 +23,7 @@ h1 {
     position: fixed;
     z-index: 1;
     position: relative;
-}
-
-.nav-color-filler {
-    background: linear-gradient(to bottom, #ffffff96, #108CEC); /* Gradient from black to dark gray */
-    height: 15%;
-    width: 100%;
-    position: fixed; /* or absolute */
-    top: 0;
-    left: 0;
+    width:55%;
 }
 
 nav {
@@ -43,8 +35,9 @@ nav {
     align-items: center;
     justify-content: space-between; /* Space elements evenly */
     white-space: nowrap;
-    padding: 0 50px; /* Optional: Adjust padding as needed */
+    padding: 0 2vw; /* Optional: Adjust padding as needed */
     box-sizing: border-box; /* Include padding in the width calculation */
+    font-size: 1vw;
 }
 
 /* Style the menu content */
@@ -84,10 +77,15 @@ nav {
 .right-side-nav {
     display: flex;
     align-items: center;
-    gap: 15px; /* Adjust gap between elements in the right-side nav */
+    gap: 50px; /* Adjust gap between elements in the right-side nav */
     position: relative; /* Set position to relative to contain the dropdown within this area */
 }
 
+
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
 
 /* Button styling */
 .current-language {
@@ -110,7 +108,7 @@ nav {
     background-color: white;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    z-index: 1000;
+    z-index: 1;
     list-style-type: none;
     width: max-content; /* Adjust to fit content */
     padding: 0;
@@ -172,36 +170,40 @@ nav {
     width: 100%;
 }
 
+.menu-overlay {
+    position: relative;
+    width: 100%;; /* Set a fixed width */
+    height: auto; /* Set a fixed height */
+    z-index:1;
+}
+
+.contact-content {
+    position: absolute;
+    margin-left: 10%; /* Adjust as needed */
+    margin-top: -7%; /* Adjust as needed */
+}
+
 .contactUsTitle {
     color: #FFF;
     font-family: 'Inter', sans-serif;
-    font-size: 62px;
+    font-size: 3vw;
     font-style: normal;
     font-weight: 700;
-    line-height: 70px;
-    position: relative; /* Changed to relative */
-    margin-left: -49%; /* Adjusted to match the container */
-    margin-top: -3.2%; /* Adjust as needed */
-    margin-bottom: -0.5%;
-    z-index: 2;
+    margin-left:-79%;
+    margin-bottom:-1%;
+}
+
+.contactContainerText {
+    width: 35%; /* Fixed width */
 }
 
 .contactUsText {
     color: #FFF;
     font-family: 'Inter', sans-serif;
-    font-size: 22px;
+    font-size: 1.2vw;
     font-style: normal;
     font-weight: 400;
-    line-height: 32px;
-
-}
-
-.contactContainerText {
-    max-width: 485px;
-    padding: 20px;
-    margin-left: 14.3%; /* Ensure this matches the margin-left of .contactUsTitle */
-    z-index: 2;
-    position: relative; /* Changed to relative */
+    line-height: 1.7vw;
 }
 
 
@@ -249,7 +251,7 @@ nav {
     align-items: center;
     gap: 10%;
     margin-top: 2vh;
-    margin-left: 26vw;
+    justify-content: center;
 }
 
 /* Social media links */
@@ -262,14 +264,14 @@ nav {
 }
 
 .social-media-icon {
-    width: 40px;
+    width: 2.2vw;
     height: auto;
 }
 
 .social-media-text {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 0.8vw;
     color: #000;
 }
 
@@ -281,37 +283,49 @@ nav {
     line-height: 120%;
 }
 
+
+
+
+
+.message-box-container {
+    position: absolute;
+    width:100%;
+}
+
+
 /* Styles for the right-side white box */
 .message-box {
     position: fixed;
     top: 15%; /* Slightly reduce the top margin to make space */
     right: 5%;
-    width: 40%;
-    height: 70%; /* Increased height to fit the new title and subtitle */
+
     background-color: white;
-    padding: 20px;
-    z-index: 100;
+    padding: 1vw;
+    z-index: 1;
     box-sizing: border-box;
-    border-radius: 60px 60px 0px 0px;
+    border-radius: 4vw 4vw 0px 0px;
     box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), 
                 5px 0px 10px rgba(0, 0, 0, 0.05), 
                 -5px 0px 10px rgba(0, 0, 0, 0.05);
+
+    width: 40vw; /* Set width to 30% of the viewport width */
+    height: 70vh; /* Set height to 40% of the viewport height */
 }
 
 /* Title styles */
 .message-box h1 {
-    font-size: 24px; /* Large title */
+    font-size: 2vw; /* Large title */
     font-weight: 700; /* Bold */
-    margin-bottom: 10px; /* Space below the title */
+    margin-bottom: 1vw; /* Space below the title */
     color: #156CF7; /* Blue color */
     font-family: 'Inter', sans-serif;
 }
 
 /* Subtitle styles */
 .message-box h2 {
-    font-size: 16px; /* Smaller subtitle */
+    font-size: 1vw; /* Smaller subtitle */
     font-weight: 400; /* Normal weight */
-    margin-bottom: 20px; /* Space below the subtitle */
+    margin-bottom: 1vw; /* Space below the subtitle */
     color: #333; /* Dark gray color */
     font-family: 'Inter', sans-serif;
 }
@@ -323,43 +337,42 @@ nav {
 }
 
 .message-box label {
-    margin-bottom: 5px;
+    margin-bottom: 0.3vw;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 0.8vw;
     font-weight: 400;
 }
 
 .message-box input[type="text"],
 .message-box input[type="email"],
 .message-box textarea {
-    padding: 8px 14px; /* Reduced padding to save space */
-    margin-bottom: 15px; /* Reduced margin to save space */
-    border: 2px solid #D5D8E2;
+    padding: 0.4vw 1vw; /* Reduced padding to save space */
+    margin-bottom: 0.8vw; /* Reduced margin to save space */
+    border: 0.15vw solid #D5D8E2;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 0.8vw;
     width: 100%;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
 
 .message-box textarea {
-    min-height: 150px; /* Reduced height to save space */
+    min-height: 7vw; /* Reduced height to save space */
     resize: none; /* Prevents resizing */
 }
 
 .message-box input[type="submit"] {
     display: flex;
-    width: 150px;
-    padding: 10px 16px;
+    width: 9vw;
+    padding: 0.5vw 2vw;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     border-radius: 12px;
     border: 1px solid #156CF7;
     background-color: white;
     color: #156CF7;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 0.7vw;
     font-weight: 600;
     align-self: flex-end;
     cursor: pointer;
@@ -372,24 +385,24 @@ nav {
 
 .name-container {
     display: flex;
-    gap: 7%;
+    gap: 10%;
 }
 
 .name-container input[type="text"] {
     flex: 1;
-    margin-top: 5px;
+    margin-top: 0vw;
 }
 
 .message-box input[type="text"]::placeholder,
 .message-box input[type="email"]::placeholder,
 .message-box textarea::placeholder {
-    font-size: 14px;
+    font-size: 0.7vw;
 }
 
 .message-box .title {
     font-family: 'Inter', sans-serif;
     color: #000;
-    font-size: 34px;
+    font-size: 1.8vw;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -398,12 +411,12 @@ nav {
 .message-box .subtitle {
     text-align: center; /* Center the subtitle */
     font-family: 'Inter', sans-serif;
-    font-size: 20px;
+    font-size: 1vw;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     color: #5D5D5D;
-    margin-bottom: 5%;
+    margin-bottom: 2vw;
 
 }
 

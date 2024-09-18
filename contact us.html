@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student X - Contact Us</title>
-    <link rel="icon" type="image/x-icon" href="StudentXLogo.ico">
+    <link rel="icon" type="image/x-icon" href="123.ico">
     <link rel="stylesheet" href="contact us.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,35 +49,41 @@
         </div>
     </nav>
 
-    <h1 class="contactUsTitle">Contacta-nos</h1>
-
-    <div class="contactContainerText">
-        <p1 class="contactUsText">Cada mensagem que recebemos é uma oportunidade para melhorar. 
-            Não hesites em entrar em contacto connosco para partilhares as tuas ideias ou esclareceres as tuas dúvidas.</p1>
+    <div class="menu-overlay">
+        <div class="contact-content">
+            <h1 class="contactUsTitle">Contacta-nos</h1>
+            <div class="contactContainerText">
+                <p class="contactUsText">Cada mensagem que recebemos é uma oportunidade para melhorar.
+                    Não hesites em entrar em contacto connosco para partilhares as tuas ideias ou esclareceres as tuas dúvidas.</p>
+            </div>
+        </div>
     </div>
 
-    <div class="message-box">
-        <h1 class="title">Diz-nos o que pensas</h1> <!-- Title -->
-        <h2 class="subtitle">Queremos ouvir as tuas ideias, sugestões ou dúvidas</h2> <!-- Subtitle -->
-        <form action="https://formspree.io/f/mldrzvyz" method="post">
-            <div class="name-container">
-                <div>
-                    <label for="name">Primeiro Nome:</label>
-                    <input type="text" id="name" name="name" placeholder="Nome" required>
+    <div class="message-box-container">
+
+        <div class="message-box">
+            <h1 class="title">Diz-nos o que pensas</h1>
+            <h2 class="subtitle">Queremos ouvir as tuas ideias, sugestões ou dúvidas</h2>
+            <form action="https://formspree.io/f/mldrzvyz" method="post">
+                <div class="name-container">
+                    <div>
+                        <label for="name">Primeiro Nome:</label>
+                        <input type="text" id="name" name="name" placeholder="Nome" required>
+                    </div>
+                    <div>
+                        <label for="apelido">Último Nome:</label>
+                        <input type="text" id="apelido" name="apelido" placeholder="Último nome" required>
+                    </div>
                 </div>
-                <div>
-                    <label for="apelido">Último Nome:</label>
-                    <input type="text" id="apelido" name="apelido" placeholder="Último nome" required>
-                </div>
-            </div>
-            <label for="assunto">Assunto:</label>
-            <input type="text" id="assunto" name="assunto" placeholder="Assunto" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <label for="message">Mensagem:</label>
-            <textarea id="message" name="message" placeholder="Escreve aqui a tua mensagem..." required></textarea>
-            <input type="submit" value="Enviar">
-        </form>
+                <label for="assunto">Assunto:</label>
+                <input type="text" id="assunto" name="assunto" placeholder="Assunto" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <label for="message">Mensagem:</label>
+                <textarea id="message" name="message" placeholder="Escreve aqui a tua mensagem..." required></textarea>
+                <input type="submit" value="Enviar">
+            </form>
+        </div>
     </div>
     
 
