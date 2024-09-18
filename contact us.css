@@ -70,7 +70,7 @@ nav {
 
 /* Change color on hover */
 .nav-items li a:hover {
-    color: #108CEC;
+    color: white;
 }
 
 /* Style for the right-side navigation */

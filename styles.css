@@ -1050,10 +1050,65 @@ nav {
 
 
 
+#gradienteAboutUs{
+    position: absolute;
+    margin-top: -5%;
+    margin-left: -1%;
+    pointer-events: none;
 
+}
 
+.aboutus-page{
+    position: relative;
+    margin-top:5vw;
+    margin-bottom: 25vw;
+}
 
+.text-aboutus{
+    margin-top:5%;
+    position: relative;
+    width:40%;
+    margin-left: 5%;
 
+    color: #000;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.8vw;
+
+}
+
+.tituloimage{
+    position: relative;
+    width: 40%;
+    margin-left: 60%;
+
+}
+
+#aboututsTitleImage{
+    margin-left: 15%;
+    width:65%;
+    pointer-events: none;
+}
+
+#titulo-aboutus{
+    position: relative;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 3vw;
+    font-style: normal;
+    font-weight: 700;
+    margin-bottom:-11%;
+}
+
+.highlight-us {
+    background: linear-gradient(300deg, #108CEC 20%, #FFF 120%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
 
 
@@ -2199,7 +2254,69 @@ nav {
 
 
 
-
+    #gradienteAboutUs{
+        position: absolute;
+        margin-top: 50%;
+        margin-left: -1%;
+        pointer-events: none;
+        display:none;
+    
+    }
+    
+    .aboutus-page{
+        position: relative;
+        margin-top:5vw;
+        margin-bottom: 25vw;
+    }
+    
+    .text-aboutus{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto; /* Center horizontally */
+    
+        width: 80%;
+        
+        color: #000;
+        
+        font-family: 'Inter', sans-serif;
+        font-size: 2.5vw;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 4.5vw;
+    }
+    
+    .tituloimage{
+        position: relative;
+        width: 40%;
+        margin-left:0;
+        margin: 0 auto; /* Center horizontally */
+    
+    }
+    
+    #aboututsTitleImage{
+        margin-left: -3%;
+        width:100%;
+        pointer-events: none;
+    }
+    
+    #titulo-aboutus{
+        position: relative;
+        color: #000;
+        font-family: 'Poppins', sans-serif;
+        font-size: 5vw;
+        font-style: normal;
+        font-weight: 700;
+        margin-bottom:-17%;
+    }
+    
+    .highlight-us {
+        background: linear-gradient(300deg, #108CEC 20%, #FFF 120%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
 
 
     
