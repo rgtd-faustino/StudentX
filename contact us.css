@@ -148,12 +148,13 @@ nav {
     cursor: pointer;
 }
 
+
 .hamburger-line1,
 .hamburger-line2,
 .hamburger-line3 {
     display: none;
     width: 10vw;
-    height: 0.5vh;
+    height: 0.4vh;
     margin: 1vh auto;
     transition: all 0.3s ease-in-out;
     background-color: rgb(0, 0, 0);
@@ -167,8 +168,9 @@ nav {
 .hamburger.open .hamburger-line1,
 .hamburger.open .hamburger-line2,
 .hamburger.open .hamburger-line3 {
-    width: 100%;
+    width: 90%;
 }
+
 
 .menu-overlay {
     position: relative;
@@ -453,16 +455,24 @@ nav {
     .nav-color-filler {
         display: none;
     }
+
     nav {
-        background-color: #ffffff;
         position: relative;
         top: 0;
         left: 0;
-        width: 100%;
-        flex-direction: column;
+        width: 100%; /* Make the nav bar fill the entire width */
+        display: flex;
         align-items: flex-start;
+        flex-direction: column;
         z-index: 1000;
-        
+        background-color: #ffffff;
+
+        justify-content: space-between; /* Space elements evenly */
+        white-space: nowrap;
+        padding: 0 2vw; /* Optional: Adjust padding as needed */
+        box-sizing: border-box; /* Include padding in the width calculation */
+        font-size: 5vw;
+        padding-bottom: 5vw;
     }
 
     .hamburger {
@@ -473,6 +483,7 @@ nav {
         align-items: center; /* Center vertically */
         height: 100%; /* Full height of the container */
         width: 100%; /* Full width of the container */
+        margin-top:2vw;
     }
 
     .menu-content {
@@ -485,21 +496,22 @@ nav {
 
     .nav-items {
         flex-direction: column;
-        gap: 20px;
+        gap: 6vw;
         width: 100%;
         align-items: flex-start;
-        margin-top: 20px;
+        margin-top: 6vw;
         padding: 0;
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
         height: 100%; /* Full height of the container */
+        
     }
 
 
 
     .right-side-nav {
         flex-direction: column;
-        gap: 20px;
+        gap: 6vw;
         width: 100%;
         align-items: flex-start;
         margin: 0;
@@ -507,12 +519,18 @@ nav {
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
         height: 100%; /* Full height of the container */
+        
 
     }
-
     .contact-button {
-        text-align: center;
-
+        padding: 1.5vw 10vw;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 2vw;
+        font-weight: 400;
+        font-size: 5vw;
+        margin-bottom: 6vw;
     }
 
     .menu-content.active {
@@ -549,61 +567,136 @@ nav {
         display: none;
     }
 
-    /* Message Box Adjustments */
+    .message-box-container {
+        position: absolute;
+        width:100%;
+    }
+    
+    
+    /* Styles for the right-side white box */
     .message-box {
-        position: unset;
-        margin-left: 5%;
-        margin-top: 0%; /* Reduce top margin to make more space */
-        width: 90%; /* Full width with small margins */
-        height: auto; /* Allow height to adjust based on content */
-        border-radius: 20px; /* Smaller border radius */
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15), 
-                    5px 0px 10px rgba(0, 0, 0, 0.15), 
-                    -5px 0px 10px rgba(0, 0, 0, 0.15);
-        margin-bottom: 8%;
+        position: fixed;
+        top: 15%; /* Slightly reduce the top margin to make space */
+    
+        background-color: white;
+        padding: 1vw;
+        z-index: 1;
+        box-sizing: border-box;
+        border-radius: 4vw 4vw 4vw 4vw;
+        box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), 
+                    5px 0px 10px rgba(0, 0, 0, 0.05), 
+                    -5px 0px 10px rgba(0, 0, 0, 0.05);
+    
+        width: 90%; /* Set width to 30% of the viewport width */
+        height: 80%; /* Set height to 40% of the viewport height */
     }
-
-    /* Message Box Title Adjustments */
+    
+    /* Title styles */
     .message-box h1 {
-        font-size: 20px; /* Smaller title size */
-        margin-bottom: 8px;
+        font-size: 2vw; /* Large title */
+        font-weight: 700; /* Bold */
+        margin-bottom: 1vw; /* Space below the title */
+        color: #156CF7; /* Blue color */
+        font-family: 'Inter', sans-serif;
     }
-
-    /* Message Box Subtitle Adjustments */
+    
+    /* Subtitle styles */
     .message-box h2 {
-        font-size: 14px; /* Smaller subtitle */
-        margin-bottom: 15px;
+        font-size: 1vw; /* Smaller subtitle */
+        font-weight: 400; /* Normal weight */
+        margin-bottom: 1vw; /* Space below the subtitle */
+        color: #333; /* Dark gray color */
+        font-family: 'Inter', sans-serif;
     }
-
-    /* Adjust form elements */
+    
+    /* Other styles remain the same... */
+    .message-box form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .message-box label {
+        margin-bottom: 0.3vw;
+        font-family: 'Inter', sans-serif;
+        font-size: 4vw;
+        font-weight: 400;
+    }
+    
     .message-box input[type="text"],
     .message-box input[type="email"],
     .message-box textarea {
-        font-size: 14px; /* Smaller font size */
-        padding: 10px; /* Adjust padding */
-    }
-
-    /* Adjust submit button */
-    .message-box input[type="submit"] {
-        width: 100px; /* Smaller button */
-        padding: 8px 12px; /* Adjust padding */
-    }
-
-    /* Adjust the name container to stack vertically */
-    .name-container {
-        flex-direction: column;
-        gap: 0px; /* Adjust gap between fields */
-    }
-
-    .name-container input[type="text"] {
+        padding: 2vw 2vw; /* Reduced padding to save space */
+        margin-bottom: 0.8vw; /* Reduced margin to save space */
+        border: 0.15vw solid #D5D8E2;
+        border-radius: 10px;
+        font-size: 5vw;
         width: 100%;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
     }
-
-    /* Adjust text and input field placeholders */
+    
+    .message-box textarea {
+        min-height: 12vw; /* Reduced height to save space */
+        resize: none; /* Prevents resizing */
+    }
+    
+    .message-box input[type="submit"] {
+        display: flex;
+        width: 40%;
+        padding: 2vw 2vw;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        border: 1px solid #156CF7;
+        background-color: white;
+        color: #156CF7;
+        font-family: 'Inter', sans-serif;
+        font-size: 5vw;
+        font-weight: 600;
+        align-self: flex-end;
+        cursor: pointer;
+    }
+    
+    .message-box input[type="submit"]:hover {
+        background-color: #108CEC;
+        color: white;
+    }
+    
+    .name-container {
+        display: flex;
+        gap: 10%;
+    }
+    
+    .name-container input[type="text"] {
+        flex: 1;
+        margin-top: 0vw;
+    }
+    
     .message-box input[type="text"]::placeholder,
     .message-box input[type="email"]::placeholder,
     .message-box textarea::placeholder {
-        font-size: 12px; /* Smaller font size */
+        font-size: 4vw;
+    }
+    
+    .message-box .title {
+        font-family: 'Inter', sans-serif;
+        color: #000;
+        font-size: 6vw;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+    
+    .message-box .subtitle {
+        text-align: center; /* Center the subtitle */
+        font-family: 'Inter', sans-serif;
+        font-size: 4vw;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        color: #5D5D5D;
+        margin-bottom: 2vw;
+    
     }
 
     /* Back Button Adjustments */
