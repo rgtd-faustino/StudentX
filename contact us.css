@@ -28,7 +28,7 @@ h1 {
 
 nav {
     position: absolute;
-    top: 35px;
+    top: 2vw;
     left: 0; /* Ensure nav starts from the very left of the viewport */
     width: 100%; /* Make the nav bar fill the entire width */
     display: flex;
@@ -54,7 +54,7 @@ nav {
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 50px; /* Gap between nav items */
+    gap: 4vw; /* Gap between nav items */
 }
 
 /* Style the links */
@@ -68,24 +68,15 @@ nav {
     line-height: normal;
 }
 
-/* Change color on hover */
-.nav-items li a:hover {
-    color: white;
-}
 
 /* Style for the right-side navigation */
 .right-side-nav {
     display: flex;
     align-items: center;
-    gap: 50px; /* Adjust gap between elements in the right-side nav */
+    gap: 0vw; /* Adjust gap between elements in the right-side nav */
     position: relative; /* Set position to relative to contain the dropdown within this area */
 }
 
-
-
-.contact-button:hover {
-    background-color: #0056b3;
-}
 
 /* Button styling */
 .current-language {
@@ -99,6 +90,7 @@ nav {
     cursor: pointer;
     position: relative; /* Ensure the button is a reference point for the dropdown */
 }
+
 /* Dropdown content */
 .dropdown-content {
     display: none;
@@ -121,7 +113,7 @@ nav {
 }
 
 .dropdown-content li a {
-    padding: 12px 30px;
+    padding: 0.5vw 2vw;
     display: block;
     color: black;
     text-decoration: none;
@@ -422,7 +414,7 @@ nav {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     body {
         margin: 0;
         padding: 0;
@@ -473,6 +465,9 @@ nav {
         box-sizing: border-box; /* Include padding in the width calculation */
         font-size: 5vw;
         padding-bottom: 5vw;
+
+        margin-bottom:5vw;
+        
     }
 
     .hamburger {
@@ -484,6 +479,7 @@ nav {
         height: 100%; /* Full height of the container */
         width: 100%; /* Full width of the container */
         margin-top:2vw;
+        margin-bottom:-3vw;
     }
 
     .menu-content {
@@ -491,6 +487,10 @@ nav {
         flex-direction: column;
         gap: 20px;
         width: 100%;
+    }
+
+    .menu-content a:active{
+        color:#108CEC;
     }
 
 
@@ -563,20 +563,28 @@ nav {
     }
 
     /* Contact section hidden */
-    #contact {
-        display: none;
+    #contact{
+        margin-top: unset;
+        margin-left: unset;
+        pointer-events: none;
+        position: fixed;
+        z-index: 0;
+        position: relative;
+        width:90%;
+        margin-bottom:-13vw;
+        margin-left:5vw;
     }
 
     .message-box-container {
-        position: absolute;
+        position: relative;
         width:100%;
     }
     
     
     /* Styles for the right-side white box */
     .message-box {
-        position: fixed;
-        top: 15%; /* Slightly reduce the top margin to make space */
+        position: relative;
+
     
         background-color: white;
         padding: 1vw;
@@ -588,8 +596,11 @@ nav {
                     -5px 0px 10px rgba(0, 0, 0, 0.05);
     
         width: 90%; /* Set width to 30% of the viewport width */
-        height: 80%; /* Set height to 40% of the viewport height */
-    }
+        height: unset; /* Set height to 40% of the viewport height */
+        margin: 0 auto;
+        margin-right:0vw;
+        margin-top:6vw;
+        }
     
     /* Title styles */
     .message-box h1 {
@@ -598,7 +609,14 @@ nav {
         margin-bottom: 1vw; /* Space below the title */
         color: #156CF7; /* Blue color */
         font-family: 'Inter', sans-serif;
+        text-decoration: underline; /* Underline the title */
+        text-decoration-color: #108CEC; /* Blue underline */
+        text-decoration-thickness: 0.15em; /* Thicker underline */
+        text-underline-offset: 0.5em; /* Offset the underline */
     }
+
+    
+
     
     /* Subtitle styles */
     .message-box h2 {
@@ -607,16 +625,23 @@ nav {
         margin-bottom: 1vw; /* Space below the subtitle */
         color: #333; /* Dark gray color */
         font-family: 'Inter', sans-serif;
+        width:80%;
+        margin: 0 auto;
+        margin-top:5%;
     }
     
     /* Other styles remain the same... */
     .message-box form {
         display: flex;
         flex-direction: column;
+        margin-left:5vw;
+        margin-right: 5vw;
+
     }
     
     .message-box label {
-        margin-bottom: 0.3vw;
+        margin-top: 3vw;
+        margin-bottom: 1vw;
         font-family: 'Inter', sans-serif;
         font-size: 4vw;
         font-weight: 400;
@@ -627,7 +652,7 @@ nav {
     .message-box textarea {
         padding: 2vw 2vw; /* Reduced padding to save space */
         margin-bottom: 0.8vw; /* Reduced margin to save space */
-        border: 0.15vw solid #D5D8E2;
+        border: 0.4vw solid #D5D8E2;
         border-radius: 10px;
         font-size: 5vw;
         width: 100%;
@@ -636,14 +661,14 @@ nav {
     }
     
     .message-box textarea {
-        min-height: 12vw; /* Reduced height to save space */
+        min-height: 40vw; /* Reduced height to save space */
         resize: none; /* Prevents resizing */
     }
     
     .message-box input[type="submit"] {
         display: flex;
-        width: 40%;
-        padding: 2vw 2vw;
+        width: 50%;
+        padding: 1vw 1vw;
         justify-content: center;
         align-items: center;
         border-radius: 12px;
@@ -651,10 +676,12 @@ nav {
         background-color: white;
         color: #156CF7;
         font-family: 'Inter', sans-serif;
-        font-size: 5vw;
+        font-size: 4vw;
         font-weight: 600;
         align-self: flex-end;
         cursor: pointer;
+        margin-top:4vw;
+        margin-bottom: 4vw;
     }
     
     .message-box input[type="submit"]:hover {
@@ -677,6 +704,12 @@ nav {
     .message-box textarea::placeholder {
         font-size: 4vw;
     }
+
+    .message-box input[type="text"],
+    .message-box input[type="email"],
+    .message-box textarea {
+        font-size: 4vw; /* Adjust the font size as needed */
+    }
     
     .message-box .title {
         font-family: 'Inter', sans-serif;
@@ -695,7 +728,7 @@ nav {
         font-weight: 400;
         line-height: normal;
         color: #5D5D5D;
-        margin-bottom: 2vw;
+        margin-bottom: 8vw;
     
     }
 
@@ -705,24 +738,56 @@ nav {
         bottom: 10px; /* Adjust positioning */
         right: 10px; /* Adjust positioning */
     }
-
     .footer {
-        display: none;
+        all: unset;
+        position: relative;
+        height: unset;
+        width: 100%;
     }
-
+    
     /* Social Media Icons - Mobile */
     .social-media-container {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center items horizontally */
-        gap: 20px; /* Adjust gap between items */
-        margin-left: 0; /* Reset left margin */
+        margin-top: 7vw;
+        background-color: white;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: unset;
+        width: 100%;
+    }
+    
+    .social-media-container > a {
+        display: flex;
+        justify-content: center;
+        flex-direction: row; /* Change to row */
+        align-items: center; /* Align items vertically */
+        width: 50%;
+        margin: 5%;
+        margin-right: 0;
+        margin-left: 0;
+        
+    }
+    
+    .footer-text {
+        display:none;
     }
 
     .social-media-icon {
-        width: 40px; /* Smaller icon size for mobile */
+        width: 8vw; /* Smaller icon size for mobile */
+        margin-right: 1vw; /* Add some spacing between the icon and text */
+
     }
 
     .social-media-text {
-        font-size: 14px; /* Adjust font size for mobile */
+        font-size: 3.5vw; /* Adjust font size for mobile */
+    }
+
+    .profile-name{
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        color: rgba(2, 2, 4, 0.50);
+        text-align: center;
+        line-height: 120%;
     }
 }
