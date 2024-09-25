@@ -1287,8 +1287,6 @@ nav {
         margin: 0;
         padding: 0;
         background-color:#ffffff;
-        padding-bottom: 30px; /* Adjust the value as needed */
-
     }
 
     #image1{
@@ -1912,6 +1910,7 @@ nav {
     
     #gradienteFAQ{
         display: none;
+        
     }
 
     #gradienteFAQMobile {
@@ -2018,10 +2017,7 @@ nav {
 
 
     #gradienteAboutUs{
-        position: absolute;
-        margin-top: 50%;
-        margin-left: -1%;
-        pointer-events: none;
+
         display:none;
     
     }
@@ -2030,13 +2026,14 @@ nav {
         position: relative;
         margin-top:5vw;
         margin-bottom: 5vw;
+        
     }
     
     .text-aboutus{
         position: relative;
         display: flex;
         justify-content: center;
-        margin: 0 auto; /* Center horizontally */
+        margin: 0 auto; 
     
         width: 80%;
         
@@ -2047,7 +2044,7 @@ nav {
         font-style: normal;
         font-weight: 500;
         line-height: 6vw;
-        text-align: justify; /* Justify the text */
+        text-align: justify;
 
     }
     
@@ -2055,13 +2052,14 @@ nav {
         position: relative;
         width: 40%;
         margin-left:0;
-        margin: 0 auto; /* Center horizontally */
+        margin: 0 auto;
     
     }
     
     #aboututsTitleImage{
-        margin-left: -3%;
-        width:100%;
+        margin-left: -14%;
+        margin-top:-3%;
+        width:120%;
         pointer-events: none;
     }
     
@@ -2082,12 +2080,128 @@ nav {
         -webkit-text-fill-color: transparent;
     }
     
-
-
     
-.footer {
-    display: none;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .footer-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    
+      #gradienteFooter {
+        position: relative;
+        display: block;
+        width: 100%;
+        min-height: 22vw;
+        pointer-events: none;
+
+      }
+    
+      #footerlogoStudentX {
+        position: absolute;
+        transform: none;
+        width: 12vw;
+        margin-bottom: 0%;
+        margin-top:3%;
+        margin-left:-45%;
+        
+      }
+    
+      .footer-links-text {
+        display:none;
+
+      }
+
+      .social-media-container {
+
+        margin-top: 0%;
+
+
+        position: absolute;
+        bottom: 15%;
+        left: 40%;
+        transform: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .social-media-icon {
+        width: 10vw;
+        margin: 0 2vw;
+        
+      }
+    
+      #inicio-button-container {
+        display:none;
+      }
+
+
+
+
+
+
+
+
+      .blue-box {
+        background-color: #108CEC;
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        justify-content: center; /* Center the items */
+        align-items: center;
+        padding: 1vw;
+
+    }
+    
+    .left-text {
+        color: #FFF;
+        font-family: 'Poppins', sans-serif;
+        font-size: 3.5vw;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0; /* Remove auto margin */
+        white-space: nowrap;
+
+    }
+    
+    .right-text button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 3.5vw;
+        white-space: nowrap;
+        color: #FFF;
+        font-family: 'Poppins', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0; /* Remove auto margin */
+        margin-bottom:1vw;
+
+    }
+    
+    .right-text button:hover {
+        text-decoration: none;
+    }
+
+
+
+
 
 
 }
