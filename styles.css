@@ -1261,6 +1261,10 @@ nav {
     text-decoration: underline;
 }
 
+.mobile-right-text{
+    display:none;
+}
+
 
 
 @media (min-width:1025px) {
@@ -1632,6 +1636,7 @@ nav {
     }
     
     .carousel-mobile {
+        
         display:unset;
         flex-direction: unset;
         width: 90%;
@@ -1643,6 +1648,7 @@ nav {
     }
     
     .item-group-mobile {
+        
         display: flex;
         transition: transform 0.3s ease-in-out;
         z-index: 3;
@@ -1652,6 +1658,7 @@ nav {
     }
     
     .item-container-mobile {
+        
         flex: 0 0 100%;
         box-sizing: border-box;
         padding: 3vw;
@@ -2187,7 +2194,7 @@ nav {
         background: none;
         border: none;
         cursor: pointer;
-        font-size: 2vw;
+        font-size: 3.5vw;
         white-space: nowrap;
         color: #FFF;
         font-family: 'Poppins', sans-serif;
@@ -2203,7 +2210,13 @@ nav {
         text-decoration: none;
     }
 
+    .computer-right-text{
+        display:none;
+    }
 
+    .mobile-right-text{
+        display:unset;
+    }
 
 
 

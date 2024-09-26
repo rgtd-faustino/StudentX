@@ -103,12 +103,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     if (window.innerWidth <= 600) {
+        let isAnimating = false;
+    
         function updateTransformMobile() {
             // Calculate the percentage translation based on currentIndex
             const translatePercentage = -(currentIndexMobile / totalItems) * 100 * (totalItems / itemsPerViewMobile);
             
             // Apply the transform inline to the itemGroup element, ensuring no scaling is applied
             itemGroup.style.transform = `translateX(${translatePercentage}%)`;
+            itemGroup.style.transition = 'transform 0.5s ease-in-out';
             
             updateDotsMobile();
         }
@@ -122,27 +125,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
         }
+    
+        function moveCarousel(direction) {
+            if (isAnimating) return;
+            isAnimating = true;
+    
+            if (direction === 'next') {
+                currentIndexMobile = (currentIndexMobile + 1) % totalItems;
+            } else {
+                currentIndexMobile = (currentIndexMobile - 1 + totalItems) % totalItems;
+            }
+    
+            updateTransformMobile();
+    
+            setTimeout(() => {
+                isAnimating = false;
+            }, 350); // Match this with the transition duration
+        }
+    
         // Initial call to set the correct active dot
         updateTransformMobile();
         
-        document.getElementById('next-mobile').addEventListener('click', () => {
-            if (currentIndexMobile >= totalItems - itemsPerViewMobile) {
-                // Reset to the beginning
-                currentIndexMobile = 0;
-            } else {
-                currentIndexMobile += itemsPerViewMobile;
-            }
-            updateTransformMobile();
-        });
-        
-        document.getElementById('prev-mobile').addEventListener('click', () => {
-            if (currentIndexMobile <= 0) {
-                // Move to the end
-                currentIndexMobile = totalItems - itemsPerViewMobile;
-            } else {
-                currentIndexMobile -= itemsPerViewMobile;
-            }
-            updateTransformMobile();
+        document.getElementById('next-mobile').addEventListener('click', () => moveCarousel('next'));
+        document.getElementById('prev-mobile').addEventListener('click', () => moveCarousel('prev'));
+    
+        itemGroup.addEventListener('transitionend', () => {
+            isAnimating = false;
         });
     }
 
