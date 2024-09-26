@@ -136,7 +136,7 @@ h1 {
 
 nav {
     position: absolute;
-    top: 2vw;
+    top: 1.5vw;
     left: 0; /* Ensure nav starts from the very left of the viewport */
     width: 100%; /* Make the nav bar fill the entire width */
     display: flex;
@@ -185,19 +185,19 @@ nav {
 .right-side-nav {
     display: flex;
     align-items: center;
-    gap: 4vw; /* Adjust gap between elements in the right-side nav */
+    gap: 3.5vw; /* Adjust gap between elements in the right-side nav */
     position: relative; /* Set position to relative to contain the dropdown within this area */
 }
 
 /* Style the Contact Us button */
 .contact-button {
-    padding: 0.5vw 2vw;
+    padding: 0.5vw 1.5vw;
     background-color: #007BFF;
     color: white;
     text-decoration: none;
     border-radius: 1vw;
     font-weight: 400;
-    font-size: 1vw;
+    font-size: 1.1vw;
 }
 
 .contact-button:hover {
@@ -583,8 +583,8 @@ nav {
 
 
 .description-title-mobile  {
-    font-weight: bold;
-    font-size: 1.5vw;
+    font-weight: 600;
+    font-size: 1.3vw;
 }
 
 .opp-place-title-mobile{
@@ -1062,6 +1062,8 @@ nav {
 
 }
 
+
+
 .aboutus-page{
     position: relative;
     margin-top:5vw;
@@ -1135,6 +1137,8 @@ nav {
     height: auto;
     pointer-events: none;
 }
+
+
 
 #footerlogoStudentX {
     position: absolute;
@@ -2183,7 +2187,7 @@ nav {
         background: none;
         border: none;
         cursor: pointer;
-        font-size: 3.5vw;
+        font-size: 2vw;
         white-space: nowrap;
         color: #FFF;
         font-family: 'Poppins', sans-serif;

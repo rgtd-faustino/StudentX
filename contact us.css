@@ -198,6 +198,8 @@ nav {
     font-style: normal;
     font-weight: 400;
     line-height: 1.7vw;
+    text-align: justify;
+
 }
 
 
@@ -219,6 +221,7 @@ nav {
     justify-content: space-between;
     align-items: flex-end; /* Align items to the bottom of the footer */
     padding: 0 2.5vw; /* Add padding to align with the social media container */
+    margin-top:1.5vw;
 }
 
 .copyright-text {
@@ -227,24 +230,22 @@ nav {
     font-size: 1vw;
     font-style: normal;
     font-weight: 400;
+    margin: 0;
 }
-
 .backButton {
     font-family: 'Montserrat', sans-serif;
     font-size: 1vw;
     font-style: normal;
     font-weight: 500;
-    line-height: 24px;
     text-decoration-line: underline;
     color: black;
 }
-
 
 .social-media-container {
     display: flex;
     align-items: center;
     gap: 10%;
-    margin-top: 2vh;
+    margin-top: 2.5vh;
     justify-content: center;
 }
 
@@ -271,10 +272,17 @@ nav {
 
 .profile-name {
     font-family: 'Inter', sans-serif;
-    font-weight: 200;
+    font-weight: 300;
     color: rgba(2, 2, 4, 0.50);
     text-align: center;
     line-height: 120%;
+}
+
+.social-media-name{
+    color: #020204;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
 }
 
 
@@ -384,7 +392,7 @@ nav {
 
 .name-container input[type="text"] {
     flex: 1;
-    margin-top: 0vw;
+    margin-top: 0.1vw;
 }
 
 .message-box input[type="text"]::placeholder,
@@ -696,7 +704,7 @@ nav {
     
     .name-container input[type="text"] {
         flex: 1;
-        margin-top: 0vw;
+        margin-top: 0.3vw;
     }
     
     .message-box input[type="text"]::placeholder,
@@ -790,4 +798,13 @@ nav {
         text-align: center;
         line-height: 120%;
     }
+
+    .social-media-name{
+        color: #020204;
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+
 }
