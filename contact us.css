@@ -28,7 +28,7 @@ h1 {
 
 nav {
     position: absolute;
-    top: 2vw;
+    top: 1.5vw;
     left: 0; /* Ensure nav starts from the very left of the viewport */
     width: 100%; /* Make the nav bar fill the entire width */
     display: flex;
