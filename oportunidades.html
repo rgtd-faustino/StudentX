@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student X - Oportunidades</title>
+    <link rel="icon" type="image/x-icon" href="123.ico">
+
+
+    <link rel="stylesheet" href="oportunidades.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+    <nav>
+        <!-- Hamburger Menu for Mobile -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <div class="hamburger-line1"></div>
+            <div class="hamburger-line2"></div>
+            <div class="hamburger-line3"></div>
+        </div>
+    
+        <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
+        <div class="menu-content">
+            <ul class="nav-items">
+                <li><a href="index.html" style="color:#108CEC">Início</a></li>
+                <li><a href="index.html#subtitle">Oportunidades</a></li>
+                <li><a href="index.html#opportunityTitle">Calendário</a></li>
+                <li><a href="index.html#studentx-ajuda-title">Modus Operandi</a></li>
+                <li><a href="index.html#questoes-frequentes-title">FAQ</a></li>
+            </ul>
+            <div class="right-side-nav">
+                <button class="current-language">Português &nbsp; <img id="ArrowLanguageButton" src="ArrowLanguageButton.png" alt="arrow for the language button"></button>
+                <ul class="dropdown-content">
+                    <li><a href="#">English</a></li>
+                </ul>
+                <a href="contact us.html" class="contact-button">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+    <div id="events-grid" class="grid-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function createEventGrid(data) {
+                const container = document.getElementById('events-grid');
+
+                data.items.forEach(item => {
+                    const gridItem = document.createElement('div');
+                    gridItem.className = 'grid-item';
+
+                    gridItem.innerHTML = `
+                        <img src="${item.imageSrc}" alt="${item.altText}">
+                        <div class="description">
+                            <p class="description-title">${item.descriptionTitle}</p>
+                            <p class="description-subtitle">${item.descriptionSubtitle}</p>
+                        </div>
+                        <div class="carousel-line"></div>
+                        <div class="opp-place">
+                            <img src="${item.logoSrc}" alt="${item.logoAlt}">
+                            <div>
+                                <p class="opp-place-title">${item.oppPlaceTitle}</p>
+                                <p class="opp-place-subtitle">${item.oppPlaceSubtitle}</p>
+                            </div>
+                        </div>
+                        <a href="${item.moreInfoLink}" class="button-more-info">Mais Informações</a>
+                    `;
+
+                    container.appendChild(gridItem);
+                });
+            }
+
+            fetch('events.json')
+                .then(response => response.json())
+                .then(data => createEventGrid(data))
+                .catch(error => console.error('Error loading event data:', error));
+        });
+    </script>
+
+
+
+    <script src="script.js" ></script>
+</body>
