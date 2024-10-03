@@ -33,7 +33,7 @@
         <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
         <div class="menu-content">
             <ul class="nav-items">
-                <li><a href="index.html" style="color:#108CEC">Início</a></li>
+                <li><a href="index.html">Início</a></li>
                 <li><a href="index.html#subtitle">Oportunidades</a></li>
                 <li><a href="index.html#opportunityTitle">Calendário</a></li>
                 <li><a href="index.html#studentx-ajuda-title">Modus Operandi</a></li>
@@ -50,24 +50,32 @@
     </nav>
 
 
+    <div class="image-container">
+        <img id="gradiente" src="oppPageGradiente.png" alt="gradiente para o inicio da pagina">
+        <button id="start-now" class="button">Começar Agora</button>
+        <button id="watch-video" class="button">Ver Vídeo</button>
+    </div>
 
 
 
-
-
-
+    <div class="opp-text-container">
+        <h1 id="opp-title">Oportunidades</h1>
+        <p id="opp-subtitle">Total de <span id="opp-count">0</span> oportunidades</p>
+    </div>
 
     <div id="events-grid" class="grid-container"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const gridContainer = document.getElementById('events-grid');
+
             function createEventGrid(data) {
                 const container = document.getElementById('events-grid');
-
+                const oppCountElement = document.getElementById('opp-count');
+                
                 data.items.forEach(item => {
                     const gridItem = document.createElement('div');
                     gridItem.className = 'grid-item';
-
                     gridItem.innerHTML = `
                         <img src="${item.imageSrc}" alt="${item.altText}">
                         <div class="description">
@@ -84,11 +92,12 @@
                         </div>
                         <a href="${item.moreInfoLink}" class="button-more-info">Mais Informações</a>
                     `;
-
                     container.appendChild(gridItem);
                 });
+                
+                oppCountElement.textContent = data.items.length;
             }
-
+           
             fetch('events.json')
                 .then(response => response.json())
                 .then(data => createEventGrid(data))
@@ -97,6 +106,67 @@
     </script>
 
 
+
+<footer class="footer">
+    <div class="footer-image-container">
+        <img id="gradienteFooter" src="gradienteFooter.png" alt="gradiente Footer">
+        
+        <img id="footerlogoStudentX" src="logoStudentX.png" alt="footer logo StudentX">
+
+        <div class="footer-links-text">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Serviços</a></li>
+                <li><a href="contact us.html">Contacta-nos</a></li>
+                <li><a href="#">FAQs</a></li>
+            </ul>
+        </div>
+
+        <div class="social-media-container">
+            <a href="https://www.instagram.com/" target="_blank">
+                <img class="social-media-icon" src="instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.tiktok.com/" target="_blank">
+                <img class="social-media-icon" src="tiktok.png" alt="TikTok">
+            </a>
+            <a href="https://www.twitter.com/" target="_blank">
+                <img class="social-media-icon" src="x.png" alt="Twitter">
+            </a>
+            <a href="https://www.linkedin.com/" target="_blank">
+                <img class="social-media-icon" src="linkedin.png" alt="LinkedIn">
+            </a>
+        </div>
+
+        <div id="inicio-button-container">
+            <a id="inicio-button" href="#">De volta ao Início</a>
+            <img id="arrowUp" src="arrowUp.png" alt="arrow up in the inicio button">
+        </div>
+        
+    </div>
+    <div class="blue-box">
+
+        <div class="right-text">
+            <div class="computer-right-text">
+                <button>Whitepaper</button>
+                <button>Manual de Normas</button>
+                <button>Termos e Serviços</button>
+                <button>Política de Privacidade</button>
+                <button>Cookies</button>
+            </div>
+
+            <div class="mobile-right-text">
+                <button>Termos e Serviços</button>
+                <button>Política</button>
+                <button>Cookies</button>
+            </div>
+        </div>
+
+        <div>
+            <h1 class="left-text">Copyright © Student X. Todos os direitos reservados.</h1>
+        </div>
+    </div>
+</footer>
 
     <script src="script.js" ></script>
 </body>

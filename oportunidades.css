@@ -165,7 +165,47 @@ nav {
 
 
 
+#gradiente{
+    position: relative;
+    display:flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top:8vw;
+    margin-bottom:-5vw;
+    z-index:-1;
+}
 
+.button {
+    position: absolute;
+    padding: 0.7vw 2vw;
+    border-radius: 2vw;
+    color: white;
+    cursor: pointer;
+    font-size: 1vw;
+}
+
+.button#start-now {
+    background-color: #007BFF;
+    border: 0.15vw solid #007BFF;
+    margin-top: 1.5%;
+    margin-left: 8%;
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.button#watch-video {
+    margin-top: 1.5%;
+    margin-left: 20%;
+    background-color: transparent; /* Remove background color */
+    border: 0.15vw solid white; /* Make the border white */
+    color: white; /* Ensure the text color is visible */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.button#start-now:hover,
+.button#watch-video:hover {
+    transform: translateY(-0.2vw); /* Elevate the button */
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.2); /* Create a shadow box */
+}
 
 
 .grid-container {
@@ -187,6 +227,10 @@ nav {
     width: 100%;
     height: auto;
     border-radius: 1vw;
+}
+
+.grid-item a:hover {
+    background-color: #0056b3;
 }
 
 .description {
@@ -275,6 +319,158 @@ nav {
 
 
 
+
+.footer-image-container {
+    position: relative;
+}
+
+#gradienteFooter {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+
+
+#footerlogoStudentX {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4%;
+    pointer-events: none;
+}
+
+.footer-links-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+}
+
+.footer-links-text ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-text li {
+    margin: 0 1vw;
+}
+
+.footer-links-text a {
+    color: #666;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.footer-links-text a:hover {
+    text-decoration: underline;
+}
+
+.social-media-container {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-media-icon {
+    margin: 0 1vw;
+    width:3vw;
+}
+
+#inicio-button-container {
+    position: absolute;
+    right: 4vw;
+    top: 80%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+#inicio-button {
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1vw;
+    white-space: nowrap;
+}
+
+
+.blue-box {
+    background-color: #108CEC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vw;
+}
+
+.left-text {
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0 auto;
+}
+
+.right-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+}
+
+.right-text button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8vw;
+    white-space: nowrap;
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0 auto;
+}
+
+.right-text button:hover {
+    text-decoration: underline;
+}
+
+.mobile-right-text{
+    display:none;
+}
+
+.opp-text-container{
+    position: relative;
+    margin-top: 7.5vw;
+    margin-bottom: -7vw;
+    margin-left: 8vw;
+}
+
+#opp-subtitle{
+    font-weight: 400;
+    color: rgba(0, 0, 24, 0.50);
+    margin-top:-1vw;
+
+}
 
 
 @media (max-width: 1024px) {
@@ -392,10 +588,7 @@ nav {
 
 
     .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-        display: grid;
-        gap: 1vw;
-        padding: 0vw;
+        grid-template-columns: repeat(1, 1fr);
     }
 
 
@@ -406,8 +599,6 @@ nav {
     padding: 4vw;
     display: flex;
     flex-direction: column;
-    width:80%;
-
 }
 
 .grid-item img {
@@ -428,7 +619,7 @@ nav {
 }
 
 .description-subtitle{
-        font-size: 2vw;
+        font-size: 4vw;
         color: grey;
         margin-top: -2.3vh;
     
@@ -481,6 +672,7 @@ nav {
     margin-right: 3vw;
 }
 .button-more-info {
+    padding: 2vw 13vw;
     background-color: #108CEC;
     color: white;
     text-decoration: none;

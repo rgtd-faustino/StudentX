@@ -280,13 +280,22 @@ nav {
     margin-bottom: -7%;
 }
 
-.start-button button{
+.start-button button {
     background-color: #000; /* Black background */
     color: #fff; /* White text color */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
 }
 
-.watch-button button{
+.watch-button button {
     background-color: transparent; /* Maintain the existing transparent background */
+    border: 0.15vw solid white; /* Make the border white */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.start-button button:hover,
+.watch-button button:hover {
+    transform: translateY(-0.2vw); /* Elevate the button */
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.2); /* Create a shadow box */
 }
 
 
@@ -394,19 +403,8 @@ nav {
 
 }
 
-#titleP3pc {
-    font-size: 2.5vw; /* Reduce font size */
-    line-height: 1.1; /* Adjust line height */
-    margin-top: 5%; /* Increase top margin to create space */
-    text-align: center; /* Center text on small screens */
-    position: relative; /* Ensure it is positioned relative to the container */
-    z-index: 1; /* Ensure it is above the background */
-    white-space: nowrap; /* Prevent text from wrapping */
-
-}
-
-#titleP3mobile{
-    display:none;
+#titleP3Mobile{
+    display: none;
 }
 
 #titleP3Background {
@@ -1135,7 +1133,47 @@ nav {
 
 
 
+.team-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 75vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
 
+.team-member {
+    text-align: center;
+    margin: 1vw;
+}
+
+.team-member img {
+    width: 10vw;
+    height: 10vw;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 0.5vw solid #ffffff;
+    box-shadow: 0 0 0.5vw rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.team-member img:hover {
+    transform: scale(1.05);
+}
+
+.team-member h3 {
+    margin-top: 1vw;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.team-member p {
+    font-size: 0.9em;
+    color: #666;
+}
 
 
 
@@ -1368,45 +1406,11 @@ nav {
     }
 
     #titleP3 {
-        font-size: 6vw; /* Reduce font size */
-        line-height: 1.1; /* Adjust line height */
-        margin-top: 10%; /* Increase top margin to create space */
-        text-align: center; /* Center text on small screens */
-        margin-bottom: 0%;
-        margin-top: 0%; /* Increase top margin to create space */
-
-        color: #08192B;
-        font-family: 'Poppins', sans-serif;
-        font-style: normal;
-        font-weight: 700;
-
+        display: none;
     }
 
-    #titleP3pc {
-        font-size: 6vw; /* Reduce font size */
-        line-height: 1.1; /* Adjust line height */
-        margin-top: 10%; /* Increase top margin to create space */
-        text-align: center; /* Center text on small screens */
-        margin-bottom: 0%;
-        margin-top: 0%; /* Increase top margin to create space */
-
-        color: #08192B;
-        font-family: 'Poppins', sans-serif;
-        font-style: normal;
-        font-weight: 700;
-
-        display:none;
-    }
-
-    #titleP3mobile{
-        display: unset;
-        font-size: 2.5vw; /* Reduce font size */
-        line-height: 1.1; /* Adjust line height */
-        margin-top: 5%; /* Increase top margin to create space */
-        text-align: center; /* Center text on small screens */
-        position: relative; /* Ensure it is positioned relative to the container */
-        z-index: 1; /* Ensure it is above the background */
-        white-space: nowrap; /* Prevent text from wrapping */
+    #titleP3Mobile{
+        display:unset;
         font-size: 6vw; /* Reduce font size */
         line-height: 1.1; /* Adjust line height */
         margin-top: 10%; /* Increase top margin to create space */
@@ -1419,12 +1423,14 @@ nav {
         font-style: normal;
         font-weight: 700;
     }
+
 
     #titleP3Background {
         margin-top: -1%; /* Adjust margin-top for better spacing */
         margin-left: 14%; /* Reduce left margin to fit smaller screens */
         width: 90%; /* Increase width to cover more of the screen */
         height: auto;
+        z-index:-1;
     }
 
     .title-container {
