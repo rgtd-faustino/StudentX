@@ -1077,104 +1077,89 @@ nav {
 
 }
 
-
-
-.aboutus-page{
+.aboutus-page {
     position: relative;
-    margin-top:5vw;
+    margin-top: 0vw;
     margin-bottom: 5vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
-
-.text-aboutus{
-    margin-top:5%;
-    position: relative;
-    width:40%;
+.text-aboutus {
+    width: 40%;
     margin-left: 5%;
-
     color: #000;
-
     font-family: 'Inter', sans-serif;
     font-size: 1vw;
     font-style: normal;
     font-weight: 500;
     line-height: 1.8vw;
-
 }
-
-.tituloimage{
-    position: relative;
+.tituloimage {
+    margin-top: -2vw;
+    margin-bottom: 3vw;
     width: 40%;
-    margin-left: 60%;
-
+    margin-left: 50%;
 }
-
-#aboututsTitleImage{
+#aboututsTitleImage {
     margin-left: 15%;
-    width:65%;
+    width: 65%;
     pointer-events: none;
 }
-
-#titulo-aboutus{
-    position: relative;
+#titulo-aboutus {
     color: #000;
     font-family: 'Poppins', sans-serif;
     font-size: 3vw;
     font-style: normal;
     font-weight: 700;
-    margin-bottom:-11%;
+    margin-bottom: -11%;
 }
-
 .highlight-us {
     background: linear-gradient(300deg, #108CEC 20%, #FFF 120%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-
-
-
 .team-container {
+    width: 45%;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    max-width: 75vw;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
+    flex-direction: row;
+    gap: 3vw;
+    margin-right: 6%;
+    margin-top:2%;
 }
-
 .team-member {
     text-align: center;
-    margin: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5vw;
 }
-
 .team-member img {
-    width: 10vw;
-    height: 10vw;
+    width: 13vw;
+    height: 13vw;
     object-fit: cover;
-    border-radius: 50%;
-    border: 0.5vw solid #ffffff;
+    border-radius: 10%;
+    border: 0.3vw solid #ffffff;
     box-shadow: 0 0 0.5vw rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
-
 .team-member img:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
-
+.team-member-info {
+    text-align: left;
+}
 .team-member h3 {
     margin-top: 1vw;
-    font-size: 1.2em;
+    font-size: 1vw;
     color: #333;
 }
-
 .team-member p {
-    font-size: 0.9em;
+    margin-top: -1vw;
+    font-size: 0.8vw;
     color: #666;
 }
-
 
 
 
@@ -2153,7 +2138,53 @@ nav {
         -webkit-text-fill-color: transparent;
     }
     
-    
+
+    .team-container {
+        width: 98%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between; /* Add this line */
+        gap: 0vw; /* Adjust this value as needed */
+        margin-right: 0%;
+        margin: 0 auto;
+        margin-top: 5vw;
+
+    }
+    .team-member {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5vw;
+        flex: 1; /* Add this line to make each member take up equal space */
+        max-width: calc(100% / 3); /* Adjust based on the number of team members and gap */
+    }
+    .team-member img {
+        width: 100%; /* Change from 30vw to 100% */
+        height: auto; /* Change from 30vw to auto to maintain aspect ratio */
+        max-width: 30vw; /* Add this to limit the maximum size */
+        object-fit: cover;
+        border-radius: 10%;
+        border: 0.3vw solid #ffffff;
+        box-shadow: 0 0 0.5vw rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    .team-member img:hover {
+        transform: scale(1.1);
+    }
+    .team-member-info {
+        text-align: left;
+    }
+    .team-member h3 {
+        margin-top: 1vw;
+        font-size: 3.5vw;
+        color: #333;
+    }
+    .team-member p {
+        margin-top: -3vw;
+        font-size: 3vw;
+        color: #666;
+    }
 
 
 
@@ -2243,7 +2274,7 @@ nav {
     .left-text {
         color: #FFF;
         font-family: 'Poppins', sans-serif;
-        font-size: 3.5vw;
+        font-size: 3.2vw;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
@@ -2256,7 +2287,7 @@ nav {
         background: none;
         border: none;
         cursor: pointer;
-        font-size: 3.5vw;
+        font-size: 3.2vw;
         white-space: nowrap;
         color: #FFF;
         font-family: 'Poppins', sans-serif;
