@@ -303,12 +303,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.classList.add('other-month');
             }
             button.onclick = (event) => {
-                event.preventDefault(); // Prevent default action
+                // Remove 'active' class from all buttons
+                document.querySelectorAll('.day-button').forEach(btn => btn.classList.remove('active'));
+                // Add 'active' class to the clicked button
+                event.target.classList.add('active');
                 selectDay(day.getDate());
             };
             dayButtonsContainer.appendChild(button);
         }
-        document.querySelector('.day-button').classList.add('active');
+        // Remove the line that adds 'active' class to the first button
+        // document.querySelector('.day-button').classList.add('active');
     }
     
     function renderHours() {
@@ -332,7 +336,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     day: event.day,
                     startTime: event.startTime,
                     endTime: event.endTime,
-                    descriptionTitle: event.descriptionTitle
+                    descriptionTitle: event.descriptionTitle,
+                    imageSrc: event.imageSrc,
+                    altText: event.altText,
+                    descriptionSubtitle: event.descriptionSubtitle,
+                    logoSrc: event.logoSrc,
+                    logoAlt: event.logoAlt,
+                    oppPlaceTitle: event.oppPlaceTitle,
+                    oppPlaceSubtitle: event.oppPlaceSubtitle,
+                    moreInfoLink: event.moreInfoLink
                 }));
                 renderEvents();
             })
@@ -340,6 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Erro ao carregar eventos:', error);
             });
     }
+    
     
     function selectDay(day) {
         selectedDay = day;

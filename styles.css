@@ -709,24 +709,33 @@ nav {
     text-align: left;
 }
 
+.timeContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3vw;
+}
+
 #monthYear {
-    font-size: 2vw;
-    margin-left: 5vw;
-    position: relative;
+    font-size: 1.6vw;
     font-family: 'Inter', sans-serif;
     font-style: normal;
-    font-weight: bold;
-    text-align: left;
+    font-weight: 300;
+    margin-left: 5vw;
+}
+
+.weekButtons {
+    display: flex;
+    gap: 1vw; /* Space between buttons */
+    margin-right: 7.5vw;
+
 }
 
 .prevWeek, .nextWeek {
     font-size: 1.5vw;
     padding: 0.5vw 1vw;
-    margin-left: 5vw;
-    margin-bottom: 2vw;
-    margin-top: 1vw;
     border: none;
-    border-radius: 5px;
+    border-radius: 1vw;
     background-color: #007BFF;
     color: white;
     cursor: pointer;
@@ -734,7 +743,6 @@ nav {
     font-style: normal;
     font-weight: 200;
 }
-
 .prevWeek:hover, .nextWeek:hover {
     background-color: #0056b3;
 }
@@ -761,8 +769,8 @@ nav {
     padding: 0.8vw 2vw;
     border: none;
     border-radius: 1vw; /* Rounded corners */
-    background-color: #108CEC; /* Base color */
-    color: white; /* Text color */
+    background-color: rgba(102, 102, 102, 0.05); /* Base color */
+    color: black; /* Text color */
     cursor: pointer;
     box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
     font-size: 1vw;
@@ -770,12 +778,15 @@ nav {
 }
 
 .day-button:hover {
-    background-color: #0056b3; /* Slightly darker green on hover */
+    background-color: #108CEC; /* Slightly darker green on hover */
+    color: white;
 }
 
 .day-button.active {
-    background-color: #0056b3; /* Darker green for active button */
+    background-color: #108CEC; /* Darker green for active button */
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* More pronounced shadow for active */
+    color: white;
+
 }
 
 .calendar-content {
