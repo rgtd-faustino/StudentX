@@ -23,7 +23,7 @@
 <body>
 
     <img id="image1" src="ELIPSE GRADIENTE.png" alt="blue gradient background">
-    <img id="image1tlm" src="ELIPSE GRADIENTE TELEMOVEL.png" alt="blue gradient background mobile">
+    <img id="image1tlm" src="ELIPSE GRADIENTE TELEMOVEL.png" alt="blue gradient background">
 
     <nav>
         <!-- Hamburger Menu for Mobile -->
@@ -70,27 +70,27 @@
             </div>
         </div>
 
-        <img id="image2" src="laptop.png" alt="computer image page 1">
+        <img id="image2" src="laptop.png" alt="computer image">
 
     </div>
     
 
 
     <div id="parentContainer">
-        <img id="gradienteP2" src="gradiente pagina 2.png" alt="blue gradient page 2">
-        <img id="tlmP2" src="telemovel imagem pagina 2.png" alt="mobile page 2">
+        <img id="gradienteP2" src="gradiente pagina 2.png" alt="blue gradient">
+        <img id="tlmP2" src="telemovel imagem pagina 2.png" alt="mobile phone image">
         <img id="logos" src="logos.png" alt="logosP2">
 
 
         <div id="logoWrapper">
-            <img id="logo1" src="logo1tlm.png" alt="logo1P2">
-            <img id="logo2" src="logo2tlm.png" alt="logo2P2">
-            <img id="logo3" src="logo3tlm.png" alt="logo3P2">
-            <img id="logo4" src="logo4tlm.png" alt="logo4P2">
+            <img id="logo1" src="logo1tlm.png" alt="logo1">
+            <img id="logo2" src="logo2tlm.png" alt="logo2">
+            <img id="logo3" src="logo3tlm.png" alt="logo3">
+            <img id="logo4" src="logo4tlm.png" alt="logo4">
         </div>
 
         <div id="starsContainer">
-            <img id="stars" src="5stars.png" alt="starsP2">
+            <img id="stars" src="5stars.png" alt="stars image">
             <div class="starsText">| 50+ students trust in Student X</div>
         </div>
 
@@ -120,7 +120,7 @@
         <h2 id="subtitle">OPORTUNIDADES RECENTES</h2>
 
         <div class="title-background-container">
-            <img id="titleP3Background" src="titleP3background.png" alt="background image for title P3">
+            <img id="titleP3Background" src="titleP3background.png" alt="background image">
             <h1 id="titleP3">Ver <a href="oportunidades.html" class="highlightP3">Mais Oportunidades</a></h1>
             <h1 id="titleP3Mobile">Ver <span class="highlightP3">Mais Oportunidades</span></h1>
             
@@ -138,7 +138,7 @@
 
         <div class="arrows-and-dots">
             <button id="prev-mobile">
-                <img id="prev-mobile-img" src="leftarrow.png" alt="Previous">
+                <img id="prev-mobile-img" src="leftarrow.png" alt="Previous image">
                 
             </button>
         
@@ -171,7 +171,7 @@
             </div>
             
             <button id="next-mobile">
-                <img id="next-mobile-img" src="rightarrow.png" alt="Next">
+                <img id="next-mobile-img" src="rightarrow.png" alt="Next image">
             </button>
         
             <script>
@@ -188,22 +188,22 @@
 
     <h1 id="opportunityTitle" class="opportunityTitle"><strong>Hoje</strong> tens <strong>5 Oportunidades</strong> com XXXXX</h1>
 
+    <div id="monthYear"></div>
+    <button class="prevWeek" onclick="prevWeek()">Semana Anterior</button>
+    <button class="nextWeek" onclick="nextWeek()">Próxima Semana</button>
+
+    <div id="dayButtons" class="day-buttons"></div>
+
     <div class="calendar-container">
-        <div class="calendar-week-buttons">
-            <button id="prevWeek">&lt;|</button>
-            <div id="weekRange" class="week-range"></div>
-            <button id="nextWeek">|&gt;</button>
+        <div id="calendar" class="calendar">
+            <div class="calendar-content">
+                <div id="hours" class="hours"></div>
+                <div id="events" class="events"></div>
+            </div>
         </div>
-
-        <div id="calendar"></div>
-
-        <div id="calendar-grid-events">
-            <div class="hours-column"></div>
-
-        </div>
-
-
     </div>
+
+
     
     <div class="parent-element">
         <h1 id="studentx-ajuda-title">COMO PODE O&nbsp;<span class="highlight2">STUDENT X</span>&nbsp;AJUDAR?</h1>
@@ -211,16 +211,16 @@
          se representas uma organização, garantimos a promoção das tuas iniciativas a um público-alvo motivado.</h2>
     </div>  
 
-    <img id="fluxograma" src="fluxograma.png" alt="fluxograma">
-    <img id="fluxogramaMobile" src="fluxogramaMobile.png" alt="fluxograma">
+    <img id="fluxograma" src="fluxograma.png" alt="fluxograma image">
+    <img id="fluxogramaMobile" src="fluxogramaMobile.png" alt="fluxograma image">
 
     <div class="parent-element2"></div>
         <h1 id="questoes-frequentes-title">Questões Frequentes</h1>
-        <img id="tituloFAQ" src="tituloFAQ.png" alt="Titulo FAQ">
+        <img id="tituloFAQ" src="tituloFAQ.png" alt="Titulo FAQ image">
         <h2 id="questoes-frequentes-subtitle">Encontra aqui as respostas às perguntas mais frequentes dos nossos utilizadores</h2>
     </div>
 
-    <img id="gradienteFAQMobile" src="gradienteFAQMobile.png" alt="gradiente FAQ Mobile">
+    <img id="gradienteFAQMobile" src="gradienteFAQMobile.png" alt="gradiente FAQ">
 
     
     <div class="faq">
@@ -302,7 +302,7 @@
         </div>
     </div>
 
-    <img id="gradienteAboutUs" src="aboutusGradiente.png" alt="gradiente AboutUs page">
+    <img id="gradienteAboutUs" src="aboutusGradiente.png" alt="gradiente">
     
     <div class="aboutus-page">
         <div class="tituloimage">
@@ -314,26 +314,27 @@
                 A falta de uma plataforma unificada e eficaz que organize estas oportunidades leva a que inúmeros estudantes percam valiosas experiências que fariam a diferença no seu percurso pessoal, curricular e profissional.
                 Com este objetivo em mente, unimos as valências das nossas áreas de estudo tão distintas, mas complementares, gestão de recursos humanos, design e engenharia informática e multimédia para desenvolver o Student X, uma plataforma online que funciona como uma ponte entre quem proporciona essas oportunidades: organizações, instituições, associações e quem as procura: os estudantes.</p>
         </div>
+        <div class="team-container">
+            <div class="team-member">
+                <img src="/image1.png" alt="miguel">
+                <h3>Miguel Abelho</h3>
+                <p>ISCSP - Gestão de Recursos Humanos</p>
+            </div>
+            <div class="team-member">
+                <img src="image1.png" alt="tomas">
+                <h3>Tomás Sousa</h3>
+                <p>ULL - Design</p>
+            </div>
+            <div class="team-member">
+                <img src="image1.png" alt="rafael">
+                <h3>Rafael Faustino</h3>
+                <p>ISEL - Engenharia Informática e Multimédia</p>
+            </div>
+        </div>
     </div>
 
 
-    <div class="team-container">
-        <div class="team-member">
-            <img src="/image1.png" alt="Team Member 1">
-            <h3>Miguel Abelho</h3>
-            <p>ISCSP - Gestão de Recursos Humanos</p>
-        </div>
-        <div class="team-member">
-            <img src="image1.png" alt="Team Member 2">
-            <h3>Tomás Sousa</h3>
-            <p>ULL - Design</p>
-        </div>
-        <div class="team-member">
-            <img src="image1.png" alt="Team Member 3">
-            <h3>Rafael Faustino</h3>
-            <p>ISEL - Engenharia Informática e Multimédia</p>
-        </div>
-    </div>
+
 
 
     <footer class="footer">
@@ -369,7 +370,7 @@
 
             <div id="inicio-button-container">
                 <a id="inicio-button" href="#">De volta ao Início</a>
-                <img id="arrowUp" src="arrowUp.png" alt="arrow up in the inicio button">
+                <img id="arrowUp" src="arrowUp.png" alt="arrow up">
             </div>
             
         </div>

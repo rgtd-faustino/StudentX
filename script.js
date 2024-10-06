@@ -500,3 +500,158 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    
+    const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    let events = [];
+    let selectedDay = new Date().getDate();
+    let currentDate = new Date();
+    let currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
+    
+    function init() {
+        renderWeekButtons();
+        renderHours();
+        fetchEvents();
+        updateMonthYear();
+    }
+    
+    function renderWeekButtons() {
+        const dayButtonsContainer = document.getElementById('dayButtons');
+        dayButtonsContainer.innerHTML = '';
+        for (let i = 0; i < 7; i++) {
+            const day = new Date(currentWeekStart);
+            day.setDate(currentWeekStart.getDate() + i);
+            const button = document.createElement('button');
+            button.textContent = `${day.getDate()} ${diasDaSemana[day.getDay()]}`;
+            button.classList.add('day-button');
+            if (day.getMonth() !== currentDate.getMonth()) {
+                button.classList.add('other-month');
+            }
+            button.onclick = () => selectDay(day.getDate());
+            dayButtonsContainer.appendChild(button);
+        }
+        document.querySelector('.day-button').classList.add('active');
+    }
+    
+    function renderHours() {
+        const hoursContainer = document.getElementById('hours');
+        hoursContainer.innerHTML = '';
+        for (let i = 0; i < 24; i++) {
+            const hourDiv = document.createElement('div');
+            hourDiv.classList.add('hour');
+            hourDiv.textContent = `${i}:00`;
+            hoursContainer.appendChild(hourDiv);
+        }
+    }
+    
+
+
+    function fetchEvents() {
+        fetch('events.json')
+            .then(response => response.json())
+            .then(data => {
+                events = data.items.map(event => ({
+                    day: event.day,
+                    startTime: event.startTime,
+                    endTime: event.endTime,
+                    descriptionTitle: event.descriptionTitle
+                }));
+                renderEvents();
+            })
+            .catch(error => {
+                console.error('Erro ao carregar eventos:', error);
+            });
+    }
+    
+    function selectDay(day) {
+        selectedDay = day;
+        document.querySelectorAll('.day-button').forEach(button => {
+            button.classList.toggle('active', button.textContent.startsWith(day.toString()));
+        });
+        renderEvents();
+    }
+    
+    function renderEvents() {
+        const eventsContainer = document.getElementById('events');
+        eventsContainer.innerHTML = '';
+        const dayEvents = events.filter(event => event.day === selectedDay);
+        const sortedEvents = dayEvents.sort((a, b) => a.startTime.localeCompare(b.startTime));
+        const columns = [];
+        sortedEvents.forEach((event, index) => {
+            let column = 0;
+            while (columns[column] && columns[column] > event.startTime) {
+                column++;
+            }
+            columns[column] = event.endTime;
+            const eventDiv = document.createElement('div');
+            eventDiv.classList.add('event');
+            eventDiv.innerHTML = `<strong>${event.descriptionTitle}</strong><br>${event.startTime} - ${event.endTime}`;
+            const style = getEventStyle(event);
+            Object.assign(eventDiv.style, style);
+            eventDiv.style.left = `${column * 210}px`;
+            eventsContainer.appendChild(eventDiv);
+        });
+    }
+    
+    function getEventStyle(event) {
+        const startHour = parseInt(event.startTime.split(':')[0]);
+        const startMinute = parseInt(event.startTime.split(':')[1]);
+        const endHour = parseInt(event.endTime.split(':')[0]);
+        const endMinute = parseInt(event.endTime.split(':')[1]);
+        const top = startHour * 61 + startMinute;
+        const height = (endHour * 61 + endMinute) - top;
+        return {
+            top: `${top}px`,
+            height: `${height}px`,
+        };
+    }
+    
+    function updateMonthYear() {
+        const monthYearElement = document.getElementById('monthYear');
+        const weekStart = new Date(currentWeekStart);
+        const weekEnd = new Date(currentWeekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+    
+        const formatDate = (date) => {
+            return date.getDate();
+        };
+    
+        const formatMonthYear = (date) => {
+            return `${meses[date.getMonth()]} ${date.getFullYear()}`;
+        };
+    
+        let dateRangeText = `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+    
+        if (weekStart.getMonth() !== weekEnd.getMonth()) {
+            dateRangeText = `${formatDate(weekStart)} ${meses[weekStart.getMonth()]} - ${formatDate(weekEnd)} ${meses[weekEnd.getMonth()]}`;
+        }
+    
+        if (weekStart.getFullYear() !== weekEnd.getFullYear()) {
+            dateRangeText = `| ${formatDate(weekStart)} ${meses[weekStart.getMonth()]} ${weekStart.getFullYear()} - ${formatDate(weekEnd)} ${meses[weekEnd.getMonth()]} ${weekEnd.getFullYear()} |`;
+        } else {
+            dateRangeText = `| ${formatDate(weekStart)} - ${formatDate(weekEnd)} ${formatMonthYear(weekEnd)} |`;
+        }
+    
+        monthYearElement.textContent = dateRangeText;
+    }
+    
+    function nextWeek() {
+        currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+        updateCalendar();
+    }
+    
+    function prevWeek() {
+        currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+        updateCalendar();
+    }
+    
+    function updateCalendar() {
+        renderWeekButtons();
+        updateMonthYear();
+        renderEvents();
+    }
+    
+
+    
+    init();

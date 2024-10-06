@@ -82,19 +82,17 @@ h1 {
 
 #starsContainer {
     display: flex;
-    align-items: center; /* Align items vertically centered */
-    position: absolute;
+    justify-content: center;
     top: 0;
     left: 0;
-    margin-left: 35%;
     pointer-events: none;
     z-index: 2; /* Higher z-index to be on top */
-    margin-top: -5%;
+    margin-top: -5vw;
 }
-
 
 #stars {
     height: auto;
+    width:9%;
 }
 
 #logos{
@@ -124,14 +122,12 @@ h1 {
 }
 
 .starsText {
-    margin-left: 10px; /* Adjust spacing between stars and text */
     color: #08192B;
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 25px;
+    font-size: 1.3vw;
     font-style: normal;
     font-weight: 500;
-    line-height: 50px;
 }
 
 nav {
@@ -702,179 +698,116 @@ nav {
 
 
 
-
-.calendar-container {
-    width: 90%; /* Adjusted width */
-    margin: 0 auto;
-    margin-bottom: 20vw;
-    
-}
-
-.calendar-container {
-    text-align: center;
-    margin: 0 auto;
-}
-
-#calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin: 20px 0;
-}
-.week-row {
-    display: flex;
-    grid-gap: 2%;
-}
-
-.empty-day {
-    background-color: #e0e0e0;
-    cursor: not-allowed;
-}
-
-.day-names .day-name {
-    font-weight: bold;  
-    background-color: #ddd;
-    padding: 10px;
-}
-
-.calendar-week-buttons{
-    
-    display: flex;
-    gap: 1vw;
-    margin-top: 2vw;
-}
-
-.day-button {
-    display: flex; /* Display as a flex container */
-    border: none; /* Remove default border */
-    padding: 1vh 1vw; /* Add some padding */
-    border-radius: 0.7vw; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-family: 'Poppins', sans-serif; /* Font family */
-    font-size: 1vw; /* Font size */
-    text-decoration: none; /* Remove underline */
-    white-space: nowrap;
-    width: 8vw; /* Fixed width for all buttons */
-    justify-content: center; /* Center the buttons horizontally */
-
-    height: 120%; /* Height of the button */
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    background: rgba(102, 102, 102, 0.05);
-}
-
-.day-button.selected {
-    background-color: #108CEC;
-    color: white;
-}
-
-#prevWeek, #nextWeek{
-    all:unset;
-    width: unset;
-    cursor: pointer;
-    user-select: none;
-
-}
-
-#weekRange{
-    width: 13vw; /* Adjust the width as needed */
-    display: inline-block; /* Ensures the width is respected */
-    text-align: center; /* Optional: Center the text */
-    white-space: nowrap;
-}
-
 .opportunityTitle{
-    all:unset;
     font-size: 2.5vw;
     margin-left:5vw;
     position:relative;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 200;
+    margin-bottom:2vw;
+    text-align: left;
 }
 
-#calendar{
-    /*margin-bottom:10vw;*/
-    margin-left:20%;
-    margin-top:5%;
-    
-}
-
-#calendar-grid-events{
-    margin-top:5vw;
-    height:40vw;
-    overflow: auto;
-    display: flex;
-    margin-left:5%;
-
-}
-
-.grid-container {
-    display: flex;
-    height: 401%; /* Set a fixed height */
-    width: 80%;
-    margin-left:5%;
-    border: 1px solid #ccc;
-
-  }
-  
-  .grid-column {
-    flex: 1;
-    border: 1px solid #ccc;
-    padding: 1%;
-    text-align: center;
+#monthYear {
+    font-size: 2vw;
+    margin-left: 5vw;
     position: relative;
-
-  }
-
-  .hours-column {
-    width: 5%;
-    margin-top: -5.5%;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
 }
 
+.prevWeek, .nextWeek {
+    font-size: 1.5vw;
+    padding: 0.5vw 1vw;
+    margin-left: 5vw;
+    margin-bottom: 2vw;
+    margin-top: 1vw;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+}
+
+.prevWeek:hover, .nextWeek:hover {
+    background-color: #0056b3;
+}
+
+.calendar-container{
+    max-width: 80vw;
+    max-height: 40vw;
+    overflow-y: auto;
+    margin: 0 auto;
+    margin-top:4vw;
+}
+.calendar {
+    display: flex;
+    flex-direction: column;
+}
+.day-buttons {
+    display: flex;
+    justify-content: space-around;
+    width:90%;
+    margin: 0 auto;
+}
+
+.day-button {
+    padding: 0.8vw 2vw;
+    border: none;
+    border-radius: 1vw; /* Rounded corners */
+    background-color: #108CEC; /* Base color */
+    color: white; /* Text color */
+    cursor: pointer;
+    box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 1vw;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.day-button:hover {
+    background-color: #0056b3; /* Slightly darker green on hover */
+}
+
+.day-button.active {
+    background-color: #0056b3; /* Darker green for active button */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* More pronounced shadow for active */
+}
+
+.calendar-content {
+    display: flex;
+
+}
+.hours {
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+}
 .hour {
-    border: 1px solid #ccc;
-    margin: 5vw 0;
-    
-}
-.grid-container {
+    height: 60px;
+    border-bottom: 1px solid #e0e0e0;
     display: flex;
-    width: 100%;
-    border: 1px solid #ccc;
-    min-height: 500px;
+    align-items: center;
+    justify-content: center;
 }
-
-.grid-column {
-    flex: 1;
-    border-right: 1px solid #ccc;
-    padding: 10px;
+.events {
     position: relative;
+    flex: 1;
 }
-
-.column-header {
-    font-weight: bold;
-    text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
-}
-
 .event {
-    background-color: #e6f2ff;
-    border: 1px solid #99ccff;
-    border-radius: 4px;
+    position: absolute;
+    left: 0;
+    width: 200px;
+    background-color: #4CAF50;
+    color: white;
     padding: 5px;
-    margin-bottom: 5px;
-}
-
-.event-title {
-    font-weight: bold;
-}
-
-.event-time {
-    font-size: 0.8em;
-    color: #666;
+    border-radius: 3px;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 
@@ -1428,14 +1361,12 @@ nav {
     }
 
     .starsText {
-        margin-left: 10px; /* Adjust spacing between stars and text */
         color: #08192B;
         text-align: center;
         font-family: 'Poppins', sans-serif;
         font-size: 3.5vw;
         font-style: normal;
         font-weight: 500;
-        line-height: 50px;
     }
 
     #starsContainer {
@@ -1446,7 +1377,7 @@ nav {
         margin-left: 0%;
         pointer-events: none;
         z-index: 2; /* Higher z-index to be on top */
-        margin-top: 5%;
+        margin-top: 12vw;
 
         flex-direction: row;
         align-items: center;
@@ -2282,6 +2213,13 @@ nav {
         white-space: nowrap;
 
     }
+
+    .right-text{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0vw;
+    }
     
     .right-text button {
         background: none;
@@ -2298,7 +2236,7 @@ nav {
         margin-bottom:1vw;
 
     }
-    
+
     .right-text button:hover {
         text-decoration: none;
     }
