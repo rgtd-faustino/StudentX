@@ -159,232 +159,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDay = new Date(year, month, 1).getDay();
-    const weeks = [];   
-    const dayNames = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-
-    const monthNamesInPortuguese = [
-        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
-        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-    ];
-   
-    let currentDay = 1;
-
-    // Create the weeks for the current month
-    while (currentDay <= daysInMonth) {
-        const week = [];
-        for (let i = 0; i < 7; i++) {
-            if ((currentDay === 1 && i < firstDay) || currentDay > daysInMonth) {
-                week.push(null);
-            } else {
-                week.push(currentDay++);
-            }
-        }
-        weeks.push(week);
-    }
-
-    // Fill the last week with the next month's days
-    const lastWeek = weeks[weeks.length - 1];
-    let overflowDay = 1;
-    for (let i = 0; i < 7; i++) {
-        if (lastWeek[i] === null && currentDay > daysInMonth) {
-            lastWeek[i] = overflowDay++;
-        }
-    }
-
-    let currentWeekIndex = 0;
-
-    // Function to render the week
-    function renderWeek() {
-        const calendar = document.getElementById('calendar');
-        const weekRange = document.getElementById('weekRange');
-        calendar.innerHTML = ''; // Clear existing days
-        const week = weeks[currentWeekIndex];
-    
-        // Create each day as a button with both the day name and number
-        const weekRow = document.createElement('div');
-        weekRow.classList.add('week-row');
-        week.forEach((day, index) => {
-            const dayElement = document.createElement('button');
-            dayElement.classList.add('day-button');
-    
-            if (day !== null) {
-                dayElement.innerHTML = `${dayNames[index]}<br>${day}`;
-            } else {
-                dayElement.textContent = `${dayNames[index]}`;
-                dayElement.classList.add('empty-day');
-                dayElement.disabled = true;
-            }
-            
-            weekRow.appendChild(dayElement);
-        });
-        calendar.appendChild(weekRow);
-    
-        // Update the week range display
-        const firstDayOfWeek = week.find(day => day !== null);
-        const lastDayOfWeek = [...week].reverse().find(day => day !== null);
-    
-        const translatedMonthName = monthNamesInPortuguese[month];
-    
-        const firstDayIndex = week.indexOf(firstDayOfWeek);
-        const lastDayIndex = week.indexOf(lastDayOfWeek);
-    
-        const translatedFirstDayOfWeek = dayNames[firstDayIndex];
-        const translatedLastDayOfWeek = dayNames[lastDayIndex];
-    
-        weekRange.textContent = `${firstDayOfWeek} - ${lastDayOfWeek} ${translatedMonthName} ${year}`;
-    }
-    // Sample JSON data for events (you would typically load this from a file or API)
-    const eventsData = [
-        { id: 1, title: "Meeting 1", start: "09:00", end: "10:30", column: 1 },
-        { id: 2, title: "Lunch", start: "12:00", end: "13:00", column: 3 },
-        { id: 3, title: "Presentation", start: "14:00", end: "15:30", column: 2 },
-        { id: 4, title: "Team Building", start: "11:00", end: "12:30", column: 4 },
-        { id: 5, title: "Project Review", start: "16:00", end: "17:00", column: 5 }
-    ];
-
-    // Function to create and display the grid with events
-    function displayGrid(showGrid) {
-        const calendar = document.getElementById('calendar-grid-events');
-        
-        // Remove the grid if `showGrid` is false
-        if (!showGrid) {
-            const existingGrid = calendar.querySelector('.grid-container');
-            if (existingGrid) {
-                calendar.removeChild(existingGrid);
-            }
-            return;
-        }
-
-        // Create and display the grid
-        const gridContainer = document.createElement('div');
-        gridContainer.classList.add('grid-container');
-
-        for (let i = 0; i < 5; i++) {
-            const column = document.createElement('div');
-            column.classList.add('grid-column');
-            column.innerHTML = `<div class="column-header">Column ${i + 1}</div>`;
-
-            // Add events to the column
-            eventsData.forEach(event => {
-                if (event.column === i + 1) {
-                    const eventElement = document.createElement('div');
-                    eventElement.classList.add('event');
-                    eventElement.innerHTML = `
-                        <div class="event-title">${event.title}</div>
-                        <div class="event-time">${event.start} - ${event.end}</div>
-                    `;
-                    column.appendChild(eventElement);
-                }
-            });
-
-            gridContainer.appendChild(column);
-        }
-
-        // Remove any existing grid before adding a new one
-        const existingGrid = calendar.querySelector('.grid-container');
-        if (existingGrid) {
-            calendar.removeChild(existingGrid);
-        }
-        calendar.appendChild(gridContainer);
-    }
-
-    // Call the function to display the grid
-    displayGrid(true);
-
-    // Function to attach event listeners to day buttons
-    function attachDayButtonListeners() {
-        const dayButtons = document.querySelectorAll('.day-button');
-
-        dayButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                dayButtons.forEach(btn => btn.classList.remove('selected'));
-                this.classList.add('selected');
-
-                // Display grid when a day is selected, or remove it if no button is selected
-                if (this.classList.contains('selected')) {
-                    displayGrid(true); // Display grid
-                } else {
-                    displayGrid(false); // Hide grid
-                }
-            });
-        });
-
-        /*// Additional logic to hide the grid if no buttons are selected
-        document.addEventListener('click', function(event) {
-            if (!event.target.classList.contains('day-button')) {
-                dayButtons.forEach(btn => btn.classList.remove('selected'));
-                displayGrid(false); // Hide grid if no day button is selected
-            }
-        });*/
-
-        
-    }
-
-    // Function to create and display the hours column
-    function displayHoursColumn() {
-        const hoursColumn = document.querySelector('.hours-column');
-        
-        for (let i = 0; i < 24; i++) {
-            const hourDiv = document.createElement('div');
-            hourDiv.className = 'hour';
-            hourDiv.textContent = `${i.toString().padStart(2, '0')}:00`;
-            hoursColumn.appendChild(hourDiv);
-        }
-    }
-
-    // Call the function to display the hours column
-    displayHoursColumn();
-
-
-    // Button event listeners for previous and next weeks
-    document.getElementById('prevWeek').addEventListener('click', () => {
-        if (currentWeekIndex > 0) {
-            currentWeekIndex--;
-            renderWeek();
-            attachDayButtonListeners();
-        }
-    });
-
-    document.getElementById('nextWeek').addEventListener('click', () => {
-        if (currentWeekIndex < weeks.length - 1) {
-            currentWeekIndex++;
-            renderWeek();
-            attachDayButtonListeners();
-        }
-    });
-
-    // Initial render of the first week
-    renderWeek();
-    attachDayButtonListeners();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Select all elements with the class 'day-button'
-    const dayButtons = document.querySelectorAll('.day-button');
-
-        // Add 'selected' class to the first button
-        if (dayButtons.length > 0) {
-            dayButtons[0].classList.add('selected');
-        }
-
-        // Add click event listener to each button
-        dayButtons.forEach(button => {
-            button.addEventListener('click', function() {
-            // Remove 'selected' class from all buttons
-            dayButtons.forEach(btn => btn.classList.remove('selected'));
-            
-            // Add 'selected' class to the clicked button
-            this.classList.add('selected');
-
-        });
-    });
-});
 
 
 
@@ -528,7 +302,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (day.getMonth() !== currentDate.getMonth()) {
                 button.classList.add('other-month');
             }
-            button.onclick = () => selectDay(day.getDate());
+            button.onclick = (event) => {
+                event.preventDefault(); // Prevent default action
+                selectDay(day.getDate());
+            };
             dayButtonsContainer.appendChild(button);
         }
         document.querySelector('.day-button').classList.add('active');
@@ -624,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let dateRangeText = `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
     
         if (weekStart.getMonth() !== weekEnd.getMonth()) {
-            dateRangeText = `${formatDate(weekStart)} ${meses[weekStart.getMonth()]} - ${formatDate(weekEnd)} ${meses[weekEnd.getMonth()]}`;
+            dateRangeText = `| ${formatDate(weekStart)} ${meses[weekStart.getMonth()]} - ${formatDate(weekEnd)} ${meses[weekEnd.getMonth()]} |`;
         }
     
         if (weekStart.getFullYear() !== weekEnd.getFullYear()) {
