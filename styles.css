@@ -594,6 +594,7 @@ nav {
 
 
 .description-title-mobile  {
+    text-align: center;
     font-weight: 600;
     font-size: 1.3vw;
 }
@@ -810,6 +811,7 @@ nav {
     flex: 1;
 }
 .event {
+
     position: absolute;
     left: 0;
     width: 200px;
@@ -821,6 +823,7 @@ nav {
     box-sizing: border-box;
 }
 
+/* Event Modal Container */
 .event-modal {
     display: none;
     position: fixed;
@@ -829,34 +832,122 @@ nav {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better contrast */
     justify-content: center;
     align-items: center;
 }
 
+/* Modal Content */
 .modal-content {
-    background-color: #fefefe;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 80%;
-    max-height: 80%;
-    overflow-y: auto;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    border-radius: 1vw; /* Smooth, rounded corners */
+    max-width: 20%;
+    padding: 0.7vw; /* Better padding for a cleaner layout */
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+    position: relative;
 }
 
-.close-modal {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
-.close-modal:hover,
-.close-modal:focus {
-    color: #000;
+
+.modal-content a {
+    background-color: #007bff;
+    color: white;
     text-decoration: none;
+    font-weight: 600;
+    padding: 0.6vw 0;
+    border-radius:0.6vw;
+    text-align: center;
+    font-size: 1vw;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
+}
+
+
+
+.description-title-calendar  {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.3vw;
+    margin-top:-0.2vw;
+}
+
+.description-subtitle-calendar  {
+    font-size: 0.9vw;
+    color: grey;
+    margin-top: -2.3vh;
+    text-align: center;
+
+}
+
+.opp-place-title-calendar{
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+.opp-place-subtitle-calendar{
+    margin-top: -0.8vw;
+    font-size: 0.8vw;
+    color: grey;
+}
+
+.carousel-line-calendar{
+    width: 98%;
+    height: 0.105vw;
+    margin: 1vh auto;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(173, 173, 173);
+    margin-top:-2%;
+    margin-bottom:0%;
+}
+
+.logo-and-place-info {
+    display: flex;
+    align-items: center;
+    margin-top: 0.2vw;
+    margin-bottom: 0.2vw;
+}
+
+.event-logo {
+    width: 3vw;
+    height: auto;
+    margin-right: 1vw;
+}
+
+.place-info {
+    flex-grow: 1;
+    margin-top:-0.5vw;
+}
+
+.view-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.view-toggle button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
     cursor: pointer;
 }
+
+.view-toggle button:hover {
+    background-color: #e0e0e0;
+}
+
+.view-toggle button:active {
+    background-color: #d0d0d0;
+}
+
 
 
 

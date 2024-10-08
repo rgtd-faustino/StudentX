@@ -423,34 +423,36 @@ document.addEventListener('DOMContentLoaded', function () {
             eventsContainer.appendChild(eventDiv);
         });
     }
-    
     function showExpandedView(event) {
         const modalContainer = document.getElementById('eventModal');
         modalContainer.innerHTML = `
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <img src="${event.imageSrc}" alt="${event.altText}" class="event-image">
-                <strong>${event.descriptionTitle}</strong><br>
-                ${event.descriptionSubtitle}<br>
+        <div class="modal-content">
+            <img src="${event.imageSrc}" alt="${event.altText}" class="event-image">
+            <p class="description-title-calendar">${event.descriptionTitle}</p>
+            <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
+            <div class="carousel-line-calendar"></div>
+            <div class="logo-and-place-info">
                 <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
-                <p>${event.oppPlaceTitle}<br>${event.oppPlaceSubtitle}</p>
-                <a href="${event.moreInfoLink}" target="_blank">More Info</a>
+                <div class="place-info">
+                    <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
+                    <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
+                </div>
             </div>
-        `;
+            <a href="${event.moreInfoLink}">More Info</a>
+        </div>
+    `;
+        
         modalContainer.style.display = 'flex';
     
-        const closeButton = modalContainer.querySelector('.close-modal');
-        closeButton.onclick = () => {
-            modalContainer.style.display = 'none';
-        };
-    
-        // Close modal when clicking outside the content
+        // Close modal when clicking outside the modal content
         modalContainer.onclick = (e) => {
-            if (e.target === modalContainer) {
+            const modalContent = modalContainer.querySelector('.modal-content');
+            if (!modalContent.contains(e.target)) {
                 modalContainer.style.display = 'none';
             }
         };
     }
+    
     
     function getEventStyle(event) {
         const startHour = parseInt(event.startTime.split(':')[0]);
