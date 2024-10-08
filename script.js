@@ -288,6 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderHours();
         fetchEvents();
         updateMonthYear();
+        updateOpportunityTitle(); // Add this line
     }
     
     function renderWeekButtons() {
@@ -334,6 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 events = data.items.map(event => ({
                     day: event.day,
+                    month: event.month,
                     startTime: event.startTime,
                     endTime: event.endTime,
                     descriptionTitle: event.descriptionTitle,
@@ -347,6 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     moreInfoLink: event.moreInfoLink
                 }));
                 renderEvents();
+                updateOpportunityTitle(); // Add this line
             })
             .catch(error => {
                 console.error('Erro ao carregar eventos:', error);
@@ -365,23 +368,88 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderEvents() {
         const eventsContainer = document.getElementById('events');
         eventsContainer.innerHTML = '';
-        const dayEvents = events.filter(event => event.day === selectedDay);
+    
+        // Get the month of the currently displayed week
+        const currentMonth = meses[currentWeekStart.getMonth()].toLowerCase();
+    
+        // Filter events for the selected day and current month
+        const dayEvents = events.filter(event =>
+            event.day === selectedDay &&
+            event.month.toLowerCase() === currentMonth
+        );
+    
         const sortedEvents = dayEvents.sort((a, b) => a.startTime.localeCompare(b.startTime));
         const columns = [];
+    
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.id = 'eventModal';
+        modalContainer.classList.add('event-modal');
+        modalContainer.style.display = 'none';
+        document.body.appendChild(modalContainer);
+    
         sortedEvents.forEach((event, index) => {
             let column = 0;
             while (columns[column] && columns[column] > event.startTime) {
                 column++;
             }
             columns[column] = event.endTime;
+    
             const eventDiv = document.createElement('div');
             eventDiv.classList.add('event');
-            eventDiv.innerHTML = `<strong>${event.descriptionTitle}</strong><br>${event.startTime} - ${event.endTime}`;
+            
+            // Create condensed view
+            const condensedView = document.createElement('div');
+            condensedView.classList.add('event-condensed');
+            condensedView.innerHTML = `
+                <strong>${event.descriptionTitle}</strong><br>
+                ${event.startTime} - ${event.endTime}
+            `;
+    
+            // Create expand button
+            const expandButton = document.createElement('button');
+            expandButton.textContent = 'Expand';
+            expandButton.classList.add('expand-event-details');
+            expandButton.onclick = () => {
+                showExpandedView(event);
+            };
+    
+            eventDiv.appendChild(condensedView);
+            eventDiv.appendChild(expandButton);
+    
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
             eventDiv.style.left = `${column * 210}px`;
             eventsContainer.appendChild(eventDiv);
         });
+    }
+    
+    function showExpandedView(event) {
+        const modalContainer = document.getElementById('eventModal');
+        modalContainer.innerHTML = `
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <img src="${event.imageSrc}" alt="${event.altText}" class="event-image">
+                <strong>${event.descriptionTitle}</strong><br>
+                ${event.descriptionSubtitle}<br>
+                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
+                <p>${event.oppPlaceTitle}<br>${event.oppPlaceSubtitle}</p>
+                <a href="${event.moreInfoLink}" target="_blank">More Info</a>
+            </div>
+        `;
+        modalContainer.style.display = 'flex';
+    
+        const closeButton = modalContainer.querySelector('.close-modal');
+        closeButton.onclick = () => {
+            modalContainer.style.display = 'none';
+        };
+    
+        // Close modal when clicking outside the content
+        modalContainer.onclick = (e) => {
+            if (e.target === modalContainer) {
+                modalContainer.style.display = 'none';
+            }
+        };
     }
     
     function getEventStyle(event) {
@@ -442,6 +510,26 @@ document.addEventListener('DOMContentLoaded', function () {
         renderEvents();
     }
     
+    function countTodayEvents() {
+        const today = new Date();
+        const todayDay = today.getDate();
+        const todayMonth = meses[today.getMonth()].toLowerCase();
+    
+        const todayEvents = events.filter(event => 
+            event.day === todayDay && 
+            event.month.toLowerCase() === todayMonth
+        );
+    
+        return todayEvents.length;
+    }
 
+    function updateOpportunityTitle() {
+        const opportunityTitle = document.getElementById('opportunityTitle');
+        const eventCount = countTodayEvents();
+        const pluralSuffix = eventCount === 1 ? '' : 's';
+        opportunityTitle.innerHTML = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
+    }
     
     init();
+
+    
