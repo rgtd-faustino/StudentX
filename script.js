@@ -282,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedDay = new Date().getDate();
     let currentDate = new Date();
     let currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
+
     
     function init() {
         renderWeekButtons();
@@ -398,31 +399,54 @@ document.addEventListener('DOMContentLoaded', function () {
             const eventDiv = document.createElement('div');
             eventDiv.classList.add('event');
             
+            // Get event's calculated style
+            const style = getEventStyle(event);
+            Object.assign(eventDiv.style, style);
+            
             // Create condensed view
             const condensedView = document.createElement('div');
             condensedView.classList.add('event-condensed');
-            condensedView.innerHTML = `
-                <strong>${event.descriptionTitle}</strong><br>
-                ${event.startTime} - ${event.endTime}
-            `;
-    
+
             // Create expand button
             const expandButton = document.createElement('button');
-            expandButton.textContent = 'Expand';
             expandButton.classList.add('expand-event-details');
+
+            // Create an img element
+            const img = document.createElement('img');
+            img.src = 'plus.png'; // Replace with the actual path to your image
+
+            // Append the img element to the button
+            expandButton.appendChild(img);
+
             expandButton.onclick = () => {
                 showExpandedView(event);
             };
-    
-            eventDiv.appendChild(condensedView);
+            
             eventDiv.appendChild(expandButton);
+
+            
+            // Conditionally show image if the event's height is less than or equal to 250px
+            if (parseInt(style.height) >= 499) {
+                // Add title and time to the condensed view
+                condensedView.innerHTML = 
+                    `<strong>${event.descriptionTitle}</strong><br>
+                    ${event.startTime} - ${event.endTime}`;
+            }
     
-            const style = getEventStyle(event);
-            Object.assign(eventDiv.style, style);
-            eventDiv.style.left = `${column * 210}px`;
+            const eventImage = document.createElement('img');
+            eventImage.src = event.imageSrc;
+            eventImage.alt = `${event.descriptionTitle} image`;
+            eventImage.className = 'event-image';  // Set the class name
+            condensedView.appendChild(eventImage);
+
+
+            eventDiv.appendChild(condensedView);
+            eventDiv.style.left = `${column * 250}px`;
             eventsContainer.appendChild(eventDiv);
         });
     }
+    
+
     function showExpandedView(event) {
         const modalContainer = document.getElementById('eventModal');
         modalContainer.innerHTML = `
@@ -459,13 +483,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const startMinute = parseInt(event.startTime.split(':')[1]);
         const endHour = parseInt(event.endTime.split(':')[0]);
         const endMinute = parseInt(event.endTime.split(':')[1]);
-        const top = startHour * 61 + startMinute;
-        const height = (endHour * 61 + endMinute) - top;
+    
+        // Correct minute conversion: 251 pixels per hour
+        const minuteHeight = 251 / 60;
+    
+        // Calculate the top position
+        const top = (startHour * 251) + (startMinute * minuteHeight);
+    
+        // Calculate the height of the event
+        const endTop = (endHour * 251) + (endMinute * minuteHeight);
+        const height = endTop - top;
+    
         return {
             top: `${top}px`,
             height: `${height}px`,
         };
     }
+    
     
     function updateMonthYear() {
         const monthYearElement = document.getElementById('monthYear');

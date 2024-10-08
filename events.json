@@ -1,7 +1,7 @@
 {
     "items": [
       {
-        "day": 6,
+        "day": 8,
         "month": "outubro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
@@ -12,11 +12,11 @@
         "oppPlaceTitle": "AE IST",
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "startTime": "0:00",
-        "endTime": "1:30"
+        "startTime": "10:00",
+        "endTime": "12:00"
       },      
       {
-        "day": 6,
+        "day": 8,
         "month": "outubro",
         "imageSrc": "image2.png",
         "altText": "Image 2 mobile",
@@ -27,11 +27,11 @@
         "oppPlaceTitle": "AE IST",
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "startTime": "4:00",
-        "endTime": "8:00"
+        "startTime": "10:00",
+        "endTime": "11:00"
       },
       {
-        "day": 6,
+        "day": 8,
         "month": "outubro",
         "imageSrc": "image3.png",
         "altText": "Image 3 mobile",
@@ -42,8 +42,8 @@
         "oppPlaceTitle": "AE IST",
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "startTime": "6:00",
-        "endTime": "10:00"
+        "startTime": "10:00",
+        "endTime": "11:30"
       },
       {
         "day": 8,
@@ -58,7 +58,7 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "20:00"
+        "endTime": "10:59"
       },
       {
         "day": 2,
