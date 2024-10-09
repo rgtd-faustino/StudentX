@@ -817,12 +817,13 @@ nav {
     background-color: #ffffff;
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2), 0px -3px 8px rgba(0, 0, 0, 0.2);
     color: rgb(0, 0, 0);
-    padding: 5px;
+    padding: 0.3vw;
     border-radius: 0.9vw;
     overflow: hidden;
     box-sizing: border-box;
     display: flex;
-    border: 2px solid blue;
+    border: 0.15vw solid blue;
+    
 }
 
 
@@ -876,6 +877,22 @@ nav {
     background-color: #0056b3;
 }
 
+.more-info-link-calendar {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4vw 0;
+    border-radius: 0.6vw;
+    text-align: center;
+    font-size: 1vw;
+    width: 95%;
+    display: block;
+    box-sizing: border-box;
+    position: absolute; /* Positioning the element absolutely */
+    bottom: 1%; /* Align it to the bottom of the parent container */
+    left: 2.5%; /* Ensure it spans the full width */
+}
 
 .expand-event-details {
     all:unset;
@@ -894,6 +911,10 @@ nav {
 .event-image{
     width:100%;
     height:100%;
+}
+
+.event-image-full{
+    width:100%;
 }
 
 .description-title-calendar  {
@@ -925,7 +946,7 @@ nav {
 .carousel-line-calendar{
     width: 98%;
     height: 0.105vw;
-    margin: 1vh auto;
+    margin: 5% 0;
     transition: all 0.3s ease-in-out;
     background-color: rgb(173, 173, 173);
     margin-top:-2%;
@@ -935,8 +956,8 @@ nav {
 .logo-and-place-info {
     display: flex;
     align-items: center;
-    margin-top: 0.2vw;
-    margin-bottom: 0.2vw;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
 .event-logo {
@@ -947,35 +968,9 @@ nav {
 
 .place-info {
     flex-grow: 1;
-    margin-top:-0.5vw;
+    margin-top:-3%;
+    margin-left:-3%;
 }
-
-.view-toggle {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.view-toggle button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.view-toggle button:hover {
-    background-color: #e0e0e0;
-}
-
-.view-toggle button:active {
-    background-color: #d0d0d0;
-}
-
-
-
-
 
 
 

@@ -13,7 +13,7 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "14:00"
       },      
       {
         "day": 8,
@@ -151,8 +151,8 @@
         "endTime": "12:00"
       },
       {
-        "day": 11,
-        "month": "outubro",
+        "day": 3,
+        "month": "novembro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
         "descriptionTitle": "Job Insights 1",

@@ -422,22 +422,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 showExpandedView(event);
             };
             
-            eventDiv.appendChild(expandButton);
+
 
             
             // Conditionally show image if the event's height is less than or equal to 250px
             if (parseInt(style.height) >= 499) {
                 // Add title and time to the condensed view
-                condensedView.innerHTML = 
-                    `<strong>${event.descriptionTitle}</strong><br>
-                    ${event.startTime} - ${event.endTime}`;
+                condensedView.innerHTML = `
+                    <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
+                    <p class="description-title-calendar">${event.descriptionTitle}</p>
+                    <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
+                    <div class="carousel-line-calendar"></div>
+                    <div class="logo-and-place-info">
+                        <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
+                        <div class="place-info">
+                            <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
+                            <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
+                        </div>
+                    </div>
+                    <a class="more-info-link-calendar" href="${event.moreInfoLink}">More Info</a>
+                `;
+            }else{
+                eventDiv.appendChild(expandButton);
+                const eventImage = document.createElement('img');
+                eventImage.src = event.imageSrc;
+                eventImage.alt = `${event.descriptionTitle} image`;
+                eventImage.className = 'event-image';  // Set the class name
+                condensedView.appendChild(eventImage);
             }
     
-            const eventImage = document.createElement('img');
-            eventImage.src = event.imageSrc;
-            eventImage.alt = `${event.descriptionTitle} image`;
-            eventImage.className = 'event-image';  // Set the class name
-            condensedView.appendChild(eventImage);
+
 
 
             eventDiv.appendChild(condensedView);
