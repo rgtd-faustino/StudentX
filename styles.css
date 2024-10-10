@@ -749,7 +749,7 @@ nav {
 }
 
 .calendar-container{
-    max-width: 80vw;
+    max-width: 83vw;
     max-height: 40vw;
     overflow-y: auto;
     margin: 0 auto;
@@ -759,11 +759,46 @@ nav {
     display: flex;
     flex-direction: column;
 }
+.downloadButton {
+    margin-left:1vw;
+    margin-bottom: 1vw;
+    padding: 0.8vw 2vw;
+    border: none;
+    border-radius: 1vw;
+    background-color: #108CEC; /* Base color */
+    color: white; /* Text color */
+    cursor: pointer;
+    box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 1vw;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Hover state */
+.downloadButton:hover {
+    background-color: #0A6BBF; /* Slightly darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Active state */
+.downloadButton:active {
+    background-color: #084A8A; /* Darker blue for active button */
+    box-shadow: 0 0.3vw 0.5vw rgba(0, 0, 0, 0.2); /* More pronounced shadow for active */
+    transform: scale(0.95); /* Slightly shrink on active */
+}
 .day-buttons {
     display: flex;
     justify-content: space-around;
-    width:90%;
+    width:60%;
     margin: 0 auto;
+}
+
+.day-name {
+    font-size: 0.8em;
+}
+
+.day-number {
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .day-button {
@@ -773,7 +808,7 @@ nav {
     background-color: rgba(102, 102, 102, 0.05); /* Base color */
     color: black; /* Text color */
     cursor: pointer;
-    box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
     font-size: 1vw;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
 }
@@ -809,6 +844,7 @@ nav {
 .events {
     position: relative;
     flex: 1;
+    margin-left:2vw;
 }
 .event {
     position: absolute;
@@ -822,7 +858,7 @@ nav {
     overflow: hidden;
     box-sizing: border-box;
     display: flex;
-    border: 0.15vw solid blue;
+    border: 0.15vw solid darkblue;
     
 }
 
@@ -890,7 +926,6 @@ nav {
     display: block;
     box-sizing: border-box;
     position: absolute; /* Positioning the element absolutely */
-    bottom: 1%; /* Align it to the bottom of the parent container */
     left: 2.5%; /* Ensure it spans the full width */
 }
 
@@ -1141,7 +1176,7 @@ nav {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
     color:rgba(94, 94, 94, 0.87);
     z-index: 1000;
     font-size: 1vw;

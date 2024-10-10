@@ -290,33 +290,65 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchEvents();
         updateMonthYear();
         updateOpportunityTitle(); // Add this line
+
+        const actionButtonsContainer = document.createElement('div');
+        actionButtonsContainer.id = 'calendarActions';
+        actionButtonsContainer.style.marginTop = '20px';
+        
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download Calendar';
+        downloadButton.className = 'downloadButton'; // Add this line
+        downloadButton.onclick = downloadCalendar;
+        
+        const googleCalendarButton = document.createElement('button');
+        googleCalendarButton.textContent = 'Adicionar ao Google Calendar';
+        googleCalendarButton.className = 'downloadButton'; // Add this line
+        googleCalendarButton.onclick = addToGoogleCalendar;
+        
+        actionButtonsContainer.appendChild(downloadButton);
+        actionButtonsContainer.appendChild(googleCalendarButton);
+        
+        document.querySelector('.download-calendar').appendChild(actionButtonsContainer);
     }
     
     function renderWeekButtons() {
         const dayButtonsContainer = document.getElementById('dayButtons');
         dayButtonsContainer.innerHTML = '';
+        const today = new Date();
+    
         for (let i = 0; i < 7; i++) {
             const day = new Date(currentWeekStart);
             day.setDate(currentWeekStart.getDate() + i);
             const button = document.createElement('button');
-            button.textContent = `${day.getDate()} ${diasDaSemana[day.getDay()]}`;
+
+            button.innerHTML = `<span class="day-number">${day.getDate()}</span><br><span class="day-name">${diasDaSemana[day.getDay()]}</span>`;
+            
             button.classList.add('day-button');
+            
             if (day.getMonth() !== currentDate.getMonth()) {
                 button.classList.add('other-month');
             }
+            
+            // Check if this day is today
+            if (day.getDate() === today.getDate() &&
+                day.getMonth() === today.getMonth() &&
+                day.getFullYear() === today.getFullYear()) {
+                button.classList.add('active');
+                selectedDay = day.getDate();
+            }
+            
             button.onclick = (event) => {
                 // Remove 'active' class from all buttons
                 document.querySelectorAll('.day-button').forEach(btn => btn.classList.remove('active'));
                 // Add 'active' class to the clicked button
-                event.target.classList.add('active');
+                event.currentTarget.classList.add('active');
                 selectDay(day.getDate());
             };
             dayButtonsContainer.appendChild(button);
         }
-        // Remove the line that adds 'active' class to the first button
-        // document.querySelector('.day-button').classList.add('active');
     }
-    
+
+
     function renderHours() {
         const hoursContainer = document.getElementById('hours');
         hoursContainer.innerHTML = '';
@@ -553,6 +585,8 @@ document.addEventListener('DOMContentLoaded', function () {
         currentWeekStart.setDate(currentWeekStart.getDate() - 7);
         updateCalendar();
     }
+
+
     
     function updateCalendar() {
         renderWeekButtons();
@@ -578,6 +612,83 @@ document.addEventListener('DOMContentLoaded', function () {
         const eventCount = countTodayEvents();
         const pluralSuffix = eventCount === 1 ? '' : 's';
         opportunityTitle.innerHTML = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
+    }
+
+    function createICSFile() {
+        let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//StudentX//StudentX//PT\n";
+        
+        events.forEach(event => {
+            const startDate = new Date(currentDate.getFullYear(), meses.indexOf(event.month), event.day);
+            const endDate = new Date(startDate);
+            
+            const [startHour, startMinute] = event.startTime.split(':');
+            const [endHour, endMinute] = event.endTime.split(':');
+            
+            startDate.setHours(parseInt(startHour), parseInt(startMinute));
+            endDate.setHours(parseInt(endHour), parseInt(endMinute));
+            
+            icsContent += "BEGIN:VEVENT\n";
+            icsContent += `DTSTART:${formatDateForICS(startDate)}\n`;
+            icsContent += `DTEND:${formatDateForICS(endDate)}\n`;
+            icsContent += `SUMMARY:${event.descriptionTitle}\n`;
+            icsContent += `DESCRIPTION:${event.descriptionSubtitle}\n`;
+            icsContent += `LOCATION:${event.oppPlaceTitle}\n`;
+            icsContent += "END:VEVENT\n";
+        });
+        
+        icsContent += "END:VCALENDAR";
+        
+        return icsContent;
+    }
+    
+    function formatDateForICS(date) {
+        return date.toISOString().replace(/-|:|\.\d{3}/g, '');
+    }
+    
+    function downloadCalendar() {
+        const icsContent = createICSFile();
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'calendário.ics';
+        link.click();
+    }
+    
+    function addToGoogleCalendar() {
+        const googleCalendarUrl = 'https://www.google.com/calendar/render?action=TEMPLATE&dates=';
+        let allEventDetails = [];
+    
+        events.forEach(event => {
+            const startDate = new Date(currentDate.getFullYear(), meses.indexOf(event.month), event.day);
+            const endDate = new Date(startDate);
+            
+            const [startHour, startMinute] = event.startTime.split(':');
+            const [endHour, endMinute] = event.endTime.split(':');
+            
+            startDate.setHours(parseInt(startHour), parseInt(startMinute));
+            endDate.setHours(parseInt(endHour), parseInt(endMinute));
+            
+            const eventDetails = {
+                text: encodeURIComponent(event.descriptionTitle),
+                dates: `${formatDateForGoogle(startDate)}/${formatDateForGoogle(endDate)}`,
+                details: encodeURIComponent(event.descriptionSubtitle),
+                location: encodeURIComponent(event.oppPlaceTitle),
+            };
+            
+            allEventDetails.push(eventDetails);
+        });
+    
+        // Combine all events into a single URL
+        const combinedUrl = allEventDetails.map(event => 
+            `${googleCalendarUrl}${event.dates}&text=${event.text}&details=${event.details}&location=${event.location}`
+        ).join('&recur=RRULE:FREQ=DAILY;COUNT=1&');
+    
+        // Open the combined URL in a new tab
+        window.open(combinedUrl, '_blank');
+    }
+    
+    function formatDateForGoogle(date) {
+        return date.toISOString().replace(/-|:|\.\d{3}/g, '');
     }
     
     init();
