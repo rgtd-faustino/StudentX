@@ -711,10 +711,12 @@ nav {
 }
 
 .timeContainer {
+    position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 3vw;
+    padding: 0 10vw; /* Add padding to prevent title from overlapping buttons */
 }
 
 #monthYear {
@@ -722,34 +724,33 @@ nav {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 300;
-    margin-left: 5vw;
-}
-
-.weekButtons {
-    display: flex;
-    gap: 1vw; /* Space between buttons */
-    margin-right: 7.5vw;
-
+    text-align: center;
+    width: 100%;
 }
 
 .prevWeek, .nextWeek {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 1.5vw;
-    padding: 0.5vw 1vw;
     border: none;
-    border-radius: 1vw;
-    background-color: #007BFF;
-    color: white;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 200;
+    background-color: unset;
 }
-.prevWeek:hover, .nextWeek:hover {
-    background-color: #0056b3;
+
+.prevWeek {
+    left: 30vw;
+}
+
+.nextWeek {
+    right:30vw;
 }
 
 .calendar-container{
-    max-width: 83vw;
+    max-width: 82.6vw;
     max-height: 40vw;
     overflow-y: auto;
     margin: 0 auto;
@@ -2087,6 +2088,452 @@ nav {
         width:80%;
         margin: 0 auto;
     }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+.opportunityTitle{
+    font-size: 5vw;
+    margin-left:5vw;
+    position:relative;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    margin-bottom:2vw;
+    margin-top:10vw;
+    text-align: left;
+}
+
+.timeContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 6vw;
+    margin-top: 6vw;
+    padding: 0 10vw; /* Add padding to prevent title from overlapping buttons */
+}
+
+#monthYear {
+    font-size: 4.5vw;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    text-align: center;
+    width: 100%;
+}
+
+.prevWeek, .nextWeek {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 5vw;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    background-color: unset;
+}
+
+.prevWeek {
+    left: 5vw;
+}
+
+.nextWeek {
+    right:5vw;
+}
+
+.calendar-container{
+    max-width: 82.6vw;
+    max-height: 150vw;
+    overflow-y: auto;
+    margin: 0 auto;
+    margin-top:4vw;
+}
+.calendar {
+    display: flex;
+    flex-direction: column;
+}
+.downloadButton {
+    margin-left:1vw;
+    margin-bottom: 1vw;
+    padding: 0.8vw 2vw;
+    border: none;
+    border-radius: 1vw;
+    background-color: #108CEC; /* Base color */
+    color: white; /* Text color */
+    cursor: pointer;
+    box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 1vw;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Hover state */
+.downloadButton:hover {
+    background-color: #0A6BBF; /* Slightly darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Active state */
+.downloadButton:active {
+    background-color: #084A8A; /* Darker blue for active button */
+    box-shadow: 0 0.3vw 0.5vw rgba(0, 0, 0, 0.2); /* More pronounced shadow for active */
+    transform: scale(0.95); /* Slightly shrink on active */
+}
+.day-buttons {
+    display: flex;
+    justify-content: space-around;
+    width:70%;
+    margin: 0 auto;
+}
+
+.day-name {
+    font-size: 1.5em;
+}
+
+.day-number {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.day-button {
+    padding: 2.5vw 1vw;
+    border: none;
+    border-radius: 1vw; /* Rounded corners */
+    background-color: rgba(102, 102, 102, 0.05); /* Base color */
+    color: black; /* Text color */
+    cursor: pointer;
+    box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 1.5vw;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.day-button:hover {
+    background-color: #108CEC; /* Slightly darker green on hover */
+    color: white;
+}
+
+.day-button.active {
+    background-color: #108CEC; /* Darker green for active button */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* More pronounced shadow for active */
+    color: white;
+
+}
+
+.calendar-content {
+    display: flex;
+
+}
+.hours {
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+    font-size: 4vw;
+}
+.hour {
+    height: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.events {
+    position: relative;
+    flex: 1;
+    margin-left:2vw;
+}
+.event {
+    position: absolute;
+    left: 0;
+    width: 235px;
+    background-color: #ffffff;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2), 0px -3px 8px rgba(0, 0, 0, 0.2);
+    color: rgb(0, 0, 0);
+    padding: 0.3vw;
+    border-radius: 0.9vw;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    border: 0.15vw solid darkblue;
+    
+}
+
+
+/* Event Modal Container */
+.event-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better contrast */
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+/* Modal Content */
+.modal-content {
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    border-radius: 1vw; /* Smooth, rounded corners */
+    max-width: 20%;
+    padding: 0.7vw; /* Better padding for a cleaner layout */
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+}
+
+
+
+.modal-content a {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.6vw 0;
+    border-radius:0.6vw;
+    text-align: center;
+    font-size: 1vw;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.modal-content a:hover {
+    background-color: #0056b3;
+}
+
+.more-info-link-calendar {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4vw 0;
+    border-radius: 0.6vw;
+    text-align: center;
+    font-size: 1vw;
+    width: 95%;
+    display: block;
+    box-sizing: border-box;
+    position: absolute; /* Positioning the element absolutely */
+    left: 2.5%; /* Ensure it spans the full width */
+}
+
+.expand-event-details {
+    all: unset;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0;
+    margin-left: 0;
+}
+
+.expand-event-details:hover img {
+    filter: brightness(0.8); /* Darken the image */
+}
+
+
+.event-image{
+    width:100%;
+    height:100%;
+}
+
+.event-image-full{
+    width:100%;
+}
+
+.event-condensed {
+    display: flex;
+    flex-direction: column;
+}
+
+.description-title-calendar  {
+    text-align: center;
+    font-weight: 400;
+    font-size: 4vw;
+    margin-top:0vw;
+    background-color: red;
+}
+
+.event-info-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: red;
+    border-radius: 1vw;
+    width: 100%;
+}
+
+.opp-place-title-calendar,
+.opp-place-subtitle-calendar {
+    display: inline-block;
+    background-color: #f0f0f0;
+    border-radius: 2vw;
+    padding: 0.5vw 8vw;
+    font-weight: unset;
+    font-size: 3vw;
+    margin-top:0vw;
+    color:black;
+}
+
+/*.description-title-calendar-full  {
+    text-align: center;
+    font-weight: 300;
+    font-size: 2vw;
+    margin-top:0vw;
+}
+
+.description-subtitle-calendar-full  {
+    font-size: 2vw;
+    color: grey;
+    margin-top: 0vh;
+    text-align: center;
+
+}
+
+.opp-place-title-calendar-full{
+    font-weight: bold;
+    font-size: 2vw;
+}
+
+.opp-place-subtitle-calendar-full{
+    margin-top: 0vw;
+    font-size: 2vw;
+    color: grey;
+}*/
+
+.carousel-line-calendar{
+    width: 98%;
+    height: 0.105vw;
+    margin: 5% 0;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(173, 173, 173);
+    margin-top:-2%;
+    margin-bottom:0%;
+}
+
+.logo-and-place-info {
+    display: flex;
+    align-items: center;
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+
+.event-logo {
+    width: 3vw;
+    height: auto;
+    margin-right: 1vw;
+}
+
+.place-info {
+    flex-grow: 1;
+    margin-top:-3%;
+    margin-left:-3%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     #gradienteFAQ{
