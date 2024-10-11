@@ -20,17 +20,11 @@
         actionButtonsContainer.id = 'calendarActions';
         
         const downloadButton = document.createElement('button');
-        downloadButton.textContent = 'Download Calendar';
+        downloadButton.textContent = 'Transferir Calendário';
         downloadButton.className = 'downloadButton';
         downloadButton.onclick = downloadCalendar;
         
-        const googleCalendarButton = document.createElement('button');
-        googleCalendarButton.textContent = 'Adicionar ao Google Calendar';
-        googleCalendarButton.className = 'downloadButton';
-        googleCalendarButton.onclick = addToGoogleCalendar;
-        
         actionButtonsContainer.appendChild(downloadButton);
-        actionButtonsContainer.appendChild(googleCalendarButton);
         
         document.querySelector('.download-calendar').appendChild(actionButtonsContainer);
     }

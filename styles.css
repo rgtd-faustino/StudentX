@@ -716,7 +716,6 @@ nav {
     justify-content: center;
     align-items: center;
     margin-bottom: 3vw;
-    padding: 0 10vw; /* Add padding to prevent title from overlapping buttons */
 }
 
 #monthYear {
@@ -726,6 +725,7 @@ nav {
     font-weight: 300;
     text-align: center;
     width: 100%;
+    
 }
 
 .prevWeek, .nextWeek {
@@ -739,6 +739,7 @@ nav {
     font-style: normal;
     font-weight: 200;
     background-color: unset;
+    
 }
 
 .prevWeek {
@@ -748,22 +749,11 @@ nav {
 .nextWeek {
     right:30vw;
 }
-
-.calendar-container{
-    max-width: 82.6vw;
-    max-height: 40vw;
-    overflow-y: auto;
-    margin: 0 auto;
-    margin-top:4vw;
-}
-.calendar {
-    display: flex;
-    flex-direction: column;
-}
 .downloadButton {
-    margin-left:1vw;
-    margin-bottom: 1vw;
     padding: 0.8vw 2vw;
+    position: absolute;
+    left:8vw;
+    top:-0.2vw;
     border: none;
     border-radius: 1vw;
     background-color: #108CEC; /* Base color */
@@ -772,6 +762,7 @@ nav {
     box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
     font-size: 1vw;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 /* Hover state */
@@ -786,6 +777,18 @@ nav {
     box-shadow: 0 0.3vw 0.5vw rgba(0, 0, 0, 0.2); /* More pronounced shadow for active */
     transform: scale(0.95); /* Slightly shrink on active */
 }
+.calendar-container{
+    max-width: 82.6vw;
+    max-height: 40vw;
+    overflow-y: auto;
+    margin: 0 auto;
+    margin-top:4vw;
+}
+.calendar {
+    display: flex;
+    flex-direction: column;
+}
+
 .day-buttons {
     display: flex;
     justify-content: space-around;
@@ -2190,30 +2193,7 @@ nav {
     flex-direction: column;
 }
 .downloadButton {
-    margin-left:1vw;
-    margin-bottom: 1vw;
-    padding: 0.8vw 2vw;
-    border: none;
-    border-radius: 1vw;
-    background-color: #108CEC; /* Base color */
-    color: white; /* Text color */
-    cursor: pointer;
-    box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    font-size: 1vw;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
-}
-
-/* Hover state */
-.downloadButton:hover {
-    background-color: #0A6BBF; /* Slightly darker blue on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-/* Active state */
-.downloadButton:active {
-    background-color: #084A8A; /* Darker blue for active button */
-    box-shadow: 0 0.3vw 0.5vw rgba(0, 0, 0, 0.2); /* More pronounced shadow for active */
-    transform: scale(0.95); /* Slightly shrink on active */
+    display:none;
 }
 .day-buttons {
     display: flex;
