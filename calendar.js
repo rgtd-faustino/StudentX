@@ -183,8 +183,9 @@
                 `;
                 eventDiv.appendChild(expandButton);
             } else{
-                if (parseInt(style.height) >= 499) {
+                if (parseInt(style.height) >= 375) {
                     // Add title and time to the condensed view
+                    condensedView.style.overflowY = 'auto';
                     condensedView.innerHTML = `
                         <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
                         <p class="description-title-calendar">${event.descriptionTitle}</p>
@@ -225,15 +226,15 @@
         const modalContainer = document.getElementById('eventModal');
         modalContainer.innerHTML = `
         <div class="modal-content">
-            <img src="${event.imageSrc}" alt="${event.altText}" class="event-image">
-            <p class="description-title-calendar">${event.descriptionTitle}</p>
-            <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
-            <div class="carousel-line-calendar"></div>
-            <div class="logo-and-place-info">
-                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
-                <div class="place-info">
-                    <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
-                    <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
+            <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-expanded">
+            <p class="description-title-calendar-expanded">${event.descriptionTitle}</p>
+            <p class="description-subtitle-calendar-expanded">${event.descriptionSubtitle}</p>
+            <div class="carousel-line-calendar-expanded"></div>
+            <div class="logo-and-place-info-expanded">
+                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo-expanded">
+                <div class="place-info-expanded">
+                    <p class="opp-place-title-calendar-expanded">${event.oppPlaceTitle}</p>
+                    <p class="opp-place-subtitle-calendar-expanded">${event.oppPlaceSubtitle}</p>
                 </div>
             </div>
             <a href="${event.moreInfoLink}">More Info</a>

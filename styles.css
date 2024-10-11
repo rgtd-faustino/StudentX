@@ -706,7 +706,7 @@ nav {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 200;
-    margin-bottom:2vw;
+    margin-bottom:4vw;
     text-align: left;
 }
 
@@ -753,7 +753,7 @@ nav {
     padding: 0.8vw 2vw;
     position: absolute;
     left:8vw;
-    top:-0.2vw;
+    top:-0.4vw;
     border: none;
     border-radius: 1vw;
     background-color: #108CEC; /* Base color */
@@ -845,6 +845,10 @@ nav {
     align-items: center;
     justify-content: center;
 }
+.container-for-overflow-calendar{
+    overflow-y: auto;
+
+}
 .events {
     position: relative;
     flex: 1;
@@ -863,7 +867,6 @@ nav {
     box-sizing: border-box;
     display: flex;
     border: 0.15vw solid darkblue;
-    
 }
 
 
@@ -917,21 +920,7 @@ nav {
     background-color: #0056b3;
 }
 
-.more-info-link-calendar {
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.4vw 0;
-    border-radius: 0.6vw;
-    text-align: center;
-    font-size: 1vw;
-    width: 95%;
-    display: block;
-    box-sizing: border-box;
-    position: absolute; /* Positioning the element absolutely */
-    left: 2.5%; /* Ensure it spans the full width */
-}
+
 
 .expand-event-details {
     all:unset;
@@ -947,6 +936,68 @@ nav {
 }
 
 
+.event-image-expanded{
+    width:100%;
+    height:100%;
+}
+
+
+.description-title-calendar-expanded  {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.3vw;
+    margin-top:-0.2vw;
+}
+
+.description-subtitle-calendar-expanded  {
+    font-size: 0.9vw;
+    color: grey;
+    margin-top: -2.3vh;
+    text-align: center;
+
+}
+
+.opp-place-title-calendar-expanded{
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+.opp-place-subtitle-calendar-expanded{
+    margin-top: -0.8vw;
+    font-size: 0.8vw;
+    color: grey;
+}
+
+.carousel-line-calendar-expanded{
+    width: 98%;
+    height: 0.105vw;
+    margin: 5% 0;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(173, 173, 173);
+    margin-top:-2%;
+    margin-bottom:0%;
+}
+
+.logo-and-place-info-expanded {
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.event-logo-expanded {
+    width: 3vw;
+    height: auto;
+    margin-right: 1vw;
+}
+
+.place-info-expanded {
+    flex-grow: 1;
+    margin-top:-3%;
+    margin-left:-3%;
+}
+
+
 .event-image{
     width:100%;
     height:100%;
@@ -959,12 +1010,12 @@ nav {
 .description-title-calendar  {
     text-align: center;
     font-weight: 600;
-    font-size: 1.3vw;
-    margin-top:-0.2vw;
+    font-size: 1.1vw;
+    margin-top:0vw;
 }
 
 .description-subtitle-calendar  {
-    font-size: 0.9vw;
+    font-size: 0.8vw;
     color: grey;
     margin-top: -2.3vh;
     text-align: center;
@@ -973,17 +1024,17 @@ nav {
 
 .opp-place-title-calendar{
     font-weight: bold;
-    font-size: 1vw;
+    font-size: 0.8vw;
 }
 
 .opp-place-subtitle-calendar{
     margin-top: -0.8vw;
-    font-size: 0.8vw;
+    font-size: 0.7vw;
     color: grey;
 }
 
 .carousel-line-calendar{
-    width: 98%;
+    width: 100%;
     height: 0.105vw;
     margin: 5% 0;
     transition: all 0.3s ease-in-out;
@@ -1000,7 +1051,7 @@ nav {
 }
 
 .event-logo {
-    width: 3vw;
+    width: 2.7vw;
     height: auto;
     margin-right: 1vw;
 }
@@ -1010,10 +1061,20 @@ nav {
     margin-top:-3%;
     margin-left:-3%;
 }
-
-
-
-
+.more-info-link-calendar {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4vw 0;
+    border-radius: 0.6vw;
+    text-align: center;
+    font-size: 1vw;
+    width: 95%;
+    display: block;
+    box-sizing: border-box;
+    margin: 2.5% auto; /* Center the button and add some margin */
+}
 
 
 
