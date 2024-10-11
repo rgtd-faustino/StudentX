@@ -268,18 +268,28 @@ nav {
     opacity: 0.05;
 }
 
+
 .slogan-buttons {
-    display: flex; /* Display as a flex container */
-    justify-content: center; /* Center the buttons horizontally */
-    gap: 7%; /* Space between the buttons */
-    margin-top: 10%; /* Increase this value to move the buttons further down */
+    display: flex;
+    justify-content: center;
+    gap: 7%;
+    margin-top: 10%;
     margin-bottom: -7%;
 }
-
-.start-button button {
-    background-color: #000; /* Black background */
-    color: #fff; /* White text color */
-    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+.start-button a {
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    padding: 0.8vw 1.5vw;
+    border: none;
+    border-radius: 1.3vw;
+    font-size: 1.3vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    display: inline-block; /* Ensures the anchor behaves like a block for padding */
 }
 
 .watch-button button {
@@ -288,18 +298,27 @@ nav {
     transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
 }
 
-.start-button button:hover,
 .watch-button button:hover {
     transform: translateY(-0.2vw); /* Elevate the button */
-    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.2); /* Create a shadow box */
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3); /* Create a shadow box */
 }
 
+.start-button {
+    border-radius: 1.3vw;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-.start-button button, .watch-button button {
+.start-button:hover {
+    border-radius: 1.3vw; /* Rounded corners */
+    transform: translateY(-0.2vw);
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3);
+}
+
+.start-button a, .watch-button button {
     font-family: 'Inter', sans-serif; /* Ensure the font-family is correctly set */
     padding: 0.8vw 1.5vw; /* Padding inside the button */
     border: none; /* Remove default border */
-    border-radius: 25px; /* Rounded corners */
+    border-radius: 1.3vw; /* Rounded corners */
     font-size: 1.3vw; /* Font size */
     font-weight: 600; /* Bold text */
     cursor: pointer; /* Pointer cursor on hover */
@@ -307,12 +326,12 @@ nav {
     white-space: nowrap;
 }
 
-.start-button button:hover {
-    background-color: #333; /* Slightly lighter black on hover */
+.start-button a:hover {
+    background-color: #333;
 }
 
-.start-button button:active {
-    background-color: #111; /* Darker black on click */
+.start-button a:active {
+    background-color: #111;
 }
 
 .hamburger {
@@ -1742,15 +1761,15 @@ nav {
         margin-bottom: 0;
     }
     
-    .slogan-buttons button {
+    .slogan-buttons button, .slogan-buttons a {
         padding: 1vh 5vw; /* Adjust padding to make buttons smaller */
         font-size: 4vw; /* Adjust font size to make text smaller */
         width: auto; /* Adjust width as needed */
         height: auto; /* Adjust height as needed */
-        border-radius: 20px; /* Optional: Adjust border radius */
+        border-radius: 5vw; /* Optional: Adjust border radius */
     }
 
-    .start-button button{
+    .start-button a{
         padding: 1vh 5vw;
     }
 
@@ -2772,7 +2791,7 @@ nav {
     }
     .team-member img {
         width: 100%; /* Change from 30vw to 100% */
-        height: auto; /* Change from 30vw to auto to maintain aspect ratio */
+        height: 0vw; /* Change from 30vw to auto to maintain aspect ratio */
         max-width: 30vw; /* Add this to limit the maximum size */
         object-fit: cover;
         border-radius: 10%;
