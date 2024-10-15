@@ -919,26 +919,23 @@ nav {
     position: relative;
 }
 
+.more-info-link-calendar:hover {
+    background-color: #0056b3;
+}
 
-
-.modal-content a {
+.more-info-link-calendar {
     background-color: #007bff;
     color: white;
     text-decoration: none;
     font-weight: 600;
-    padding: 0.6vw 0;
-    border-radius:0.6vw;
+    padding: 0.3vw 0;
+    border-radius: 0.6vw;
     text-align: center;
     font-size: 1vw;
     width: 100%;
     display: block;
     box-sizing: border-box;
 }
-
-.modal-content a:hover {
-    background-color: #0056b3;
-}
-
 
 
 .expand-event-details {
@@ -1079,20 +1076,6 @@ nav {
     flex-grow: 1;
     margin-top:-3%;
     margin-left:-3%;
-}
-.more-info-link-calendar {
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.4vw 0;
-    border-radius: 0.6vw;
-    text-align: center;
-    font-size: 1vw;
-    width: 95%;
-    display: block;
-    box-sizing: border-box;
-    margin: 2.5% auto; /* Center the button and add some margin */
 }
 
 
@@ -2326,7 +2309,7 @@ nav {
     font-size: 4vw;
 }
 .hour {
-    height: 30px;
+    height: 60px;
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     align-items: center;
@@ -2374,9 +2357,9 @@ nav {
 .modal-content {
     background-color: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-    border-radius: 1vw; /* Smooth, rounded corners */
-    max-width: 20%;
-    padding: 0.7vw; /* Better padding for a cleaner layout */
+    border-radius: 4vw; /* Smooth, rounded corners */
+    max-width: 80%;
+    padding: 2.5vw; /* Better padding for a cleaner layout */
     box-sizing: border-box;
     transition: transform 0.3s ease-in-out;
     position: relative;
@@ -2384,39 +2367,6 @@ nav {
 
 
 
-.modal-content a {
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.6vw 0;
-    border-radius:0.6vw;
-    text-align: center;
-    font-size: 1vw;
-    width: 100%;
-    display: block;
-    box-sizing: border-box;
-}
-
-.modal-content a:hover {
-    background-color: #0056b3;
-}
-
-.more-info-link-calendar {
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.4vw 0;
-    border-radius: 0.6vw;
-    text-align: center;
-    font-size: 1vw;
-    width: 95%;
-    display: block;
-    box-sizing: border-box;
-    position: absolute; /* Positioning the element absolutely */
-    left: 2.5%; /* Ensure it spans the full width */
-}
 
 .expand-event-details {
     all: unset;
@@ -2445,61 +2395,116 @@ nav {
 .event-condensed {
     display: flex;
     flex-direction: column;
+    width:100%;
+    margin-left:4vw;
 }
 
 .description-title-calendar  {
-    text-align: center;
+    margin:0vw;
+
+    text-align: left;
     font-weight: 400;
     font-size: 4vw;
-    margin-top:0vw;
-    background-color: red;
+
 }
 
 .event-info-container {
     display: flex;
-    justify-content: space-between;
-    background-color: red;
+    gap:5vw;
     border-radius: 1vw;
     width: 100%;
+    /*position: absolute;
+    bottom: 0;*/
 }
 
 .opp-place-title-calendar,
 .opp-place-subtitle-calendar {
     display: inline-block;
     background-color: #f0f0f0;
-    border-radius: 2vw;
-    padding: 0.5vw 8vw;
+    border-radius: 4vw;
+    padding: 1.5vw 5vw;
     font-weight: unset;
-    font-size: 3vw;
+    font-size: 3.4vw;
     margin-top:0vw;
     color:black;
+
 }
 
-/*.description-title-calendar-full  {
+.description-title-calendar-expanded  {
     text-align: center;
-    font-weight: 300;
-    font-size: 2vw;
-    margin-top:0vw;
+    font-weight: 500;
+    font-size: 6vw;
+    margin:0vw;
 }
 
-.description-subtitle-calendar-full  {
-    font-size: 2vw;
+.description-subtitle-calendar-expanded  {
+    font-size: 4vw;
     color: grey;
     margin-top: 0vh;
     text-align: center;
 
 }
 
-.opp-place-title-calendar-full{
+.opp-place-title-calendar-expanded{
     font-weight: bold;
-    font-size: 2vw;
+    font-size: 4vw;
+    margin:0vw;
 }
 
-.opp-place-subtitle-calendar-full{
-    margin-top: 0vw;
-    font-size: 2vw;
+.opp-place-subtitle-calendar-expanded{
+    margin: 0;
+    font-size: 4vw;
     color: grey;
-}*/
+}
+
+.logo-and-place-info-expanded {
+    display: flex;
+    align-items: center;
+    margin-top: 4%;
+    margin-bottom: 4%;
+}
+
+.place-info-expanded{
+    flex-grow: 1;
+    margin-top:-1%;
+    margin-left:4%;
+}
+
+.carousel-line-calendar-expanded{
+    width: 98%;
+    height: 0.5vw;
+    margin: 5% 0;
+    transition: all 0.3s ease-in-out;
+    background-color: rgb(173, 173, 173);
+    margin-top:-2%;
+    margin-bottom:0%;
+}
+
+.more-info-link-calendar-expanded{
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 1vw 0;
+    border-radius:1.5vw;
+    text-align: center;
+    font-size: 5vw;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.more-info-link-calendar-expanded:hover{
+    background-color: #0056b3;
+}
+
+
+
+.event-logo-expanded{
+    width: 15vw;
+    height: auto;
+    margin-right: 0vw;
+}
 
 .carousel-line-calendar{
     width: 98%;

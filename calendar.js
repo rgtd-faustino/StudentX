@@ -23,6 +23,7 @@
         downloadButton.textContent = 'Transferir Calendário';
         downloadButton.className = 'downloadButton';
         downloadButton.onclick = downloadCalendar;
+        downloadButton.title = 'Clique para transferir o calendário e poder importá-lo onde quiser.';
         
         actionButtonsContainer.appendChild(downloadButton);
         
@@ -237,7 +238,7 @@
                     <p class="opp-place-subtitle-calendar-expanded">${event.oppPlaceSubtitle}</p>
                 </div>
             </div>
-            <a href="${event.moreInfoLink}">More Info</a>
+            <a class="more-info-link-calendar-expanded" href="${event.moreInfoLink}">More Info</a>
         </div>
     `;
         
@@ -260,7 +261,7 @@
         const endMinute = parseInt(event.endTime.split(':')[1]);
     
         // Determine the hour height based on screen width
-        const hourHeight = window.innerWidth <= 600 ? 31 : 251;
+        const hourHeight = window.innerWidth <= 600 ? 61 : 251;
         
         // Correct minute conversion based on the current hour height
         const minuteHeight = hourHeight / 60;
