@@ -942,9 +942,14 @@ nav {
     all:unset;
     cursor:pointer;
     position:absolute;
-    margin-top:-3.1%;
-    margin-left: 84%;
+    margin-top:-4.5%;
+    margin-left: 79.5%;
 
+}
+
+.expand-event-details img{
+    width:130%;
+    height: auto;
 }
 
 .expand-event-details:hover img {
@@ -1012,6 +1017,25 @@ nav {
     margin-top:-3%;
     margin-left:-3%;
 }
+
+.more-info-link-calendar-expanded{
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5vw 0;
+    border-radius: 0.6vw;
+    text-align: center;
+    font-size: 1.2vw;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.more-info-link-calendar-expanded:hover{
+    background-color: #0056b3;
+}
+
 
 
 .event-image{
