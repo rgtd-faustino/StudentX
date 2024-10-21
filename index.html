@@ -401,49 +401,35 @@
 
     
 
-    <div class="cookie-banner">
+    <div class="cookie-banner" id="cookieBanner">
         <div class="cookie-content">
-            <h2>We Value Your Privacy</h2>
-            <p>We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. Please select your preferences below.</p>
-            
-            <div class="cookie-categories">
-                <div class="cookie-category">
-                    <label class="switch">
-                        <input type="checkbox" checked disabled>
-                        <span class="slider"></span>
-                    </label>
-                    <div>
-                        <strong>Essential Cookies</strong>
-                        <p class="category-info">These cookies are necessary for the website to function and cannot be switched off. They include cookies for session management and security.</p>
-                    </div>
-                </div>
-                
-                <div class="cookie-category">
-                    <label class="switch">
-                        <input type="checkbox" id="functional-cookies">
-                        <span class="slider"></span>
-                    </label>
-                    <div>
-                        <strong>Functional Cookies</strong>
-                        <p class="category-info">These cookies enable the website to provide enhanced functionality and personalization, such as remembering your preferences or language settings.</p>
-                    </div>
-                </div>
-                
-                <div class="cookie-category">
-                    <label class="switch">
-                        <input type="checkbox" id="analytics-cookies">
-                        <span class="slider"></span>
-                    </label>
-                    <div>
-                        <strong>Analytics Cookies</strong>
-                        <p class="category-info">These cookies help us understand how visitors interact with the website by collecting and reporting information anonymously. They include cookies from services like Google Analytics.</p>
-                    </div>
+            <div class="cookie-initial">
+                <p>We use cookies to improve your experience.</p>
+                <div class="cookie-buttons">
+                    <button id="accept-all" class="cookie-btn">Accept All</button>
+                    <button id="reject-all" class="cookie-btn">Reject All</button>
+                    <button id="more-options" class="cookie-btn">More Options</button>
                 </div>
             </div>
-            
-            <div class="cookie-buttons">
-                <button id="reject-all" class="cookie-btn">Reject All</button>
-                <button id="accept-all" class="cookie-btn">Accept All</button>
+            <div class="cookie-expanded">
+                <h3>Cookie Preferences</h3>
+                <div class="cookie-categories">
+                    <div class="cookie-category">
+                        <input type="checkbox" id="essential" checked disabled>
+                        <label for="essential">Essential</label>
+                        <span class="category-info">Required for the website to function</span>
+                    </div>
+                    <div class="cookie-category">
+                        <input type="checkbox" id="analytics">
+                        <label for="analytics">Analytics</label>
+                        <span class="category-info">Help us improve our website</span>
+                    </div>
+
+                </div>
+                <div class="cookie-buttons">
+                    <button id="accept-selected" class="cookie-btn">Accept Selected</button>
+                    <button id="reject-all-expanded" class="cookie-btn">Reject All</button>
+                </div>
             </div>
         </div>
     </div>
