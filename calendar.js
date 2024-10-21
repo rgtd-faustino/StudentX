@@ -72,7 +72,7 @@
     function renderHours() {
         const hoursContainer = document.getElementById('hours');
         hoursContainer.innerHTML = '';
-        for (let i = 0; i < 24; i++) {
+        for (let i = 6; i <= 24; i++) {
             const hourDiv = document.createElement('div');
             hourDiv.classList.add('hour');
             hourDiv.textContent = `${i}:00`;
@@ -99,7 +99,8 @@
                     logoAlt: event.logoAlt,
                     oppPlaceTitle: event.oppPlaceTitle,
                     oppPlaceSubtitle: event.oppPlaceSubtitle,
-                    moreInfoLink: event.moreInfoLink
+                    moreInfoLink: event.moreInfoLink,
+                    colorOfEvent: event.colorOfEvent
                 }));
                 renderEvents();
                 updateOpportunityTitle(); // Add this line
@@ -150,7 +151,10 @@
     
             const eventDiv = document.createElement('div');
             eventDiv.classList.add('event');
-            
+
+            eventDiv.style.borderColor = event.colorOfEvent;
+            eventDiv.style.border = `0.2vw solid ${event.colorOfEvent}`;
+
             // Get event's calculated style
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
@@ -175,6 +179,8 @@
             };
             
             if(window.innerWidth <= 600){
+                eventDiv.style.border = `0.6vw solid ${event.colorOfEvent}`;
+
                 condensedView.innerHTML = `
                     <p class="description-title-calendar">${event.descriptionTitle}</p>
                     <div class="event-info-container">
@@ -199,7 +205,7 @@
                                 <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
                             </div>
                         </div>
-                        <a class="more-info-link-calendar" href="${event.moreInfoLink}">More Info</a>
+                        <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
                     `;
                 }else{
                     eventDiv.appendChild(expandButton);
@@ -238,7 +244,7 @@
                     <p class="opp-place-subtitle-calendar-expanded">${event.oppPlaceSubtitle}</p>
                 </div>
             </div>
-            <a class="more-info-link-calendar-expanded" href="${event.moreInfoLink}">More Info</a>
+            <a class="more-info-link-calendar-expanded" href="${event.moreInfoLink}">Mais Informações</a>
         </div>
     `;
         
@@ -390,4 +396,5 @@
     
     init();
 
-    
+
+      

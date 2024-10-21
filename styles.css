@@ -427,10 +427,10 @@ nav {
     position: absolute; /* Position it absolutely within the container */
     top: 0; /* Align to the top of the container */
     left: 0; /* Align to the left of the container */
-    margin-top: 3.5%; /* Adjust margin-top for better spacing */
+    margin-top: 3%; /* Adjust margin-top for better spacing */
     margin-left: 14%; /* Reduce left margin to fit smaller screens */
     width: 90%; /* Increase width to cover more of the screen */
-    height: auto;
+    height: 90%;
     z-index: 0; /* Ensure it is below the title */
 }
 
@@ -801,7 +801,7 @@ nav {
     max-height: 40vw;
     overflow-y: auto;
     margin: 0 auto;
-    margin-top:4vw;
+    margin-top:2vw;
 }
 .calendar {
     display: flex;
@@ -843,7 +843,7 @@ nav {
 
 .day-button.active {
     background-color: #108CEC; /* Darker green for active button */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* More pronounced shadow for active */
+    box-shadow: 0 0.4vw 0.7vw rgba(0, 0, 0, 0.2); /* More pronounced shadow for active */
     color: white;
 
 }
@@ -859,7 +859,7 @@ nav {
 }
 .hour {
     height: 250px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 0.15vw solid #e0e0e0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -878,14 +878,13 @@ nav {
     left: 0;
     width: 235px;
     background-color: #ffffff;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2), 0px -3px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0.3vw 0.6vw rgba(0, 0, 0, 0.2), 0px -0.3vw 0.6vw rgba(0, 0, 0, 0.2);
     color: rgb(0, 0, 0);
     padding: 0.3vw;
     border-radius: 0.9vw;
     overflow: hidden;
     box-sizing: border-box;
     display: flex;
-    border: 0.15vw solid darkblue;
 }
 
 
@@ -1522,6 +1521,131 @@ nav {
 }
 
 
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --text-color: #333;
+    --bg-color: #f8f9fa;
+}
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: none;
+}
+
+.cookie-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cookie-categories {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cookie-category {
+    display: flex;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.category-info {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.cookie-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cookie-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cookie-btn:hover {
+    opacity: 0.9;
+}
+
+.cookie-btn:focus {
+    outline: none;
+}
+
+#reject-all {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#accept-essentials {
+    background-color: #f39c12;
+    color: white;
+}
+
+#accept-all {
+    background-color: var(--primary-color);
+    color: white;
+}
+  
+
 
 @media (min-width:1025px) {
     
@@ -1614,7 +1738,7 @@ nav {
         display:unset;
         font-size: 6vw; /* Reduce font size */
         line-height: 1.1; /* Adjust line height */
-        margin-top: 10%; /* Increase top margin to create space */
+        margin-top: 0%; /* Increase top margin to create space */
         text-align: center; /* Center text on small screens */
         margin-bottom: 0%;
         margin-top: 0%; /* Increase top margin to create space */
@@ -1627,7 +1751,7 @@ nav {
 
 
     #titleP3Background {
-        margin-top: -1%; /* Adjust margin-top for better spacing */
+        margin-top: 0%; /* Adjust margin-top for better spacing */
         margin-left: 14%; /* Reduce left margin to fit smaller screens */
         width: 90%; /* Increase width to cover more of the screen */
         height: auto;
@@ -2396,10 +2520,8 @@ nav {
     all: unset;
     cursor: pointer;
     position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: 0;
-    margin-left: 0;
+    margin-top:-2%;
+    margin-left: 81.5%;
 }
 
 .expand-event-details:hover img {
@@ -2906,7 +3028,6 @@ nav {
       .social-media-icon {
         width: 10vw;
         margin: 0 2vw;
-        
       }
     
       #inicio-button-container {
@@ -2979,5 +3100,19 @@ nav {
 
 
 
+}
+
+
+
+@media (max-width:300px) {
+
+
+    #titleP3Background {
+        margin-top: 5%; /* Adjust margin-top for better spacing */
+        margin-left: 14%; /* Reduce left margin to fit smaller screens */
+        width: 90%; /* Increase width to cover more of the screen */
+        height: auto;
+        z-index:-1;
+    }
 
 }

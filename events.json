@@ -1,7 +1,7 @@
 {
     "items": [
       {
-        "day": 8,
+        "day": 21,
         "month": "outubro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
@@ -13,10 +13,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "14:00"
+        "endTime": "14:00",
+        "colorOfEvent": "red"
       },      
       {
-        "day": 8,
+        "day": 21,
         "month": "outubro",
         "imageSrc": "image2.png",
         "altText": "Image 2 mobile",
@@ -28,10 +29,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "11:00"
+        "endTime": "11:00",
+        "colorOfEvent": "green"
       },
       {
-        "day": 8,
+        "day": 21,
         "month": "outubro",
         "imageSrc": "image2.png",
         "altText": "Image 3 mobile",
@@ -43,10 +45,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "11:30"
+        "endTime": "11:30",
+        "colorOfEvent": "blue"
       },
       {
-        "day": 8,
+        "day": 21,
         "month": "outubro",
         "imageSrc": "image4.png",
         "altText": "Image 4 mobile",
@@ -58,10 +61,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "10:59"
+        "endTime": "10:59",
+        "colorOfEvent": "green"
       },
       {
-        "day": 2,
+        "day": 22,
         "month": "outubro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
@@ -72,11 +76,12 @@
         "oppPlaceTitle": "AE IST",
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "startTime": "5:00",
-        "endTime": "12:00"
+        "startTime": "8:00",
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
-        "day": 3,
+        "day": 22,
         "month": "outubro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
@@ -88,10 +93,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "13:00",
-        "endTime": "14:00"
+        "endTime": "14:00",
+        "colorOfEvent": "green"
       },
       {
-        "day": 7,
+        "day": 22,
         "month": "outubro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
@@ -103,10 +109,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
-        "day": 8,
+        "day": 22,
         "month": "outubro",
         "imageSrc": "image1.png",
         "altText": "Image 1 mobile",
@@ -118,7 +125,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "13:00",
-        "endTime": "15:00"
+        "endTime": "15:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 9,
@@ -133,7 +141,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 10,
@@ -148,7 +157,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 3,
@@ -163,7 +173,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -178,7 +189,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -193,7 +205,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -208,7 +221,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -223,7 +237,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -238,7 +253,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -253,7 +269,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -268,7 +285,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -283,7 +301,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       },
       {
         "day": 12,
@@ -298,7 +317,8 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "10:00",
-        "endTime": "12:00"
+        "endTime": "12:00",
+        "colorOfEvent": "green"
       }
       
     ]
