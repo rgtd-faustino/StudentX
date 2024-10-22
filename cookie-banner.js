@@ -45,21 +45,29 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Functional cookies enabled");
         }
 
-        // Apply analytics cookies (Google Analytics)
-        if (localStorage.getItem("analyticsCookies") === "true") {
-            // Load Google Tag Manager
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-XXXXXXX'); // Replace GTM-XXXXXXX with your actual GTM container ID
+    // Apply analytics cookies (Google Analytics 4)
+    if (localStorage.getItem("analyticsCookies") === "true") {
+        // Load Google Analytics 4
+        (function(w,d,s,l,i){
+            w[l] = w[l] || [];
+            w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+            w[l].push({
+                'js': new Date(),
+                'config': 'G-2EBYGRKLQ6'
+            });
+            var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s);
+            j.async=true;
+            j.src = 'https://www.googletagmanager.com/gtag/js?id=' + i;
+            f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','G-2EBYGRKLQ6');
 
-            console.log("Analytics cookies enabled");
-        } else {
-            // Disable Google Analytics if it was previously loaded
-            window['ga-disable-UA-XXXXXXXX-X'] = true; // Replace UA-XXXXXXXX-X with your actual GA property ID
-            console.log("Analytics cookies disabled");
-        }
+        console.log("Analytics cookies enabled");
+    } else {
+        // Disable Google Analytics 4
+        window['ga-disable-G-2EBYGRKLQ6'] = true;
+        console.log("Analytics cookies disabled");
+    }
 
         // Apply marketing cookies
         if (localStorage.getItem("marketingCookies") === "true") {
