@@ -168,5 +168,51 @@
     </div>
 </footer>
 
-    <script src="script.js" ></script>
+
+<div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-content">
+        <div class="cookie-initial">
+            <h3>Preferências Cookies</h3>
+            <p>Usamos cookies para melhorar a tua experiência. Escolhe as tuas opções abaixo.</p>
+            <div class="cookie-buttons">
+                <button id="accept-all" class="cookie-btn">Aceito Todos</button>
+                <button id="reject-all" class="cookie-btn">Rejeito Todos</button>
+                <button id="more-options" class="cookie-btn">Mais...</button>
+            </div>
+        </div>
+        <div class="cookie-expanded">
+            <h3>Preferências Cookies</h3>
+            <div class="cookie-categories">
+                <div class="cookie-category">
+                    <input type="checkbox" id="functional-cookies" checked disabled>
+                    <label for="functional-cookies">Essenciais</label>
+                    <span class="category-info">Necessário para o funcionamento do website</span>
+                </div>
+                <div class="cookie-category">
+                    <input type="checkbox" id="analytics-cookies" checked>
+                    <label for="analytics-cookies">Análise</label>
+                    <span class="category-info">Ajuda-nos a melhorar o nosso website</span>
+                </div>
+                <div class="cookie-category">
+                    <input type="checkbox" id="marketing-cookies" checked>
+                    <label for="marketing-cookies">Publicidade</label>
+                    <span class="category-info">Usado para entregar anúncios personalizados</span>
+                </div>
+            </div>
+            <div class="cookie-buttons">
+                <button id="accept-selected" class="cookie-btn">Accept Selected</button>
+                <button id="reject-all-expanded" class="cookie-btn">Reject All</button>
+            </div>
+            <div class="privacy-policy">
+                <a href="#" id="read-more">Read More About Our Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="cookie-banner.js" ></script>
+
+    <script src="script.js"></script>
 </body>
