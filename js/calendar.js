@@ -169,7 +169,7 @@
 
             // Create an img element
             const img = document.createElement('img');
-            img.src = 'plus.png'; // Replace with the actual path to your image
+            img.src = '/images/plus.png'; // Replace with the actual path to your image
 
             // Append the img element to the button
             expandButton.appendChild(img);

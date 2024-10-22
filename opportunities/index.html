@@ -15,8 +15,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Add preload for critical JavaScript files -->
-        <link rel="preload" href="script.js" as="script">
-        <link rel="preload" href="cookie-banner.js" as="script">
+        <link rel="preload" href="/js/script.js" as="script">
+        <link rel="preload" href="/js/cookie-banner.js" as="script">
     
     
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6"></script>
@@ -118,7 +118,7 @@
                 oppCountElement.textContent = data.items.length;
             }
            
-            fetch('events.json')
+            fetch('/json/events.json')
                 .then(response => response.json())
                 .then(data => createEventGrid(data))
                 .catch(error => console.error('Error loading event data:', error));
