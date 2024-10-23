@@ -1380,7 +1380,28 @@ nav {
     color: #666;
 }
 
+.team-member .linkedin-icon {
+    all:unset;
+    width: 1.5vw;
+    height: 1.5vw;
+    margin-left: 0.5vw;
+    vertical-align: middle;
+}
 
+.team-member .linkedin-icon:hover {
+    transform: none;
+}
+
+.team-member h3 a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+}
+
+.team-member h3 a:hover {
+    text-decoration: underline;
+}
 
 
 
