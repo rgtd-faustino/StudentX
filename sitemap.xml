@@ -1,19 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-		<!--	created with www.mysitemapgenerator.com	-->
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-	<loc>https://www.studentx.pt/</loc>
-	<lastmod>2024-10-22T22:47:29+01:00</lastmod>
-	<priority>1.0</priority>
+    <loc>https://www.studentx.pt/</loc>
+    <lastmod>2024-10-22T22:47:29+01:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
 </url>
 <url>
-	<loc>https://www.studentx.pt/opportunities/</loc>
-	<lastmod>2024-10-22T22:47:29+01:00</lastmod>
-	<priority>0.8</priority>
+    <loc>https://www.studentx.pt/opportunities/</loc>
+    <lastmod>2024-10-22T22:47:29+01:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
 </url>
 <url>
-	<loc>https://www.studentx.pt/contact/</loc>
-	<lastmod>2024-10-22T22:47:29+01:00</lastmod>
-	<priority>0.8</priority>
+    <loc>https://www.studentx.pt/contact/</loc>
+    <lastmod>2024-10-22T22:47:29+01:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
 </url>
 </urlset>

@@ -10,6 +10,10 @@ body {
     --primary-color: #108CEC;
 }
 
+
+
+
+
 nav {
     position: absolute;
     top: 1.5vw;
@@ -816,6 +820,11 @@ input[type="checkbox"] {
     font-family: 'Poppins', sans-serif;
     white-space: nowrap;
 }
+
+
+
+
+
 
 
 

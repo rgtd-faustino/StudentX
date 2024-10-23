@@ -518,8 +518,9 @@ nav {
 
 
 
-
-
+#opportunities-item-mobile{
+    display: none;
+}
 
 
 
@@ -1378,7 +1379,6 @@ nav {
     font-size: 0.8vw;
     color: #666;
 }
-
 
 
 
@@ -2380,7 +2380,12 @@ input[type="checkbox"] {
 
 
 
-
+    #opportunities-item-pc{
+        display: none;
+    }
+    #opportunities-item-mobile{
+        display: block;
+    }
 
 
 

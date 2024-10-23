@@ -1,0 +1,48 @@
+# Global rules for all robots
+User-agent: *
+
+# Allow all robots to crawl all content
+Allow: /
+
+# Allow crawling of important sections
+Allow: /events/
+Allow: /workshops/
+Allow: /opportunities/
+Allow: /about/
+Allow: /contact/
+
+# Allow crawling of specific file types
+Allow: *.html
+Allow: *.pdf
+Allow: *.jpg
+Allow: *.png
+Allow: *.ico
+Allow: /*.js
+Allow: /*.css
+
+# Specify files that should be crawled for SEO
+Allow: /sitemap.xml
+Allow: /favicon.ico
+
+# Optimizing crawl budget by excluding unnecessary paths
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /private/
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*search=
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /search?
+Disallow: /*?replytocom
+Disallow: /*.sql
+Disallow: /*.sql.gz
+Disallow: /readme.html
+
+# Crawl-delay directive (optional - use with caution)
+# Crawl-delay: 1
+
+# Sitemap declaration
+Sitemap: https://studentx.pt/sitemap.xml

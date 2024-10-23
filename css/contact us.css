@@ -11,6 +11,12 @@ body {
     --primary-color: #108CEC;
 }
 
+#opportunities-item-mobile{
+    display: none;
+}
+#opportunities-item-pc{
+    display: block;
+}
 
 h1 {
     text-align: center;
@@ -585,6 +591,14 @@ input[type="checkbox"] {
         font-size: 18px; /* Slightly smaller font size for better readability on small screens */
 
         
+    }
+
+
+    #opportunities-item-pc{
+        display: none;
+    }
+    #opportunities-item-mobile{
+        display: block;
     }
 
     .hamburger-line1,
