@@ -232,6 +232,8 @@
         // After rendering all events, scroll to the first event if there are any events
         if (sortedEvents.length > 0) {
             scrollToFirstEvent(sortedEvents[0]);
+        } else{
+            document.querySelector('.calendar-container').scrollTo(0, 0);
         }
     }
     
