@@ -190,6 +190,9 @@
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQDSNF9T"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <div id="google_translate_element" style="display: none;"></div>
+
+
 
     <img id="image1" src="/images/ELIPSE GRADIENTE.png" alt="blue gradient background">
     <img id="image1tlm" src="/images/ELIPSE GRADIENTE TELEMOVEL.png" alt="blue gradient background">
@@ -213,10 +216,14 @@
                 <li><a href="#questoes-frequentes-title">FAQ</a></li>
             </ul>
             <div class="right-side-nav">
-                <button class="current-language">Português &nbsp; <img id="ArrowLanguageButton" src="/images/ArrowLanguageButton.png" alt="arrow for the language button"></button>
-                <ul class="dropdown-content">
-                    <li><a href="" data-lang="en">English</a></li>
-                </ul>
+                <div class="language-switcher">
+                    <button class="current-language" onclick="toggleLanguageDropdown()">
+                        Português &nbsp; <img id="ArrowLanguageButton" src="/images/ArrowLanguageButton.png" alt="arrow for the language button">
+                    </button>
+                    <ul class="dropdown-content" id="languageDropdown">
+                        <li><a href="#" onclick="changeLanguage('en')">English</a></li>
+                    </ul>
+                </div>
                 <a href="/contact/" class="contact-button">Contact Us</a>
             </div>
         </div>
@@ -632,7 +639,7 @@
     <script defer src="/js/script.js"></script>
     <script defer src="/js/calendar.js"></script>
     <script defer src="/js/cookie-banner.js"></script>
-    
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 
 
