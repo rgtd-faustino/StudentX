@@ -224,6 +224,45 @@
                         <li><a href="#" onclick="changeLanguage('en')">English</a></li>
                     </ul>
                 </div>
+                <script type="text/javascript">
+                    function googleTranslateElementInit() {
+                        new google.translate.TranslateElement({
+                            pageLanguage: 'pt',
+                            includedLanguages: 'en,pt', // Languages you want to support
+                            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                            autoDisplay: false
+                        }, 'google_translate_element');
+                    }
+                
+                    // Function to handle language change
+                    function changeLanguage(lang) {
+                        var select = document.querySelector('.goog-te-combo');
+                        if (select) {
+                            select.value = lang;
+                            select.dispatchEvent(new Event('change'));
+                        }
+                        toggleLanguageDropdown();
+                    }
+                
+                    // Toggle dropdown visibility
+                    function toggleLanguageDropdown() {
+                        document.getElementById('languageDropdown').classList.toggle('show');
+                    }
+                
+                    // Close dropdown when clicking outside
+                    window.onclick = function(event) {
+                        if (!event.target.matches('.current-language') && 
+                            !event.target.matches('#ArrowLanguageButton')) {
+                            var dropdowns = document.getElementsByClassName('dropdown-content');
+                            for (var i = 0; i < dropdowns.length; i++) {
+                                var openDropdown = dropdowns[i];
+                                if (openDropdown.classList.contains('show')) {
+                                    openDropdown.classList.remove('show');
+                                }
+                            }
+                        }
+                    }
+                </script>
                 <a href="/contact/" class="contact-button">Contact Us</a>
             </div>
         </div>
