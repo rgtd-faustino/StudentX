@@ -29,7 +29,7 @@
         
         document.querySelector('.download-calendar').appendChild(actionButtonsContainer);
     }
-    
+
     function renderWeekButtons() {
         const dayButtonsContainer = document.getElementById('dayButtons');
         dayButtonsContainer.innerHTML = '';
@@ -123,16 +123,21 @@
         const eventsContainer = document.getElementById('events');
         eventsContainer.innerHTML = '';
     
-        // Get the month of the currently displayed week
         const currentMonth = meses[currentWeekStart.getMonth()].toLowerCase();
-    
-        // Filter events for the selected day and current month
+        
         const dayEvents = events.filter(event =>
             event.day === selectedDay &&
             event.month.toLowerCase() === currentMonth
         );
     
-        const sortedEvents = dayEvents.sort((a, b) => a.startTime.localeCompare(b.startTime));
+        // Sort events by start time
+        const sortedEvents = dayEvents.sort((a, b) => {
+            const timeA = convertTimeToMinutes(a.startTime);
+            const timeB = convertTimeToMinutes(b.startTime);
+            return timeA - timeB;
+        });
+    
+        // Track occupied time slots for each column
         const columns = [];
     
         // Create modal container
@@ -142,45 +147,49 @@
         modalContainer.style.display = 'none';
         document.body.appendChild(modalContainer);
     
-        sortedEvents.forEach((event, index) => {
-            let column = 0;
-            while (columns[column] && columns[column] > event.startTime) {
-                column++;
+        sortedEvents.forEach((event) => {
+            const eventStart = convertTimeToMinutes(event.startTime);
+            const eventEnd = convertTimeToMinutes(event.endTime);
+            
+            // Find the first available column
+            let columnIndex = 0;
+            while (isTimeSlotOccupied(columns, columnIndex, eventStart, eventEnd)) {
+                columnIndex++;
             }
-            columns[column] = event.endTime;
+    
+            // Update the occupied time slots for this column
+            if (!columns[columnIndex]) {
+                columns[columnIndex] = [];
+            }
+            columns[columnIndex].push({ start: eventStart, end: eventEnd });
     
             const eventDiv = document.createElement('div');
             eventDiv.classList.add('event');
-
             eventDiv.style.borderColor = event.colorOfEvent;
             eventDiv.style.border = `0.2vw solid ${event.colorOfEvent}`;
-
+    
             // Get event's calculated style
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
             
+            // Set the left position based on column
+            eventDiv.style.left = `${columnIndex * 250}px`;
+            
             // Create condensed view
             const condensedView = document.createElement('div');
             condensedView.classList.add('event-condensed');
-
+    
             // Create expand button
             const expandButton = document.createElement('button');
             expandButton.classList.add('expand-event-details');
-
-            // Create an img element
+    
             const img = document.createElement('img');
-            img.src = '/images/plus.png'; // Replace with the actual path to your image
-
-            // Append the img element to the button
+            img.src = '/images/plus.png';
             expandButton.appendChild(img);
-
-            expandButton.onclick = () => {
-                showExpandedView(event);
-            };
+            expandButton.onclick = () => showExpandedView(event);
             
-            if(window.innerWidth <= 600){
+            if(window.innerWidth <= 600) {
                 eventDiv.style.border = `0.6vw solid ${event.colorOfEvent}`;
-
                 condensedView.innerHTML = `
                     <p class="description-title-calendar">${event.descriptionTitle}</p>
                     <div class="event-info-container">
@@ -189,9 +198,8 @@
                     </div>
                 `;
                 eventDiv.appendChild(expandButton);
-            } else{
+            } else {
                 if (parseInt(style.height) >= 375) {
-                    // Add title and time to the condensed view
                     condensedView.style.overflowY = 'auto';
                     condensedView.innerHTML = `
                         <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
@@ -207,24 +215,41 @@
                         </div>
                         <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
                     `;
-                }else{
+                } else {
                     eventDiv.appendChild(expandButton);
                     const eventImage = document.createElement('img');
                     eventImage.src = event.imageSrc;
                     eventImage.alt = `${event.descriptionTitle} image`;
-                    eventImage.className = 'event-image';  // Set the class name
+                    eventImage.className = 'event-image';
                     condensedView.appendChild(eventImage);
                 }
             }
-
-
     
-
-
-
             eventDiv.appendChild(condensedView);
-            eventDiv.style.left = `${column * 250}px`;
             eventsContainer.appendChild(eventDiv);
+        });
+    
+        // After rendering all events, scroll to the first event if there are any events
+        if (sortedEvents.length > 0) {
+            scrollToFirstEvent(sortedEvents[0]);
+        }
+    }
+    
+    // Helper function to convert time string to minutes since midnight
+    function convertTimeToMinutes(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+    
+    // Helper function to check if a time slot is occupied in a column
+    function isTimeSlotOccupied(columns, columnIndex, eventStart, eventEnd) {
+        if (!columns[columnIndex]) {
+            return false;
+        }
+        
+        return columns[columnIndex].some(slot => {
+            // Check if there's any overlap
+            return !(eventEnd <= slot.start || eventStart >= slot.end);
         });
     }
     
@@ -265,25 +290,45 @@
         const startMinute = parseInt(event.startTime.split(':')[1]);
         const endHour = parseInt(event.endTime.split(':')[0]);
         const endMinute = parseInt(event.endTime.split(':')[1]);
-    
+
         // Determine the hour height based on screen width
         const hourHeight = window.innerWidth <= 600 ? 61 : 251;
         
         // Correct minute conversion based on the current hour height
         const minuteHeight = hourHeight / 60;
-    
-        // Calculate the top position
-        const top = (startHour * hourHeight) + (startMinute * minuteHeight);
-    
-        // Calculate the height of the event
-        const endTop = (endHour * hourHeight) + (endMinute * minuteHeight);
+
+        // Calculate the top position with 6-hour offset
+        const top = ((startHour - 6) * hourHeight) + (startMinute * minuteHeight);
+
+        // Calculate the height of the event (no offset needed for duration)
+        const endTop = ((endHour - 6) * hourHeight) + (endMinute * minuteHeight);
         const height = endTop - top;
-    
+
         return {
             top: `${top}px`,
             height: `${height}px`,
         };
     }
+
+    function scrollToFirstEvent(firstEvent) {
+        const startHour = parseInt(firstEvent.startTime.split(':')[0]);
+        const startMinute = parseInt(firstEvent.startTime.split(':')[1]);
+        
+        // Calculate the scroll position with the same logic as getEventStyle
+        const hourHeight = window.innerWidth <= 600 ? 61 : 251;
+        const minuteHeight = hourHeight / 60;
+        
+        // Calculate position with 6-hour offset (same as in getEventStyle)
+        const scrollPosition = ((startHour - 6) * hourHeight) + (startMinute * minuteHeight);
+        
+        // Get the container that has the scrollbar
+        const scrollContainer = document.querySelector('.calendar-container');
+        
+        // Add a small offset (e.g., -50px) to show a bit of space above the first event
+        const offset = 50;
+        scrollContainer.scrollTop = Math.max(0, scrollPosition - offset);
+    }
+    
     
     
     function updateMonthYear() {
