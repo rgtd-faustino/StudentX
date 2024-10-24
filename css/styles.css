@@ -111,9 +111,6 @@ h1 {
     display:none;
 }
 
-#ArrowLanguageButton{
-    pointer-events: none;
-}
 
 #ArrowStartButton{
     pointer-events: none;
@@ -214,43 +211,6 @@ nav {
     border: none;
     cursor: pointer;
     position: relative; /* Ensure the button is a reference point for the dropdown */
-}
-/* Dropdown content */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; /* Position dropdown below the button */
-    left: 0;
-    background-color: white;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 1;
-    list-style-type: none;
-    width: max-content; /* Adjust to fit content */
-    padding: 0;
-    margin-top: 8px; /* Slight gap between button and dropdown */
-}
-
-.dropdown-content li {
-    margin: 0;
-    padding: 0;
-}
-
-.dropdown-content li a {
-    padding: 0.5vw 2vw;
-    display: block;
-    color: black;
-    text-decoration: none;
-    border-radius: 6px;
-}
-
-.dropdown-content li a:hover {
-    background-color: #f1f1f1;
-}
-
-/* Show the dropdown when active */
-.dropdown-content.active {
-    display: block;
 }
 
 
@@ -1910,12 +1870,6 @@ input[type="checkbox"] {
     #logos{
         display:none;
     }
-    
-    #ArrowLanguageButton{
-        width:9%;
-        position:absolute;
-        margin-top:10.5%;
-    }
 
     #ArrowStartButton{
         width:10%;
@@ -2050,26 +2004,7 @@ input[type="checkbox"] {
         
     }
 
-    .current-language{
-        margin-left:5%;
-    }
 
-    .dropdown-content {
-        display: none;
-        position: relative;
-        top: 100%; /* Position dropdown below the button */
-        left: 0;
-        background-color: white;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        z-index: 1;
-        list-style-type: none;
-        width: max-content; /* Adjust to fit content */
-        padding: 0;
-        margin-top: 8px; /* Slight gap between button and dropdown */
-    }
-
-    
     
 
 

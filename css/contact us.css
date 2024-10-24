@@ -77,66 +77,6 @@ nav {
 }
 
 
-/* Style for the right-side navigation */
-.right-side-nav {
-    display: flex;
-    align-items: center;
-    gap: 0vw; /* Adjust gap between elements in the right-side nav */
-    position: relative; /* Set position to relative to contain the dropdown within this area */
-}
-
-
-/* Button styling */
-.current-language {
-    font-family: inherit;
-    font-size: inherit;
-    background-color: transparent;
-    color: black;
-    text-decoration: none;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    position: relative; /* Ensure the button is a reference point for the dropdown */
-}
-
-/* Dropdown content */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; /* Position dropdown below the button */
-    left: 0;
-    background-color: white;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 1;
-    list-style-type: none;
-    width: max-content; /* Adjust to fit content */
-    padding: 0;
-    margin-top: 8px; /* Slight gap between button and dropdown */
-}
-
-.dropdown-content li {
-    margin: 0;
-    padding: 0;
-}
-
-.dropdown-content li a {
-    padding: 0.5vw 2vw;
-    display: block;
-    color: black;
-    text-decoration: none;
-    border-radius: 6px;
-}
-
-.dropdown-content li a:hover {
-    background-color: #f1f1f1;
-}
-
-/* Show the dropdown when active */
-.dropdown-content.active {
-    display: block;
-}
-
 
 
 .hamburger {
@@ -685,55 +625,12 @@ input[type="checkbox"] {
     }
 
 
-
-    .right-side-nav {
-        flex-direction: column;
-        gap: 6vw;
-        width: 100%;
-        align-items: flex-start;
-        margin: 0;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-        
-
-    }
-    .contact-button {
-        padding: 1.5vw 10vw;
-        background-color: #007BFF;
-        color: white;
-        text-decoration: none;
-        border-radius: 2vw;
-        font-weight: 400;
-        font-size: 5vw;
-        margin-bottom: 6vw;
-    }
-
     .menu-content.active {
         display: flex;
         
     }
 
-    .current-language{
-        margin-left:5%;
-    }
 
-    .dropdown-content {
-        display: none;
-        position: relative;
-        top: 100%; /* Position dropdown below the button */
-        left: 0;
-        background-color: white;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        z-index: 1;
-        list-style-type: none;
-        width: max-content; /* Adjust to fit content */
-        padding: 0;
-        margin-top: 8px; /* Slight gap between button and dropdown */
-    }
-    
     /* Footer text hidden */
     .footer-text {
         display: none;
