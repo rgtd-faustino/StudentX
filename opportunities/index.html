@@ -99,10 +99,20 @@
     <div class="image-container">
         <img id="gradiente" src="/images/oppPageGradiente.png" alt="gradiente para o inicio da pagina">
         <a href="/#opportunityTitle" id="start-now" class="button">Começar Agora</a>
-        <a id="watch-video" class="button">Ver Vídeo</a>
+        <a onclick="openModal()" id="watch-video" class="button">Ver Vídeo</a>
+
     </div>
 
-
+    <!-- Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <video id="modalVideo" class="modal-video" controls>
+            <source src="/videos/videoP2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        </div>
+    </div>
 
     <div class="opp-text-container">
         <h1 id="opp-title">Oportunidades</h1>

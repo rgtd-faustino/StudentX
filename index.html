@@ -230,9 +230,7 @@
                 <a href="#opportunityTitle">Começar Agora &nbsp; <img id="ArrowStartButton" src="/images/ArrowStartButton.png" alt="arrow for the start button"></a>
             </div>
             <div class="watch-button">
-                
-                <button><img id="ArrowWatchButton" src="/images/ArrowWatchButton.png" alt="arrow for the watch button"> Ver Vídeo</button>
-
+                <button onclick="openModal()"><img id="ArrowWatchButton" src="/images/ArrowWatchButton.png" alt="arrow for the watch button"> Ver Vídeo</button>
             </div>
         </div>
 
@@ -240,7 +238,17 @@
 
     </div>
     
+    <!-- Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
 
+        <video id="modalVideo" class="modal-video" controls>
+            <source src="/videos/videoP2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        </div>
+    </div>
 
     <div id="parentContainer">
         <img id="gradienteP2" src="/images/gradiente pagina 2.png" alt="blue gradient">

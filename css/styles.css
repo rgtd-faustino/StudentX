@@ -266,6 +266,46 @@ nav {
     box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3); /* Create a shadow box */
 }
 
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+  }
+
+  .modal-content {
+    position: relative;
+    top:10%;
+    width: 80%;
+    max-width: 80vw;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 1vw;
+    overflow: hidden;
+  }
+
+  .close-modal {
+    position: absolute;
+    right: 1.2vw;
+    top: 0vw;
+    color: rgb(0, 0, 0);
+    font-size: 3vw;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .modal-video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+}
+
 .start-button {
     border-radius: 1.3vw;
     transition: transform 0.3s, box-shadow 0.3s;
