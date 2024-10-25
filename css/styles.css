@@ -267,7 +267,7 @@ nav {
 }
 
 /* Modal styles */
-.modal {
+.video-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -278,18 +278,17 @@ nav {
     z-index: 1000;
   }
 
-  .modal-content {
+  .video-modal-content {
     position: relative;
     top:10%;
-    width: 80%;
-    max-width: 80vw;
+    width: 50%;
     margin: 0 auto;
     background: #000;
     border-radius: 1vw;
     overflow: hidden;
   }
 
-  .close-modal {
+  /*.close-modal {
     position: absolute;
     right: 1.2vw;
     top: 0vw;
@@ -298,7 +297,7 @@ nav {
     font-weight: bold;
     cursor: pointer;
     z-index: 1001;
-  }
+  }*/
 
   .modal-video {
     width: 100%;
