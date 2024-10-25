@@ -100,7 +100,8 @@
                     oppPlaceTitle: event.oppPlaceTitle,
                     oppPlaceSubtitle: event.oppPlaceSubtitle,
                     moreInfoLink: event.moreInfoLink,
-                    colorOfEvent: event.colorOfEvent
+                    colorOfEvent: event.colorOfEvent,
+                    moreInfoText: event.moreInfoText
                 }));
                 renderEvents();
                 updateOpportunityTitle(); // Add this line
@@ -215,6 +216,20 @@
                         </div>
                         <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
                     `;
+                    if(parseInt(style.height) >= 475){
+                        // Create a new paragraph for the additional text
+                        const moreInfoParagraph = document.createElement('p');
+                        moreInfoParagraph.textContent = event.moreInfoText;
+                        moreInfoParagraph.style.maxWidth = '210px';  // Set maximum width
+                        moreInfoParagraph.style.wordWrap = 'break-word';  // Enable word wrapping
+                        moreInfoParagraph.style.whiteSpace = 'normal';    // Allow text to wrap
+                        moreInfoParagraph.style.textAlign = 'center';    // Center the text
+                        moreInfoParagraph.style.fontFamily = 'Poppins, sans-serif';  // Set font to Poppins
+                        moreInfoParagraph.style.fontSize = '0.9vw';  // Set font size to 1.5 vw
+                        
+                        // Add the new paragraph to the existing content
+                        condensedView.appendChild(moreInfoParagraph);
+                    }
                 } else {
                     eventDiv.appendChild(expandButton);
                     const eventImage = document.createElement('img');
