@@ -20,9 +20,14 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom: 20px;
     color: #333;
 }
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
 
 #contact{
     margin-top: 12%;
@@ -263,7 +268,7 @@ nav {
 }
 
 /* Title styles */
-.message-box h1 {
+.message-box h2 {
     font-size: 2vw; /* Large title */
     font-weight: 700; /* Bold */
     margin-bottom: 1vw; /* Space below the title */
@@ -272,7 +277,7 @@ nav {
 }
 
 /* Subtitle styles */
-.message-box h2 {
+.message-box h3 {
     font-size: 1vw; /* Smaller subtitle */
     font-weight: 400; /* Normal weight */
     margin-bottom: 1vw; /* Space below the subtitle */
@@ -677,7 +682,7 @@ input[type="checkbox"] {
         }
     
     /* Title styles */
-    .message-box h1 {
+    .message-box h2 {
         font-size: 2vw; /* Large title */
         font-weight: 700; /* Bold */
         margin-bottom: 1vw; /* Space below the title */
@@ -693,7 +698,7 @@ input[type="checkbox"] {
 
     
     /* Subtitle styles */
-    .message-box h2 {
+    .message-box h3 {
         font-size: 1vw; /* Smaller subtitle */
         font-weight: 400; /* Normal weight */
         margin-bottom: 1vw; /* Space below the subtitle */
