@@ -1964,6 +1964,35 @@ input[type="checkbox"] {
         padding: 1vh 5vw;
     }
 
+    /* Modal styles */
+  .video-modal-content {
+    position: relative;
+    top:30%;
+    width: 80%;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 1vw;
+    overflow: hidden;
+  }
+
+  /*.close-modal {
+    position: absolute;
+    right: 1.2vw;
+    top: 0vw;
+    color: rgb(0, 0, 0);
+    font-size: 3vw;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+  }*/
+
+  .modal-video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+    }
+
+
 
     nav {
         position: relative;
