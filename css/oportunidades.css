@@ -465,10 +465,15 @@ nav {
     margin-left: 8vw;
 }
 
+#opp-title{
+    font-size: 2.5vw;
+}
+
 #opp-subtitle{
     font-weight: 400;
     color: rgba(0, 0, 24, 0.50);
     margin-top:-1vw;
+    font-size:1.3vw;
 
 }
 
@@ -611,192 +616,6 @@ input[type="checkbox"] {
 }
 
 
-@media (max-width: 600px) {
-    .hamburger-line1,
-    .hamburger-line2,
-    .hamburger-line3 {
-        display: block;
-    }
-
-    
-
-    nav {
-        position: relative;
-        top: 0;
-        left: 0;
-        width: 100%; /* Make the nav bar fill the entire width */
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        z-index: 1000;
-        background-color: #ffffff;
-
-        justify-content: space-between; /* Space elements evenly */
-        white-space: nowrap;
-        padding: 0 2vw; /* Optional: Adjust padding as needed */
-        box-sizing: border-box; /* Include padding in the width calculation */
-        font-size: 5vw;
-    }
-    .hamburger {
-        display: block;
-        margin: 0;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-        width: 100%; /* Full width of the container */
-        margin-top:2vw;
-    }
-
-    .menu-content {
-        display: none;
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
-
-    .nav-items {
-        flex-direction: column;
-        gap: 6vw;
-        width: 100%;
-        align-items: flex-start;
-        margin-top: 6vw;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-        
-    }
-
-    .right-side-nav {
-        flex-direction: column;
-        gap: 6vw;
-        width: 100%;
-        align-items: flex-start;
-        margin: 0;
-        padding: 0;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 100%; /* Full height of the container */
-        
-
-    }
-
-    .contact-button {
-        padding: 1.5vw 10vw;
-        background-color: #007BFF;
-        color: white;
-        text-decoration: none;
-        border-radius: 2vw;
-        font-weight: 400;
-        font-size: 5vw;
-        margin-bottom: 6vw;
-    }
-
-    .menu-content.active {
-        display: flex;
-        
-    }
-
-    
-
-
-
-    .grid-container {
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-
-
-.grid-item {
-    border: 0.6vw solid rgba(52, 52, 52, 0.25);
-    border-radius: 4vw;
-    padding: 4vw;
-    display: flex;
-    flex-direction: column;
-}
-
-.grid-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 1vw;
-}
-
-.description {
-    margin-top:-1vh;
-}
-
-.description-title {
-    text-align: center;
-    font-weight: 600;
-    font-size: 5vw;
-
-}
-
-.description-subtitle{
-        font-size: 4vw;
-        color: grey;
-        margin-top: -2.3vh;
-    
-}
-
-.carousel-line {
-    width: 98%;
-    height: 0.6vw;
-    margin: 1vw auto;
-    transition: all 0.3s ease-in-out;
-    background-color: rgb(173, 173, 173);
-    margin-top:-2%;
-    margin-bottom:3%;
-}
-
-.opp-place-subtitle{
-    font-size: 3.5vw;
-    color: grey;
-    margin-top: 0vh;
-
-}
-
-.opp-place-title {
-    margin-top: 1vh;
-    margin-bottom: 0vh;
-    font-weight: bold;
-    font-size: 4vw;
-}
-    
-.opp-place {
-    position: relative;
-    margin-top: 0vh;
-}
-
-.opp-place {
-    display: flex;
-    align-items: center;
-    margin-left: 0vw;
-    margin-top:0vw;
-    margin-bottom: 0.5vw;
-}
-
-.description, .opp-place {
-    white-space: nowrap; /* Prevent text from wrapping */
-}
-
-.opp-place img {
-    width: 13vw;
-    height: auto;
-    margin-right: 3vw;
-}
-.button-more-info {
-    padding: 2vw 13vw;
-    background-color: #108CEC;
-    color: white;
-    text-decoration: none;
-    border-radius: 2vw;
-    text-align: center;
-    font-size: 4vw;
-    font-family: 'Poppins', sans-serif;
-    white-space: nowrap;
-}
 
 
 
@@ -804,5 +623,3 @@ input[type="checkbox"] {
 
 
 
-
-}
