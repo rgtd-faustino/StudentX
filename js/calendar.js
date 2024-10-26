@@ -131,17 +131,13 @@
             event.month.toLowerCase() === currentMonth
         );
     
-        // Sort events by start time
         const sortedEvents = dayEvents.sort((a, b) => {
             const timeA = convertTimeToMinutes(a.startTime);
             const timeB = convertTimeToMinutes(b.startTime);
             return timeA - timeB;
         });
     
-        // Track occupied time slots for each column
         const columns = [];
-    
-        // Create modal container
         const modalContainer = document.createElement('div');
         modalContainer.id = 'eventModal';
         modalContainer.classList.add('event-modal');
@@ -152,13 +148,11 @@
             const eventStart = convertTimeToMinutes(event.startTime);
             const eventEnd = convertTimeToMinutes(event.endTime);
             
-            // Find the first available column
             let columnIndex = 0;
             while (isTimeSlotOccupied(columns, columnIndex, eventStart, eventEnd)) {
                 columnIndex++;
             }
     
-            // Update the occupied time slots for this column
             if (!columns[columnIndex]) {
                 columns[columnIndex] = [];
             }
@@ -169,21 +163,15 @@
             eventDiv.style.borderColor = event.colorOfEvent;
             eventDiv.style.border = `0.2vw solid ${event.colorOfEvent}`;
     
-            // Get event's calculated style
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
-            
-            // Set the left position based on column
             eventDiv.style.left = `${columnIndex * 250}px`;
             
-            // Create condensed view
             const condensedView = document.createElement('div');
             condensedView.classList.add('event-condensed');
     
-            // Create expand button
             const expandButton = document.createElement('button');
             expandButton.classList.add('expand-event-details');
-    
             const img = document.createElement('img');
             img.src = '/images/plus.png';
             expandButton.appendChild(img);
@@ -200,7 +188,8 @@
                 `;
                 eventDiv.appendChild(expandButton);
             } else {
-                if (parseInt(style.height) >= 375) {
+                const eventHeight = parseInt(style.height);
+                if (eventHeight >= 375) {
                     condensedView.style.overflowY = 'auto';
                     condensedView.innerHTML = `
                         <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
@@ -216,19 +205,35 @@
                         </div>
                         <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
                     `;
-                    if(parseInt(style.height) >= 475){
-                        // Create a new paragraph for the additional text
+                    
+                    if(eventHeight >= 475 && event.moreInfoText) {
+                        const moreInfoContainer = document.createElement('div');
+                        moreInfoContainer.style.cssText = `
+                            max-width: 210px;
+                            margin: 15px auto;
+                            max-height: ${eventHeight - 475}px;
+                            overflow: hidden;
+                            position: relative;
+                        `;
+    
                         const moreInfoParagraph = document.createElement('p');
-                        moreInfoParagraph.textContent = event.moreInfoText;
-                        moreInfoParagraph.style.maxWidth = '210px';  // Set maximum width
-                        moreInfoParagraph.style.wordWrap = 'break-word';  // Enable word wrapping
-                        moreInfoParagraph.style.whiteSpace = 'normal';    // Allow text to wrap
-                        moreInfoParagraph.style.textAlign = 'center';    // Center the text
-                        moreInfoParagraph.style.fontFamily = 'Poppins, sans-serif';  // Set font to Poppins
-                        moreInfoParagraph.style.fontSize = '0.9vw';  // Set font size to 1.5 vw
+                        moreInfoParagraph.style.cssText = `
+                            margin: 0;
+                            font-family: Poppins, sans-serif;
+                            font-size: 16px;
+                            line-height: 1.4;
+                            text-align: center;
+                            display: -webkit-box;
+                            -webkit-line-clamp: ${Math.floor((eventHeight - 475) / 22)};
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            word-wrap: break-word;
+                        `;
                         
-                        // Add the new paragraph to the existing content
-                        condensedView.appendChild(moreInfoParagraph);
+                        moreInfoParagraph.textContent = event.moreInfoText;
+                        moreInfoContainer.appendChild(moreInfoParagraph);
+                        condensedView.appendChild(moreInfoContainer);
                     }
                 } else {
                     eventDiv.appendChild(expandButton);
@@ -244,10 +249,9 @@
             eventsContainer.appendChild(eventDiv);
         });
     
-        // After rendering all events, scroll to the first event if there are any events
         if (sortedEvents.length > 0) {
             scrollToFirstEvent(sortedEvents[0]);
-        } else{
+        } else {
             document.querySelector('.calendar-container').scrollTo(0, 0);
         }
     }
