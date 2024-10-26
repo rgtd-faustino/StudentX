@@ -116,11 +116,14 @@ h2 {
 
 #ArrowStartButton{
     pointer-events: none;
+    width:auto;
+    height:auto;
 }
 
 #ArrowWatchButton{
     pointer-events: none;
-
+    width:auto;
+    height:auto;
 }
 
 .starsText {
@@ -1895,6 +1898,7 @@ input[type="checkbox"] {
         z-index: 2; /* Higher z-index to be on top */
         margin-bottom:-9%;
         width:20%;
+        height:auto;
 
     }
 
@@ -1914,12 +1918,14 @@ input[type="checkbox"] {
 
     #ArrowStartButton{
         width:10%;
+        height:auto;
         margin-left:-5%;
         margin-bottom: -1%;
     }
 
     #ArrowWatchButton{
         width:20%;
+        height:auto;
     }
 
     .secondPText{
