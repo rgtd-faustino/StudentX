@@ -5,15 +5,18 @@ const CONSENT_CONFIG = {
     cookieCategories: {
         essential: {
             name: 'Essenciais',
-            required: true
+            required: true,
+            sameSite: 'Lax' // Essential cookies default to Lax
         },
         analytics: {
             name: 'Análise',
-            required: false
+            required: false,
+            sameSite: 'Lax' // Analytics cookies can use Lax
         },
         marketing: {
             name: 'Publicidade',
-            required: false
+            required: false,
+            sameSite: 'None' // Marketing cookies need None for third-party context
         }
     }
 };
@@ -111,9 +114,10 @@ class CookieConsentManager {
             version: CONSENT_CONFIG.version
         };
 
+        // Save consent cookie with Lax SameSite as it's essential
         this.setCookie('cookieConsent', JSON.stringify(this.consentData), {
             days: CONSENT_CONFIG.cookieMaxAge,
-            sameSite: 'Strict',
+            sameSite: 'Lax',
             secure: true
         });
 
@@ -173,15 +177,21 @@ class CookieConsentManager {
     }
 
     removeAnalyticsCookies() {
-        // Add specific analytics cookies names to remove
         const analyticsCookies = ['_ga', '_gid', '_gat'];
-        analyticsCookies.forEach(cookieName => this.deleteCookie(cookieName));
+        analyticsCookies.forEach(cookieName => 
+            this.deleteCookie(cookieName, {
+                sameSite: CONSENT_CONFIG.cookieCategories.analytics.sameSite
+            })
+        );
     }
 
     removeMarketingCookies() {
-        // Add specific marketing cookies names to remove
         const marketingCookies = ['_fbp', '_gcl_au'];
-        marketingCookies.forEach(cookieName => this.deleteCookie(cookieName));
+        marketingCookies.forEach(cookieName => 
+            this.deleteCookie(cookieName, {
+                sameSite: CONSENT_CONFIG.cookieCategories.marketing.sameSite
+            })
+        );
     }
 
     checkAndEnforceExpiry() {
@@ -205,7 +215,6 @@ class CookieConsentManager {
         this.domElements.banner.classList.add('expanded');
     }
 
-    // Utility methods
     setCookie(name, value, options = {}) {
         let cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
         
@@ -216,8 +225,21 @@ class CookieConsentManager {
         }
         
         cookie += '; path=/';
-        if (options.sameSite) cookie += `; SameSite=${options.sameSite}`;
-        if (options.secure) cookie += '; Secure';
+        
+        // Handle SameSite attribute based on cookie category
+        const cookieCategory = this.getCookieCategory(name);
+        const sameSite = options.sameSite || 
+                        (cookieCategory && CONSENT_CONFIG.cookieCategories[cookieCategory].sameSite) ||
+                        'Lax';
+        
+        cookie += `; SameSite=${sameSite}`;
+        
+        // If SameSite=None, the Secure attribute must be set
+        if (sameSite === 'None') {
+            cookie += '; Secure';
+        } else if (options.secure) {
+            cookie += '; Secure';
+        }
         
         document.cookie = cookie;
     }
@@ -233,8 +255,20 @@ class CookieConsentManager {
         return null;
     }
 
-    deleteCookie(name) {
-        this.setCookie(name, '', { days: -1 });
+    getCookieCategory(cookieName) {
+        const marketingCookies = ['_fbp', '_gcl_au'];
+        const analyticsCookies = ['_ga', '_gid', '_gat'];
+        
+        if (marketingCookies.includes(cookieName)) return 'marketing';
+        if (analyticsCookies.includes(cookieName)) return 'analytics';
+        return 'essential';
+    }
+
+    deleteCookie(name, options = {}) {
+        this.setCookie(name, '', { 
+            days: -1,
+            ...options
+        });
     }
 
     showBanner() {
