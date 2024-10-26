@@ -220,11 +220,11 @@
                         moreInfoParagraph.style.cssText = `
                             margin: 0;
                             font-family: Poppins, sans-serif;
-                            font-size: 16px;
+                            font-size: 0.9vw;
                             line-height: 1.4;
                             text-align: center;
                             display: -webkit-box;
-                            -webkit-line-clamp: ${Math.floor((eventHeight - 475) / 22)};
+                            -webkit-line-clamp: ${Math.floor((eventHeight - 475) / (window.innerWidth * 0.009 * 1.4))};
                             -webkit-box-orient: vertical;
                             overflow: hidden;
                             text-overflow: ellipsis;
