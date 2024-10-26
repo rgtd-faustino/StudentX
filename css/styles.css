@@ -2492,7 +2492,7 @@ input[type="checkbox"] {
 .day-buttons {
     display: flex;
     justify-content: space-around;
-    width:70%;
+    width:90%;
     margin: 0 auto;
 }
 
@@ -2506,9 +2506,9 @@ input[type="checkbox"] {
 }
 
 .day-button {
-    padding: 2.5vw 1vw;
+    padding: 4vw 2vw;
     border: none;
-    border-radius: 1vw; /* Rounded corners */
+    border-radius: 3vw; /* Rounded corners */
     background-color: rgba(102, 102, 102, 0.05); /* Base color */
     color: black; /* Text color */
     cursor: pointer;
