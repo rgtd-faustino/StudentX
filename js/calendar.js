@@ -211,7 +211,7 @@
                         moreInfoContainer.style.cssText = `
                             max-width: 210px;
                             margin: 15px auto;
-                            max-height: ${eventHeight - 500}px;
+                            max-height: ${eventHeight - 450}px;
                             overflow: hidden;
                             position: relative;
                         `;
@@ -224,7 +224,7 @@
                             line-height: 1.4;
                             text-align: center;
                             display: -webkit-box;
-                            -webkit-line-clamp: ${Math.floor((eventHeight - 500) / (window.innerWidth * 0.009 * 1.4))};
+                            -webkit-line-clamp: ${Math.floor((eventHeight - 475) / (window.innerWidth * 0.009 * 1.4))};
                             -webkit-box-orient: vertical;
                             overflow: hidden;
                             text-overflow: ellipsis;
