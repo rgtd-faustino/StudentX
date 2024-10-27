@@ -200,6 +200,33 @@
                         <p class="description-title-calendar">${event.descriptionTitle}</p>
                         <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
                         <div class="carousel-line-calendar"></div>
+                        ${eventHeight >= 30 && event.moreInfoText ? `
+                            <div style="
+                                max-width: 13vw;
+                                margin: 0.9vw auto;
+                                max-height: ${eventHeight - 26.4}vw;
+                                overflow: hidden;
+                                position: relative;
+                                border: 0.2vw solid grey;
+                                border-radius: 1vw;
+                                padding: 0.6vw;
+                            ">
+                                <p style="
+                                    margin: 0;
+                                    font-family: Poppins, sans-serif;
+                                    font-size: 0.9vw;
+                                    line-height: 1.4;
+                                    text-align: center;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: ${Math.floor((eventHeight - 26.4) / 1.4)};
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    word-wrap: break-word;
+                                ">${event.moreInfoText}</p>
+                            </div>
+                        ` : ''}
+                        
                         <div class="logo-and-place-info">
                             <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
                             <div class="place-info">
@@ -210,35 +237,6 @@
                         <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
                     `;
                     
-                    if(eventHeight >= 30 && event.moreInfoText) {
-                        const moreInfoContainer = document.createElement('div');
-                        moreInfoContainer.style.cssText = `
-                            max-width: 13vw;
-                            margin: 0.9vw auto;
-                            max-height: ${eventHeight - 24}vw;
-                            overflow: hidden;
-                            position: relative;
-                        `;
-    
-                        const moreInfoParagraph = document.createElement('p');
-                        moreInfoParagraph.style.cssText = `
-                            margin: 0;
-                            font-family: Poppins, sans-serif;
-                            font-size: 0.9vw;
-                            line-height: 1.4;
-                            text-align: center;
-                            display: -webkit-box;
-                            -webkit-line-clamp: ${Math.floor((eventHeight - 24) / 1.4)};
-                            -webkit-box-orient: vertical;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            word-wrap: break-word;
-                        `;
-                        
-                        moreInfoParagraph.textContent = event.moreInfoText;
-                        moreInfoContainer.appendChild(moreInfoParagraph);
-                        condensedView.appendChild(moreInfoContainer);
-                    }
                 } else {
                     eventDiv.appendChild(expandButton);
                     const eventImage = document.createElement('img');
@@ -409,6 +407,7 @@
         renderWeekButtons();
         updateMonthYear();
         renderEvents();
+        console.debug(currentDate.getFullYear());
     }
     
     function countTodayEvents() {
@@ -431,46 +430,189 @@
         opportunityTitle.innerHTML = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
     }
 
-    function createICSFile() {
-        let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//StudentX//StudentX//PT\n";
-        
-        events.forEach(event => {
-            const startDate = new Date(currentDate.getFullYear(), meses.indexOf(event.month), event.day);
-            const endDate = new Date(startDate);
-            
-            const [startHour, startMinute] = event.startTime.split(':');
-            const [endHour, endMinute] = event.endTime.split(':');
-            
-            startDate.setHours(parseInt(startHour), parseInt(startMinute));
-            endDate.setHours(parseInt(endHour), parseInt(endMinute));
-            
-            icsContent += "BEGIN:VEVENT\n";
-            icsContent += `DTSTART:${formatDateForICS(startDate)}\n`;
-            icsContent += `DTEND:${formatDateForICS(endDate)}\n`;
-            icsContent += `SUMMARY:${event.descriptionTitle}\n`;
-            icsContent += `DESCRIPTION:${event.descriptionSubtitle}\n`;
-            icsContent += `LOCATION:${event.oppPlaceTitle}\n`;
-            icsContent += "END:VEVENT\n";
-        });
-        
-        icsContent += "END:VCALENDAR";
-        
-        return icsContent;
-    }
-    
-    function formatDateForICS(date) {
-        return date.toISOString().replace(/-|:|\.\d{3}/g, '');
-    }
-    
-    function downloadCalendar() {
-        const icsContent = createICSFile();
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'calendário.ics';
-        link.click();
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Helper function to escape special characters in ICS text fields
+    function escapeICSText(text) {
+        if (!text) return '';
+        return text.replace(/[,;\\]/g, '\\$&')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '')
+                .split('').join('');
     }
 
+    // Helper function to format date-time for ICS
+    function formatDateForICS(date) {
+        return date.toISOString()
+                .replace(/[-:]/g, '')
+                .replace(/\.\d{3}/, '');
+    }
+
+    // Generate unique identifier for events
+    function generateUID() {
+        return 'event-' + Math.random().toString(36).substr(2, 9) + 
+            '-' + Date.now() + '@studentx.com';
+    }
+
+    // Create timestamp for calendar creation
+    function getCurrentTimestamp() {
+        return formatDateForICS(new Date());
+    }
+
+    // Helper function to get event datetime
+    function getEventDateTime(event) {
+        const monthIndex = meses.findIndex(m => 
+            m.toLowerCase() === event.month.toLowerCase()
+        );
+        
+        // Handle year rollover
+        let eventYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        if (monthIndex < currentMonth) {
+            eventYear++; // Event is in next year
+        }
+        
+        const [startHour, startMinute] = event.startTime.split(':');
+        const eventDate = new Date(
+            eventYear,
+            monthIndex,
+            event.day,
+            parseInt(startHour),
+            parseInt(startMinute)
+        );
+        
+        return eventDate;
+    }
+
+    // Helper function to check if event is in the future
+    function isFutureEvent(event) {
+        const now = new Date();
+        const eventDateTime = getEventDateTime(event);
+        return eventDateTime >= now;
+    }
+
+    function createICSFile() {
+        const timestamp = getCurrentTimestamp();
+        let icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//StudentX//Calendar//PT',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            'X-WR-CALNAME:StudentX Calendar',
+            'X-WR-TIMEZONE:Europe/Lisbon',
+            'X-WR-CALDESC:Calendário de Eventos StudentX',
+            `DTSTAMP:${timestamp}`
+        ].join('\r\n') + '\r\n';
+
+        // Filter and sort future events
+        const futureEvents = events
+            .filter(isFutureEvent)
+            .sort((a, b) => {
+                const dateA = getEventDateTime(a);
+                const dateB = getEventDateTime(b);
+                return dateA - dateB;
+            });
+
+        futureEvents.forEach(event => {
+            // Get event dates
+            const eventStart = getEventDateTime(event);
+            const eventEnd = new Date(eventStart);
+            
+            // Set end time
+            const [endHour, endMinute] = event.endTime.split(':');
+            eventEnd.setHours(parseInt(endHour), parseInt(endMinute));
+
+            // Create event description with rich formatting
+            const description = [
+                event.descriptionSubtitle,
+                '',
+                'Local: ' + event.oppPlaceSubtitle,
+                event.moreInfoText ? 'Informação Adicional: ' + event.moreInfoText : '',
+                '',
+                'Mais informações: ' + event.moreInfoLink
+            ].filter(Boolean).join('\\n');
+
+            // Generate unique identifier for the event
+            const uid = generateUID();
+
+            // Build event block
+            const eventBlock = [
+                'BEGIN:VEVENT',
+                `UID:${uid}`,
+                `DTSTAMP:${timestamp}`,
+                `DTSTART:${formatDateForICS(eventStart)}`,
+                `DTEND:${formatDateForICS(eventEnd)}`,
+                `SUMMARY:${escapeICSText(event.descriptionTitle)}`,
+                `DESCRIPTION:${escapeICSText(description)}`,
+                `LOCATION:${escapeICSText(event.oppPlaceTitle)}`,
+                'CATEGORIES:StudentX',
+                `URL:${escapeICSText(event.moreInfoLink)}`,
+                `STATUS:CONFIRMED`,
+                `SEQUENCE:0`,
+                `CREATED:${timestamp}`,
+                `LAST-MODIFIED:${timestamp}`,
+                // Add color if supported by calendar client
+                `X-APPLE-CALENDAR-COLOR:${event.colorOfEvent}`,
+                'TRANSP:OPAQUE',
+                'END:VEVENT'
+            ].join('\r\n') + '\r\n';
+
+            icsContent += eventBlock;
+        });
+
+        icsContent += 'END:VCALENDAR\r\n';
+        return icsContent;
+    }
+
+    // Updated download function with error handling and MIME type
+    function downloadCalendar() {
+        try {
+            const icsContent = createICSFile();
+            
+            // Check if there are any future events
+            if (!icsContent.includes('BEGIN:VEVENT')) {
+                alert('Não existem eventos futuros para exportar.');
+                return;
+            }
+            
+            const blob = new Blob([icsContent], { 
+                type: 'text/calendar;charset=utf-8;method=PUBLISH' 
+            });
+            
+            // Create filename with date
+            const today = new Date();
+            const filename = `calendario-studentx-${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}.ics`;
+            
+            // Create and trigger download
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            
+            // Cleanup
+            setTimeout(() => {
+                URL.revokeObjectURL(link.href);
+                document.body.removeChild(link);
+            }, 100);
+        } catch (error) {
+            console.error('Error generating calendar file:', error);
+            alert('Ocorreu um erro ao gerar o calendário. Por favor, tente novamente.');
+        }
+    }
     
     init();
 
