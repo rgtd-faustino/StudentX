@@ -165,7 +165,11 @@
     
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
-            eventDiv.style.left = `${columnIndex * 250}px`;
+            const WIDTH_THRESHOLD = 600;
+            eventDiv.style.left = window.innerWidth <= WIDTH_THRESHOLD 
+                ? `${columnIndex * 250}px` 
+                : `${columnIndex * 13}vw`;
+            
             
             const condensedView = document.createElement('div');
             condensedView.classList.add('event-condensed');
@@ -189,7 +193,7 @@
                 eventDiv.appendChild(expandButton);
             } else {
                 const eventHeight = parseInt(style.height);
-                if (eventHeight >= 375) {
+                if (eventHeight >= 14) {
                     condensedView.style.overflowY = 'auto';
                     condensedView.innerHTML = `
                         <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
@@ -206,12 +210,12 @@
                         <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
                     `;
                     
-                    if(eventHeight >= 550 && event.moreInfoText) {
+                    if(eventHeight >= 30 && event.moreInfoText) {
                         const moreInfoContainer = document.createElement('div');
                         moreInfoContainer.style.cssText = `
-                            max-width: 210px;
-                            margin: 15px auto;
-                            max-height: ${eventHeight - 450}px;
+                            max-width: 13vw;
+                            margin: 0.9vw auto;
+                            max-height: ${eventHeight - 24}vw;
                             overflow: hidden;
                             position: relative;
                         `;
@@ -224,7 +228,7 @@
                             line-height: 1.4;
                             text-align: center;
                             display: -webkit-box;
-                            -webkit-line-clamp: ${Math.floor((eventHeight - 475) / (window.innerWidth * 0.009 * 1.4))};
+                            -webkit-line-clamp: ${Math.floor((eventHeight - 24) / 1.4)};
                             -webkit-box-orient: vertical;
                             overflow: hidden;
                             text-overflow: ellipsis;
@@ -313,8 +317,10 @@
         const endMinute = parseInt(event.endTime.split(':')[1]);
 
         // Determine the hour height based on screen width
-        const hourHeight = window.innerWidth <= 600 ? 61 : 251;
-        
+        const hourHeight = window.innerWidth <= 600
+            ? 16.2 
+            : 13.1;  
+
         // Correct minute conversion based on the current hour height
         const minuteHeight = hourHeight / 60;
 
@@ -326,28 +332,34 @@
         const height = endTop - top;
 
         return {
-            top: `${top}px`,
-            height: `${height}px`,
+            top: `${top}vw`,
+            height: `${height}vw`,
         };
     }
+
 
     function scrollToFirstEvent(firstEvent) {
         const startHour = parseInt(firstEvent.startTime.split(':')[0]);
         const startMinute = parseInt(firstEvent.startTime.split(':')[1]);
         
-        // Calculate the scroll position with the same logic as getEventStyle
-        const hourHeight = window.innerWidth <= 600 ? 61 : 251;
+        // Use the same hourHeight calculation as getEventStyle for consistency
+        const hourHeight = window.innerWidth < 600 
+            ? 16.2 
+            : 13.1;     
+        
         const minuteHeight = hourHeight / 60;
         
-        // Calculate position with 6-hour offset (same as in getEventStyle)
+        // Calculate position in vw units
         const scrollPosition = ((startHour - 6) * hourHeight) + (startMinute * minuteHeight);
         
-        // Get the container that has the scrollbar
         const scrollContainer = document.querySelector('.calendar-container');
         
-        // Add a small offset (e.g., -50px) to show a bit of space above the first event
-        const offset = 50;
-        scrollContainer.scrollTop = Math.max(0, scrollPosition - offset);
+
+        let offset = window.innerWidth <= 600 ? 5 : 2;
+        
+        // Convert the final scroll position from vw to pixels for scrollTop
+        const scrollPositionInPixels = (scrollPosition - offset) * (window.innerWidth / 100);
+        scrollContainer.scrollTop = Math.max(0, scrollPositionInPixels);
     }
     
     

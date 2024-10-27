@@ -863,10 +863,11 @@ nav {
 .hours {
     display: flex;
     flex-direction: column;
-    width: 50px;
+    width: 3vw;
+    font-size: 1.15vw;
 }
 .hour {
-    height: 250px;
+    height: 13vw;
     border-bottom: 0.15vw solid #e0e0e0;
     display: flex;
     align-items: center;
@@ -879,12 +880,12 @@ nav {
 .events {
     position: relative;
     flex: 1;
-    margin-left:2vw;
+    margin-left:1vw;
 }
 .event {
     position: absolute;
     left: 0;
-    width: 235px;
+    width: 12.3vw;
     background-color: #ffffff;
     box-shadow: 0px 0.3vw 0.6vw rgba(0, 0, 0, 0.2), 0px -0.3vw 0.6vw rgba(0, 0, 0, 0.2);
     color: rgb(0, 0, 0);
@@ -917,7 +918,7 @@ nav {
 /* Modal Content */
 .modal-content {
     background-color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    box-shadow: 0 0 3vw rgb(0, 0, 0, 1); /* Soft shadow for depth */
     border-radius: 1vw; /* Smooth, rounded corners */
     max-width: 20%;
     padding: 0.7vw; /* Better padding for a cleaner layout */
@@ -2536,11 +2537,11 @@ input[type="checkbox"] {
 .hours {
     display: flex;
     flex-direction: column;
-    width: 50px;
+    width: 12vw;
     font-size: 4vw;
 }
 .hour {
-    height: 60px;
+    height: 16vw;
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     align-items: center;
@@ -2602,6 +2603,11 @@ input[type="checkbox"] {
     position: absolute;
     margin-top:-2%;
     margin-left: 81.5%;
+}
+
+.expand-event-details img{
+    width:130%;
+    height: auto;
 }
 
 .expand-event-details:hover img {
