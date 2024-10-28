@@ -6,16 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
         toggleMenu();  // Call the toggleMenu function when the hamburger icon is clicked
     });
 
-    const toggleMenu = debounce(function() {
+    function toggleMenu() {
         const menuContent = document.querySelector('.menu-content');
-        const hamburger = document.querySelector('.hamburger');
-        
-        requestAnimationFrame(() => {
-            menuContent.classList.toggle('active');
-            hamburger.classList.toggle('open');
-            menuContent.classList.toggle('show');
-        });
-    }, 100);
+        menuContent.classList.toggle('active');
+        hamburger.classList.toggle('open'); // Toggle the 'open' class to animate lines
+        menuContent.classList.toggle('show'); // Toggle the visibility of the menu content (optional)
+    }
 
     // Close the navigation menu if clicked outside
     document.addEventListener("click", function(event) {
@@ -156,19 +152,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to create carousel items dynamically
     function createCarouselItems(data) {
       const container = document.getElementById('item-group-1-mobile');
-      const fragment = document.createDocumentFragment();
-
+  
       data.items.forEach(item => {
         const itemContainer = document.createElement('div');
         itemContainer.className = 'item-container-mobile';
   
         // Item Image
         const img = document.createElement('img');
-        img.dataset.src = item.imageSrc; // Use data-src for lazy loading
+        img.src = item.imageSrc;
         img.alt = item.altText;
-        img.width = 300; // Set explicit dimensions
-        img.height = 200;
-        imageObserver.observe(img);
+        itemContainer.appendChild(img);
   
         // Description
         const description = document.createElement('div');
@@ -228,11 +221,9 @@ document.addEventListener('DOMContentLoaded', function () {
   
         itemContainer.appendChild(moreInfoBtn);
   
-
-        fragment.appendChild(itemContainer);
-      });
         // Append item container to the carousel container
-        container.appendChild(fragment);
+        container.appendChild(itemContainer);
+      });
     }
   
     // Fetch the JSON file and populate the carousel
