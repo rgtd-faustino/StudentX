@@ -1585,7 +1585,9 @@ nav {
     overflow: hidden;
     width: 25vw;
     transition: all 0.3s ease;
+    
 }
+
 
 .cookie-banner.expanded {
     width: 25vw;
@@ -1600,7 +1602,6 @@ nav {
 .cookie-initial {
     display: flex;
     flex-direction: column;
-    gap: 1vw;
     text-align: center;
 }
 
@@ -1651,7 +1652,7 @@ nav {
 
 .cookie-buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 1vw;
     margin-top: 1vw;
 }

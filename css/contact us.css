@@ -462,7 +462,7 @@ nav {
 
 .cookie-buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 1vw;
     margin-top: 1vw;
 }

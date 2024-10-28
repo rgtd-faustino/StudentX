@@ -193,6 +193,8 @@
                 eventDiv.appendChild(expandButton);
             } else {
                 const eventHeight = parseInt(style.height);
+                const eventHeightUsed = 26.4;
+                const availableHeight = eventHeight - eventHeightUsed;
                 if (eventHeight >= 14) {
                     condensedView.style.overflowY = 'auto';
                     condensedView.innerHTML = `
@@ -204,7 +206,7 @@
                             <div style="
                                 max-width: 13vw;
                                 margin: 0.9vw auto;
-                                max-height: ${eventHeight - 26.4}vw;
+                                max-height: ${eventHeight - availableHeight}vw;
                                 overflow: hidden;
                                 position: relative;
                                 border: 0.2vw solid rgb(173, 173, 173);
@@ -219,7 +221,7 @@
                                     line-height: 1.4;
                                     text-align: center;
                                     display: -webkit-box;
-                                    -webkit-line-clamp: ${Math.floor((eventHeight - 26.4) / 1.4)};
+                                    -webkit-line-clamp: ${Math.floor((availableHeight/1.4))};
                                     -webkit-box-orient: vertical;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
@@ -447,17 +449,34 @@
     // Helper function to escape special characters in ICS text fields
     function escapeICSText(text) {
         if (!text) return '';
-        return text.replace(/[,;\\]/g, '\\$&')
-                .replace(/\n/g, '\\n')
-                .replace(/\r/g, '')
-                .split('').join('');
+        return text
+            .replace(/[,;\\]/g, '\\$&')
+            .replace(/\n/g, '\\n')  // Convert actual line breaks to ICS format
+            .replace(/\r/g, '')
+            .split('').join('');
+    }
+
+    // Helper function to format text for description
+    function formatDescriptionText(text) {
+        if (!text) return '';
+        
+        // First, convert literal "\n" strings to actual line breaks
+        // Replace single \n with double \n for more spacing
+        let formattedText = text.replace(/\\n/g, '\n\n');
+        
+        // Then format the paragraphs
+        return formattedText
+            .split('\n')  // Split into lines
+            .map(line => line.trim())  // Trim each line
+            .filter(line => line)  // Remove empty lines
+            .join('\n\n');  // Join with double line breaks
     }
 
     // Helper function to format date-time for ICS
     function formatDateForICS(date) {
         return date.toISOString()
-                .replace(/[-:]/g, '')
-                .replace(/\.\d{3}/, '');
+            .replace(/[-:]/g, '')
+            .replace(/\.\d{3}/, '');
     }
 
     // Generate unique identifier for events
@@ -477,7 +496,6 @@
             m.toLowerCase() === event.month.toLowerCase()
         );
         
-        // Handle year rollover
         let eventYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth();
         if (monthIndex < currentMonth) {
@@ -527,28 +545,24 @@
             });
 
         futureEvents.forEach(event => {
-            // Get event dates
             const eventStart = getEventDateTime(event);
             const eventEnd = new Date(eventStart);
             
-            // Set end time
             const [endHour, endMinute] = event.endTime.split(':');
             eventEnd.setHours(parseInt(endHour), parseInt(endMinute));
 
-            // Create event description with rich formatting
-            const description = [
+            // First format the description with proper line breaks
+            let description = formatDescriptionText([
                 event.descriptionSubtitle,
                 '',
                 'Local: ' + event.oppPlaceSubtitle,
                 event.moreInfoText ? 'Informação Adicional: ' + event.moreInfoText : '',
                 '',
                 'Mais informações: ' + event.moreInfoLink
-            ].filter(Boolean).join('\\n');
+            ].filter(Boolean).join('\n'));
 
-            // Generate unique identifier for the event
             const uid = generateUID();
 
-            // Build event block
             const eventBlock = [
                 'BEGIN:VEVENT',
                 `UID:${uid}`,
@@ -564,8 +578,11 @@
                 `SEQUENCE:0`,
                 `CREATED:${timestamp}`,
                 `LAST-MODIFIED:${timestamp}`,
-                // Add color if supported by calendar client
+                // Add color support for multiple calendar clients
                 `X-APPLE-CALENDAR-COLOR:${event.colorOfEvent}`,
+                `COLOR:${event.colorOfEvent}`,  // Generic color property
+                `X-MICROSOFT-CDO-BUSYSTATUS:BUSY`,  // For Outlook
+                `X-GOOGLE-CALENDAR-COLOR:${event.colorOfEvent}`,  // For Google Calendar
                 'TRANSP:OPAQUE',
                 'END:VEVENT'
             ].join('\r\n') + '\r\n';
@@ -577,12 +594,11 @@
         return icsContent;
     }
 
-    // Updated download function with error handling and MIME type
+    // Download function with error handling
     function downloadCalendar() {
         try {
             const icsContent = createICSFile();
             
-            // Check if there are any future events
             if (!icsContent.includes('BEGIN:VEVENT')) {
                 alert('Não existem eventos futuros para exportar.');
                 return;
@@ -592,11 +608,9 @@
                 type: 'text/calendar;charset=utf-8;method=PUBLISH' 
             });
             
-            // Create filename with date
             const today = new Date();
             const filename = `calendario-studentx-${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}.ics`;
             
-            // Create and trigger download
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = filename;
@@ -604,7 +618,6 @@
             document.body.appendChild(link);
             link.click();
             
-            // Cleanup
             setTimeout(() => {
                 URL.revokeObjectURL(link.href);
                 document.body.removeChild(link);
