@@ -207,12 +207,13 @@
                                 max-height: ${eventHeight - 26.4}vw;
                                 overflow: hidden;
                                 position: relative;
-                                border: 0.2vw solid grey;
+                                border: 0.2vw solid rgb(173, 173, 173);
                                 border-radius: 1vw;
                                 padding: 0.6vw;
                             ">
                                 <p style="
                                     margin: 0;
+                                    color: grey;
                                     font-family: Poppins, sans-serif;
                                     font-size: 0.9vw;
                                     line-height: 1.4;
