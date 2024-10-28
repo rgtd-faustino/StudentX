@@ -1790,20 +1790,20 @@ input[type="checkbox"] {
         display: none;
     }
 
-    #image1tlm {
+    /* Optimized CSS */
+    .background-image {
         margin: 0;
         padding: 0;
-        display: flex;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: auto; /* Full height of the container */
-        min-height: 70vh; /* Minimum height */
-        max-height: calc(100vh - 13%); /* Maximum height calculated dynamically */
-        width: 100%; /* Full width of the container */
+        width: 100%;
+        height: auto;
+        min-height: 70vh;
+        max-height: calc(100vh - 13%);
         position: absolute;
         top: 0;
         left: 0;
         z-index: 1;
+        object-fit: cover; /* Better than using flex for images */
+        will-change: transform; /* Optimize compositing */
     }
 
 

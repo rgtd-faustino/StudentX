@@ -1,24 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
 <head>
+    <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Student X é uma plataforma desenvolvida com o objetivo de aproximar estudantes de oportunidades de desenvolvimento pessoal, curricular e profissional."/>
+    
+    <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-    <meta name="description" content="A Student X é uma plataforma desenvolvida com o objetivo de aproximar estudantes de oportunidades de desenvolvimento pessoal, curricular e profissional."/>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval' *.googleapis.com *.gstatic.com *.google-analytics.com *.googletagmanager.com; img-src 'self' data: https: *.studentx.pt; font-src 'self' https: data: *.googleapis.com *.gstatic.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com">
+    
+    <title>Student X - Aproxima estudantes de oportunidades</title>
 
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-KQDSNF9T');
-    </script>
+    <!-- Preconexões críticas -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6"></script>
+    <!-- Preload de recursos críticos -->
+    <link rel="preload" href="/js/script.js" as="script">
+    <link rel="preload" href="/js/calendar.js" as="script">
+    <link rel="preload" href="/js/cookie-banner.js" as="script">
+    <link rel="preload" href="/videos/slogan.mp4" as="video" type="video/mp4">
+    <link rel="preload" as="image" href="/images/ELIPSE GRADIENTE TELEMOVEL.png" type="image/png">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/studentxLogo.ico">
+    <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://www.studentx.pt" />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    <!-- Fontes com display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <!-- Google Tag Manager com carregamento atrasado -->
     <script>
+    window.addEventListener('load', function() {
+        // Configuração inicial do dataLayer
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
         
+        // Configuração do consentimento padrão
+        window.gtag = function() { dataLayer.push(arguments); }
         gtag('consent', 'default', {
             'analytics_storage': 'denied',
             'ad_storage': 'denied',
@@ -27,36 +56,30 @@
             'security_storage': 'granted'
         });
 
-        gtag('js', new Date());
-        gtag('config', 'G-2EBYGRKLQ6');
+        // Carregamento atrasado do GTM
+        setTimeout(function() {
+            (function(w,d,s,l,i){
+                w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s);
+                j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i;
+                f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-KQDSNF9T');
+            
+            // Carregamento do GA4
+            var gtagScript = document.createElement('script');
+            gtagScript.async = true;
+            gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6';
+            document.head.appendChild(gtagScript);
+            
+            gtagScript.onload = function() {
+                gtag('js', new Date());
+                gtag('config', 'G-2EBYGRKLQ6');
+            };
+        }, 2000); // Atraso de 2 segundos
+    });
     </script>
-
-    <title>Student X - Aproxima estudantes de oportunidades</title>
-
-    <!-- Icon for the website's tab -->
-    <link rel="icon" type="image/x-icon" href="/studentxLogo.ico">
-
-    <!-- Icon for search results -->
-    <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
-
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="canonical" href="https://www.studentx.pt" />
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Add preload for critical JavaScript files -->
-    <link rel="preload" href="/js/script.js" as="script">
-    <link rel="preload" href="/js/calendar.js" as="script">
-    <link rel="preload" href="/js/cookie-banner.js" as="script">
-
-
-
-
 
 
     <!-- Organization Information -->

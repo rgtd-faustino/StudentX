@@ -1,24 +1,72 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
     <head>
+        <!-- Essential Meta Tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A Student X oferece inúmeras informações sobre eventos, iniciativas e oportunidades para  jovens melhorarem experiências académicas e extracurriculares."/>
+        
+        <!-- Security Headers -->
         <meta http-equiv="X-Content-Type-Options" content="nosniff">
         <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-        <meta name="description" content="A Student X oferece inúmeras informações sobre eventos, iniciativas e oportunidades para  jovens melhorarem experiências académicas e extracurriculares."/>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval' *.googleapis.com *.gstatic.com *.google-analytics.com *.googletagmanager.com; img-src 'self' data: https: *.studentx.pt; font-src 'self' https: data: *.googleapis.com *.gstatic.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com">
+        
+        <title>Student X - Mais Oportunidades</title>
     
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-KQDSNF9T');
+        <!-- Preconexões críticas -->
+        <link rel="preconnect" href="https://www.googletagmanager.com">
+        <link rel="preconnect" href="https://www.google-analytics.com">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+        <!-- Preload de recursos críticos -->
+        <link rel="preload" href="/js/script.js" as="script">
+        <link rel="preload" href="/js/cookie-banner.js" as="script">
+    
+        <!-- Favicons -->
+        <link rel="icon" type="image/x-icon" href="/studentxLogo.ico">
+        <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
+        
+        <!-- Canonical -->
+        <link rel="canonical" href="https://www.studentx.pt/oportunidades/" />
+    
+        <!-- Estilos -->
+        <link rel="stylesheet" href="/css/oportunidades.css">
+        
+        <!-- Fontes com carregamento otimizado -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        
+        <!-- Organization Schema -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Student X",
+            "url": "https://studentx.pt",
+            "logo": "https://studentx.pt/images/logo.png",
+            "description": "A Student X é uma plataforma criada por estudantes para estudantes que oferece eventos, workshops e oportunidades.",
+            "sameAs": [
+                "https://www.instagram.com/studentx.pt",
+                "https://www.linkedin.com/company/studentx",
+                "https://www.tiktok.com/@studentx.pt",
+                "https://x.com/studentx_pt"
+            ],
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "contact.studentx@gmail.com",
+                "contactType": "customer service"
+            }
+        }
         </script>
-
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6"></script>
+        
+        <!-- Google Tag Manager com carregamento atrasado -->
         <script>
+        window.addEventListener('load', function() {
+            // Configuração inicial do dataLayer
             window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
             
+            // Configuração do consentimento padrão
+            window.gtag = function() { dataLayer.push(arguments); }
             gtag('consent', 'default', {
                 'analytics_storage': 'denied',
                 'ad_storage': 'denied',
@@ -26,53 +74,31 @@
                 'personalization_storage': 'denied',
                 'security_storage': 'granted'
             });
-
-            gtag('js', new Date());
-            gtag('config', 'G-2EBYGRKLQ6');
+    
+            // Carregamento atrasado do GTM
+            setTimeout(function() {
+                (function(w,d,s,l,i){
+                    w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                    var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s);
+                    j.async=true;
+                    j.src='https://www.googletagmanager.com/gtm.js?id='+i;
+                    f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-KQDSNF9T');
+                
+                // Carregamento do GA4
+                var gtagScript = document.createElement('script');
+                gtagScript.async = true;
+                gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6';
+                document.head.appendChild(gtagScript);
+                
+                gtagScript.onload = function() {
+                    gtag('js', new Date());
+                    gtag('config', 'G-2EBYGRKLQ6');
+                };
+            }, 2000); // Atraso de 2 segundos
+        });
         </script>
-
-        <title>Student X - Mais Oportunidades</title>
-    
-        <!-- Icon for the website's tab -->
-        <link rel="icon" type="image/x-icon" href="/studentxLogo.ico">
-
-        <!-- Icon for search results -->
-        <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
-
-        <link rel="stylesheet" href="/css/oportunidades.css">
-        <link rel="canonical" href="https://www.studentx.pt/oportunidades/" />
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-
-        <!-- Add preload for critical JavaScript files -->
-        <link rel="preload" href="/js/script.js" as="script">
-        <link rel="preload" href="/js/cookie-banner.js" as="script">
-
-        <!-- Organization Information -->
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "Student X",
-                "url": "https://studentx.pt",
-                "logo": "https://studentx.pt/images/logo.png",
-                "description": "A Student X é uma plataforma criada por estudantes para estudantes que oferece eventos, workshops e oportunidades.",
-                "sameAs": [
-                    "https://www.instagram.com/studentx.pt",
-                    "https://www.linkedin.com/company/studentx",
-                    "https://www.tiktok.com/@studentx.pt",
-                    "https://x.com/studentx_pt"
-                ],
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "email": "contact.studentx@gmail.com",
-                    "contactType": "customer service"
-                }
-            }
-            </script>
-    
     </head>
 
 
