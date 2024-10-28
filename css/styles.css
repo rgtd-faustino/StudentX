@@ -186,7 +186,7 @@ nav {
 .right-side-nav {
     display: flex;
     align-items: center;
-    gap: 3.5vw; /* Adjust gap between elements in the right-side nav */
+    gap: 2.5vw; /* Adjust gap between elements in the right-side nav */
     position: relative; /* Set position to relative to contain the dropdown within this area */
 }
 
@@ -205,18 +205,53 @@ nav {
     background-color: #0056b3;
 }
 
-/* Button styling */
-.current-language {
-    font-family: inherit;
-    font-size: inherit;
-    background-color: transparent;
-    color: black;
+.contribui-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Style the Contribui button */
+  .contribui-button {
+    padding: 0.5vw 1.5vw;
+    background-color: #007BFF;
+    color: white;
     text-decoration: none;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    position: relative; /* Ensure the button is a reference point for the dropdown */
-}
+    border-radius: 1vw;
+    font-weight: 400;
+    font-size: 1.1vw;
+  }
+
+  .contribui-button:hover{
+    background-color: #0056b3;
+  }
+  
+  .contribui-wrapper:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .tooltip {
+    position: absolute;
+    bottom: -12.5vw; /* Adjust this distance based on your layout */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15vw;
+    padding: 2vw;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    border-radius: 0.5vw;
+    font-size: 0.9vw;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.4s;
+    white-space: wrap;
+    z-index: 10;
+    box-shadow: 0 0 1vw rgba(0, 0, 0, 0.4); /* Added box shadow */
+
+  }
+
+
 
 
 
@@ -2077,6 +2112,35 @@ input[type="checkbox"] {
         font-size: 5vw;
         margin-bottom: 6vw;
     }
+
+    .contribui-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+      
+      /* Style the Contribui button */
+      .contribui-button {
+        padding: 1.5vw 10vw;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 2vw;
+        font-weight: 400;
+        font-size: 5vw;
+        margin-bottom: 6vw;
+      }
+    
+      .contribui-button:hover{
+        background-color: #0056b3;
+      }
+      
+      .contribui-wrapper:hover .tooltip {
+        all:unset;
+      }
+      
+      .tooltip {
+        display:none;
+      }
 
     .menu-content.active {
         display: flex;
