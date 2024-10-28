@@ -205,14 +205,13 @@
                         ${eventHeight >= 30 && event.moreInfoText ? `
                             <div style="
                                 max-width: 13vw;
-                                margin-top: 1vw;
+                                margin: 0.9vw auto;
                                 max-height: ${eventHeight - availableHeight}vw;
                                 overflow: hidden;
                                 position: relative;
                                 border: 0.2vw solid rgb(173, 173, 173);
                                 border-radius: 1vw;
-                                padding-top:0.5vw;
-                                padding-bottom:0.5vw;
+                                padding: 0.6vw;
                             ">
                                 <p style="
                                     margin: 0;
@@ -222,7 +221,7 @@
                                     line-height: 1.4;
                                     text-align: center;
                                     display: -webkit-box;
-                                    -webkit-line-clamp: ${Math.floor((availableHeight))};
+                                    -webkit-line-clamp: ${Math.floor((availableHeight/1.4))};
                                     -webkit-box-orient: vertical;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
