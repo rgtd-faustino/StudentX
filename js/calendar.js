@@ -30,18 +30,20 @@
         document.querySelector('.download-calendar').appendChild(actionButtonsContainer);
     }
 
+    // Update the renderWeekButtons function to ensure consistent structure
     function renderWeekButtons() {
         const dayButtonsContainer = document.getElementById('dayButtons');
         dayButtonsContainer.innerHTML = '';
         const today = new Date();
-    
+
         for (let i = 0; i < 7; i++) {
             const day = new Date(currentWeekStart);
             day.setDate(currentWeekStart.getDate() + i);
             const button = document.createElement('button');
-
             
+            // Use semantic HTML structure with clear class names
             button.innerHTML = `<span class="day-number">${day.getDate()}</span><br><span class="day-name">${diasDaSemana[day.getDay()]}</span>`;
+
             
             button.classList.add('day-button');
             
@@ -57,13 +59,14 @@
                 selectedDay = day.getDate();
             }
             
-            button.onclick = (event) => {
+            button.onclick = () => {
                 // Remove 'active' class from all buttons
                 document.querySelectorAll('.day-button').forEach(btn => btn.classList.remove('active'));
                 // Add 'active' class to the clicked button
-                event.currentTarget.classList.add('active');
+                button.classList.add('active');
                 selectDay(day.getDate());
             };
+            
             dayButtonsContainer.appendChild(button);
         }
     }
@@ -115,7 +118,9 @@
     function selectDay(day) {
         selectedDay = day;
         document.querySelectorAll('.day-button').forEach(button => {
-            button.classList.toggle('active', button.textContent.startsWith(day.toString()));
+            // Get just the day number from the button's content
+            const dayNumber = parseInt(button.querySelector('.day-number').textContent);
+            button.classList.toggle('active', dayNumber === day);
         });
         renderEvents();
     }

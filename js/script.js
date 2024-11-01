@@ -1,27 +1,41 @@
 document.addEventListener("DOMContentLoaded", function() {
+
     var hamburger = document.querySelector(".hamburger");
+    const menuContent = document.querySelector('.menu-content');
 
     // Toggle the navigation menu when hamburger is clicked
-    hamburger.addEventListener("click", function() {
-        toggleMenu();  // Call the toggleMenu function when the hamburger icon is clicked
+    hamburger.addEventListener("click", function(e) {
+        e.stopPropagation(); // Prevent click from bubbling to document
+        toggleMenu();
     });
 
     function toggleMenu() {
-        const menuContent = document.querySelector('.menu-content');
         menuContent.classList.toggle('active');
-        hamburger.classList.toggle('open'); // Toggle the 'open' class to animate lines
-        menuContent.classList.toggle('show'); // Toggle the visibility of the menu content (optional)
+        hamburger.classList.toggle('open');
+        menuContent.classList.toggle('show');
     }
 
     // Close the navigation menu if clicked outside
     document.addEventListener("click", function(event) {
-        const menuContent = document.querySelector('.menu-content');
         if (!menuContent.contains(event.target) && !hamburger.contains(event.target)) {
-            menuContent.classList.remove('active');
-            hamburger.classList.remove('open');
-            menuContent.classList.remove('show');
+            closeMenu();
         }
     });
+
+    // Add click event listeners to all navigation links
+    const navLinks = menuContent.querySelectorAll('a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+    });
+
+    // Function to close the menu
+    function closeMenu() {
+        menuContent.classList.remove('active');
+        hamburger.classList.remove('open');
+        menuContent.classList.remove('show');
+    }
 
 
 

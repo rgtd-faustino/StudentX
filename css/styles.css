@@ -2338,8 +2338,8 @@ input[type="checkbox"] {
 
 
     .dot-mobile {
-        height: 1vw;
-        width: 1vw;
+        height: 1.5vw;
+        width: 1.5vw;
         margin: 0 1vw;
         background-color: #FFF;
         border: 0.1vw solid rgba(52, 52, 52, 0.5); /* Added 1 pixel border */
