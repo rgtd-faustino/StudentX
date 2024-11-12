@@ -6,16 +6,17 @@ Allow: /
 
 # Allow crawling of important sections
 Allow: /events/
-Allow: /workshops/
-Allow: /opportunities/
-Allow: /about/
-Allow: /contact/
+Allow: /oportunidades/
+Allow: /contacto/
+Allow: /Política de Privacidade e Cookies/
+Allow: /Termos e Serviços/
 
 # Allow crawling of specific file types
 Allow: *.html
 Allow: *.pdf
 Allow: *.jpg
 Allow: *.png
+Allow: *.mp4
 Allow: *.ico
 Allow: /*.js
 Allow: /*.css
