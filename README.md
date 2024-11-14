@@ -44,4 +44,4 @@ Miguel Abelho - [LinkedIn](https://www.linkedin.com/in/miguelabelho/)
 
 All rights reserved. © 2024 Student X Team
 
-[Privacy Policy](https://www.studentx.pt/Pol%C3%ADtica%20de%20Privacidade%20e%20Cookies/) | [Terms of Service](https://www.studentx.pt/Termos%20e%20Servi%C3%A7os/)
+[LICENSE](LICENSE.md) | [Privacy Policy](https://www.studentx.pt/Pol%C3%ADtica%20de%20Privacidade%20e%20Cookies/) | [Terms of Service](https://www.studentx.pt/Termos%20e%20Servi%C3%A7os/)
