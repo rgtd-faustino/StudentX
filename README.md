@@ -20,9 +20,9 @@ Hosted on GitHub Pages and maintained by a small team, Student X is a non-commer
 
 **Screenshots**
 
-![Calendar with the events for the today](images/readme screenshots/screenshot-calendar.png)
+![Calendar with the events for the today](images/readme_screenshots/screenshot-calendar.png)
 
-![Calendar with the events for the today](images/readme screenshots/screenshot-carousel.png)
+![Carousel with recent events](images/readme_screenshots/screenshot-carousel.png)
 
 **Local Development**
 
