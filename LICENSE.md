@@ -1,19 +1,25 @@
-All Rights Reserved License
+# Project License
 
-Copyright © 2024, Rafael Faustino, Tomás Sousa e Miguel Abelho.
+© 2024 Rafael Faustino, Tomás Sousa, Miguel Abelho
 
-All rights to this repository are reserved exclusively by the project authors (Rafael Faustino, Tomás Sousa, Miguel Abelho). This repository and its content, including code, documentation, and original assets created by the project authors, are provided publicly for viewing purposes only.
+## Purpose
+This repository is made publicly available for professional portfolio, educational, and demonstration purposes only.
 
-Permission is granted for non-commercial, personal viewing or educational purposes. No portion of this project may be copied, modified, distributed, or used in any other way without express written permission from the project authors.
-Third-Party Assets Disclaimer:
+## Permissions
+- Viewing and reviewing the project contents are permitted
+- Personal, non-commercial examination is allowed
+- Educational use is encouraged with proper attribution
 
-Certain images and assets within this project belong to third-party companies and are included for event promotional purposes only. These assets are subject to the copyrights and licenses of their respective owners, and this license does not transfer any rights to these third-party assets. Unauthorized use, distribution, or modification of third-party assets is strictly prohibited.
+## Restrictions
+- No commercial use without explicit written permission
+- No redistribution or modification of original assets
+- Third-party assets remain under their original copyright
 
-License Terms:
+## Third-Party Assets
+Certain materials in this project are owned by third-party companies and are used for promotional or demonstrative purposes only. These assets are subject to their original copyright terms.
 
-    This repository is view-only for the public.
-    No rights to alter, redistribute, or use the source code, original assets, or third-party assets in derivative projects are granted.
-    Personal use only is permitted for educational purposes, without any rights to modify or republish.
+## Contact
+For permissions or inquiries, please contact: contact.studentx@gmail.com | contact@studentx.pt
 
-GitHub Pages Hosting Notice:
-This repository is hosted on GitHub Pages. GitHub's hosting of this content does not imply any license or permission beyond that granted here. Unauthorized use beyond these terms is prohibited.
+## GitHub Hosting
+The presence of this repository on GitHub does not extend any additional usage rights beyond those specified in this license.
