@@ -257,7 +257,7 @@ nav {
 
 .slogan-container {
     position: absolute;
-    top: 32%; /* Adjust this value to position vertically */
+    top: 40%; /* Adjust this value to position vertically */
     left: 50%; /* Center the container horizontally */
     transform: translate(-50%, -50%);
     height: auto; /* Keep the aspect ratio */
@@ -270,14 +270,67 @@ nav {
     height: auto;
 }
 
+.slogan-texts{
+    margin-top:5vw;
+    margin-bottom:12vw;
+}
+
+.containerSlogan {
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+#h1Slogan {
+    color: #333;
+    font-size: 2vw;
+    background: #f0f0f0;
+    position: relative;
+    z-index: 2;
+}
+
+.animated-text-slogan {
+    position: absolute;
+    margin-top:1vw;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 3vw;
+    font-weight: bold;
+    color: #108CEC;
+    opacity: 0;
+    transform: translateY(4vw);
+    transition: all 1s ease;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.animated-text-slogan.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animated-text-slogan.fade-out {
+    opacity: 0;
+    transform: translateY(-50px);
+}
+
+.x-highlight-slogan {
+    color: #108CEC;
+}
+
 
 .slogan-buttons {
     display: flex;
     justify-content: center;
-    gap: 7%;
-    margin-top: 10%;
-    margin-bottom: -7%;
+    margin-bottom:7vw;
+    gap: 12%;
 }
+
+
 .start-button a {
     background-color: #000;
     color: #fff;

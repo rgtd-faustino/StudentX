@@ -296,3 +296,49 @@ document.addEventListener('DOMContentLoaded', function () {
           closeModal();
         }
       }
+
+
+    const messages = [
+        "<span class='x-highlight'>X</span>-CEED YOUR LIMITS",
+        "<span class='x-highlight'>X</span>-PLORE NEW OPPORTUNITIES",
+        "LEARN FROM<span class='x-highlight'>&nbsp;X</span>-PERTS",
+        "PURSUE<span class='x-highlight'>&nbsp;X</span>-CELLENCE",
+        "<span class='x-highlight'>X</span>-PAND YOUR NETWORK",
+        "GET<span class='x-highlight'>&nbsp;X</span>-CLUSIVE INSIGHTS",
+        "<span class='x-highlight'>X</span>-PECT THE BEST"
+    ];
+
+    let currentIndex = 0;
+    const container = document.getElementById('textContainerSlogan');
+
+    function showNextMessage() {
+        const currentElement = container.querySelector('.animated-text-slogan');
+
+        // Remove previous message with fade-out animation
+        if (currentElement) {
+            currentElement.classList.add('fade-out');
+            setTimeout(() => {
+                currentElement.remove();
+            }, 1000);
+        }
+
+        // Create and show new message
+        const newElement = document.createElement('div');
+        newElement.className = 'animated-text-slogan';
+        newElement.innerHTML = messages[currentIndex];
+        container.appendChild(newElement);
+
+        // Trigger animation
+        setTimeout(() => {
+            newElement.classList.add('active');
+        }, 100);
+
+        // Update index
+        currentIndex = (currentIndex + 1) % messages.length;
+    }
+
+    // Initial display
+    showNextMessage();
+
+    // Set interval for message rotation
+    setInterval(showNextMessage, 3000);
