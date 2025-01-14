@@ -2,7 +2,6 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #ffffff;
     margin: 0;
-    font-size: 1vw;
     padding: 0;
     font-weight:normal;
 }
@@ -281,12 +280,8 @@ nav {
     width: 100%;
 }
 
-#h1Slogan {
-    color: #333;
+#sloganTitle {
     font-size: 2vw;
-    background: #f0f0f0;
-    position: relative;
-    z-index: 2;
 }
 
 .animated-text-slogan {
@@ -302,7 +297,7 @@ nav {
     font-weight: bold;
     color: #108CEC;
     opacity: 0;
-    transform: translateY(4vw);
+    transform: translateY(3vw);
     transition: all 1s ease;
     z-index: 1;
     white-space: nowrap;
@@ -2041,7 +2036,40 @@ input[type="checkbox"] {
         align-items: center;
         justify-content: center;
     }
+
+    .slogan-texts{
+        margin-top:0vw;
+        margin-bottom:0vw;
+    }
     
+    #sloganTitle {
+        font-size: 5vw;
+    }
+    
+    .animated-text-slogan {
+        position: absolute;
+        margin-top:1vw;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 6vw;
+        font-weight: bold;
+        color: #108CEC;
+        opacity: 0;
+        transform: translateY(5vw);
+        transition: all 1s ease;
+        z-index: 1;
+        white-space: nowrap;
+    }
+
+    .animated-text-slogan.fade-out {
+        opacity: 0;
+        transform: translateY(-3vw);
+    }
+
     .slogan-buttons {
         display: flex;
         justify-content: center; /* Center the buttons horizontally */
