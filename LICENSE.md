@@ -19,7 +19,7 @@ This repository is made publicly available for professional portfolio, education
 Certain materials in this project are owned by third-party companies and are used for promotional or demonstrative purposes only. These assets are subject to their original copyright terms.
 
 ## Contact
-For permissions or inquiries, please contact: contact.studentx@gmail.com | contact@studentx.pt
+For permissions or inquiries, please contact: contact@studentx.pt
 
 ## GitHub Hosting
 The presence of this repository on GitHub does not extend any additional usage rights beyond those specified in this license.

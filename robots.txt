@@ -9,7 +9,7 @@ Allow: /events/
 Allow: /oportunidades/
 Allow: /contacto/
 Allow: /Política de Privacidade e Cookies/
-Allow: /Termos e Serviços/
+Allow: /Termos e Condições/
 
 # Allow crawling of specific file types
 Allow: *.html
