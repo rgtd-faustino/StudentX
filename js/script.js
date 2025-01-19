@@ -279,16 +279,21 @@ document.addEventListener('DOMContentLoaded', function () {
         script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679";
         script.crossOrigin = "anonymous";
         document.head.appendChild(script);
-    
-        const ins = document.createElement('ins');
-        ins.className = "adsbygoogle";
-        ins.style.display = "block";
-        ins.setAttribute("data-ad-client", "ca-pub-2455279266517679");
-        ins.setAttribute("data-ad-slot", "6087545599");
-        ins.setAttribute("data-ad-format", "auto");
-        ins.setAttribute("data-full-width-responsive", "true");
-        document.body.appendChild(ins);
-    
+
+        const createAdElement = () => {
+            const ins = document.createElement('ins');
+            ins.className = "adsbygoogle";
+            ins.style.display = "block";
+            ins.setAttribute("data-ad-client", "ca-pub-2455279266517679");
+            ins.setAttribute("data-ad-slot", "6087545599");
+            ins.setAttribute("data-ad-format", "auto");
+            ins.setAttribute("data-full-width-responsive", "true");
+            return ins;
+        };
+        
+        document.getElementById('left-ad-container').appendChild(createAdElement());
+        document.getElementById('right-ad-container').appendChild(createAdElement());
+
         script.onload = function() {
             (adsbygoogle = window.adsbygoogle || []).push({});
         };
