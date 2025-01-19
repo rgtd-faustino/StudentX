@@ -3340,9 +3340,11 @@ input[type="checkbox"] {
         justify-content: center; /* Center the items */
         align-items: center;
         padding: 1vw;
+        gap:1.5vw;
 
     }
-    
+
+
     .left-text {
         color: #FFF;
         font-family: 'Poppins', sans-serif;

@@ -7,7 +7,9 @@ body {
     font-weight:normal;
     line-height: 1.6;
 }
-
+:root {
+    --primary-color: #108CEC;
+}
 .container {
     width: 60%;
     padding: 2vw 4vw;
@@ -329,6 +331,135 @@ nav {
     display:none;
 }
 
+.cookie-banner {
+    position: fixed;
+    bottom: 2vw;
+    right: 2vw;
+    background-color: whitesmoke;
+    box-shadow: 0 0 2vw rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+    border-radius: 1vw;
+    overflow: hidden;
+    width: 25vw;
+    transition: all 0.3s ease;
+}
+
+.cookie-banner.expanded {
+    width: 25vw;
+    max-height: 30vw;
+    overflow-y: auto;
+}
+
+.cookie-content {
+    padding: 1.5vw;
+}
+
+.cookie-initial {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    text-align: center;
+}
+
+.cookie-content h3{
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 1.3vw;
+}
+
+.cookie-initial p {
+    font-size: 1.1vw;
+    color: #4b4b4b;
+    margin-top: -0.8vw;
+    margin-bottom:0;
+}
+
+.cookie-expanded {
+    display: none;
+}
+
+.cookie-banner.expanded .cookie-initial {
+    display: none;
+}
+
+.cookie-banner.expanded .cookie-expanded {
+    display: block;
+}
+
+.cookie-categories {
+    display: grid;
+    gap: 1vw;
+    margin-bottom: 1.5vw;
+}
+
+.cookie-category {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.category-info {
+    font-size: 1vw;
+    color: #666;
+    margin-left: 1.8vw;
+    width: 100%;
+    margin-top: 0vw;
+}
+
+.cookie-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    margin-top: 1vw;
+}
+
+.cookie-btn {
+    padding: 0.8vw 1.2vw;
+    border: 0.15vw solid var(--primary-color);
+    border-radius: 0.5vw;
+    font-size: 1vw;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+.cookie-btn:hover {
+    transform: translateY(-0.2vw);
+    box-shadow: 0vw 0vw 1vw rgba(0, 0, 0, 0.4);
+}
+
+.cookie-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2vw rgba(33, 150, 243, 0.3);
+}
+
+#reject-all, #reject-all-expanded, #accept-all, #accept-selected, #more-options {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+input[type="checkbox"] {
+    margin-right: 0.6vw;
+    transform: scale(1.2);
+}
+
+.privacy-policy {
+    text-align: center;
+    margin-top: 1vw;
+}
+
+.privacy-policy a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1vw;
+}
+
+.privacy-policy a:hover {
+    text-decoration: underline;
+}
 
   /* For mobile phones */
   @media (max-width: 600px) {
@@ -618,6 +749,100 @@ nav {
     .mobile-right-text{
         display:unset;
     }
+
+
+                
+    .cookie-banner {
+        all:unset;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: whitesmoke;
+        box-shadow: 0 0 10vw rgba(0, 0, 0, 1);
+        z-index: 9999;
+        border-radius: 1vw;
+        overflow: hidden;
+        width: 80vw;
+        transition: all 0.3s ease;
+    }
+
+.cookie-banner.expanded {
+    width: 90vw;
+    max-height: 170vw;
+    overflow-y: auto;
+}
+
+.cookie-content {
+    padding: 5vw;
+}
+
+.cookie-initial {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    text-align: center;
+}
+
+.cookie-content h3{
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 6vw;
+}
+
+.cookie-initial p {
+    font-size: 4vw;
+    color: #4b4b4b;
+    margin-top: -0.8vw;
+    margin-bottom:0;
+}
+
+.cookie-categories {
+    display: grid;
+    gap: 1.5vw;
+    margin-bottom: 1.5vw;
+}
+
+
+.cookie-category label{
+    font-size: 5vw;
+    margin-left:3vw;
+
+}
+
+.category-info {
+    font-size: 4vw;
+    color: #666;
+    margin-left: 10vw;
+    width: 100%;
+    margin-top: 0vw;
+}
+
+.cookie-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 4vw;
+    margin-top: 5vw;
+    
+}
+
+.cookie-btn {
+    padding: 3vw 2vw;
+    border: 0.7vw solid var(--primary-color);
+    border-radius: 3vw;
+    font-size: 4vw;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+.cookie-btn:hover {
+    transform: translateY(-0.2vw);
+    box-shadow: 0vw 0vw 4vw rgba(0, 0, 0, 0.6);
+}
 
 
 }
