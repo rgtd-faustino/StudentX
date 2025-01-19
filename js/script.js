@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
         script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679";
         script.crossOrigin = "anonymous";
         document.head.appendChild(script);
-
+        
         const createAdElement = () => {
             const ins = document.createElement('ins');
             ins.className = "adsbygoogle";
@@ -290,40 +290,65 @@ document.addEventListener('DOMContentLoaded', function () {
             ins.setAttribute("data-full-width-responsive", "true");
             return ins;
         };
+    
+        // Create ad containers if they don't exist
+        const leftContainer = document.getElementById('left-ad-container');
+        const rightContainer = document.getElementById('right-ad-container');
         
-        document.getElementById('left-ad-container').appendChild(createAdElement());
-        document.getElementById('right-ad-container').appendChild(createAdElement());
-
+        leftContainer.innerHTML = ''; // Clear existing ads
+        rightContainer.innerHTML = ''; // Clear existing ads
+        
+        leftContainer.appendChild(createAdElement());
+        rightContainer.appendChild(createAdElement());
+        
         script.onload = function() {
+            (adsbygoogle = window.adsbygoogle || []).push({});
             (adsbygoogle = window.adsbygoogle || []).push({});
         };
     }
-
-
+    
     function openModal() {
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
+        const leftAd = document.getElementById('left-ad-container');
+        const rightAd = document.getElementById('right-ad-container');
+        
         modal.style.display = 'block';
         video.play();
-        loadGoogleAds();
         
-      }
-  
-      function closeModal() {
+        // Show ad containers
+        leftAd.style.display = 'block';
+        rightAd.style.display = 'block';
+        
+        loadGoogleAds();
+    }
+    
+    function closeModal() {
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
+        const leftAd = document.getElementById('left-ad-container');
+        const rightAd = document.getElementById('right-ad-container');
+        
         modal.style.display = 'none';
         video.pause();
         video.currentTime = 0;
-      }
-  
-      // Close modal when clicking outside the video
-      window.onclick = function(event) {
+        
+        // Hide ad containers
+        leftAd.style.display = 'none';
+        rightAd.style.display = 'none';
+        
+        // Clear ad contents
+        leftAd.innerHTML = '';
+        rightAd.innerHTML = '';
+    }
+    
+    // Close modal when clicking outside the video
+    window.onclick = function(event) {
         const modal = document.getElementById('videoModal');
         if (event.target == modal) {
-          closeModal();
+            closeModal();
         }
-      }
+    }
 
 
     const messages = [

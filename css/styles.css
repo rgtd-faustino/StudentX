@@ -392,6 +392,25 @@ nav {
     border: none;
 }
 
+#left-ad-container,
+#right-ad-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10vw; /* Standard ad size width */
+    height: 40vw; /* Standard ad size height */
+    z-index: 1001;
+}
+
+#left-ad-container {
+    left: 2vw;
+}
+
+#right-ad-container {
+    right: 2vw;
+}
+
 .start-button {
     border-radius: 1.3vw;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -2129,6 +2148,11 @@ input[type="checkbox"] {
     background: #000;
     border-radius: 1vw;
     overflow: hidden;
+  }
+
+  #left-ad-container,
+  #right-ad-container {
+      display: none !important; /* Hide ads on smaller screens */
   }
 
   /*.close-modal {
