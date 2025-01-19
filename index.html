@@ -667,152 +667,33 @@
         </div>
     </div>
 
-    <div id="coming-soon-overlay" class="coming-soon-overlay">
-        <video autoplay muted loop playsinline>
-            <source src="/videos/comingSoon.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="coming-soon-content">
-            <!-- Optional: Add a countdown timer -->
-            <div id="countdown">
-                <div class="countdown-item">
-                    <span id="days">00</span>
-                    <p>Days</p>
-                </div>
-                <div class="countdown-item">
-                    <span id="hours">00</span>
-                    <p>Hours</p>
-                </div>
-                <div class="countdown-item">
-                    <span id="minutes">00</span>
-                    <p>Minutes</p>
-                </div>
-                <div class="countdown-item">
-                    <span id="seconds">00</span>
-                    <p>Seconds</p>
-                </div>
-            </div>
+            <!--
+        <div id="coming-soon-overlay" class="coming-soon-overlay">
+            <video autoplay muted loop playsinline>
+                <source src="/videos/comingSoon.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
-    </div>
-    
-    <style>
-    .coming-soon-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 9999;
-    }
-
-    .coming-soon-overlay video {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .coming-soon-content {
-        position: relative;
-        z-index: 2;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 10vw 2vw 4vw;
-        box-sizing: border-box;
-    }
-
-    .main-content {
-        text-align: center;
-        color: white;
-    }
-
-    #countdown {
-        display: flex;
-        justify-content: center;
-        gap: 1.6vw;
-        margin-top: auto;
-    }
-
-    .countdown-item {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 1vw;
-        border-radius: 1vw;
-        min-width: 5vw;
-        text-align: center;
-        color: white;
-    }
-
-    .countdown-item span {
-        font-size: 2em;
-        font-weight: bold;
-    }
-
-
-    body.has-overlay > *:not(.coming-soon-overlay) {
-        visibility: hidden;
-    }
-
-
-    @media (max-width: 600px) {
-        #countdown {
-            gap: 3vw;
-        }
         
-        .countdown-item {
-            padding: 3vw;
-            min-width: 15vw;
+        <style>
+        .coming-soon-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
         }
-
-        .coming-soon-content {
-            padding: 5vw 2vw 15vw;
+    
+        .coming-soon-overlay video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        
-        .countdown-item span {
-            font-size: 4vw;
-        }
-
-        #countdown p {
-            font-size: 4vw;
-        }
-    }
-    </style>
-    
-    <script>
-    const launchDate = new Date('2025-02-01T00:00:00').getTime();
-    
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = launchDate - now;
-    
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-        document.getElementById('days').innerHTML = String(days).padStart(2, '0');
-        document.getElementById('hours').innerHTML = String(hours).padStart(2, '0');
-        document.getElementById('minutes').innerHTML = String(minutes).padStart(2, '0');
-        document.getElementById('seconds').innerHTML = String(seconds).padStart(2, '0');
-    }
-    
-    document.body.classList.add('has-overlay');
-    
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-    
-    setInterval(() => {
-        if (new Date().getTime() > launchDate) {
-            const overlay = document.getElementById('coming-soon-overlay');
-            if (overlay) {
-                overlay.remove();
-                document.body.classList.remove('has-overlay');
-            }
-        }
-    }, 1000);
-    </script>
+        </style>
+        --->
 
 
     <script defer src="/js/script.js"></script>
