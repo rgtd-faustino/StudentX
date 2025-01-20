@@ -1242,7 +1242,42 @@ nav {
 }
 
 
+.caption-container {
+    font-family: Arial, sans-serif;
+    padding: 2vh;
+    margin: 0 auto;
+    max-width: 30rem;
+    display: flex; /* Ensures centering */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
+.caption-list {
+    display: flex;
+    gap: 2vh;
+}
+
+.caption-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6vh;
+}
+
+.color-indicator {
+    width: 1.2em;
+    height: 1.2em;
+    flex-shrink: 0;
+}
+
+.color-red { background-color: red; }
+.color-blue { background-color: blue; }
+.color-green { background-color: green; }
+
+.caption-text {
+    flex: 1;
+    min-width: 0;
+}
 
 
 
@@ -1253,7 +1288,7 @@ nav {
     justify-content: center;
     align-items: center;
     margin-bottom:5vw;
-    margin-top:5vw;
+    margin-top:3vw;
 }
 
 #studentx-ajuda-title{
@@ -2972,7 +3007,14 @@ input[type="checkbox"] {
 
 
 
+.caption-container {
+    padding: 2vh;
+    font-size: 3.5vw;
+}
 
+.caption-list {
+    gap: 2vh;
+}
 
 
 
