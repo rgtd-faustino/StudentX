@@ -31,11 +31,17 @@ class CookieConsentManager {
     init() {
         if (this.initialized) return;
         
-        this.setupDOMElements();
+        // Load consent before DOM setup to prevent flash
         this.loadSavedConsent();
+        this.setupDOMElements();
         this.setupEventListeners();
         this.checkAndEnforceExpiry();
         this.initializeConsentMode();
+        
+        // Only show banner if no consent is saved
+        if (!this.consentData) {
+            this.showBanner();
+        }
         
         this.initialized = true;
     }
@@ -72,14 +78,11 @@ class CookieConsentManager {
         if (savedConsent) {
             try {
                 this.consentData = JSON.parse(savedConsent);
-                this.applyConsent();
-                this.hideBanner();
+                // Don't call showBanner/hideBanner here since DOM isn't ready
             } catch (e) {
                 console.error('Error parsing saved consent:', e);
-                this.resetConsent();
+                this.consentData = null;
             }
-        } else {
-            this.showBanner();
         }
     }
 
@@ -272,8 +275,10 @@ class CookieConsentManager {
     }
 
     showBanner() {
-        this.domElements.banner.style.display = 'block';
-        document.dispatchEvent(new Event('cookieBannerShow'));
+        if (this.domElements.banner) {
+            this.domElements.banner.style.display = 'block';
+            document.dispatchEvent(new Event('cookieBannerShow'));
+        }
     }
 
     hideBanner() {
@@ -294,8 +299,7 @@ class CookieConsentManager {
     }
 }
 
-// Initialize the consent manager when the DOM is ready
+const cookieConsent = new CookieConsentManager();
 document.addEventListener('DOMContentLoaded', () => {
-    window.cookieConsent = new CookieConsentManager();
-    window.cookieConsent.init();
+    cookieConsent.init();
 });
