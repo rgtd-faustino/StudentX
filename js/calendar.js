@@ -126,7 +126,6 @@
     }
     
     function renderEvents() {
-        // Initial setup remains the same until the event rendering part
         const eventsContainer = document.getElementById('events');
         eventsContainer.innerHTML = '';
     
@@ -171,152 +170,19 @@
     
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
+            
             const WIDTH_THRESHOLD = 600;
             eventDiv.style.left = window.innerWidth <= WIDTH_THRESHOLD 
                 ? `${columnIndex * 250}px` 
                 : `${columnIndex * 13}vw`;
-            
+    
             const condensedView = document.createElement('div');
             condensedView.classList.add('event-condensed');
     
-            const expandButton = document.createElement('button');
-            expandButton.classList.add('expand-event-details');
-            const img = document.createElement('img');
-            img.src = '/images/plus.png';
-            img.alt = 'Expand event details';
-            expandButton.appendChild(img);
-            expandButton.onclick = () => showExpandedView(event);
-            
-            if(window.innerWidth <= 600) {
-                // Mobile view remains the same
-                eventDiv.style.border = `0.6vw solid ${event.colorOfEvent}`;
-                condensedView.innerHTML = `
-                    <p class="description-title-calendar">${event.descriptionTitle}</p>
-                    <div class="event-info-container">
-                        <span class="opp-place-title-calendar">${event.oppPlaceTitle}</span>
-                        <span class="opp-place-subtitle-calendar">${event.startTime} - ${event.endTime}</span>
-                    </div>
-                `;
-                eventDiv.appendChild(expandButton);
+            if (window.innerWidth <= WIDTH_THRESHOLD) {
+                mobileView(event, eventDiv, condensedView, style);
             } else {
-                const eventHeight = parseInt(style.height);
-                
-                if (eventHeight >= 14) {
-                    condensedView.style.overflowY = 'hidden';
-                    condensedView.style.display = 'flex';
-                    condensedView.style.flexDirection = 'column';
-                    condensedView.style.height = '100%';
-                    
-                    // Create the base content container
-                    const baseContentDiv = document.createElement('div');
-                    baseContentDiv.innerHTML = `
-                        <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
-                        <p class="description-title-calendar">${event.descriptionTitle}</p>
-                        <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
-                        <div class="carousel-line-calendar"></div>
-                    `;
-                    condensedView.appendChild(baseContentDiv);
-    
-                    if (eventHeight >= 30 && event.moreInfoText) {
-                        const textContainer = document.createElement('div');
-                        textContainer.style.cssText = `
-                            max-width: 13vw;
-                            margin: 0.9vw auto;
-                            border: 0.2vw solid rgb(173, 173, 173);
-                            border-radius: 1vw;
-                            padding: 0.6vw;
-                            flex-grow: 1;
-                            position: relative;
-                            overflow: hidden;
-                        `;
-            
-                        // Create a wrapper for the gradient effect
-                        const textWrapper = document.createElement('div');
-                        textWrapper.style.cssText = `
-                            position: relative;
-                            max-height: calc(100% - 0vw);
-                            overflow: hidden;
-                        `;
-            
-                        const textElement = document.createElement('p');
-                        textElement.style.cssText = `
-                            margin: 0;
-                            color: grey;
-                            font-family: Poppins, sans-serif;
-                            font-size: 0.9vw;
-                            line-height: 1.4;
-                            text-align: center;
-                            word-wrap: break-word;
-                        `;
-                        textElement.textContent = event.moreInfoText;
-            
-                        textWrapper.appendChild(textElement);
-                        textContainer.appendChild(textWrapper);
-                        condensedView.appendChild(textContainer);
-            
-                        // Calculate maximum height and check for overflow
-                        requestAnimationFrame(() => {
-                            const containerHeight = condensedView.offsetHeight;
-                            const baseContentHeight = baseContentDiv.offsetHeight;
-                            const footerHeight = footerDiv.offsetHeight;
-                            const marginSpace = parseFloat(getComputedStyle(textContainer).margin) * 2;
-                            const maxTextHeight = containerHeight - baseContentHeight - footerHeight - marginSpace;
-                            
-                            textContainer.style.maxHeight = `${maxTextHeight}px`;
-            
-                            // Check if text is overflowing
-                            const isOverflowing = textElement.scrollHeight > textWrapper.clientHeight;
-                            
-                            if (isOverflowing) {
-                                textWrapper.style.maskImage = 'linear-gradient(to bottom, black calc(100% - 2vw), transparent 100%)';
-                                textWrapper.style.webkitMaskImage = 'linear-gradient(to bottom, black calc(100% - 2vw), transparent 100%)';
-                            } else if (textWrapper.clientHeight < textElement.scrollHeight - 10) { // 5px threshold for partial text visibility
-                                // If there's a small amount of cut-off text, still show the gradient
-                                textWrapper.style.maskImage = 'linear-gradient(to bottom, black calc(100% - 2vw), transparent 100%)';
-                                textWrapper.style.webkitMaskImage = 'linear-gradient(to bottom, black calc(100% - 2vw), transparent 100%)';
-                            } else {
-                                textWrapper.style.maskImage = 'none';
-                                textWrapper.style.webkitMaskImage = 'none';
-                            }
-                        });
-    
-                        // Create footer content
-                        const footerDiv = document.createElement('div');
-                        footerDiv.innerHTML = `
-                            <div class="logo-and-place-info">
-                                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
-                                <div class="place-info">
-                                    <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
-                                    <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
-                                </div>
-                            </div>
-                            <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
-                        `;
-                        condensedView.appendChild(footerDiv);
-                    } else {
-                        // Add footer content directly if no text
-                        const footerDiv = document.createElement('div');
-                        footerDiv.style.marginTop = 'auto';
-                        footerDiv.innerHTML = `
-                            <div class="logo-and-place-info">
-                                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
-                                <div class="place-info">
-                                    <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
-                                    <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
-                                </div>
-                            </div>
-                            <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
-                        `;
-                        condensedView.appendChild(footerDiv);
-                    }
-                } else {
-                    eventDiv.appendChild(expandButton);
-                    const eventImage = document.createElement('img');
-                    eventImage.src = event.imageSrc;
-                    eventImage.alt = `${event.descriptionTitle} image`;
-                    eventImage.className = 'event-image';
-                    condensedView.appendChild(eventImage);
-                }
+                desktopView(event, eventDiv, condensedView, style);
             }
     
             eventDiv.appendChild(condensedView);
@@ -328,6 +194,173 @@
         } else {
             document.querySelector('.calendar-container').scrollTo(0, 0);
         }
+    }
+    
+    function createExpandButton(event) {
+        const expandButton = document.createElement('button');
+        expandButton.classList.add('expand-event-details');
+        const img = document.createElement('img');
+        img.src = '/images/plus.png';
+        img.alt = 'Expand event details';
+        expandButton.appendChild(img);
+        expandButton.onclick = () => showExpandedView(event);
+        return expandButton;
+    }
+    
+    function desktopView(event, eventDiv, condensedView, style) {
+        const eventHeight = parseInt(style.height);
+        
+        if (eventHeight >= 14) {
+            condensedView.style.overflowY = 'hidden';
+            condensedView.style.display = 'flex';
+            condensedView.style.flexDirection = 'column';
+            condensedView.style.height = '100%';
+            
+            // Create the base content container
+            const baseContentDiv = document.createElement('div');
+            baseContentDiv.innerHTML = `
+                <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
+                <p class="description-title-calendar">${event.descriptionTitle}</p>
+                <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
+                <div class="carousel-line-calendar"></div>
+            `;
+            condensedView.appendChild(baseContentDiv);
+    
+            if (eventHeight >= 30 && event.moreInfoText) {
+                addTextContainer(event, condensedView, baseContentDiv);
+            } else {
+                addFooterContent(event, condensedView);
+            }
+        } else {
+            eventDiv.appendChild(createExpandButton(event));
+            const eventImage = document.createElement('img');
+            eventImage.src = event.imageSrc;
+            eventImage.alt = `${event.descriptionTitle} image`;
+            eventImage.className = 'event-image';
+            condensedView.appendChild(eventImage);
+        }
+    }
+    
+    function mobileView(event, eventDiv, condensedView, style) {
+        const eventHeight = parseInt(style.height);
+        
+        if (eventHeight >= 30) {
+            condensedView.style.overflowY = 'hidden';
+            condensedView.style.display = 'flex';
+            condensedView.style.flexDirection = 'column';
+            condensedView.style.height = '100%';
+            
+            // Create the base content container
+            const baseContentDiv = document.createElement('div');
+            baseContentDiv.innerHTML = `
+                <p class="description-title-calendar">${event.descriptionTitle}</p>
+                <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
+                <div class="carousel-line-calendar"></div>
+            `;
+            condensedView.appendChild(baseContentDiv);
+    
+            if (eventHeight >= 60 && event.moreInfoText) {
+                addTextContainer(event, condensedView, baseContentDiv);
+            } else {
+                addFooterContent(event, condensedView);
+            }
+        } else {
+            eventDiv.appendChild(createExpandButton(event));
+            const baseContentDiv = document.createElement('div');
+            baseContentDiv.innerHTML = `
+            <p class="description-title-calendar">${event.descriptionTitle}</p>
+            <div class="event-info-container">
+                <span class="opp-place-title-calendar">${event.oppPlaceTitle}</span>
+                <span class="opp-place-subtitle-calendar">${event.startTime} - ${event.endTime}</span>
+            </div>`;
+            condensedView.appendChild(baseContentDiv);
+
+        }    
+    }
+    
+    function addTextContainer(event, condensedView, baseContentDiv) {
+        const textContainer = document.createElement('div');
+        textContainer.style.cssText = `
+            max-width: 13vw;
+            margin: 0.9vw auto;
+            border: 0.2vw solid rgb(173, 173, 173);
+            border-radius: 1vw;
+            padding: 0.6vw;
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        `;
+    
+        const textWrapper = document.createElement('div');
+        textWrapper.style.cssText = `
+            position: relative;
+            max-height: calc(100% - 0vw);
+            overflow: hidden;
+        `;
+    
+        const textElement = document.createElement('p');
+        textElement.style.cssText = `
+            margin: 0;
+            color: grey;
+            font-family: Poppins, sans-serif;
+            font-size: 0.9vw;
+            line-height: 1.4;
+            text-align: center;
+            word-wrap: break-word;
+        `;
+        textElement.textContent = event.moreInfoText;
+    
+        textWrapper.appendChild(textElement);
+        textContainer.appendChild(textWrapper);
+        condensedView.appendChild(textContainer);
+    
+        const footerDiv = createFooterContent(event);
+        condensedView.appendChild(footerDiv);
+    
+        handleTextOverflow(textWrapper, textElement, baseContentDiv, footerDiv, condensedView, textContainer);
+    }
+    
+    function createFooterContent(event) {
+        const footerDiv = document.createElement('div');
+        footerDiv.style.marginTop = 'auto';
+        footerDiv.innerHTML = `
+            <div class="logo-and-place-info">
+                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
+                <div class="place-info">
+                    <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
+                    <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
+                </div>
+            </div>
+            <a class="more-info-link-calendar" href="${event.moreInfoLink}">Mais Informações</a>
+        `;
+        return footerDiv;
+    }
+    
+    function addFooterContent(event, condensedView) {
+        const footerDiv = createFooterContent(event);
+        condensedView.appendChild(footerDiv);
+    }
+    
+    function handleTextOverflow(textWrapper, textElement, baseContentDiv, footerDiv, condensedView, textContainer) {
+        requestAnimationFrame(() => {
+            const containerHeight = condensedView.offsetHeight;
+            const baseContentHeight = baseContentDiv.offsetHeight;
+            const footerHeight = footerDiv.offsetHeight;
+            const marginSpace = parseFloat(getComputedStyle(textContainer).margin) * 2;
+            const maxTextHeight = containerHeight - baseContentHeight - footerHeight - marginSpace;
+            
+            textContainer.style.maxHeight = `${maxTextHeight}px`;
+    
+            const isOverflowing = textElement.scrollHeight > textWrapper.clientHeight;
+            
+            if (isOverflowing || textWrapper.clientHeight < textElement.scrollHeight - 10) {
+                textWrapper.style.maskImage = 'linear-gradient(to bottom, black calc(100% - 2vw), transparent 100%)';
+                textWrapper.style.webkitMaskImage = 'linear-gradient(to bottom, black calc(100% - 2vw), transparent 100%)';
+            } else {
+                textWrapper.style.maskImage = 'none';
+                textWrapper.style.webkitMaskImage = 'none';
+            }
+        });
     }
     // Helper function to convert time string to minutes since midnight
     function convertTimeToMinutes(timeString) {
