@@ -235,7 +235,7 @@
             eventDiv.appendChild(createExpandButton(event));
             const eventImage = document.createElement('img');
             eventImage.src = event.imageSrc;
-            eventImage.alt = `${event.descriptionTitle} image`;
+            eventImage.alt = `${event.altText}`;
             eventImage.className = 'event-image';
             condensedView.appendChild(eventImage);
         }
