@@ -401,6 +401,7 @@ nav {
     width: 10vw; /* Standard ad size width */
     height: 40vw; /* Standard ad size height */
     z-index: 1001;
+    /*background-color: black;*/
 }
 
 #left-ad-container {
