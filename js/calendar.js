@@ -211,7 +211,7 @@
         const eventHeight = parseInt(style.height);
         
         if (eventHeight >= 14) {
-            condensedView.style.overflowY = 'hidden';
+            condensedView.style.overflowY = 'auto';
             condensedView.style.display = 'flex';
             condensedView.style.flexDirection = 'column';
             condensedView.style.height = '100%';
