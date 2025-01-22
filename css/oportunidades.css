@@ -603,13 +603,19 @@ nav {
     flex-wrap: wrap;
 }
 
+
 .category-info {
-    font-size: 1vw;
+    font-size: 0.9vw;
     color: #666;
     margin-left: 1.8vw;
     width: 100%;
     margin-top: 0vw;
 }
+
+.category-name{
+    font-size: 1vw;
+}
+
 
 .cookie-buttons {
     display: flex;
