@@ -127,33 +127,6 @@ class CookieConsentManager {
             marketingCookie: document.getElementById('marketing-cookies'),
             privacyPolicyLink: document.getElementById('read-more')
         };
-
-        // Add cookie preferences links to footer
-        this.addPreferencesLinks();
-    }
-
-    addPreferencesLinks() {
-        const computerRightText = document.querySelector('.computer-right-text');
-        const mobileRightText = document.querySelector('.mobile-right-text');
-
-        const createPreferencesLink = () => {
-            const link = document.createElement('a');
-            link.href = '#';
-            link.textContent = 'Preferências de Cookies';
-            link.classList.add('cookie-preferences-link');
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.showBanner();
-                this.expandBanner();
-            });
-            return link;
-        };
-
-        // Add to desktop footer
-        computerRightText.insertBefore(createPreferencesLink(), computerRightText.lastElementChild);
-
-        // Add to mobile footer
-        mobileRightText.insertBefore(createPreferencesLink(), mobileRightText.lastElementChild);
     }
 
     setupEventListeners() {
@@ -166,6 +139,14 @@ class CookieConsentManager {
         this.domElements.privacyPolicyLink?.addEventListener('click', (e) => {
             e.preventDefault();
             this.showPrivacyPolicy();
+        });
+
+        document.querySelectorAll('.manage-cookies').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.showBanner();
+                this.expandBanner();
+            });
         });
     }
 
@@ -508,3 +489,8 @@ const cookieConsent = new CookieConsentManager();
 document.addEventListener('DOMContentLoaded', () => {
     cookieConsent.init();
 });
+
+window.showCookieBanner = function() {
+    cookieConsent.showBanner();
+    return false; // Prevents default link behavior
+};
