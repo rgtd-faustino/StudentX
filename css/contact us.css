@@ -202,6 +202,36 @@ nav {
     left: 0;
 }
 
+.right-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+}
+
+.right-text a {
+    background: none;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.8vw;
+    white-space: nowrap;
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0 auto;
+    margin-right:0.3vw;
+}
+
+.right-text a:hover {
+    text-decoration: underline;
+}
+
+.mobile-right-text{
+    display:none;
+}
 
 .footer-text {
     display: flex;
@@ -721,6 +751,44 @@ input[type="checkbox"] {
     /* Footer text hidden */
     .footer-text {
         display: none;
+    }
+
+    .right-text{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .right-text a {
+        background: none;
+        border: none;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 3.2vw;
+        white-space: nowrap;
+        color: #FFF;
+        font-family: 'Poppins', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0; /* Remove auto margin */
+        margin-bottom:1vw;
+    }
+
+    .right-text a:hover {
+        text-decoration: none;
+    }
+
+    .computer-right-text{
+        display:none;
+    }
+
+    .mobile-right-text{
+        display:unset;
+    }
+
+    .mobile-right-text a {
+        margin:5vw;
     }
 
     /* Contact section hidden */
