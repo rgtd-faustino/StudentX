@@ -308,7 +308,7 @@ nav {
     gap: 1vw;
 }
 
-.right-text button, .right-text a {
+.right-text a {
     background: none;
     border: none;
     text-decoration: none;
@@ -321,15 +321,17 @@ nav {
     font-weight: 400;
     line-height: normal;
     margin: 0 auto;
+    margin-right:0.3vw;
 }
 
-.right-text button:hover, .right-text a:hover {
+.right-text a:hover {
     text-decoration: underline;
 }
 
 .mobile-right-text{
     display:none;
 }
+
 
 .cookie-banner {
     position: fixed;
@@ -714,14 +716,14 @@ input[type="checkbox"] {
 
     }
 
+
     .right-text{
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0vw;
     }
     
-    .right-text button, .right-text a {
+    .right-text a {
         background: none;
         border: none;
         text-decoration: none;
@@ -735,10 +737,9 @@ input[type="checkbox"] {
         line-height: normal;
         margin: 0; /* Remove auto margin */
         margin-bottom:1vw;
-
     }
 
-    .right-text button:hover, .right-text a:hover {
+    .right-text a:hover {
         text-decoration: none;
     }
 
@@ -749,6 +750,11 @@ input[type="checkbox"] {
     .mobile-right-text{
         display:unset;
     }
+
+    .mobile-right-text a {
+        margin:5vw;
+    }
+
 
 
                 

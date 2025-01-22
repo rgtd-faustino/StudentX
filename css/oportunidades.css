@@ -490,7 +490,7 @@ nav {
     gap: 1vw;
 }
 
-.right-text button, .right-text a {
+.right-text a {
     background: none;
     border: none;
     text-decoration: none;
@@ -503,15 +503,17 @@ nav {
     font-weight: 400;
     line-height: normal;
     margin: 0 auto;
+    margin-right:0.3vw;
 }
 
-.right-text button:hover, .right-text a:hover {
+.right-text a:hover {
     text-decoration: underline;
 }
 
 .mobile-right-text{
     display:none;
 }
+
 
 .opp-text-container{
     position: relative;
