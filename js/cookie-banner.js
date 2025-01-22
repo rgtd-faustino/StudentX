@@ -1,31 +1,37 @@
-// Cookie Consent Manager Configuration
 const CONSENT_CONFIG = {
-    version: '1.0',
+    version: '1.1',
     cookieMaxAge: 180,
     cookieCategories: {
         essential: {
             name: 'Essenciais',
             required: true,
-            sameSite: 'Lax'
+            sameSite: 'Lax',
+            description: 'Cookies estritamente necessários para o funcionamento do website. Validade: Sessão',
+            purposes: ['Autenticação', 'Segurança', 'Funcionalidades básicas'],
+            duration: 'Sessão'
         },
         analytics: {
             name: 'Análise',
             required: false,
             sameSite: 'Lax',
+            description: 'Cookies para análise de uso do website através do Google Analytics. Validade: 2 anos',
+            purposes: ['Análise de tráfego', 'Melhorias do website', 'Estatísticas de uso'],
+            thirdParties: ['Google LLC'],
+            duration: '2 anos',
             scripts: [
                 {
                     id: 'google-tag-manager',
-                    init: function() {
+                    init: function(manager) {
+                        if (!manager.hasConsent('analytics')) return;
+                        
                         window.dataLayer = window.dataLayer || [];
                         window.gtag = function() { dataLayer.push(arguments); }
                         
-                        // Load GTM
                         const gtmScript = document.createElement('script');
                         gtmScript.async = true;
                         gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-KQDSNF9T';
                         document.head.appendChild(gtmScript);
 
-                        // Load GA4
                         const gtagScript = document.createElement('script');
                         gtagScript.async = true;
                         gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6';
@@ -43,10 +49,17 @@ const CONSENT_CONFIG = {
             name: 'Publicidade',
             required: false,
             sameSite: 'None',
+            description: 'Cookies para publicidade personalizada através do Google Ads. Validade: 1 ano',
+            purposes: ['Publicidade direcionada', 'Personalização de anúncios'],
+            thirdParties: ['Google LLC', 'Parceiros de publicidade'],
+            dataTransfers: ['EUA (Privacy Shield)'],
+            duration: '1 ano',
             scripts: [
                 {
                     id: 'google-adsense',
-                    init: function() {
+                    init: function(manager) {
+                        if (!manager.hasConsent('marketing')) return;
+                        
                         const adsenseScript = document.createElement('script');
                         adsenseScript.async = true;
                         adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
@@ -65,24 +78,19 @@ class CookieConsentManager {
         this.domElements = {};
         this.initialized = false;
         this.loadedScripts = new Set();
+        this.consentHistory = [];
     }
 
     init() {
         if (this.initialized) return;
-
-        this.blockTrackingScripts(); // Add this line
-        // Initialize consent mode with denied by default
+        
+        this.blockTrackingScripts();
         this.initializeConsentMode();
-        
-        // Load saved consent
         this.loadSavedConsent();
-        
-        // Setup DOM elements and events
         this.setupDOMElements();
         this.setupEventListeners();
         this.checkAndEnforceExpiry();
         
-        // Apply existing consent if available
         if (this.consentData) {
             this.applyConsent();
         } else {
@@ -90,6 +98,10 @@ class CookieConsentManager {
         }
         
         this.initialized = true;
+    }
+
+    hasConsent(category) {
+        return this.consentData?.[category] === true;
     }
 
     blockTrackingScripts() {
@@ -164,7 +176,24 @@ class CookieConsentManager {
         }
     }
 
-    handleAcceptAll() {
+    saveConsentRecord() {
+        const record = {
+            timestamp: new Date().toISOString(),
+            categories: { ...this.consentData },
+            userAgent: navigator.userAgent,
+            version: CONSENT_CONFIG.version
+        };
+        
+        this.consentHistory.push(record);
+        localStorage.setItem('consentHistory', JSON.stringify(this.consentHistory));
+    }
+
+    async handleAcceptAll() {
+        // First remove all existing scripts and cookies
+        await this.removeAllTrackingScripts();
+        await this.removeAllTrackingCookies();
+
+        // Then save new consent
         this.saveConsent({
             essential: true,
             analytics: true,
@@ -172,20 +201,26 @@ class CookieConsentManager {
         });
     }
 
-    handleRejectAll() {
+    async handleRejectAll() {
+        // First remove all existing scripts and cookies
+        await this.removeAllTrackingScripts();
+        await this.removeAllTrackingCookies();
+
+        // Then save new consent with only essential cookies
         this.saveConsent({
-            essential: true, // Essential cookies are always enabled
+            essential: true,
             analytics: false,
             marketing: false
         });
+
+        // Update Google consent mode explicitly
+        this.updateGoogleConsent();
     }
 
-    handleSavePreferences() {
-        // Remove existing scripts and cookies first
-        this.unloadCategoryScripts('analytics');
-        this.unloadCategoryScripts('marketing');
-        this.removeAnalyticsCookies();
-        this.removeMarketingCookies();
+    async handleSavePreferences() {
+        // First remove all existing scripts and cookies
+        await this.removeAllTrackingScripts();
+        await this.removeAllTrackingCookies();
 
         // Then save new preferences
         this.saveConsent({
@@ -193,6 +228,37 @@ class CookieConsentManager {
             analytics: this.domElements.analyticsCookie.checked,
             marketing: this.domElements.marketingCookie.checked
         });
+    }
+
+    async removeAllTrackingScripts() {
+        // Remove all tracking scripts
+        await this.unloadCategoryScripts('analytics');
+        await this.unloadCategoryScripts('marketing');
+        
+        // Remove any remaining Google scripts
+        document.querySelectorAll('script[src*="googletagmanager"], script[src*="google-analytics"], script[src*="pagead2.googlesyndication.com"]')
+            .forEach(script => script.remove());
+    }
+
+    async removeAllTrackingCookies() {
+        this.removeAnalyticsCookies();
+        this.removeMarketingCookies();
+        
+        // Remove any remaining Google cookies
+        const allCookies = document.cookie.split(';');
+        allCookies.forEach(cookie => {
+            const name = cookie.split('=')[0].trim();
+            if (name.startsWith('_ga') || name.startsWith('_gid') || 
+                name.startsWith('_gat') || name.startsWith('_gcl') || 
+                name.startsWith('_fbp')) {
+                this.deleteCookie(name);
+            }
+        });
+    }
+
+    withdrawConsent() {
+        this.handleRejectAll();
+        this.showBanner();
     }
 
     saveConsent(consentData) {
@@ -212,6 +278,34 @@ class CookieConsentManager {
         this.applyConsent();
         this.hideBanner();
         this.dispatchConsentEvent();
+    }
+
+    updateBannerContent() {
+        const expandedContent = document.querySelector('.cookie-expanded');
+        const categoriesContainer = expandedContent.querySelector('.cookie-categories');
+        categoriesContainer.innerHTML = '';
+
+        Object.entries(CONSENT_CONFIG.cookieCategories).forEach(([key, category]) => {
+            const div = document.createElement('div');
+            div.className = 'cookie-category';
+            div.innerHTML = `
+                <div class="category-header">
+                    <input type="checkbox" id="${key}-cookies" 
+                           ${category.required ? 'checked disabled' : ''}>
+                    <label for="${key}-cookies">${category.name}</label>
+                </div>
+                <div class="category-details">
+                    <p>${category.description}</p>
+                    <p><strong>Finalidades:</strong> ${category.purposes.join(', ')}</p>
+                    ${category.thirdParties ? 
+                      `<p><strong>Destinatários:</strong> ${category.thirdParties.join(', ')}</p>` : ''}
+                    ${category.dataTransfers ? 
+                      `<p><strong>Transferências:</strong> ${category.dataTransfers.join(', ')}</p>` : ''}
+                    <p><strong>Duração:</strong> ${category.duration}</p>
+                </div>
+            `;
+            categoriesContainer.appendChild(div);
+        });
     }
 
     async applyConsent() {
@@ -250,10 +344,12 @@ class CookieConsentManager {
             }
         }
         
+        // Explicitly deny all non-essential storage types when consent is withdrawn
         gtag('consent', 'update', {
             'analytics_storage': this.consentData.analytics ? 'granted' : 'denied',
             'ad_storage': this.consentData.marketing ? 'granted' : 'denied',
-            'functionality_storage': 'granted', // For essential cookies
+            'functionality_storage': 'granted',
+            'personalization_storage': this.consentData.marketing ? 'granted' : 'denied',
             'security_storage': 'granted'
         });
     }
@@ -456,8 +552,7 @@ class CookieConsentManager {
 
         for (const script of categoryConfig.scripts) {
             try {
-                await script.init();
-                // Mark scripts with category for future removal
+                await script.init(this);  // Pass manager instance
                 document.querySelectorAll(`script[src*="${script.id}"]`)
                     .forEach(s => s.setAttribute('data-category', category));
             } catch (error) {
@@ -469,11 +564,14 @@ class CookieConsentManager {
     }
 
     unloadCategoryScripts(category) {
-        const scripts = document.querySelectorAll(`script[data-category="${category}"]`);
-        scripts.forEach(script => script.remove());
+        // Remove scripts
+        document.querySelectorAll(`script[data-category="${category}"]`)
+            .forEach(script => script.remove());
+        
+        // Clear from loaded scripts set
         this.loadedScripts.delete(category);
 
-        // Reset consent for this category
+        // Reset consent mode for the category
         if (category === 'analytics') {
             gtag('consent', 'update', {
                 'analytics_storage': 'denied',
@@ -485,6 +583,10 @@ class CookieConsentManager {
                 'personalization_storage': 'denied'
             });
         }
+
+        // Remove any inline scripts
+        document.querySelectorAll(`script[type="text/javascript"][data-category="${category}"]`)
+            .forEach(script => script.remove());
     }
 
 
