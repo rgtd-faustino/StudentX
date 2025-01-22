@@ -1,22 +1,60 @@
 // Cookie Consent Manager Configuration
 const CONSENT_CONFIG = {
     version: '1.0',
-    cookieMaxAge: 180, // Days until consent expires
+    cookieMaxAge: 180,
     cookieCategories: {
         essential: {
             name: 'Essenciais',
             required: true,
-            sameSite: 'Lax' // Essential cookies default to Lax
+            sameSite: 'Lax'
         },
         analytics: {
             name: 'Análise',
             required: false,
-            sameSite: 'Lax' // Analytics cookies can use Lax
+            sameSite: 'Lax',
+            scripts: [
+                {
+                    id: 'google-tag-manager',
+                    init: function() {
+                        window.dataLayer = window.dataLayer || [];
+                        window.gtag = function() { dataLayer.push(arguments); }
+                        
+                        // Load GTM
+                        const gtmScript = document.createElement('script');
+                        gtmScript.async = true;
+                        gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-KQDSNF9T';
+                        document.head.appendChild(gtmScript);
+
+                        // Load GA4
+                        const gtagScript = document.createElement('script');
+                        gtagScript.async = true;
+                        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6';
+                        document.head.appendChild(gtagScript);
+
+                        gtagScript.onload = function() {
+                            gtag('js', new Date());
+                            gtag('config', 'G-2EBYGRKLQ6');
+                        };
+                    }
+                }
+            ]
         },
         marketing: {
             name: 'Publicidade',
             required: false,
-            sameSite: 'None' // Marketing cookies need None for third-party context
+            sameSite: 'None',
+            scripts: [
+                {
+                    id: 'google-adsense',
+                    init: function() {
+                        const adsenseScript = document.createElement('script');
+                        adsenseScript.async = true;
+                        adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
+                        adsenseScript.crossOrigin = 'anonymous';
+                        document.head.appendChild(adsenseScript);
+                    }
+                }
+            ]
         }
     }
 };
@@ -26,24 +64,55 @@ class CookieConsentManager {
         this.consentData = null;
         this.domElements = {};
         this.initialized = false;
+        this.loadedScripts = new Set();
     }
 
     init() {
         if (this.initialized) return;
+
+        // Initialize consent mode with denied by default
+        this.initializeConsentMode();
         
-        // Load consent before DOM setup to prevent flash
+        // Load saved consent
         this.loadSavedConsent();
+        
+        // Setup DOM elements and events
         this.setupDOMElements();
         this.setupEventListeners();
         this.checkAndEnforceExpiry();
-        this.initializeConsentMode();
         
-        // Only show banner if no consent is saved
-        if (!this.consentData) {
+        // Apply existing consent if available
+        if (this.consentData) {
+            this.applyConsent();
+        } else {
             this.showBanner();
         }
         
         this.initialized = true;
+    }
+
+    blockTrackingScripts() {
+        // Create a mutation observer to prevent script loading
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.tagName === 'SCRIPT') {
+                        const src = node.src || '';
+                        if (src.includes('google-analytics') || 
+                            src.includes('googletagmanager') || 
+                            src.includes('facebook')) {
+                            node.type = 'javascript/blocked';
+                            node.parentNode.removeChild(node);
+                        }
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
     }
 
     setupDOMElements() {
@@ -58,6 +127,33 @@ class CookieConsentManager {
             marketingCookie: document.getElementById('marketing-cookies'),
             privacyPolicyLink: document.getElementById('read-more')
         };
+
+        // Add cookie preferences links to footer
+        this.addPreferencesLinks();
+    }
+
+    addPreferencesLinks() {
+        const computerRightText = document.querySelector('.computer-right-text');
+        const mobileRightText = document.querySelector('.mobile-right-text');
+
+        const createPreferencesLink = () => {
+            const link = document.createElement('a');
+            link.href = '#';
+            link.textContent = 'Preferências de Cookies';
+            link.classList.add('cookie-preferences-link');
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.showBanner();
+                this.expandBanner();
+            });
+            return link;
+        };
+
+        // Add to desktop footer
+        computerRightText.insertBefore(createPreferencesLink(), computerRightText.lastElementChild);
+
+        // Add to mobile footer
+        mobileRightText.insertBefore(createPreferencesLink(), mobileRightText.lastElementChild);
     }
 
     setupEventListeners() {
@@ -129,25 +225,31 @@ class CookieConsentManager {
         this.dispatchConsentEvent();
     }
 
-    applyConsent() {
+    async applyConsent() {
         if (!this.consentData) return;
 
         // Update Google consent mode
-        this.updateGoogleConsent();
+        gtag('consent', 'update', {
+            'analytics_storage': this.consentData.analytics ? 'granted' : 'denied',
+            'ad_storage': this.consentData.marketing ? 'granted' : 'denied',
+            'functionality_storage': 'granted',
+            'personalization_storage': this.consentData.marketing ? 'granted' : 'denied',
+            'security_storage': 'granted'
+        });
 
-        // Apply consent to checkboxes
-        if (this.domElements.analyticsCookie) {
-            this.domElements.analyticsCookie.checked = this.consentData.analytics;
-        }
-        if (this.domElements.marketingCookie) {
-            this.domElements.marketingCookie.checked = this.consentData.marketing;
-        }
-
-        // Remove cookies for non-consented categories
-        if (!this.consentData.analytics) {
+        // Handle analytics scripts
+        if (this.consentData.analytics) {
+            await this.loadCategoryScripts('analytics');
+        } else {
+            this.unloadCategoryScripts('analytics');
             this.removeAnalyticsCookies();
         }
-        if (!this.consentData.marketing) {
+
+        // Handle marketing scripts
+        if (this.consentData.marketing) {
+            await this.loadCategoryScripts('marketing');
+        } else {
+            this.unloadCategoryScripts('marketing');
             this.removeMarketingCookies();
         }
     }
@@ -165,17 +267,14 @@ class CookieConsentManager {
 
     initializeConsentMode() {
         window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        window.gtag = function() { dataLayer.push(arguments); }
         
-        // Set default consent mode to denied
         gtag('consent', 'default', {
             'analytics_storage': 'denied',
             'ad_storage': 'denied',
-            'functionality_storage': 'granted',
-            'security_storage': 'granted',
-            'wait_for_update': 500
+            'functionality_storage': 'denied',
+            'personalization_storage': 'denied',
+            'security_storage': 'granted'
         });
     }
 
@@ -297,7 +396,113 @@ class CookieConsentManager {
         // Implement privacy policy display logic or navigation
         window.location.href = this.domElements.privacyPolicyLink.href;
     }
+
+    setupPreferencesLink() {
+        const preferencesLink = document.getElementById('cookie-preferences');
+        if (preferencesLink) {
+            preferencesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.showBanner();
+                this.expandBanner();
+                
+                // Pre-fill checkboxes based on current consent
+                if (this.consentData) {
+                    this.domElements.analyticsCookie.checked = this.consentData.analytics;
+                    this.domElements.marketingCookie.checked = this.consentData.marketing;
+                }
+            });
+        }
+    }
+
+    loadScript(script) {
+        if (this.loadedScripts.has(script.id)) return Promise.resolve();
+
+        return new Promise((resolve, reject) => {
+            if (script.inline) {
+                try {
+                    const scriptElement = document.createElement('script');
+                    scriptElement.id = script.id;
+                    scriptElement.text = script.content;
+                    document.head.appendChild(scriptElement);
+                    this.loadedScripts.add(script.id);
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            } else {
+                const scriptElement = document.createElement('script');
+                scriptElement.id = script.id;
+                scriptElement.src = script.src;
+                scriptElement.onload = () => {
+                    this.loadedScripts.add(script.id);
+                    resolve();
+                };
+                scriptElement.onerror = reject;
+                document.head.appendChild(scriptElement);
+            }
+        });
+    }
+
+    async loadCategoryScripts(category) {
+        const categoryConfig = CONSENT_CONFIG.cookieCategories[category];
+        if (!categoryConfig?.scripts) return;
+
+        for (const script of categoryConfig.scripts) {
+            if (this.loadedScripts.has(script.id)) continue;
+            
+            try {
+                await script.init();
+                this.loadedScripts.add(script.id);
+            } catch (error) {
+                console.error(`Error loading script ${script.id}:`, error);
+            }
+        }
+    }
+
+    unloadCategoryScripts(category) {
+        const scripts = CONSENT_CONFIG.cookieCategories[category]?.scripts || [];
+        scripts.forEach(script => {
+            const scriptElement = document.getElementById(script.id);
+            if (scriptElement) {
+                scriptElement.remove();
+                this.loadedScripts.delete(script.id);
+            }
+        });
+    }
+
+    async applyConsent() {
+        if (!this.consentData) return;
+
+        // Update Google consent mode
+        this.updateGoogleConsent();
+
+        // Handle analytics scripts
+        if (this.consentData.analytics) {
+            await this.loadCategoryScripts('analytics');
+        } else {
+            this.unloadCategoryScripts('analytics');
+            this.removeAnalyticsCookies();
+        }
+
+        // Handle marketing scripts
+        if (this.consentData.marketing) {
+            await this.loadCategoryScripts('marketing');
+        } else {
+            this.unloadCategoryScripts('marketing');
+            this.removeMarketingCookies();
+        }
+
+        // Update checkboxes if they exist
+        if (this.domElements.analyticsCookie) {
+            this.domElements.analyticsCookie.checked = this.consentData.analytics;
+        }
+        if (this.domElements.marketingCookie) {
+            this.domElements.marketingCookie.checked = this.consentData.marketing;
+        }
+    }
 }
+
+
 
 const cookieConsent = new CookieConsentManager();
 document.addEventListener('DOMContentLoaded', () => {

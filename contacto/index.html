@@ -60,49 +60,6 @@
         }
         </script>
         
-        <!-- Google Tag Manager com carregamento atrasado -->
-        <script>
-        window.addEventListener('load', function() {
-            // Configuração inicial do dataLayer
-            window.dataLayer = window.dataLayer || [];
-            
-            // Configuração do consentimento padrão
-            window.gtag = function() { dataLayer.push(arguments); }
-            gtag('consent', 'default', {
-                'analytics_storage': 'denied',
-                'ad_storage': 'denied',
-                'functionality_storage': 'denied',
-                'personalization_storage': 'denied',
-                'security_storage': 'granted'
-            });
-    
-            // Carregamento atrasado do GTM
-            setTimeout(function() {
-                (function(w,d,s,l,i){
-                    w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
-                    var f=d.getElementsByTagName(s)[0],
-                    j=d.createElement(s);
-                    j.async=true;
-                    j.src='https://www.googletagmanager.com/gtm.js?id='+i;
-                    f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-KQDSNF9T');
-                
-                // Carregamento do GA4
-                var gtagScript = document.createElement('script');
-                gtagScript.async = true;
-                gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6';
-                document.head.appendChild(gtagScript);
-                
-                gtagScript.onload = function() {
-                    gtag('js', new Date());
-                    gtag('config', 'G-2EBYGRKLQ6');
-                };
-            }, 2000); // Atraso de 2 segundos
-        });
-        </script>
-
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679"
-        crossorigin="anonymous"></script>
     </head>
 
 <body>
