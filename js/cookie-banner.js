@@ -70,6 +70,7 @@ class CookieConsentManager {
     init() {
         if (this.initialized) return;
 
+        this.blockTrackingScripts(); // Add this line
         // Initialize consent mode with denied by default
         this.initializeConsentMode();
         
@@ -243,14 +244,18 @@ class CookieConsentManager {
     }
 
     updateGoogleConsent() {
-        if (typeof gtag === 'function') {
-            gtag('consent', 'update', {
-                'analytics_storage': this.consentData.analytics ? 'granted' : 'denied',
-                'ad_storage': this.consentData.marketing ? 'granted' : 'denied',
-                'functionality_storage': 'granted', // For essential cookies
-                'security_storage': 'granted'
-            });
+        if (typeof window.gtag === 'undefined') {
+            window.gtag = function() { 
+                (window.dataLayer = window.dataLayer || []).push(arguments);
+            }
         }
+        
+        gtag('consent', 'update', {
+            'analytics_storage': this.consentData.analytics ? 'granted' : 'denied',
+            'ad_storage': this.consentData.marketing ? 'granted' : 'denied',
+            'functionality_storage': 'granted', // For essential cookies
+            'security_storage': 'granted'
+        });
     }
 
     initializeConsentMode() {
@@ -267,7 +272,10 @@ class CookieConsentManager {
     }
 
     removeAnalyticsCookies() {
-        const analyticsCookies = ['_ga', '_gid', '_gat', '_ga_*'];
+        const analyticsCookies = [
+            '_ga', '_gid', '_gat', '_ga_*', 
+            '_gac_*', '_gat_gtag_*', '_gat_*'
+        ];
         this.removeMatchingCookies(analyticsCookies);
     }
 
@@ -479,36 +487,7 @@ class CookieConsentManager {
         }
     }
 
-    async applyConsent() {
-        if (!this.consentData) return;
 
-        // Update Google consent mode
-        this.updateGoogleConsent();
-
-        // Handle analytics scripts
-        if (this.consentData.analytics) {
-            await this.loadCategoryScripts('analytics');
-        } else {
-            this.unloadCategoryScripts('analytics');
-            this.removeAnalyticsCookies();
-        }
-
-        // Handle marketing scripts
-        if (this.consentData.marketing) {
-            await this.loadCategoryScripts('marketing');
-        } else {
-            this.unloadCategoryScripts('marketing');
-            this.removeMarketingCookies();
-        }
-
-        // Update checkboxes if they exist
-        if (this.domElements.analyticsCookie) {
-            this.domElements.analyticsCookie.checked = this.consentData.analytics;
-        }
-        if (this.domElements.marketingCookie) {
-            this.domElements.marketingCookie.checked = this.consentData.marketing;
-        }
-    }
 }
 
 
