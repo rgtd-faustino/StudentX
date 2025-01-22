@@ -180,8 +180,15 @@ class CookieConsentManager {
     }
 
     handleSavePreferences() {
+        // Remove existing scripts and cookies first
+        this.unloadCategoryScripts('analytics');
+        this.unloadCategoryScripts('marketing');
+        this.removeAnalyticsCookies();
+        this.removeMarketingCookies();
+
+        // Then save new preferences
         this.saveConsent({
-            essential: true, // Essential cookies are always enabled
+            essential: true,
             analytics: this.domElements.analyticsCookie.checked,
             marketing: this.domElements.marketingCookie.checked
         });
@@ -260,21 +267,30 @@ class CookieConsentManager {
     }
 
     removeAnalyticsCookies() {
-        const analyticsCookies = ['_ga', '_gid', '_gat'];
-        analyticsCookies.forEach(cookieName => 
-            this.deleteCookie(cookieName, {
-                sameSite: CONSENT_CONFIG.cookieCategories.analytics.sameSite
-            })
-        );
+        const analyticsCookies = ['_ga', '_gid', '_gat', '_ga_*'];
+        this.removeMatchingCookies(analyticsCookies);
     }
 
     removeMarketingCookies() {
-        const marketingCookies = ['_fbp', '_gcl_au'];
-        marketingCookies.forEach(cookieName => 
-            this.deleteCookie(cookieName, {
-                sameSite: CONSENT_CONFIG.cookieCategories.marketing.sameSite
-            })
-        );
+        const marketingCookies = ['_fbp', '_gcl_au', '__gads', '__gpi'];
+        this.removeMatchingCookies(marketingCookies);
+    }
+
+    removeMatchingCookies(cookiePatterns) {
+        cookiePatterns.forEach(pattern => {
+            if (pattern.includes('*')) {
+                // Handle wildcard patterns
+                const prefix = pattern.split('*')[0];
+                document.cookie.split(';').forEach(cookie => {
+                    const name = cookie.split('=')[0].trim();
+                    if (name.startsWith(prefix)) {
+                        this.deleteCookie(name);
+                    }
+                });
+            } else {
+                this.deleteCookie(pattern);
+            }
+        });
     }
 
     checkAndEnforceExpiry() {
@@ -425,30 +441,42 @@ class CookieConsentManager {
     }
 
     async loadCategoryScripts(category) {
+        if (this.loadedScripts.has(category)) return;
+
         const categoryConfig = CONSENT_CONFIG.cookieCategories[category];
         if (!categoryConfig?.scripts) return;
 
         for (const script of categoryConfig.scripts) {
-            if (this.loadedScripts.has(script.id)) continue;
-            
             try {
                 await script.init();
-                this.loadedScripts.add(script.id);
+                // Mark scripts with category for future removal
+                document.querySelectorAll(`script[src*="${script.id}"]`)
+                    .forEach(s => s.setAttribute('data-category', category));
             } catch (error) {
                 console.error(`Error loading script ${script.id}:`, error);
             }
         }
+        
+        this.loadedScripts.add(category);
     }
 
     unloadCategoryScripts(category) {
-        const scripts = CONSENT_CONFIG.cookieCategories[category]?.scripts || [];
-        scripts.forEach(script => {
-            const scriptElement = document.getElementById(script.id);
-            if (scriptElement) {
-                scriptElement.remove();
-                this.loadedScripts.delete(script.id);
-            }
-        });
+        const scripts = document.querySelectorAll(`script[data-category="${category}"]`);
+        scripts.forEach(script => script.remove());
+        this.loadedScripts.delete(category);
+
+        // Reset consent for this category
+        if (category === 'analytics') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'denied',
+                'personalization_storage': 'denied'
+            });
+        } else if (category === 'marketing') {
+            gtag('consent', 'update', {
+                'ad_storage': 'denied',
+                'personalization_storage': 'denied'
+            });
+        }
     }
 
     async applyConsent() {
