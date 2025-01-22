@@ -85,7 +85,38 @@ nav {
 }
 
 
+/* Style for the right-side navigation */
+.right-side-nav {
+    display: flex;
+    align-items: center;
+    gap: 2.5vw; /* Adjust gap between elements in the right-side nav */
+    position: relative; /* Set position to relative to contain the dropdown within this area */
+    display:none;
+}
 
+/* Style the Contact Us button */
+.contact-button {
+    padding: 0.5vw 1.5vw;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 1vw;
+    font-weight: 400;
+    font-size: 1.1vw;
+}
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+.contribui-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .contribui-button:hover{
+    background-color: #0056b3;
+  }
 
 .hamburger {
     display: block;
@@ -625,6 +656,60 @@ input[type="checkbox"] {
         height: 100%; /* Full height of the container */
         
     }
+
+    .right-side-nav {
+        display: flex;
+
+        flex-direction: column;
+        gap: 6vw;
+        width: 100%;
+        align-items: flex-start;
+        margin: 0;
+        padding: 0;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100%; /* Full height of the container */
+        
+
+    }
+
+    .contact-button {
+        padding: 1.5vw 10vw;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 2vw;
+        font-weight: 400;
+        font-size: 5vw;
+        margin-bottom: 6vw;
+    }
+
+    .contribui-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+      
+      /* Style the Contribui button */
+      .contribui-button {
+        padding: 1.5vw 10vw;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 2vw;
+        font-weight: 400;
+        font-size: 5vw;
+        margin-bottom: 6vw;
+      }
+    
+      .contribui-button:hover{
+        background-color: #0056b3;
+      }
+      
+
+      
+      .tooltip {
+        display:none;
+      }
 
 
     .menu-content.active {

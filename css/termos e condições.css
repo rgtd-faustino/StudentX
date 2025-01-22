@@ -618,10 +618,7 @@ input[type="checkbox"] {
         background-color: #0056b3;
       }
       
-      .contribui-wrapper:hover .tooltip {
-        all:unset;
-      }
-      
+
       .tooltip {
         display:none;
       }
