@@ -249,14 +249,6 @@ nav {
     font-weight: 400;
     margin: 0;
 }
-.backButton {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1vw;
-    font-style: normal;
-    font-weight: 500;
-    text-decoration-line: underline;
-    color: black;
-}
 
 .social-media-container {
     display: flex;
@@ -618,10 +610,6 @@ input[type="checkbox"] {
         display: block;
     }
 
-    .backButton{
-        display: none;
-    }
-
     .contactUsTitle{
         display:none;
     }
@@ -969,12 +957,6 @@ input[type="checkbox"] {
     
     }
 
-    /* Back Button Adjustments */
-    .backButton {
-        font-size: 18px; /* Slightly smaller font size */
-        bottom: 10px; /* Adjust positioning */
-        right: 10px; /* Adjust positioning */
-    }
     .footer {
         all: unset;
         position: relative;
