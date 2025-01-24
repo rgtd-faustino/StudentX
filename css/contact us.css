@@ -438,6 +438,7 @@ nav {
 
 
 
+
 .cookie-banner {
     position: fixed;
     bottom: 2vw;
@@ -449,7 +450,9 @@ nav {
     overflow: hidden;
     width: 25vw;
     transition: all 0.3s ease;
+    
 }
+
 
 .cookie-banner.expanded {
     width: 25vw;
@@ -464,7 +467,6 @@ nav {
 .cookie-initial {
     display: flex;
     flex-direction: column;
-    gap: 1vw;
     text-align: center;
 }
 
@@ -505,9 +507,6 @@ nav {
     flex-wrap: wrap;
 }
 
-
-
-
 .category-info {
     font-size: 0.9vw;
     color: #666;
@@ -519,7 +518,6 @@ nav {
 .category-name{
     font-size: 1vw;
 }
-
 
 .cookie-buttons {
     display: flex;
