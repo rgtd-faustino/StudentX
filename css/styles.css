@@ -3348,10 +3348,7 @@ input[type="checkbox"] {
       }
 
       .social-media-container {
-
         margin-top: 0%;
-
-
         position: absolute;
         bottom: 15%;
         left: 40%;
@@ -3383,7 +3380,6 @@ input[type="checkbox"] {
         flex-direction: column; /* Stack items vertically */
         justify-content: center; /* Center the items */
         align-items: center;
-        padding: 1vw;
         gap:1.5vw;
 
     }
@@ -3401,10 +3397,12 @@ input[type="checkbox"] {
 
     }
 
-    .right-text{
+    .right-text {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
+        text-align: center;
     }
     
     .right-text a {
@@ -3419,9 +3417,9 @@ input[type="checkbox"] {
         font-style: normal;
         font-weight: 400;
         line-height: normal;
-        margin: 0; /* Remove auto margin */
-        margin-bottom:1vw;
+        margin: 0;
     }
+
 
     .right-text a:hover {
         text-decoration: none;

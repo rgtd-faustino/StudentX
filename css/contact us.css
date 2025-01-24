@@ -744,18 +744,76 @@ input[type="checkbox"] {
     }
 
 
-    /* Footer text hidden */
-    .footer-text {
-        display: none;
-    }
 
-    .right-text{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .right-text {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
+        text-align: center;
     }
     
     .right-text a {
+        background: none;
+        border: none;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 3.2vw;
+        white-space: nowrap;
+        color: #FFF;
+        font-family: 'Poppins', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0;
+    }
+
+
+    .right-text a:hover {
+        text-decoration: none;
+    }
+
+    .copyright-text{
+        display: none;
+    }
+
+    .mobile-right-text {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: row;
+    }
+
+    .mobile-right-text a:nth-child(3) {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 2vw;
+    }
+
+    .mobile-right-text a:nth-child(1),
+    .mobile-right-text a:nth-child(2) {
+        width: auto;
+        margin: 0 5vw;
+    }
+
+    .mobile-right-text a {
         background: none;
         border: none;
         text-decoration: none;
@@ -767,25 +825,105 @@ input[type="checkbox"] {
         font-style: normal;
         font-weight: 400;
         line-height: normal;
-        margin: 0; /* Remove auto margin */
-        margin-bottom:1vw;
+        margin: 0;
     }
 
-    .right-text a:hover {
-        text-decoration: none;
+
+
+    .footer {
+        /*all: unset;*/
+        position: relative;
+        height: unset;
+        width: 100%;
+        
     }
 
     .computer-right-text{
         display:none;
     }
-
-    .mobile-right-text{
-        display:unset;
+    
+    /* Social Media Icons - Mobile */
+    .social-media-container {
+        margin-top: 7vw;
+        background-color: white;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: unset;
+        width: 100%;
+    }
+    
+    .social-media-container > a {
+        display: flex;
+        justify-content: center;
+        flex-direction: row; /* Change to row */
+        align-items: center; /* Align items vertically */
+        width: 50%;
+        margin: 5%;
+        margin-right: 0;
+        margin-left: 0;
     }
 
-    .mobile-right-text a {
-        margin:5vw;
+    .social-media-icon {
+        width: 8vw; /* Smaller icon size for mobile */
+        margin-right: 1vw; /* Add some spacing between the icon and text */
+
     }
+
+    .social-media-text {
+        font-size: 3.5vw; /* Adjust font size for mobile */
+    }
+
+    .profile-name{
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        color: rgba(2, 2, 4, 0.50);
+        text-align: center;
+        line-height: 120%;
+    }
+
+    .social-media-name{
+        color: #020204;
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /* Contact section hidden */
     #contact{
@@ -955,66 +1093,6 @@ input[type="checkbox"] {
         color: #5D5D5D;
         margin-bottom: 8vw;
     
-    }
-
-    .footer {
-        all: unset;
-        position: relative;
-        height: unset;
-        width: 100%;
-    }
-    
-    /* Social Media Icons - Mobile */
-    .social-media-container {
-        margin-top: 7vw;
-        background-color: white;
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: unset;
-        width: 100%;
-    }
-    
-    .social-media-container > a {
-        display: flex;
-        justify-content: center;
-        flex-direction: row; /* Change to row */
-        align-items: center; /* Align items vertically */
-        width: 50%;
-        margin: 5%;
-        margin-right: 0;
-        margin-left: 0;
-        
-    }
-    
-    .footer-text {
-        display:none;
-    }
-
-    .social-media-icon {
-        width: 8vw; /* Smaller icon size for mobile */
-        margin-right: 1vw; /* Add some spacing between the icon and text */
-
-    }
-
-    .social-media-text {
-        font-size: 3.5vw; /* Adjust font size for mobile */
-    }
-
-    .profile-name{
-        font-family: 'Inter', sans-serif;
-        font-weight: 400;
-        color: rgba(2, 2, 4, 0.50);
-        text-align: center;
-        line-height: 120%;
-    }
-
-    .social-media-name{
-        color: #020204;
-        font-family: 'Montserrat', sans-serif;
-        font-style: normal;
-        font-weight: 600;
     }
 
         

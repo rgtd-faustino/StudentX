@@ -715,11 +715,12 @@ input[type="checkbox"] {
 
     }
 
-
-    .right-text{
+    .right-text {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
+        text-align: center;
     }
     
     .right-text a {
@@ -734,9 +735,9 @@ input[type="checkbox"] {
         font-style: normal;
         font-weight: 400;
         line-height: normal;
-        margin: 0; /* Remove auto margin */
-        margin-bottom:1vw;
+        margin: 0;
     }
+
 
     .right-text a:hover {
         text-decoration: none;
