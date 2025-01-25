@@ -23,29 +23,27 @@ const CONSENT_CONFIG = {
                     id: 'analytics-proxy',
                     init: function(manager) {
                         if (!manager.hasConsent('analytics')) return;
+                       
+                        const CLOUDFLARE_ANALYTICS_PROXY = 'https://secretkeys.contact-studentx.workers.dev';
                         
                         window.dataLayer = window.dataLayer || [];
                         window.gtag = function() { dataLayer.push(arguments); }
-                        
-                        // Use environment variable or completely remove hardcoded IDs
-                        const GTM_ID = 'PLACEHOLDER'; // Will be replaced by Cloudflare Worker
-                        const GA_ID = 'PLACEHOLDER'; // Will be replaced by Cloudflare Worker
-                        
-                        const CLOUDFLARE_ANALYTICS_PROXY = 'https://secretkeys.contact-studentx.workers.dev/';
-                        
+                       
+                        // Proxy for Google Tag Manager script
                         const gtmProxyScript = document.createElement('script');
                         gtmProxyScript.async = true;
-                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js?id=${GTM_ID}`;
+                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js`;
                         document.head.appendChild(gtmProxyScript);
-                
+           
+                        // Proxy for Google Analytics script
                         const gtagProxyScript = document.createElement('script');
                         gtagProxyScript.async = true;
-                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js?id=${GA_ID}`;
+                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js`;
                         document.head.appendChild(gtagProxyScript);
-                
+           
                         gtagProxyScript.onload = function() {
                             gtag('js', new Date());
-                            gtag('config', GA_ID, {
+                            gtag('config', `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js`, {
                                 'transport_url': CLOUDFLARE_ANALYTICS_PROXY,
                                 'first_party_collection': true
                             });
