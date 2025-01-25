@@ -597,7 +597,6 @@ class CookieConsentManager {
             .forEach(script => script.remove());
     }
 
-
 }
 
 
