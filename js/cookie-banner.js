@@ -27,24 +27,25 @@ const CONSENT_CONFIG = {
                         window.dataLayer = window.dataLayer || [];
                         window.gtag = function() { dataLayer.push(arguments); }
                         
-                        // Cloudflare Worker URL (replace with your actual worker URL)
+                        // Use environment variable or completely remove hardcoded IDs
+                        const GTM_ID = 'PLACEHOLDER'; // Will be replaced by Cloudflare Worker
+                        const GA_ID = 'PLACEHOLDER'; // Will be replaced by Cloudflare Worker
+                        
                         const CLOUDFLARE_ANALYTICS_PROXY = 'https://secretkeys.contact-studentx.workers.dev/';
                         
-                        // Proxy for Google Tag Manager script
                         const gtmProxyScript = document.createElement('script');
                         gtmProxyScript.async = true;
-                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js?id=GTM-XDXDXD`;
+                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js?id=${GTM_ID}`;
                         document.head.appendChild(gtmProxyScript);
-            
-                        // Proxy for Google Analytics script
+                
                         const gtagProxyScript = document.createElement('script');
                         gtagProxyScript.async = true;
-                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js?id=G-XDXDXD`;
+                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js?id=${GA_ID}`;
                         document.head.appendChild(gtagProxyScript);
-            
+                
                         gtagProxyScript.onload = function() {
                             gtag('js', new Date());
-                            gtag('config', 'G-XDXDXD', {
+                            gtag('config', GA_ID, {
                                 'transport_url': CLOUDFLARE_ANALYTICS_PROXY,
                                 'first_party_collection': true
                             });
