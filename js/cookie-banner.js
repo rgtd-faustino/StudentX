@@ -20,26 +20,34 @@ const CONSENT_CONFIG = {
             duration: '2 anos',
             scripts: [
                 {
-                    id: 'google-tag-manager',
+                    id: 'analytics-proxy',
                     init: function(manager) {
                         if (!manager.hasConsent('analytics')) return;
                         
                         window.dataLayer = window.dataLayer || [];
                         window.gtag = function() { dataLayer.push(arguments); }
                         
-                        const gtmScript = document.createElement('script');
-                        gtmScript.async = true;
-                        gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-KQDSNF9T';
-                        document.head.appendChild(gtmScript);
-
-                        const gtagScript = document.createElement('script');
-                        gtagScript.async = true;
-                        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-2EBYGRKLQ6';
-                        document.head.appendChild(gtagScript);
-
-                        gtagScript.onload = function() {
+                        // Cloudflare Worker URL (replace with your actual worker URL)
+                        const CLOUDFLARE_ANALYTICS_PROXY = 'https://secretkeys.contact-studentx.workers.dev/';
+                        
+                        // Proxy for Google Tag Manager script
+                        const gtmProxyScript = document.createElement('script');
+                        gtmProxyScript.async = true;
+                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js?id=GTM-XDXDXD`;
+                        document.head.appendChild(gtmProxyScript);
+            
+                        // Proxy for Google Analytics script
+                        const gtagProxyScript = document.createElement('script');
+                        gtagProxyScript.async = true;
+                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js?id=G-XDXDXD`;
+                        document.head.appendChild(gtagProxyScript);
+            
+                        gtagProxyScript.onload = function() {
                             gtag('js', new Date());
-                            gtag('config', 'G-2EBYGRKLQ6');
+                            gtag('config', 'G-XDXDXD', {
+                                'transport_url': CLOUDFLARE_ANALYTICS_PROXY,
+                                'first_party_collection': true
+                            });
                         };
                     }
                 }
