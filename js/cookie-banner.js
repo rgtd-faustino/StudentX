@@ -25,21 +25,16 @@ const CONSENT_CONFIG = {
                         if (!manager.hasConsent('analytics')) return;
                        
                         const CLOUDFLARE_ANALYTICS_PROXY = 'https://secretkeys.contact-studentx.workers.dev';
-                        
-                        window.dataLayer = window.dataLayer || [];
-                        window.gtag = function() { dataLayer.push(arguments); }
-                       
+
                         // Proxy for Google Tag Manager script
                         const gtmProxyScript = document.createElement('script');
                         gtmProxyScript.async = true;
-                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js`;
-                        document.head.appendChild(gtmProxyScript);
-           
+                        gtmProxyScript.src = new URL('/gtm.js', CLOUDFLARE_ANALYTICS_PROXY).href;
+                        
                         // Proxy for Google Analytics script
                         const gtagProxyScript = document.createElement('script');
                         gtagProxyScript.async = true;
-                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js`;
-                        document.head.appendChild(gtagProxyScript);
+                        gtagProxyScript.src = new URL('/gtag/js', CLOUDFLARE_ANALYTICS_PROXY).href;
            
                         gtagProxyScript.onload = function() {
                             gtag('js', new Date());
