@@ -212,29 +212,35 @@ class CookieConsentManager {
         // First remove all existing scripts and cookies
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
-
+    
         // Then save new consent with only essential cookies
         this.saveConsent({
             essential: true,
             analytics: false,
             marketing: false
         });
-
+    
         // Update Google consent mode explicitly
         this.updateGoogleConsent();
+    
+        // Reload the page to ensure clean state
+        window.location.reload();
     }
 
     async handleSavePreferences() {
         // First remove all existing scripts and cookies
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
-
+    
         // Then save new preferences
         this.saveConsent({
             essential: true,
             analytics: this.domElements.analyticsCookie.checked,
             marketing: this.domElements.marketingCookie.checked
         });
+    
+        // Reload the page to ensure clean state
+        window.location.reload();
     }
 
     async removeAllTrackingScripts() {
