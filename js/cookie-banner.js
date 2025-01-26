@@ -68,6 +68,7 @@ const CONSENT_CONFIG = {
                         adsenseScript.async = true;
                         adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
                         adsenseScript.crossOrigin = 'anonymous';
+                        adsenseScript.setAttribute('data-category', 'marketing');
                         document.head.appendChild(adsenseScript);
                     }
                 }
@@ -245,8 +246,8 @@ class CookieConsentManager {
         await this.unloadCategoryScripts('analytics');
         await this.unloadCategoryScripts('marketing');
         
-        // Remove any remaining Google scripts
-        document.querySelectorAll('script[src*="googletagmanager"], script[src*="google-analytics"], script[src*="pagead2.googlesyndication.com"]')
+        // Remove any remaining Google scripts specific to marketing
+        document.querySelectorAll('script[src*="pagead2.googlesyndication.com"], script[src*="googleads.g.doubleclick.net"]')
             .forEach(script => script.remove());
     }
 
@@ -254,13 +255,18 @@ class CookieConsentManager {
         this.removeAnalyticsCookies();
         this.removeMarketingCookies();
         
-        // Remove any remaining Google cookies
+        // Remove any remaining Google marketing-related cookies
         const allCookies = document.cookie.split(';');
         allCookies.forEach(cookie => {
             const name = cookie.split('=')[0].trim();
-            if (name.startsWith('_ga') || name.startsWith('_gid') || 
-                name.startsWith('_gat') || name.startsWith('_gcl') || 
-                name.startsWith('_fbp')) {
+            const marketingCookiePatterns = [
+                '_fbp', '_gcl_au', '__gads', '__gpi', 'IDE', 
+                'test_cookie', 'DSID', 'TAID', '_gac_', 
+                'personalization_id'
+            ];
+            
+            if (marketingCookiePatterns.some(pattern => 
+                name.startsWith(pattern))) {
                 this.deleteCookie(name);
             }
         });
@@ -386,7 +392,17 @@ class CookieConsentManager {
     }
 
     removeMarketingCookies() {
-        const marketingCookies = ['_fbp', '_gcl_au', '__gads', '__gpi'];
+        const marketingCookies = [
+            '_fbp',     // Facebook pixel
+            '_gcl_au',  // Google Ads conversion tracking
+            '__gads',   // Google Ads tracking
+            '__gpi',    // Google Personalized Advertising
+            '_gac_*',   // Google Ads conversion tracking
+            'IDE',      // DoubleClick cookie
+            'test_cookie', // Google Ads test cookie
+            'DSID',     // DoubleClick sign-in
+            'TAID'      // DoubleClick tracking
+        ];
         this.removeMatchingCookies(marketingCookies);
     }
 
@@ -563,8 +579,16 @@ class CookieConsentManager {
         for (const script of categoryConfig.scripts) {
             try {
                 await script.init(this);  // Pass manager instance
+                
+                // Mark scripts with data-category for easy identification and removal
                 document.querySelectorAll(`script[src*="${script.id}"]`)
-                    .forEach(s => s.setAttribute('data-category', category));
+                    .forEach(s => {
+                        s.setAttribute('data-category', category);
+                        // Ensure cross-origin scripts are marked properly
+                        if (category === 'marketing') {
+                            s.crossOrigin = 'anonymous';
+                        }
+                    });
             } catch (error) {
                 console.error(`Error loading script ${script.id}:`, error);
             }
@@ -592,11 +616,15 @@ class CookieConsentManager {
                 'ad_storage': 'denied',
                 'personalization_storage': 'denied'
             });
-        }
 
-        // Remove any inline scripts
-        document.querySelectorAll(`script[type="text/javascript"][data-category="${category}"]`)
-            .forEach(script => script.remove());
+            // Clear any inline or dynamic marketing scripts
+            document.querySelectorAll('script[type="text/javascript"][data-category="marketing"]')
+                .forEach(script => script.remove());
+
+            // Remove Google Ads related elements
+            document.querySelectorAll('ins.adsbygoogle')
+                .forEach(adElement => adElement.remove());
+        }
     }
 
 }
