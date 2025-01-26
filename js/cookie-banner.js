@@ -241,9 +241,6 @@ class CookieConsentManager {
             analytics: this.domElements.analyticsCookie.checked,
             marketing: this.domElements.marketingCookie.checked
         });
-    
-        // Reload the page to ensure clean state
-        window.location.reload();
     }
 
     async removeAllTrackingScripts() {
