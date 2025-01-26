@@ -25,19 +25,20 @@ const CONSENT_CONFIG = {
                         if (!manager.hasConsent('analytics')) return;
                        
                         try {
-                            // Fetch analytics script dynamically
+                            // Fetch analytics script dynamically with proper headers
                             const response = await fetch('https://your-analytics-proxy.workers.dev', {
                                 method: 'GET',
                                 headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Origin': window.location.origin // Dynamically set origin
                                 }
                             });
-
+                    
                             if (!response.ok) {
                                 console.error('Analytics proxy failed');
                                 return;
                             }
-
+                    
                             const script = await response.text();
                             const scriptElement = document.createElement('script');
                             scriptElement.textContent = script;
