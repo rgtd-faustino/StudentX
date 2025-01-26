@@ -26,7 +26,7 @@ const CONSENT_CONFIG = {
                        
                         try {
                             // Use a more robust fetch configuration
-                            const response = await fetch('https://your-analytics-proxy.workers.dev', {
+                            const response = await fetch('https://analytics-proxyjs.contact-studentx.workers.dev/', {
                                 method: 'GET',
                                 mode: 'cors',
                                 credentials: 'omit',
