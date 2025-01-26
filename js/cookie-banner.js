@@ -21,33 +21,30 @@ const CONSENT_CONFIG = {
             scripts: [
                 {
                     id: 'analytics-proxy',
-                    init: function(manager) {
+                    init: async function(manager) {
                         if (!manager.hasConsent('analytics')) return;
                        
-                        const CLOUDFLARE_ANALYTICS_PROXY = 'https://secretkeys.contact-studentx.workers.dev';
-                        
-                        window.dataLayer = window.dataLayer || [];
-                        window.gtag = function() { dataLayer.push(arguments); }
-                       
-                        // Proxy for Google Tag Manager script
-                        const gtmProxyScript = document.createElement('script');
-                        gtmProxyScript.async = true;
-                        gtmProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtm.js`;
-                        document.head.appendChild(gtmProxyScript);
-           
-                        // Proxy for Google Analytics script
-                        const gtagProxyScript = document.createElement('script');
-                        gtagProxyScript.async = true;
-                        gtagProxyScript.src = `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js`;
-                        document.head.appendChild(gtagProxyScript);
-           
-                        gtagProxyScript.onload = function() {
-                            gtag('js', new Date());
-                            gtag('config', `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js`, {
-                                'transport_url': CLOUDFLARE_ANALYTICS_PROXY,
-                                'first_party_collection': true
+                        try {
+                            // Fetch analytics script dynamically
+                            const response = await fetch('https://your-analytics-proxy.workers.dev', {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
                             });
-                        };
+
+                            if (!response.ok) {
+                                console.error('Analytics proxy failed');
+                                return;
+                            }
+
+                            const script = await response.text();
+                            const scriptElement = document.createElement('script');
+                            scriptElement.textContent = script;
+                            document.head.appendChild(scriptElement);
+                        } catch (error) {
+                            console.error('Analytics load error:', error);
+                        }
                     }
                 }
             ]
