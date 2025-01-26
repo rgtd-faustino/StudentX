@@ -25,8 +25,6 @@ const CONSENT_CONFIG = {
                         if (!manager.hasConsent('analytics')) return;
                        
                         try {
-                            console.log('Attempting to fetch analytics script from:', 'https://analytics-proxyjs.contact-studentx.workers.dev/');
-                            
                             const response = await fetch('https://analytics-proxyjs.contact-studentx.workers.dev/', {
                                 method: 'GET',
                                 mode: 'cors',
@@ -36,9 +34,6 @@ const CONSENT_CONFIG = {
                                     'Origin': window.location.origin
                                 }
                             });
-                    
-                            console.log('Response status:', response.status);
-                            console.log('Response headers:', Object.fromEntries(response.headers.entries()));
                     
                             if (!response.ok) {
                                 const errorText = await response.text();
