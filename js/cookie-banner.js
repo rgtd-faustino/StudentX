@@ -47,8 +47,6 @@ const CONSENT_CONFIG = {
                             }
                     
                             const script = await response.text();
-                            console.log('Received script:', script.slice(0, 200) + '...'); // Log first 200 chars
-                    
                             const scriptElement = document.createElement('script');
                             scriptElement.textContent = script;
                             scriptElement.async = true;
