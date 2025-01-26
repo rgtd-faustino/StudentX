@@ -631,7 +631,6 @@ class CookieConsentManager {
                 .forEach(adElement => adElement.remove());
         }
     }
-
 }
 
 
