@@ -35,6 +35,14 @@ const CONSENT_CONFIG = {
                         const gtagProxyScript = document.createElement('script');
                         gtagProxyScript.async = true;
                         gtagProxyScript.src = new URL('/gtag/js', CLOUDFLARE_ANALYTICS_PROXY).href;
+           
+                        gtagProxyScript.onload = function() {
+                            gtag('js', new Date());
+                            gtag('config', `${CLOUDFLARE_ANALYTICS_PROXY}/gtag/js`, {
+                                'transport_url': CLOUDFLARE_ANALYTICS_PROXY,
+                                'first_party_collection': true
+                            });
+                        };
                     }
                 }
             ]
