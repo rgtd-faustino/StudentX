@@ -25,30 +25,38 @@ const CONSENT_CONFIG = {
                         if (!manager.hasConsent('analytics')) return;
                        
                         try {
-                            // Use a more robust fetch configuration
+                            console.log('Attempting to fetch analytics script from:', 'https://analytics-proxyjs.contact-studentx.workers.dev/');
+                            
                             const response = await fetch('https://analytics-proxyjs.contact-studentx.workers.dev/', {
                                 method: 'GET',
                                 mode: 'cors',
                                 credentials: 'omit',
                                 headers: {
                                     'X-Requested-With': 'XMLHttpRequest',
-                                    'Origin': window.location.origin,
-                                    // Add a token if you have one in your Cloudflare Workers setup
-                                    'X-Proxy-Token': 'your-secure-token' // Optional
+                                    'Origin': window.location.origin
                                 }
                             });
                     
+                            console.log('Response status:', response.status);
+                            console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+                    
                             if (!response.ok) {
+                                const errorText = await response.text();
+                                console.error('Full error response:', errorText);
                                 throw new Error(`HTTP error! status: ${response.status}`);
                             }
                     
                             const script = await response.text();
+                            console.log('Received script:', script.slice(0, 200) + '...'); // Log first 200 chars
+                    
                             const scriptElement = document.createElement('script');
                             scriptElement.textContent = script;
-                            scriptElement.async = true; // Add async attribute
+                            scriptElement.async = true;
                             document.head.appendChild(scriptElement);
                         } catch (error) {
-                            console.error('Analytics load error:', error);
+                            console.error('Complete analytics load error:', error);
+                            console.error('Error name:', error.name);
+                            console.error('Error message:', error.message);
                         }
                     }
                 }
