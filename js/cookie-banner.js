@@ -28,15 +28,16 @@ const CONSENT_CONFIG = {
                             // Fetch analytics script dynamically with proper headers
                             const response = await fetch('https://your-analytics-proxy.workers.dev', {
                                 method: 'GET',
+                                mode: 'cors', // Explicitly set CORS mode
+                                credentials: 'omit', // Prevent sending cookies
                                 headers: {
                                     'X-Requested-With': 'XMLHttpRequest',
-                                    'Origin': window.location.origin // Dynamically set origin
+                                    'Origin': window.location.origin
                                 }
                             });
                     
                             if (!response.ok) {
-                                console.error('Analytics proxy failed');
-                                return;
+                                throw new Error(`HTTP error! status: ${response.status}`);
                             }
                     
                             const script = await response.text();
@@ -69,7 +70,6 @@ const CONSENT_CONFIG = {
                         adsenseScript.async = true;
                         adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
                         adsenseScript.crossOrigin = 'anonymous';
-                        adsenseScript.setAttribute('data-category', 'marketing');
                         document.head.appendChild(adsenseScript);
                     }
                 }
