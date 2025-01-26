@@ -272,46 +272,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
-
-    function loadGoogleAds() {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679";
-        script.crossOrigin = "anonymous";
-        document.head.appendChild(script);
-        
-        const createAdElement = () => {
-            const ins = document.createElement('ins');
-            ins.className = "adsbygoogle";
-            ins.style.display = "block";
-            ins.setAttribute("data-ad-client", "ca-pub-2455279266517679");
-            ins.setAttribute("data-ad-slot", "6087545599");
-            ins.setAttribute("data-ad-format", "auto");
-            ins.setAttribute("data-full-width-responsive", "true");
-            return ins;
-        };
-    
-        // Create ad containers if they don't exist
-        const leftContainer = document.getElementById('left-ad-container');
-        const rightContainer = document.getElementById('right-ad-container');
-        
-        leftContainer.innerHTML = ''; // Clear existing ads
-        rightContainer.innerHTML = ''; // Clear existing ads
-        
-        leftContainer.appendChild(createAdElement());
-        rightContainer.appendChild(createAdElement());
-        
-        script.onload = function() {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        };
-    }
     
     function openModal() {
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
-        const leftAd = document.getElementById('left-ad-container');
-        const rightAd = document.getElementById('right-ad-container');
         
         modal.style.display = 'block';
         video.play();
@@ -326,8 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function closeModal() {
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
-        const leftAd = document.getElementById('left-ad-container');
-        const rightAd = document.getElementById('right-ad-container');
         
         modal.style.display = 'none';
         video.pause();
