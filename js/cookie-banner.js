@@ -25,14 +25,16 @@ const CONSENT_CONFIG = {
                         if (!manager.hasConsent('analytics')) return;
                        
                         try {
-                            // Fetch analytics script dynamically with proper headers
+                            // Use a more robust fetch configuration
                             const response = await fetch('https://your-analytics-proxy.workers.dev', {
                                 method: 'GET',
-                                mode: 'cors', // Explicitly set CORS mode
-                                credentials: 'omit', // Prevent sending cookies
+                                mode: 'cors',
+                                credentials: 'omit',
                                 headers: {
                                     'X-Requested-With': 'XMLHttpRequest',
-                                    'Origin': window.location.origin
+                                    'Origin': window.location.origin,
+                                    // Add a token if you have one in your Cloudflare Workers setup
+                                    'X-Proxy-Token': 'your-secure-token' // Optional
                                 }
                             });
                     
@@ -43,6 +45,7 @@ const CONSENT_CONFIG = {
                             const script = await response.text();
                             const scriptElement = document.createElement('script');
                             scriptElement.textContent = script;
+                            scriptElement.async = true; // Add async attribute
                             document.head.appendChild(scriptElement);
                         } catch (error) {
                             console.error('Analytics load error:', error);
