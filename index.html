@@ -666,11 +666,24 @@
             height: 100%;
             object-fit: cover;
         }
+    
+        /* Disable scrolling when overlay is active */
+        .no-scroll {
+            overflow: hidden;
+            height: 100%;
+        }
     </style>
     
     <script>
-        document.getElementById('coming-soon-video').addEventListener('ended', function () {
-            document.getElementById('coming-soon-overlay').style.display = 'none';
+        const overlay = document.getElementById('coming-soon-overlay');
+        const video = document.getElementById('coming-soon-video');
+    
+        // Disable scrolling when the overlay is displayed
+        document.body.classList.add('no-scroll');
+    
+        video.addEventListener('ended', function () {
+            overlay.style.display = 'none';
+            document.body.classList.remove('no-scroll'); // Re-enable scrolling
         });
     </script>
 
