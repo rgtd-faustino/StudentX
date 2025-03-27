@@ -263,32 +263,37 @@
     </div>
 </div>
 
-        <div id="coming-soon-overlay" class="coming-soon-overlay">
-            <video autoplay muted playsinline>
-                <source src="/videos/comingSoon.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        
+<div id="coming-soon-overlay" class="coming-soon-overlay">
+    <video autoplay muted playsinline id="coming-soon-video">
+        <source src="/videos/comingSoon.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
 
-        <style>
-        .coming-soon-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-        }
-    
-        .coming-soon-overlay video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        </style>
+<style>
+    .coming-soon-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+    }
+
+    .coming-soon-overlay video {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+<script>
+    document.getElementById('coming-soon-video').addEventListener('ended', function () {
+        document.getElementById('coming-soon-overlay').style.display = 'none';
+    });
+</script>
 
 
 <script defer src="/js/script.js"></script>

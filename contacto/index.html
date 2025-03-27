@@ -220,14 +220,14 @@
         </div>
     </div>
 
-        <div id="coming-soon-overlay" class="coming-soon-overlay">
-            <video autoplay muted playsinline>
-                <source src="/videos/comingSoon.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        
-        <style>
+    <div id="coming-soon-overlay" class="coming-soon-overlay">
+        <video autoplay muted playsinline id="coming-soon-video">
+            <source src="/videos/comingSoon.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <style>
         .coming-soon-overlay {
             position: fixed;
             top: 0;
@@ -244,7 +244,13 @@
             height: 100%;
             object-fit: cover;
         }
-        </style>
+    </style>
+    
+    <script>
+        document.getElementById('coming-soon-video').addEventListener('ended', function () {
+            document.getElementById('coming-soon-overlay').style.display = 'none';
+        });
+    </script>
 
 
     <script defer src="/js/script.js"></script>
