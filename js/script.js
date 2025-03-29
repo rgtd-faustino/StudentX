@@ -207,23 +207,23 @@ document.addEventListener("DOMContentLoaded", function() {
             // Use event delegation to handle all events on the carousel container
             // This handles touch events on the carousel
             carousel.addEventListener('touchstart', function(e) {
-                if (e.target.closest('.item-container-mobile')) {
-                    isDragging = true;
-                    startX = e.touches[0].clientX;
-                    // Find the index of the touched item
-                    const touchedItem = e.target.closest('.item-container-mobile');
-                    items.forEach((item, idx) => {
-                        if (item === touchedItem) currentIndex = idx;
-                    });
-                    
-                    // Add active class
-                    items[currentIndex].classList.add('active');
-                    
-                    // Prevent default only for non-button elements
-                    if (!e.target.closest('a.button-carousel-mobile')) {
-                        e.preventDefault();
-                    }
-                }
+                console.log("Touch started"); // Add debugging
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                
+                // Find closest item container
+                const touchedItem = e.target.closest('.item-container-mobile') || items[currentIndex];
+                
+                // Set current index based on found item
+                items.forEach((item, idx) => {
+                    if (item === touchedItem) currentIndex = idx;
+                });
+                
+                // Add active class
+                items[currentIndex].classList.add('active');
+                
+                // Prevent default behavior
+                e.preventDefault();
             }, { passive: false });
             
             carousel.addEventListener('touchmove', function(e) {
@@ -437,4 +437,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('textContainerOpportunities')) {
         startMessageRotation('textContainerOpportunities', opportunitiesMessages, 'animated-text-opportunities');
     }
+
+    setTimeout(initSwipeFunctionality, 500);
 });

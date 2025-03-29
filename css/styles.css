@@ -2303,7 +2303,16 @@ input[type="checkbox"] {
 
 
 /* Important CSS fixes for the carousel */
+.carousel-mobile, .item-container-mobile {
+    touch-action: none !important; 
+    -webkit-user-select: none !important;
+    user-select: none !important;
+}
 
+.item-container-mobile {
+    will-change: transform; /* Performance hint for browsers */
+    transform: translateZ(0); /* Force GPU acceleration */
+}
 .carousel-container-mobile {
     width: 71%;
     z-index: 3;
