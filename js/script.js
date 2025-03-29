@@ -548,12 +548,13 @@ function setupMobileCarousel() {
         // If swipe is significant enough or fast enough
         if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
             // Decide direction based on swipe
-            // Add vibration for rejection if supported
-            if (navigator.vibrate) {
-                navigator.vibrate(100);
-            }
 
             if (diff < 0) {
+                // Add vibration for rejection if supported
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+
                 // Swipe left
                 currentItem.style.transform = `translateX(-150%) rotate(-10deg)`;
                             
@@ -563,6 +564,11 @@ function setupMobileCarousel() {
                     resetCardStyles(currentItem);
                 }, 300);
             } else {
+                // Add vibration for rejection if supported
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+            
                 // Swipe right
                 currentItem.style.transform = `translateX(150%) rotate(10deg)`;
                 
