@@ -38,16 +38,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-
     const itemGroup = document.querySelector('.item-group-mobile');
     const dotsPC = document.querySelectorAll('.dot-pc');
 
     let currentIndexPC = 0;      // Current index for the PC carousel
-
     const itemsPerViewPC = 4;    // Number of items per view for PC
-    const totalItems = 12;        // Total number of items
+    const totalItems = 12;       // Total number of items
     
     if (window.innerWidth >= 600) {
+        // Desktop carousel functionality
         function updateTransformPC() {
             // Calculate the percentage translation based on currentIndex
             const translatePercentage = -(currentIndexPC / totalItems) * 100 * (totalItems / itemsPerViewPC);
@@ -89,36 +88,65 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             updateTransformPC();
         });
+    } else {
+        // Mobile swipe functionality
+        // Hide arrows and dots for mobile
+        document.querySelector('.arrows-and-dots').style.display = 'none';
+        
+        // Initialize variables for swipe
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        
+        // Select all carousel items
+        const carouselItems = document.querySelectorAll('.item-container-mobile');
+        
+        carouselItems.forEach(item => {
+            // Touch events for mobile swipe
+            item.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                item.style.transition = 'none';
+            });
 
-    } else if (window.innerWidth <= 600) {
-        events.forEach(event => {
-            
-            event.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            startX = e.touches[0].clientX;
-            event.style.transition = 'none';
-        });
+            item.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX - startX;
+                item.style.transform = `translateX(${currentX}px) rotate(${currentX / 20}deg)`;
+            });
 
-        event.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX - startX;
-            event.style.transform = `translateX(${currentX}px) rotate(${currentX / 20}deg)`;
-        });
-
-        event.addEventListener('touchend', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            if (Math.abs(currentX) > 100) {
-                event.style.transition = 'transform 0.3s ease-out';
-                event.style.transform = `translateX(${currentX > 0 ? 500 : -500}px) rotate(${currentX > 0 ? 30 : -30}deg)`;
-                setTimeout(() => event.remove(), 300);
-            } else {
-                event.style.transition = 'transform 0.3s ease-out';
-                event.style.transform = 'translateX(0) rotate(0)';
-            }
-        });
+            item.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                if (Math.abs(currentX) > 100) {
+                    // Swipe threshold reached - remove card
+                    item.style.transition = 'transform 0.3s ease-out';
+                    item.style.transform = `translateX(${currentX > 0 ? 500 : -500}px) rotate(${currentX > 0 ? 30 : -30}deg)`;
+                    
+                    // Remove the item after animation completes
+                    setTimeout(() => {
+                        item.remove();
+                        
+                        // If all items are removed, you might want to reload or reset
+                        if (document.querySelectorAll('.item-container-mobile').length === 0) {
+                            // Optional: Reload items or show a message
+                            // location.reload(); // Uncomment to reload the page
+                        }
+                    }, 300);
+                } else {
+                    // Return to center if swipe not strong enough
+                    item.style.transition = 'transform 0.3s ease-out';
+                    item.style.transform = 'translateX(0) rotate(0)';
+                }
+            });
         });
     }
+
+    // Window resize handling
+    window.addEventListener('resize', function() {
+        location.reload(); // Reload the page on resize to apply the correct layout
+    });
 
 });    
 
