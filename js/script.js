@@ -41,13 +41,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const itemGroup = document.querySelector('.item-group-mobile');
     const dotsPC = document.querySelectorAll('.dot-pc');
-    const dotsMobile = document.querySelectorAll('.dot-mobile');
 
-    let currentIndexMobile = 0;  // Current index for the mobile carousel
     let currentIndexPC = 0;      // Current index for the PC carousel
 
     const itemsPerViewPC = 4;    // Number of items per view for PC
-    const itemsPerViewMobile = 1; // Mobile only shows 1 item per view
     const totalItems = 12;        // Total number of items
     
     if (window.innerWidth >= 600) {
@@ -101,55 +98,126 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     if (window.innerWidth <= 600) {
-        let isAnimating = false;
-    
-        function updateTransformMobile() {
-            // Calculate the percentage translation based on currentIndex
-            const translatePercentage = -(currentIndexMobile / totalItems) * 100 * (totalItems / itemsPerViewMobile);
+        document.addEventListener("DOMContentLoaded", function() {
+            // Target the carousel container and item group
+            const carouselContainer = document.querySelector('.carousel-container-mobile');
+            const itemGroup = document.querySelector('.item-group-mobile');
+            const dotsPC = document.querySelectorAll('.dot-pc');
             
-            // Apply the transform inline to the itemGroup element, ensuring no scaling is applied
-            itemGroup.style.transform = `translateX(${translatePercentage}%)`;
-            itemGroup.style.transition = 'transform 0.5s ease-in-out';
+            // Variables for swipe detection
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+            let currentIndex = 0;
+            const totalItems = 12; // Update this based on your actual total items
+            const itemsPerViewPC = 4; // As in your original code
             
-            updateDotsMobile();
-        }
-        
-        function updateDotsMobile() {
-            dotsMobile.forEach((dot, index) => {
-                if (index === Math.floor(currentIndexMobile / itemsPerViewMobile)) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-    
-        function moveCarousel(direction) {
-            if (isAnimating) return;
-            isAnimating = true;
-    
-            if (direction === 'next') {
-                currentIndexMobile = (currentIndexMobile + 1) % totalItems;
-            } else {
-                currentIndexMobile = (currentIndexMobile - 1 + totalItems) % totalItems;
+            // Add touch event listeners for mobile swipe
+            itemGroup.addEventListener('touchstart', handleTouchStart, { passive: false });
+            itemGroup.addEventListener('touchmove', handleTouchMove, { passive: false });
+            itemGroup.addEventListener('touchend', handleTouchEnd);
+            
+            // Touch start event handler
+            function handleTouchStart(e) {
+              startX = e.touches[0].clientX;
+              isDragging = true;
             }
-    
-            updateTransformMobile();
-    
-            setTimeout(() => {
-                isAnimating = false;
-            }, 350); // Match this with the transition duration
-        }
-    
-        // Initial call to set the correct active dot
-        updateTransformMobile();
-        
-        document.getElementById('next-mobile').addEventListener('click', () => moveCarousel('next'));
-        document.getElementById('prev-mobile').addEventListener('click', () => moveCarousel('prev'));
-    
-        itemGroup.addEventListener('transitionend', () => {
-            isAnimating = false;
-        });
+            
+            // Touch move event handler
+            function handleTouchMove(e) {
+              if (!isDragging) return;
+              
+              // Prevent default to avoid page scrolling while swiping horizontally
+              // Only prevent default if the swipe is more horizontal than vertical
+              const touchY = e.touches[0].clientY;
+              const touchX = e.touches[0].clientX;
+              const xDiff = Math.abs(touchX - startX);
+              
+              if (xDiff > 10) {
+                e.preventDefault();
+              }
+              
+              currentX = touchX;
+            }
+            
+            // Touch end event handler
+            function handleTouchEnd(e) {
+              if (!isDragging) return;
+              
+              isDragging = false;
+              const diffX = currentX - startX;
+              
+              // Determine swipe direction if the swipe was significant enough
+              if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                  // Swipe right - show previous item
+                  if (currentIndex > 0) {
+                    currentIndex -= itemsPerViewPC;
+                    updateCarousel();
+                  }
+                } else {
+                  // Swipe left - show next item
+                  if (currentIndex < totalItems - itemsPerViewPC) {
+                    currentIndex += itemsPerViewPC;
+                    updateCarousel();
+                  }
+                }
+              }
+            }
+            
+            // Update carousel position and dots
+            function updateCarousel() {
+              // Calculate the percentage translation based on currentIndex (same as in your original code)
+              const translatePercentage = -(currentIndex / totalItems) * 100 * (totalItems / itemsPerViewPC);
+              
+              // Apply the transform with a smooth transition
+              itemGroup.style.transition = 'transform 0.3s ease-in-out';
+              itemGroup.style.transform = `translateX(${translatePercentage}%)`;
+              
+              // Update dots
+              updateDotsPC();
+              
+              // Reset transition after animation completes
+              setTimeout(() => {
+                itemGroup.style.transition = '';
+              }, 300);
+            }
+            
+            // Update dots (using your existing function)
+            function updateDotsPC() {
+              dotsPC.forEach((dot, index) => {
+                if (index === Math.floor(currentIndex / itemsPerViewPC)) {
+                  dot.classList.add('active');
+                } else {
+                  dot.classList.remove('active');
+                }
+              });
+            }
+            
+            // Keep compatibility with existing next/prev buttons
+            document.getElementById('next-mobile').addEventListener('click', () => {
+              if (currentIndex >= totalItems - itemsPerViewPC) {
+                // Reset to the beginning
+                currentIndex = 0;
+              } else {
+                currentIndex += itemsPerViewPC;
+              }
+              updateCarousel();
+            });
+            
+            document.getElementById('prev-mobile').addEventListener('click', () => {
+              if (currentIndex <= 0) {
+                // Move to the end
+                currentIndex = totalItems - itemsPerViewPC;
+              } else {
+                currentIndex -= itemsPerViewPC;
+              }
+              updateCarousel();
+            });
+            
+            // Initial setup
+            updateDotsPC();
+          });
     }
 
 });    

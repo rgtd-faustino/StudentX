@@ -170,20 +170,13 @@
     
             const style = getEventStyle(event);
             Object.assign(eventDiv.style, style);
+
+            eventDiv.style.left = `${columnIndex * 13}vw`;
             
-            const WIDTH_THRESHOLD = 600;
-            eventDiv.style.left = window.innerWidth <= WIDTH_THRESHOLD 
-                ? `${columnIndex * 250}px` 
-                : `${columnIndex * 13}vw`;
-    
             const condensedView = document.createElement('div');
             condensedView.classList.add('event-condensed');
     
-            if (window.innerWidth <= WIDTH_THRESHOLD) {
-                mobileView(event, eventDiv, condensedView, style);
-            } else {
-                desktopView(event, eventDiv, condensedView, style);
-            }
+            desktopView(event, eventDiv, condensedView, style);
     
             eventDiv.appendChild(condensedView);
             eventsContainer.appendChild(eventDiv);
@@ -240,43 +233,7 @@
             condensedView.appendChild(eventImage);
         }
     }
-    
-    function mobileView(event, eventDiv, condensedView, style) {
-        const eventHeight = parseInt(style.height);
-        
-        if (eventHeight >= 30) {
-            condensedView.style.overflowY = 'hidden';
-            condensedView.style.display = 'flex';
-            condensedView.style.flexDirection = 'column';
-            condensedView.style.height = '100%';
-            
-            // Create the base content container
-            const baseContentDiv = document.createElement('div');
-            baseContentDiv.innerHTML = `
-                <p class="description-title-calendar">${event.descriptionTitle}</p>
-                <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
-                <div class="carousel-line-calendar"></div>
-            `;
-            condensedView.appendChild(baseContentDiv);
-    
-            if (eventHeight >= 60 && event.moreInfoText) {
-                addTextContainer(event, condensedView, baseContentDiv);
-            } else {
-                addFooterContent(event, condensedView);
-            }
-        } else {
-            eventDiv.appendChild(createExpandButton(event));
-            const baseContentDiv = document.createElement('div');
-            baseContentDiv.innerHTML = `
-            <p class="description-title-calendar">${event.descriptionTitle}</p>
-            <div class="event-info-container">
-                <span class="opp-place-title-calendar">${event.oppPlaceTitle}</span>
-                <span class="opp-place-subtitle-calendar">${event.startTime} - ${event.endTime}</span>
-            </div>`;
-            condensedView.appendChild(baseContentDiv);
 
-        }    
-    }
     
     function addTextContainer(event, condensedView, baseContentDiv) {
         const textContainer = document.createElement('div');
