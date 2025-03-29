@@ -1945,6 +1945,7 @@ input[type="checkbox"] {
 
     
     #subtitle {
+        display:none;
         line-height: 1.1; /* Adjust line height for better spacing */
         text-align: center; /* Center text on small screens */
         font-size: 4vw; /* Reduce font size */
@@ -1987,6 +1988,9 @@ input[type="checkbox"] {
     .title-container {
         padding: 10px; /* Add padding to container for better spacing */
         margin-top:0;
+        margin-top:-4vw;
+        margin-bottom: -2vw;
+
     }
 
     .highlightP3 {
@@ -2593,7 +2597,7 @@ input[type="checkbox"] {
         justify-content: center;
         align-items: center;
         margin-bottom:5vw;
-        margin-top:5vw;
+        margin-top:0vw;
     }
     
     #studentx-ajuda-title{
