@@ -486,48 +486,45 @@ function setupMobileCarousel() {
         currentItem.style.transition = 'none';
     }
    
-    let animationFrameId = null; // To prevent multiple `requestAnimationFrame` calls
-
     function handleTouchMove(e) {
         if (!startX) return;
-    
+        
         moveX = e.touches[0].clientX;
         const diff = moveX - startX;
-    
-        // Use `requestAnimationFrame` to throttle updates
-        if (!animationFrameId) {
-            animationFrameId = requestAnimationFrame(() => {
-                const currentItem = carouselItems[currentIndex];
-    
-                // Calculate the indicator opacity and scale
-                let opacity = Math.min(Math.abs(diff) / 150, 1);
-    
-                // Show and animate the appropriate indicator based on swipe direction
-                const leftIndicator = currentItem.querySelector('.left-indicator');
-                const rightIndicator = currentItem.querySelector('.right-indicator');
-    
-                if (diff < 0) {
-                    // Swiping left (reject)
-                    leftIndicator.style.opacity = opacity;
-                    leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
-                    rightIndicator.style.opacity = 0;
-    
-                    // Use only GPU-accelerated properties
-                    currentItem.style.transform = `translateX(${diff}px) rotate(${diff / 20}deg)`;
-                } else if (diff > 0) {
-                    // Swiping right (accept)
-                    rightIndicator.style.opacity = opacity;
-                    rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
-                    leftIndicator.style.opacity = 0;
-    
-                    // Use only GPU-accelerated properties
-                    currentItem.style.transform = `translateX(${diff}px) rotate(${diff / 20}deg)`;
-                }
-    
-                // Reset the animation frame ID
-                animationFrameId = null;
-            });
+        
+        // Move the current item with the finger
+        const currentItem = carouselItems[currentIndex];
+        
+        // Calculate the indicator opacity and scale
+        let opacity = Math.min(Math.abs(diff) / 150, 1);
+        
+        // Show and animate the appropriate indicator based on swipe direction
+        const leftIndicator = currentItem.querySelector('.left-indicator');
+        const rightIndicator = currentItem.querySelector('.right-indicator');
+        
+        if (diff < 0) {
+            // Swiping left (reject)
+            leftIndicator.style.opacity = opacity;
+            leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
+            rightIndicator.style.opacity = 0;
+            
+            // Add a red tint to the card when swiping left
+            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
+            currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.9})`;
+        } else if (diff > 0) {
+            // Swiping right (accept)
+            rightIndicator.style.opacity = opacity;
+            rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
+            leftIndicator.style.opacity = 0;
+            
+            // Add a green tint to the card when swiping right
+            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
+            currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.9})`;
         }
+        
+        // Add rotation for a more natural feel
+        const rotation = diff / 20; // Adjust divisor for more/less rotation
+        currentItem.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
     }
     
     function handleTouchEnd(e) {
