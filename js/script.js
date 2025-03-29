@@ -90,8 +90,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     } else {
         // Mobile swipe functionality
-        // Hide arrows and dots for mobile
-        document.querySelector('.arrows-and-dots').style.display = 'none';
         
         // Initialize variables for swipe
         let isDragging = false;
@@ -99,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let currentX = 0;
         
         // Select all carousel items
-        const carouselItems = document.querySelectorAll('.item-container-mobile');
+        const carouselItems = document.querySelectorAll('item-group-mobile');
         
         carouselItems.forEach(item => {
             // Touch events for mobile swipe
@@ -129,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         item.remove();
                         
                         // If all items are removed, you might want to reload or reset
-                        if (document.querySelectorAll('.item-container-mobile').length === 0) {
+                        if (document.querySelectorAll('.item-group-mobile').length === 0) {
                             // Optional: Reload items or show a message
                             // location.reload(); // Uncomment to reload the page
                         }
