@@ -40,10 +40,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const itemGroup = document.querySelector('.item-group-mobile');
     const dotsPC = document.querySelectorAll('.dot-pc');
-
-    let currentIndexPC = 0;      // Current index for the PC carousel
-    const itemsPerViewPC = 4;    // Number of items per view for PC
-    const totalItems = 12;       // Total number of items
+    const arrowsAndDots = document.querySelector('.arrows-and-dots');
+    
+    // Determine if we're on mobile
+    const isMobile = window.innerWidth < 600;
+    const totalItems = 12; // Total number of items
     
     if (window.innerWidth >= 600) {
         // Desktop carousel functionality
@@ -158,90 +159,276 @@ document.addEventListener("DOMContentLoaded", function() {
 // DO NOT MESS WITH THIS
 document.addEventListener('DOMContentLoaded', function () {
     // Function to create carousel items dynamically
-    function createCarouselItems(data) {
-      const container = document.getElementById('item-group-1-mobile');
-  
-      data.items.forEach(item => {
-        const itemContainer = document.createElement('div');
-        itemContainer.className = 'item-container-mobile';
-  
-        // Item Image
-        const img = document.createElement('img');
-        img.src = item.imageSrc;
-        img.alt = item.altText;
-        itemContainer.appendChild(img);
-  
-        // Description
-        const description = document.createElement('div');
-        description.className = 'description-mobile';
-  
-        const descriptionTitle = document.createElement('p');
-        descriptionTitle.className = 'description-title-mobile';
-        descriptionTitle.textContent = item.descriptionTitle;
-  
-        const descriptionSubtitle = document.createElement('p');
-        descriptionSubtitle.className = 'description-subtitle-mobile';
-        descriptionSubtitle.textContent = item.descriptionSubtitle;
-  
-        description.appendChild(descriptionTitle);
-        description.appendChild(descriptionSubtitle);
-        itemContainer.appendChild(description);
-  
-        // Carousel Line
-        const carouselLine = document.createElement('div');
-        carouselLine.className = 'carousel-line';
-        itemContainer.appendChild(carouselLine);
-  
-        // Opportunity Place
-        const oppPlace = document.createElement('div');
-        oppPlace.className = 'opp-place-mobile';
-  
-        const oppPlaceContainer = document.createElement('div');
-        oppPlaceContainer.className = 'opp-place-container';
-  
-        const logoImg = document.createElement('img');
-        logoImg.src = item.logoSrc;
-        logoImg.alt = item.logoAlt;
-  
-        const oppPlaceTexts = document.createElement('div');
-        oppPlaceTexts.className = 'opp-place-texts';
-  
-        const oppPlaceTitle = document.createElement('p');
-        oppPlaceTitle.className = 'opp-place-title-mobile';
-        oppPlaceTitle.textContent = item.oppPlaceTitle;
-  
-        const oppPlaceSubtitle = document.createElement('p');
-        oppPlaceSubtitle.className = 'opp-place-subtitle-mobile';
-        oppPlaceSubtitle.textContent = item.oppPlaceSubtitle;
-  
-        oppPlaceTexts.appendChild(oppPlaceTitle);
-        oppPlaceTexts.appendChild(oppPlaceSubtitle);
-        oppPlaceContainer.appendChild(logoImg);
-        oppPlaceContainer.appendChild(oppPlaceTexts);
-        oppPlace.appendChild(oppPlaceContainer);
-        itemContainer.appendChild(oppPlace);
-  
-        // More Info Button
-        const moreInfoBtn = document.createElement('a');
-        moreInfoBtn.href = item.moreInfoLink;
-        moreInfoBtn.className = 'button-carousel-mobile';
-        moreInfoBtn.textContent = 'Mais Informações';
-  
-        itemContainer.appendChild(moreInfoBtn);
-  
-        // Append item container to the carousel container
-        container.appendChild(itemContainer);
-      });
+ function createCarouselItems(data) {
+        const container = document.getElementById('item-group-1-mobile');
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        data.items.forEach(item => {
+            const itemContainer = document.createElement('div');
+            itemContainer.className = 'item-container-mobile';
+            
+            // Item Image
+            const img = document.createElement('img');
+            img.src = item.imageSrc;
+            img.alt = item.altText;
+            itemContainer.appendChild(img);
+            
+            // Description
+            const description = document.createElement('div');
+            description.className = 'description-mobile';
+            
+            const descriptionTitle = document.createElement('p');
+            descriptionTitle.className = 'description-title-mobile';
+            descriptionTitle.textContent = item.descriptionTitle;
+            
+            const descriptionSubtitle = document.createElement('p');
+            descriptionSubtitle.className = 'description-subtitle-mobile';
+            descriptionSubtitle.textContent = item.descriptionSubtitle;
+            
+            description.appendChild(descriptionTitle);
+            description.appendChild(descriptionSubtitle);
+            itemContainer.appendChild(description);
+            
+            // Carousel Line
+            const carouselLine = document.createElement('div');
+            carouselLine.className = 'carousel-line';
+            itemContainer.appendChild(carouselLine);
+            
+            // Opportunity Place
+            const oppPlace = document.createElement('div');
+            oppPlace.className = 'opp-place-mobile';
+            
+            const oppPlaceContainer = document.createElement('div');
+            oppPlaceContainer.className = 'opp-place-container';
+            
+            const logoImg = document.createElement('img');
+            logoImg.src = item.logoSrc;
+            logoImg.alt = item.logoAlt;
+            
+            const oppPlaceTexts = document.createElement('div');
+            oppPlaceTexts.className = 'opp-place-texts';
+            
+            const oppPlaceTitle = document.createElement('p');
+            oppPlaceTitle.className = 'opp-place-title-mobile';
+            oppPlaceTitle.textContent = item.oppPlaceTitle;
+            
+            const oppPlaceSubtitle = document.createElement('p');
+            oppPlaceSubtitle.className = 'opp-place-subtitle-mobile';
+            oppPlaceSubtitle.textContent = item.oppPlaceSubtitle;
+            
+            oppPlaceTexts.appendChild(oppPlaceTitle);
+            oppPlaceTexts.appendChild(oppPlaceSubtitle);
+            oppPlaceContainer.appendChild(logoImg);
+            oppPlaceContainer.appendChild(oppPlaceTexts);
+            oppPlace.appendChild(oppPlaceContainer);
+            itemContainer.appendChild(oppPlace);
+            
+            // More Info Button
+            const moreInfoBtn = document.createElement('a');
+            moreInfoBtn.href = item.moreInfoLink;
+            moreInfoBtn.className = 'button-carousel-mobile';
+            moreInfoBtn.textContent = 'Mais Informações';
+            
+            itemContainer.appendChild(moreInfoBtn);
+            
+            // Append item container to the carousel container
+            container.appendChild(itemContainer);
+        });
     }
   
     // Fetch the JSON file and populate the carousel
     fetch('/json/events.json')
-      .then(response => response.json())
-      .then(data => createCarouselItems(data))
-      .catch(error => console.error('Error loading carousel data:', error));
-    });
+        .then(response => response.json())
+        .then(data => {
+            // Create carousel items
+            createCarouselItems(data);
+            
+            // Initialize appropriate carousel based on device
+            if (isMobile) {
+                initializeMobileCarousel();
+            } else {
+                initializeDesktopCarousel();
+            }
+        })
+        .catch(error => console.error('Error loading carousel data:', error));
+    
   
+        function initializeDesktopCarousel() {
+            // Show arrows and dots for desktop
+            arrowsAndDots.style.display = 'flex';
+            
+            let currentIndexPC = 0;      // Current index for the PC carousel
+            const itemsPerViewPC = 4;    // Number of items per view for PC
+            
+            function updateTransformPC() {
+                // Calculate the percentage translation based on currentIndex
+                const translatePercentage = -(currentIndexPC / totalItems) * 100 * (totalItems / itemsPerViewPC);
+                
+                // Apply the transform inline to the itemGroup element
+                itemGroup.style.transform = `translateX(${translatePercentage}%)`;
+                
+                updateDotsPC();
+            }
+            
+            function updateDotsPC() {
+                dotsPC.forEach((dot, index) => {
+                    if (index === Math.floor(currentIndexPC / itemsPerViewPC)) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Initial call to set the correct active dot
+            updateTransformPC();
+            
+            document.getElementById('next-mobile').addEventListener('click', () => {
+                if (currentIndexPC >= totalItems - itemsPerViewPC) {
+                    // Reset to the beginning
+                    currentIndexPC = 0;
+                } else {
+                    currentIndexPC += itemsPerViewPC;
+                }
+                updateTransformPC();
+            });
+            
+            document.getElementById('prev-mobile').addEventListener('click', () => {
+                if (currentIndexPC <= 0) {
+                    // Move to the end
+                    currentIndexPC = totalItems - itemsPerViewPC;
+                } else {
+                    currentIndexPC -= itemsPerViewPC;
+                }
+                updateTransformPC();
+            });
+        }
 
+        
+    function initializeMobileCarousel() {
+        // Hide arrows and dots for mobile
+        arrowsAndDots.style.display = 'none';
+        
+        // Get all items
+        const carouselItems = document.querySelectorAll('.item-container-mobile');
+        
+        // Hide all items except the first one
+        carouselItems.forEach((item, index) => {
+            if (index > 0) {
+                item.style.display = 'none';
+            }
+        });
+        
+        let currentIndex = 0;
+        
+        // Setup swipe handling for the carousel container
+        const carouselContainer = document.querySelector('.carousel-container-mobile');
+        
+        // Touch event variables
+        let startX, moveX, startTime;
+        const minSwipeDistance = 50; // Minimum distance for a swipe to be registered
+        
+        // Add touch event listeners
+        carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+        carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+        carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+        
+        function handleTouchStart(e) {
+            startX = e.touches[0].clientX;
+            startTime = new Date().getTime();
+            
+            // Get the current visible item and prepare it for animation
+            const currentItem = carouselItems[currentIndex];
+            currentItem.style.transition = 'none';
+        }
+        
+        function handleTouchMove(e) {
+            if (!startX) return;
+            
+            moveX = e.touches[0].clientX;
+            const diff = moveX - startX;
+            
+            // Move the current item with the finger
+            const currentItem = carouselItems[currentIndex];
+            currentItem.style.transform = `translateX(${diff}px)`;
+        }
+        
+        function handleTouchEnd(e) {
+            if (!startX || !moveX) return;
+            
+            const currentItem = carouselItems[currentIndex];
+            const diff = moveX - startX;
+            const swipeTime = new Date().getTime() - startTime;
+            
+            // Reset styles first
+            currentItem.style.transition = 'transform 0.3s ease-out';
+            
+            // If swipe is significant enough or fast enough
+            if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
+                // Decide direction based on swipe
+                if (diff < 0) {
+                    // Swipe left - show next item
+                    showNextItem();
+                } else {
+                    // Swipe right - show previous item
+                    showPreviousItem();
+                }
+            } else {
+                // Not a strong enough swipe, return to center
+                currentItem.style.transform = 'translateX(0)';
+            }
+            
+            // Reset variables
+            startX = null;
+            moveX = null;
+        }
+        
+        function showNextItem() {
+            // Hide current item with animation
+            const currentItem = carouselItems[currentIndex];
+            currentItem.style.transform = 'translateX(-100%)';
+            
+            setTimeout(() => {
+                currentItem.style.display = 'none';
+                currentItem.style.transform = 'translateX(0)';
+                
+                // Update index
+                currentIndex = (currentIndex + 1) % carouselItems.length;
+                
+                // Show next item
+                const nextItem = carouselItems[currentIndex];
+                nextItem.style.display = 'block';
+                nextItem.style.transform = 'translateX(0)';
+            }, 300);
+        }
+        
+        function showPreviousItem() {
+            // Hide current item with animation
+            const currentItem = carouselItems[currentIndex];
+            currentItem.style.transform = 'translateX(100%)';
+            
+            setTimeout(() => {
+                currentItem.style.display = 'none';
+                currentItem.style.transform = 'translateX(0)';
+                
+                // Update index
+                currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+                
+                // Show previous item
+                const prevItem = carouselItems[currentIndex];
+                prevItem.style.display = 'block';
+                prevItem.style.transform = 'translateX(0)';
+            }, 300);
+        }
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        location.reload(); // Reload the page on resize to apply the correct layout
+    });
+});
 
     document.addEventListener("DOMContentLoaded", function() {
         var questions = document.querySelectorAll(".faq-question");
