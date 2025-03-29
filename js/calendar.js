@@ -485,10 +485,14 @@
     }
 
     function updateOpportunityTitle() {
-        const opportunityTitle = document.querySelector('.opportunityTitle');
+        const opportunityTitles = document.querySelectorAll('.opportunityTitle'); // Select all elements with the class
         const eventCount = countTodayEvents();
         const pluralSuffix = eventCount === 1 ? '' : 's';
-        opportunityTitle.innerHTML = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
+        const content = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
+    
+        opportunityTitles.forEach(title => {
+            title.innerHTML = content; // Update each element
+        });
     }
 
 
