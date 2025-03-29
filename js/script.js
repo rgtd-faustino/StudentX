@@ -444,6 +444,8 @@ function setupMobileCarousel() {
     let rightIndicator = null;
     let animationRequest = null;
     let currentDiff = 0;
+    let isHorizontalSwipe = false;
+    let initialTouchY = 0;
     
     // Hide all items except the first one
     carouselItems.forEach((item, index) => {
@@ -478,10 +480,12 @@ function setupMobileCarousel() {
     // Touch event variables
     let startX, moveX, startTime;
     const minSwipeDistance = 50; // Minimum distance for a swipe to be registered
+    const horizontalThreshold = 10; // Pixels of horizontal movement to determine horizontal swipe
+    const verticalThreshold = 10; // Pixels of vertical movement to determine vertical swipe
    
-    // Add touch event listeners
+    // Add touch event listeners - change passive to false for touchmove to allow preventDefault
     carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
-    carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+    carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
     carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
    
     function handleTouchStart(e) {
@@ -492,7 +496,9 @@ function setupMobileCarousel() {
         }
         
         startX = e.touches[0].clientX;
+        initialTouchY = e.touches[0].clientY;
         startTime = new Date().getTime();
+        isHorizontalSwipe = null; // Reset direction detection
        
         // Get the current visible item and prepare it for animation
         currentItem = carouselItems[currentIndex];
@@ -506,11 +512,32 @@ function setupMobileCarousel() {
         if (!startX) return;
         
         moveX = e.touches[0].clientX;
-        currentDiff = moveX - startX;
+        const moveY = e.touches[0].clientY;
+        const diffX = moveX - startX;
+        const diffY = moveY - initialTouchY;
         
-        // Use requestAnimationFrame to sync with browser's refresh rate
-        if (!animationRequest) {
-            animationRequest = requestAnimationFrame(updateSwipeAnimation);
+        // Determine swipe direction if not already determined
+        if (isHorizontalSwipe === null) {
+            // If horizontal movement is greater than vertical and exceeds threshold
+            if (Math.abs(diffX) > horizontalThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+                isHorizontalSwipe = true;
+            } 
+            // If vertical movement is greater than horizontal and exceeds threshold
+            else if (Math.abs(diffY) > verticalThreshold && Math.abs(diffY) > Math.abs(diffX)) {
+                isHorizontalSwipe = false;
+            }
+            // If neither threshold is met, wait for more movement
+        }
+        
+        // If this is a horizontal swipe, prevent default to stop page scrolling
+        if (isHorizontalSwipe === true) {
+            e.preventDefault();
+            currentDiff = diffX;
+            
+            // Use requestAnimationFrame to sync with browser's refresh rate
+            if (!animationRequest) {
+                animationRequest = requestAnimationFrame(updateSwipeAnimation);
+            }
         }
     }
     
@@ -548,7 +575,7 @@ function setupMobileCarousel() {
         currentItem.style.transform = `translateX(${currentDiff}px) rotate(${rotation}deg)`;
         
         // If touch is still active, request next frame
-        if (moveX !== null) {
+        if (moveX !== null && isHorizontalSwipe === true) {
             animationRequest = requestAnimationFrame(updateSwipeAnimation);
         }
     }
@@ -562,70 +589,78 @@ function setupMobileCarousel() {
             animationRequest = null;
         }
         
-        const diff = moveX - startX;
-        const swipeTime = new Date().getTime() - startTime;
-        
-        // If swipe is significant enough or fast enough to count as an intentional swipe
-        if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
-            // Always use the two-stage animation with pause for all successful swipes
+        // Only handle card animations if this was a horizontal swipe
+        if (isHorizontalSwipe === true) {
+            const diff = moveX - startX;
+            const swipeTime = new Date().getTime() - startTime;
             
-            // First set up transition for first half of animation
-            currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
-            
-            // Calculate direction
-            const isLeftSwipe = diff < 0;
-            
-            // First move halfway with a longer pause to emphasize the indicator
-            const halfwayPosition = isLeftSwipe ? -75 : 75;
-            currentItem.style.transform = `translateX(${halfwayPosition}px) rotate(${isLeftSwipe ? -5 : 5}deg)`;
-            
-            // Manually set indicator to full visibility at halfway point
-            if (isLeftSwipe) {
-                leftIndicator.style.opacity = 1;
-                leftIndicator.style.transform = 'scale(1)';
-                rightIndicator.style.opacity = 0;
+            // If swipe is significant enough or fast enough to count as an intentional swipe
+            if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
+                // Always use the two-stage animation with pause for all successful swipes
                 
-                // Add red tint at maximum intensity
-                currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
-                currentItem.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
-            } else {
-                rightIndicator.style.opacity = 1;
-                rightIndicator.style.transform = 'scale(1)';
-                leftIndicator.style.opacity = 0;
+                // First set up transition for first half of animation
+                currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
                 
-                // Add green tint at maximum intensity
-                currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
-                currentItem.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
-            }
-            
-            // Show vibration feedback
-            if (navigator.vibrate) {
-                navigator.vibrate(100);
-            }
-            
-            // Then complete the animation after a short delay
-            setTimeout(() => {
-                currentItem.style.transition = 'transform 0.3s ease-out';
-                currentItem.style.transform = isLeftSwipe ? 
-                    `translateX(-150%) rotate(-10deg)` : 
-                    `translateX(150%) rotate(10deg)`;
+                // Calculate direction
+                const isLeftSwipe = diff < 0;
                 
-                // Show the next item after animation completes
+                // First move halfway with a longer pause to emphasize the indicator
+                const halfwayPosition = isLeftSwipe ? -75 : 75;
+                currentItem.style.transform = `translateX(${halfwayPosition}px) rotate(${isLeftSwipe ? -5 : 5}deg)`;
+                
+                // Manually set indicator to full visibility at halfway point
+                if (isLeftSwipe) {
+                    leftIndicator.style.opacity = 1;
+                    leftIndicator.style.transform = 'scale(1)';
+                    rightIndicator.style.opacity = 0;
+                    
+                    // Add red tint at maximum intensity
+                    currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
+                    currentItem.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
+                } else {
+                    rightIndicator.style.opacity = 1;
+                    rightIndicator.style.transform = 'scale(1)';
+                    leftIndicator.style.opacity = 0;
+                    
+                    // Add green tint at maximum intensity
+                    currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
+                    currentItem.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
+                }
+                
+                // Show vibration feedback
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+                
+                // Then complete the animation after a short delay
                 setTimeout(() => {
-                    showNextItem();
-                    resetCardStyles(currentItem);
-                }, 300);
-            }, 400); // Pause at the halfway point (increased to 400ms for better visibility)
+                    currentItem.style.transition = 'transform 0.3s ease-out';
+                    currentItem.style.transform = isLeftSwipe ? 
+                        `translateX(-150%) rotate(-10deg)` : 
+                        `translateX(150%) rotate(10deg)`;
+                    
+                    // Show the next item after animation completes
+                    setTimeout(() => {
+                        showNextItem();
+                        resetCardStyles(currentItem);
+                    }, 300);
+                }, 400); // Pause at the halfway point (increased to 400ms for better visibility)
+            } else {
+                // Not a strong enough swipe, return to center with animation
+                currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
+                resetCardStyles(currentItem);
+            }
         } else {
-            // Not a strong enough swipe, return to center with animation
-            currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
+            // If it wasn't a horizontal swipe, just reset the card
             resetCardStyles(currentItem);
         }
         
         // Reset variables
         startX = null;
         moveX = null;
+        initialTouchY = null;
         currentDiff = 0;
+        isHorizontalSwipe = null;
         currentItem = null;
         leftIndicator = null;
         rightIndicator = null;
