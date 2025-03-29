@@ -595,19 +595,19 @@ nav {
 .carousel-mobile {
     display: flex;
     flex-direction: row;
-    width: 90%; /* Ensure it takes the full width of its container */
-    justify-content: flex-start; /* Start the items from the beginning */
+    width: 90%;
+    justify-content: flex-start;
     z-index: 3;
-    margin: 0 auto; /* Center the element horizontally */
-    overflow: hidden; /* Hide overflow to create a carousel effect */
-    transform: translateY(0); /* Ensure it stays at the same vertical position */
+    margin: 0 auto;
+    overflow: hidden;
+    transform: translateY(0);
 }
 
 .item-group-mobile {
-    width: 100%; /* Ensure it takes the full width of its container */
+    width: 100%;
     display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping, so all items are in a row */
-    transition: transform 0.3s ease-in-out; /* Smooth transition when shifting items */
+    flex-wrap: nowrap;
+    transition: transform 0.3s ease-in-out;
     z-index: 3;
     gap: 5%;
 }
@@ -615,14 +615,14 @@ nav {
 .item-container-mobile {
     flex: 0 0 20%;
     box-sizing: border-box;
-    padding: 0.7%; /* Optional: space inside each item */
+    padding: 0.7%;
     border: 0.1vw solid rgba(52, 52, 52, 0.25);
     border-radius: 1vw;
-    transition: transform 0.3s ease-in-out; /* Smooth transition for individual items */
+    transition: transform 0.3s ease-in-out;
 }
 
 .item-container-mobile:first-child {
-    margin-left: 2.5%; /* Apply margin-left to the first item */
+    margin-left: 2.5%;
 }
 
 .item {
@@ -679,11 +679,13 @@ nav {
     background-color: #0056b3;
 }
 
-/* New container for arrows and dots */
 .arrows-and-dots {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 20%;
+    margin: 0 auto;
+    margin-top: 2vh;
 }
 
 /* Adjust existing styles */
