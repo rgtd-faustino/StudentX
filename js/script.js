@@ -446,6 +446,7 @@ function setupMobileCarousel() {
     let currentDiff = 0;
     let isHorizontalSwipe = false;
     let initialTouchY = 0;
+    let isTouchActive = false;
     
     // Hide all items except the first one
     carouselItems.forEach((item, index) => {
@@ -487,6 +488,13 @@ function setupMobileCarousel() {
     carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
     carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
     carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+    
+    // Safety measure - ensure all touches are properly ended if user leaves the page
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'hidden' && isTouchActive) {
+            resetTouchState();
+        }
+    });
    
     function handleTouchStart(e) {
         // Cancel any ongoing animation
@@ -495,6 +503,7 @@ function setupMobileCarousel() {
             animationRequest = null;
         }
         
+        isTouchActive = true;
         startX = e.touches[0].clientX;
         initialTouchY = e.touches[0].clientY;
         startTime = new Date().getTime();
@@ -502,14 +511,15 @@ function setupMobileCarousel() {
        
         // Get the current visible item and prepare it for animation
         currentItem = carouselItems[currentIndex];
-        leftIndicator = currentItem.querySelector('.left-indicator');
-        rightIndicator = currentItem.querySelector('.right-indicator');
-        
-        currentItem.style.transition = 'none';
+        if (currentItem) {
+            leftIndicator = currentItem.querySelector('.left-indicator');
+            rightIndicator = currentItem.querySelector('.right-indicator');
+            currentItem.style.transition = 'none';
+        }
     }
    
     function handleTouchMove(e) {
-        if (!startX) return;
+        if (!startX || !isTouchActive || !currentItem) return;
         
         moveX = e.touches[0].clientX;
         const moveY = e.touches[0].clientY;
@@ -544,7 +554,7 @@ function setupMobileCarousel() {
     function updateSwipeAnimation() {
         animationRequest = null;
         
-        if (!currentItem || currentDiff === undefined) return;
+        if (!currentItem || currentDiff === undefined || !isTouchActive) return;
         
         // Calculate the indicator opacity and scale
         let opacity = Math.min(Math.abs(currentDiff) / 150, 1);
@@ -554,18 +564,26 @@ function setupMobileCarousel() {
         
         if (currentDiff < 0) {
             // Swiping left (reject)
-            leftIndicator.style.opacity = opacity;
-            leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
-            rightIndicator.style.opacity = 0;
+            if (leftIndicator) {
+                leftIndicator.style.opacity = opacity;
+                leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
+            }
+            if (rightIndicator) {
+                rightIndicator.style.opacity = 0;
+            }
             
             // Add a red tint to the card when swiping left
             currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
             currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.9})`;
         } else if (currentDiff > 0) {
             // Swiping right (accept)
-            rightIndicator.style.opacity = opacity;
-            rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
-            leftIndicator.style.opacity = 0;
+            if (rightIndicator) {
+                rightIndicator.style.opacity = opacity;
+                rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
+            }
+            if (leftIndicator) {
+                leftIndicator.style.opacity = 0;
+            }
             
             // Add a green tint to the card when swiping right
             currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
@@ -575,13 +593,22 @@ function setupMobileCarousel() {
         currentItem.style.transform = `translateX(${currentDiff}px) rotate(${rotation}deg)`;
         
         // If touch is still active, request next frame
-        if (moveX !== null && isHorizontalSwipe === true) {
+        if (moveX !== null && isHorizontalSwipe === true && isTouchActive) {
             animationRequest = requestAnimationFrame(updateSwipeAnimation);
         }
     }
     
     function handleTouchEnd(e) {
-        if (!startX || !moveX) return;
+        if (!isTouchActive) return;
+        
+        // Store a local reference to the current item and indicators
+        // This ensures we have access even if they're reset during the animation
+        const item = currentItem;
+        const leftInd = leftIndicator;
+        const rightInd = rightIndicator;
+        const diff = moveX !== null ? moveX - startX : 0;
+        const swipeTime = startTime ? new Date().getTime() - startTime : 0;
+        const isHorizontal = isHorizontalSwipe;
         
         // Cancel any ongoing animation frame requests
         if (animationRequest) {
@@ -589,42 +616,40 @@ function setupMobileCarousel() {
             animationRequest = null;
         }
         
-        // Only handle card animations if this was a horizontal swipe
-        if (isHorizontalSwipe === true) {
-            const diff = moveX - startX;
-            const swipeTime = new Date().getTime() - startTime;
-            
+        // Reset all state variables first
+        resetTouchState();
+        
+        // Only handle card animations if we have a valid item and it was a horizontal swipe
+        if (item && isHorizontal === true) {
             // If swipe is significant enough or fast enough to count as an intentional swipe
             if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
-                // Always use the two-stage animation with pause for all successful swipes
-                
-                // First set up transition for first half of animation
-                currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
-                
                 // Calculate direction
                 const isLeftSwipe = diff < 0;
                 
+                // First set up transition for first half of animation
+                item.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
+                
                 // First move halfway with a longer pause to emphasize the indicator
                 const halfwayPosition = isLeftSwipe ? -75 : 75;
-                currentItem.style.transform = `translateX(${halfwayPosition}px) rotate(${isLeftSwipe ? -5 : 5}deg)`;
+                item.style.transform = `translateX(${halfwayPosition}px) rotate(${isLeftSwipe ? -5 : 5}deg)`;
                 
                 // Manually set indicator to full visibility at halfway point
-                if (isLeftSwipe) {
-                    leftIndicator.style.opacity = 1;
-                    leftIndicator.style.transform = 'scale(1)';
-                    rightIndicator.style.opacity = 0;
+                if (isLeftSwipe && leftInd) {
+                    leftInd.style.opacity = 1;
+                    leftInd.style.transform = 'scale(1)';
+                    if (rightInd) rightInd.style.opacity = 0;
                     
                     // Add red tint at maximum intensity
-                    currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
-                    currentItem.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
-                } else {
-                    rightIndicator.style.opacity = 1;
-                    rightIndicator.style.transform = 'scale(1)';
-                    leftIndicator.style.opacity = 0;
+                    item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
+                    item.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
+                } else if (!isLeftSwipe && rightInd) {
+                    rightInd.style.opacity = 1;
+                    rightInd.style.transform = 'scale(1)';
+                    if (leftInd) leftInd.style.opacity = 0;
                     
                     // Add green tint at maximum intensity
-                    currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
-                    currentItem.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
+                    item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
+                    item.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
                 }
                 
                 // Show vibration feedback
@@ -634,28 +659,34 @@ function setupMobileCarousel() {
                 
                 // Then complete the animation after a short delay
                 setTimeout(() => {
-                    currentItem.style.transition = 'transform 0.3s ease-out';
-                    currentItem.style.transform = isLeftSwipe ? 
-                        `translateX(-150%) rotate(-10deg)` : 
-                        `translateX(150%) rotate(10deg)`;
-                    
-                    // Show the next item after animation completes
-                    setTimeout(() => {
-                        showNextItem();
-                        resetCardStyles(currentItem);
-                    }, 300);
-                }, 400); // Pause at the halfway point (increased to 400ms for better visibility)
+                    // Check again if the item is still valid
+                    if (item) {
+                        item.style.transition = 'transform 0.3s ease-out';
+                        item.style.transform = isLeftSwipe ? 
+                            `translateX(-150%) rotate(-10deg)` : 
+                            `translateX(150%) rotate(10deg)`;
+                        
+                        // Show the next item after animation completes
+                        setTimeout(() => {
+                            showNextItem();
+                            resetCardStyles(item);
+                        }, 300);
+                    }
+                }, 400);
             } else {
                 // Not a strong enough swipe, return to center with animation
-                currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
-                resetCardStyles(currentItem);
+                item.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
+                resetCardStyles(item);
             }
-        } else {
-            // If it wasn't a horizontal swipe, just reset the card
-            resetCardStyles(currentItem);
+        } else if (item) {
+            // If it wasn't a horizontal swipe but we have an item, just reset the card
+            resetCardStyles(item);
         }
-        
-        // Reset variables
+    }
+    
+    function resetTouchState() {
+        // Reset all touch-related variables
+        isTouchActive = false;
         startX = null;
         moveX = null;
         initialTouchY = null;
@@ -752,7 +783,6 @@ function setupMobileCarousel() {
         }
     }
 }
-
 // Function to add initial instructions overlay
 function addSwipeInstructions() {
     // Add instructions only to the first card
