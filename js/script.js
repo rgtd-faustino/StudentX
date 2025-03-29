@@ -302,7 +302,6 @@ function createCarouselItems(data) {
         container.appendChild(itemContainer);
     });
 }
-
 // Function to sort items by date (most recent first)
 function sortItemsByDate(items) {
     // Map of month names to their numerical values
