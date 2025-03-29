@@ -1236,7 +1236,7 @@ nav {
     font-family: Arial, sans-serif;
     padding: 2vh;
     margin: 0 auto;
-    max-width: 30rem;
+    max-width: 80rem;
     display: flex; /* Ensures centering */
     justify-content: center;
     align-items: center;
@@ -1245,7 +1245,7 @@ nav {
 
 .caption-list {
     display: flex;
-    gap: 2vh;
+    gap: 7vh;
 }
 
 .caption-item {
