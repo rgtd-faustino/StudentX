@@ -629,6 +629,15 @@ function setupMobileCarousel() {
                 // Set the image source and alt attributes
                 img.src = 'images/nextDay.png'; // Replace with the actual image path
                 img.alt = 'Não há mais eventos para o dia!'; // Replace with a meaningful description
+                img.id = 'nextDay';
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    #nextDay {
+                        pointer-events: none;
+                    }
+                `;
+                document.head.appendChild(style);
                 
                 // Append the image to the item container
                 itemContainer.appendChild(img);
@@ -667,23 +676,6 @@ function setupMobileCarousel() {
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
             
-            // Optionally add a "today" indicator
-            const todayIndicator = document.createElement('div');
-            todayIndicator.className = 'today-indicator';
-            todayIndicator.textContent = 'Hoje!';
-            todayIndicator.style.position = 'absolute';
-            todayIndicator.style.top = '10px';
-            todayIndicator.style.right = '10px';
-            todayIndicator.style.backgroundColor = '#ffcc00';
-            todayIndicator.style.color = '#000';
-            todayIndicator.style.padding = '4px 8px';
-            todayIndicator.style.borderRadius = '4px';
-            todayIndicator.style.fontWeight = 'bold';
-            
-            // Add the indicator if it doesn't already exist
-            if (!carouselItems[currentIndex].querySelector('.today-indicator')) {
-                carouselItems[currentIndex].appendChild(todayIndicator);
-            }
         } else {
             // Not today's event, just show it normally
             carouselItems[currentIndex].style.display = 'block';
