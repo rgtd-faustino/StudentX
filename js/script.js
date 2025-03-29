@@ -537,50 +537,41 @@ function setupMobileCarousel() {
    
     function handleTouchEnd(e) {
         if (!startX || !moveX) return;
-        
+       
         const currentItem = carouselItems[currentIndex];
         const diff = moveX - startX;
         const swipeTime = new Date().getTime() - startTime;
-        
+       
+        // Reset transition for smooth animation
+        currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
+       
         // If swipe is significant enough or fast enough
         if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
-            // Calculate opacity to check if indicators are at full extent
-            const opacity = Math.min(Math.abs(diff) / 150, 1);
-            const indicatorsAtFullExtent = opacity >= 0.9; // Check if indicators are close to full opacity
-            
-            // Set transition duration - longer if indicators at full extent
-            const transitionDuration = indicatorsAtFullExtent ? '0.6s' : '0.3s';
-            currentItem.style.transition = `transform ${transitionDuration} ease-out, box-shadow ${transitionDuration} ease-out, background-color ${transitionDuration} ease-out`;
-            
-            // If at full extent, add a subtle pause in the middle of the animation
-            if (indicatorsAtFullExtent) {
-                // First move halfway with a longer pause to emphasize the indicator
-                const halfwayPosition = diff < 0 ? -75 : 75;
-                currentItem.style.transform = `translateX(${halfwayPosition}%) rotate(${diff < 0 ? -5 : 5}deg)`;
-                
-                // Show vibration feedback
+            // Decide direction based on swipe
+
+            if (diff < 0) {
+                // Add vibration for rejection if supported
                 if (navigator.vibrate) {
                     navigator.vibrate(100);
                 }
-                
-                // Then complete the animation after a short delay
+
+                // Swipe left
+                currentItem.style.transform = `translateX(-150%) rotate(-10deg)`;
+                            
+                // Show the next item after animation
                 setTimeout(() => {
-                    currentItem.style.transition = 'transform 0.3s ease-out';
-                    currentItem.style.transform = diff < 0 ? 
-                        `translateX(-150%) rotate(-10deg)` : 
-                        `translateX(150%) rotate(10deg)`;
-                    
-                    // Show the next item after animation completes
-                    setTimeout(() => {
-                        showNextItem();
-                        resetCardStyles(currentItem);
-                    }, 300);
-                }, 300); // 300ms pause at the halfway point
+                    showNextItem();
+                    resetCardStyles(currentItem);
+                }, 300);
             } else {
-                // Regular swipe without pause
-                currentItem.style.transform = diff < 0 ? 
-                    `translateX(-150%) rotate(-10deg)` : 
-                    `translateX(150%) rotate(10deg)`;
+                // Add vibration for rejection if supported
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+            
+                // Swipe right
+                currentItem.style.transform = `translateX(150%) rotate(10deg)`;
+                
                 
                 // Show the next item after animation
                 setTimeout(() => {
@@ -590,10 +581,9 @@ function setupMobileCarousel() {
             }
         } else {
             // Not a strong enough swipe, return to center with animation
-            currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
             resetCardStyles(currentItem);
         }
-        
+       
         // Reset variables
         startX = null;
         moveX = null;
