@@ -2734,8 +2734,8 @@ input[type="checkbox"] {
         font-family: 'Inter', sans-serif;
         font-style: normal;
         font-weight: 200;
-        margin-bottom:2vw;
-        margin-top:10vw;
+        margin-bottom:0vw;
+        margin-top:5vw;
         text-align: left;
     
     }

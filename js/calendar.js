@@ -485,7 +485,7 @@
     }
 
     function updateOpportunityTitle() {
-        const opportunityTitle = document.getElementById('opportunityTitle');
+        const opportunityTitle = document.querySelector('.opportunityTitle');
         const eventCount = countTodayEvents();
         const pluralSuffix = eventCount === 1 ? '' : 's';
         opportunityTitle.innerHTML = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
