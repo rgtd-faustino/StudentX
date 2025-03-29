@@ -2303,51 +2303,67 @@ input[type="checkbox"] {
 
 
 
-
-
     .carousel-container-mobile {
         width: 71%;
         z-index: 3;
         margin: 0 auto;
         margin-top: 2vh;
         margin-bottom: 0vh;
-        overflow: hidden
+        overflow: hidden;
     }
     
     .carousel-mobile {
-        
-        display:unset;
+        display: unset;
         flex-direction: unset;
         width: 90%;
         margin: 0 auto;
         overflow: hidden;
         z-index: 3;
-        transform: translateY(0); /* Ensure it stays at the same vertical position */
-
+        transform: translateY(0);
+        position: relative;
+        touch-action: none; /* Disable browser handling of all panning and zooming gestures */
     }
     
     .item-group-mobile {
-        
         display: flex;
         transition: transform 0.3s ease-in-out;
         z-index: 3;
         width: unset;
         flex-wrap: unset;
-        gap:0%;
+        gap: 0%;
+        position: relative;
     }
     
     .item-container-mobile {
-        
         flex: 0 0 100%;
         box-sizing: border-box;
         padding: 3vw;
         border: 0.6vw solid rgba(52, 52, 52, 0.25);
         border-radius: 3vw;
-        transition: transform 0.3s ease-in-out;
+        transition: all 0.3s ease;
+        position: relative;
+        user-select: none;
+        touch-action: none;
     }
-
+    
+    .item-container-mobile.active {
+        z-index: 10;
+    }
+    
+    /* Optional animation for appearing items */
+    @keyframes appear {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
     .item-container-mobile:first-child {
-        margin-left: 0%; /* Apply margin-left to the first item */
+        margin-left: 0%;
     }
     
     
@@ -2373,25 +2389,7 @@ input[type="checkbox"] {
 
     }
     
-    .button-carousel-mobile {
-        all: unset;
-        background-color: #108CEC;
-        color: #FFF;
-        border: none;
-        padding: 2vw 13vw;
-        border-radius: 2vw;
-        cursor: pointer;
-        font-family: 'Poppins', sans-serif;
-        font-size: 4vw;
-        text-decoration: none;
-        white-space: nowrap;
-        display: block; /* Change to block */
-        text-align: center;
-        margin-top: 2vh;
-        margin: 0 auto;
-        width: fit-content; /* Ensure the button only takes up as much width as needed */
-        
-    }
+
 
     
     .arrows-and-dots {
