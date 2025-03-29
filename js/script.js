@@ -600,7 +600,7 @@ function addSwipeInstructions() {
             <i class="fa fa-times instruction-icon"></i>
             Dá Swipe para a ESQUERDA para RECUSAR
         </p>
-        <button id="got-it-btn">Got it!</button>
+        <button id="got-it-btn">Entendido!</button>
     `;
     
     firstCard.appendChild(instructions);
