@@ -625,14 +625,13 @@ function addSwipeInstructions() {
         <h3>Dá Swipe para escolher</h3>
         <p class="instruction-right">
             <i class="fa fa-check instruction-icon"></i>
-            Swipe RIGHT to ACCEPT
             Dá Swipe para a DIREITA para ACEITAR
         </p>
         <p class="instruction-left">
             <i class="fa fa-times instruction-icon"></i>
             Dá Swipe para a ESQUERDA para RECUSAR
         </p>
-        <button id="got-it-btn">Got it!</button>
+        <button id="got-it-btn">Entendido!</button>
     `;
     
     firstCard.appendChild(instructions);
