@@ -438,6 +438,13 @@ function setupMobileCarousel() {
     itemGroup.style.transform = 'none';
     itemGroup.style.display = 'block';
    
+    // Cache for animation values to avoid recalculation
+    let currentItem = null;
+    let leftIndicator = null;
+    let rightIndicator = null;
+    let animationRequest = null;
+    let currentDiff = 0;
+    
     // Hide all items except the first one
     carouselItems.forEach((item, index) => {
         item.style.transform = 'none';
@@ -452,17 +459,17 @@ function setupMobileCarousel() {
         swipeIndicators.className = 'swipe-indicators';
         
         // Create left (bad) indicator
-        const leftIndicator = document.createElement('div');
-        leftIndicator.className = 'swipe-indicator left-indicator';
-        leftIndicator.innerHTML = '<i class="fa fa-times"></i><span>Reject</span>';
+        const leftInd = document.createElement('div');
+        leftInd.className = 'swipe-indicator left-indicator';
+        leftInd.innerHTML = '<i class="fa fa-times"></i><span>Reject</span>';
         
         // Create right (good) indicator
-        const rightIndicator = document.createElement('div');
-        rightIndicator.className = 'swipe-indicator right-indicator';
-        rightIndicator.innerHTML = '<i class="fa fa-check"></i><span>Accept</span>';
+        const rightInd = document.createElement('div');
+        rightInd.className = 'swipe-indicator right-indicator';
+        rightInd.innerHTML = '<i class="fa fa-check"></i><span>Accept</span>';
         
-        swipeIndicators.appendChild(leftIndicator);
-        swipeIndicators.appendChild(rightIndicator);
+        swipeIndicators.appendChild(leftInd);
+        swipeIndicators.appendChild(rightInd);
         item.appendChild(swipeIndicators);
     });
    
@@ -478,11 +485,20 @@ function setupMobileCarousel() {
     carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
    
     function handleTouchStart(e) {
+        // Cancel any ongoing animation
+        if (animationRequest) {
+            cancelAnimationFrame(animationRequest);
+            animationRequest = null;
+        }
+        
         startX = e.touches[0].clientX;
         startTime = new Date().getTime();
        
         // Get the current visible item and prepare it for animation
-        const currentItem = carouselItems[currentIndex];
+        currentItem = carouselItems[currentIndex];
+        leftIndicator = currentItem.querySelector('.left-indicator');
+        rightIndicator = currentItem.querySelector('.right-indicator');
+        
         currentItem.style.transition = 'none';
     }
    
@@ -490,47 +506,62 @@ function setupMobileCarousel() {
         if (!startX) return;
         
         moveX = e.touches[0].clientX;
-        const diff = moveX - startX;
+        currentDiff = moveX - startX;
         
-        // Move the current item with the finger
-        const currentItem = carouselItems[currentIndex];
+        // Use requestAnimationFrame to sync with browser's refresh rate
+        if (!animationRequest) {
+            animationRequest = requestAnimationFrame(updateSwipeAnimation);
+        }
+    }
+    
+    function updateSwipeAnimation() {
+        animationRequest = null;
+        
+        if (!currentItem || currentDiff === undefined) return;
         
         // Calculate the indicator opacity and scale
-        let opacity = Math.min(Math.abs(diff) / 150, 1);
+        let opacity = Math.min(Math.abs(currentDiff) / 150, 1);
         
-        // Show and animate the appropriate indicator based on swipe direction
-        const leftIndicator = currentItem.querySelector('.left-indicator');
-        const rightIndicator = currentItem.querySelector('.right-indicator');
+        // Add rotation for a more natural feel
+        const rotation = currentDiff / 20; // Adjust divisor for more/less rotation
         
-        if (diff < 0) {
+        if (currentDiff < 0) {
             // Swiping left (reject)
             leftIndicator.style.opacity = opacity;
             leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
             rightIndicator.style.opacity = 0;
             
             // Add a red tint to the card when swiping left
-            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
+            currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
             currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.9})`;
-        } else if (diff > 0) {
+        } else if (currentDiff > 0) {
             // Swiping right (accept)
             rightIndicator.style.opacity = opacity;
             rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
             leftIndicator.style.opacity = 0;
             
             // Add a green tint to the card when swiping right
-            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
+            currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
             currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.9})`;
         }
         
-        // Add rotation for a more natural feel
-        const rotation = diff / 20; // Adjust divisor for more/less rotation
-        currentItem.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
+        currentItem.style.transform = `translateX(${currentDiff}px) rotate(${rotation}deg)`;
+        
+        // If touch is still active, request next frame
+        if (moveX !== null) {
+            animationRequest = requestAnimationFrame(updateSwipeAnimation);
+        }
     }
     
     function handleTouchEnd(e) {
         if (!startX || !moveX) return;
         
-        const currentItem = carouselItems[currentIndex];
+        // Cancel any ongoing animation frame requests
+        if (animationRequest) {
+            cancelAnimationFrame(animationRequest);
+            animationRequest = null;
+        }
+        
         const diff = moveX - startX;
         const swipeTime = new Date().getTime() - startTime;
         
@@ -549,9 +580,6 @@ function setupMobileCarousel() {
             currentItem.style.transform = `translateX(${halfwayPosition}px) rotate(${isLeftSwipe ? -5 : 5}deg)`;
             
             // Manually set indicator to full visibility at halfway point
-            const leftIndicator = currentItem.querySelector('.left-indicator');
-            const rightIndicator = currentItem.querySelector('.right-indicator');
-            
             if (isLeftSwipe) {
                 leftIndicator.style.opacity = 1;
                 leftIndicator.style.transform = 'scale(1)';
@@ -597,18 +625,24 @@ function setupMobileCarousel() {
         // Reset variables
         startX = null;
         moveX = null;
+        currentDiff = 0;
+        currentItem = null;
+        leftIndicator = null;
+        rightIndicator = null;
     }
     
     function resetCardStyles(item) {
+        if (!item) return;
+        
         item.style.transform = 'translateX(0) rotate(0deg)';
         item.style.boxShadow = 'none';
         item.style.backgroundColor = '';
         
         // Reset indicators
-        const leftIndicator = item.querySelector('.left-indicator');
-        const rightIndicator = item.querySelector('.right-indicator');
-        if (leftIndicator) leftIndicator.style.opacity = 0;
-        if (rightIndicator) rightIndicator.style.opacity = 0;
+        const leftInd = item.querySelector('.left-indicator');
+        const rightInd = item.querySelector('.right-indicator');
+        if (leftInd) leftInd.style.opacity = 0;
+        if (rightInd) rightInd.style.opacity = 0;
     }
     
     function showNextItem() {
