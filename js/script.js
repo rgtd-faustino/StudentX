@@ -496,9 +496,8 @@ function setupMobileCarousel() {
         if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
             // Decide direction based on swipe
             if (diff < 0) {
-                // Swipe left - show next item with reject animation
+                // Swipe left
                 currentItem.style.transform = `translateX(-150%) rotate(-10deg)`;
-                currentItem.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
                 
                 // Add vibration for rejection if supported
                 if (navigator.vibrate) {
@@ -511,12 +510,9 @@ function setupMobileCarousel() {
                     resetCardStyles(currentItem);
                 }, 300);
             } else {
-                // Swipe right - show previous item with accept animation
+                // Swipe right
                 currentItem.style.transform = `translateX(150%) rotate(10deg)`;
-                currentItem.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.5)';
                 
-                // Show confetti effect for acceptance
-                showConfettiEffect();
                 
                 // Show the next item after animation
                 setTimeout(() => {
@@ -552,64 +548,36 @@ function setupMobileCarousel() {
             carouselItems[currentIndex].style.display = 'none';
         }
         
+        if(currentIndex == carouselItems.length){
+            return;
+        }
+
         // Move to next item or loop back to first
-        currentIndex = (currentIndex + 1) % carouselItems.length;
+        currentIndex = (currentIndex + 1);
         
+        if (currentIndex == carouselItems.length) {
+            // Select the first .item-container-mobile div
+            const itemContainer = document.querySelector('.item-group-mobile');
+        
+            if (itemContainer && !itemContainer.querySelector('img[src="images/nextDay.png"]')) {
+                // Create an <img> element only if it doesn't already exist
+                const img = document.createElement('img');
+                
+                // Set the image source and alt attributes
+                img.src = 'images/nextDay.png'; // Replace with the actual image path
+                img.alt = 'Não há mais eventos para o dia!'; // Replace with a meaningful description
+                
+                // Append the image to the item container
+                itemContainer.appendChild(img);
+            }
+            return;
+        }
+
         // Show next item
         if (carouselItems[currentIndex]) {
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
         }
-    }
-    
-    function showPreviousItem() {
-        // Hide current item
-        if (carouselItems[currentIndex]) {
-            carouselItems[currentIndex].style.display = 'none';
-        }
-        
-        // Move to previous item or loop to last
-        currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-        
-        // Show previous item
-        if (carouselItems[currentIndex]) {
-            carouselItems[currentIndex].style.display = 'block';
-            resetCardStyles(carouselItems[currentIndex]);
-        }
-    }
-    
-    // Function to show confetti effect on successful swipe
-    function showConfettiEffect() {
-        // Create confetti container if it doesn't exist
-        let confettiContainer = document.getElementById('confetti-container');
-        if (!confettiContainer) {
-            confettiContainer = document.createElement('div');
-            confettiContainer.id = 'confetti-container';
-            document.body.appendChild(confettiContainer);
-        }
-        
-        // Clear previous confetti
-        confettiContainer.innerHTML = '';
-        
-        // Create confetti particles
-        for (let i = 0; i < 30; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = `${Math.random() * 100}%`;
-            confetti.style.animationDelay = `${Math.random() * 2}s`;
-            confetti.style.backgroundColor = getRandomConfettiColor();
-            confettiContainer.appendChild(confetti);
-        }
-        
-        // Remove confetti after animation completes
-        setTimeout(() => {
-            confettiContainer.innerHTML = '';
-        }, 3000);
-    }
-    
-    function getRandomConfettiColor() {
-        const colors = ['#00E676', '#76FF03', '#C6FF00', '#FFEB3B', '#FFC107', '#FF9800'];
-        return colors[Math.floor(Math.random() * colors.length)];
     }
 }
 
@@ -625,13 +593,14 @@ function addSwipeInstructions() {
         <h3>Dá Swipe para escolher</h3>
         <p class="instruction-right">
             <i class="fa fa-check instruction-icon"></i>
+            Swipe RIGHT to ACCEPT
             Dá Swipe para a DIREITA para ACEITAR
         </p>
         <p class="instruction-left">
             <i class="fa fa-times instruction-icon"></i>
             Dá Swipe para a ESQUERDA para RECUSAR
         </p>
-        <button id="got-it-btn">Entendido!</button>
+        <button id="got-it-btn">Got it!</button>
     `;
     
     firstCard.appendChild(instructions);

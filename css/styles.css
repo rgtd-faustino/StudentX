@@ -2318,8 +2318,8 @@ input[type="checkbox"] {
         transform: translateY(-50%) scale(0.5);
         opacity: 0;
         border-radius: 50%;
-        width: 80px;
-        height: 80px;
+        width: 20vw;
+        height: 20vw;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -2330,24 +2330,24 @@ input[type="checkbox"] {
     }
     
     .left-indicator {
-        left: 20px;
+        right: -10vw;
         background-color: #FF3B30;
-        box-shadow: 0 0 10px rgba(255, 59, 48, 0.5);
+        box-shadow: 0 0 5vw rgba(255, 59, 48, 0.5);
     }
     
     .right-indicator {
-        right: 20px;
+        left: -10vw;
         background-color: #34C759;
-        box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
+        box-shadow: 0 0 5vw rgba(52, 199, 89, 0.5);
     }
     
     .swipe-indicator i {
-        font-size: 24px;
-        margin-bottom: 4px;
+        font-size: 5vw;
+        margin-bottom: 2vw;
     }
     
     .swipe-indicator span {
-        font-size: 14px;
+        font-size: 4vw;
     }
     
     @keyframes fall {
@@ -2393,7 +2393,7 @@ input[type="checkbox"] {
     
     .swipe-instructions p {
         margin: 2vw 0;
-        font-size: 2vw;
+        font-size: 4vw;
         text-align: center;
         padding: 0 7vw;
     }
@@ -2412,7 +2412,7 @@ input[type="checkbox"] {
     }
     
     .swipe-instructions button {
-        margin-top: 4vw;
+        margin-top: 10vw;
         padding: 2.5vw 8vw;
         background-color: #007AFF;
         border: none;
