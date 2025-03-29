@@ -2423,19 +2423,20 @@ input[type="checkbox"] {
 
 
     .carousel-container-mobile {
-        width: 71%;
+        width: 100%;
         z-index: 3;
         margin: 0 auto;
         margin-top: 2vh;
         margin-bottom: 0vh;
-        overflow: hidden
+        overflow: hidden;
+
     }
     
     .carousel-mobile {
         
         display:unset;
         flex-direction: unset;
-        width: 90%;
+        width: 70%;
         margin: 0 auto;
         overflow: hidden;
         z-index: 3;
@@ -2451,6 +2452,8 @@ input[type="checkbox"] {
         width: unset;
         flex-wrap: unset;
         gap:0%;
+        width:70%;
+        margin: 0 auto;
     }
     
     .item-container-mobile {
