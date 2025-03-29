@@ -2387,8 +2387,8 @@ input[type="checkbox"] {
     }
     
     .swipe-instructions h3 {
-        margin-bottom: 5vw;
-        font-size: 5vw;
+        margin-bottom: 4vw;
+        font-size: 4vw;
     }
     
     .swipe-instructions p {
@@ -2454,6 +2454,8 @@ input[type="checkbox"] {
         gap:0%;
         width:70%;
         margin: 0 auto;
+        margin-top: 5vw;
+        margin-bottom: 5vw;
     }
     
     .item-container-mobile {
