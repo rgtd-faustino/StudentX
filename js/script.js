@@ -220,13 +220,15 @@ function initializeCarousel() {
         
 }
 
-// Function to create carousel items dynamically
+// Function to create carousel items dynamically with chronological sorting
 function createCarouselItems(data) {
     const container = document.getElementById('item-group-1-mobile');
     if (!container) return;
     
     // Clear existing content
     container.innerHTML = '';
+    
+    sortItemsByDate(data.items);
     
     data.items.forEach(item => {
         const itemContainer = document.createElement('div');
@@ -299,6 +301,57 @@ function createCarouselItems(data) {
         // Append item container to the carousel container
         container.appendChild(itemContainer);
     });
+}
+
+// Function to sort items by date (most recent first)
+function sortItemsByDate(items) {
+    // Map of month names to their numerical values
+    const monthMap = {
+        'janeiro': 1,
+        'fevereiro': 2,
+        'março': 3,
+        'abril': 4,
+        'maio': 5, 
+        'junho': 6,
+        'julho': 7,
+        'agosto': 8,
+        'setembro': 9,
+        'outubro': 10,
+        'novembro': 11,
+        'dezembro': 12
+    };
+    
+    // Parse date information from the description subtitle or use direct date properties
+    items.forEach(item => {
+        // Try to extract date from descriptionSubtitle if day/month are not directly available
+        if (!item.day || !item.month) {
+            const dateRegex = /(\d+)\s+de\s+(\w+)(?:\s+de\s+(\d{4}))?/i;
+            const match = item.descriptionSubtitle.match(dateRegex);
+            
+            if (match) {
+                item._parsedDay = parseInt(match[1], 10);
+                item._parsedMonth = monthMap[match[2].toLowerCase()] || 0;
+                item._parsedYear = match[3] ? parseInt(match[3], 10) : new Date().getFullYear();
+            } else {
+                // Default values if parsing fails
+                item._parsedDay = 1;
+                item._parsedMonth = 1;
+                item._parsedYear = 2000;
+            }
+        } else {
+            // Use direct day/month properties if available
+            item._parsedDay = parseInt(item.day, 10);
+            item._parsedMonth = typeof item.month === 'string' ? 
+                (monthMap[item.month.toLowerCase()] || 0) : 
+                parseInt(item.month, 10);
+            item._parsedYear = item.year ? parseInt(item.year, 10) : new Date().getFullYear();
+        }
+        
+        // Create a numeric value for easy comparison (YYYYMMDD)
+        item._dateValue = (item._parsedYear * 10000) + (item._parsedMonth * 100) + item._parsedDay;
+    });
+    
+    items.sort((a, b) => a._dateValue - b._dateValue);
 }
 
 // Setup functions for desktop and mobile carousel
@@ -495,15 +548,15 @@ function setupMobileCarousel() {
         // If swipe is significant enough or fast enough
         if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
             // Decide direction based on swipe
+            // Add vibration for rejection if supported
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+
             if (diff < 0) {
                 // Swipe left
                 currentItem.style.transform = `translateX(-150%) rotate(-10deg)`;
-                
-                // Add vibration for rejection if supported
-                if (navigator.vibrate) {
-                    navigator.vibrate(100);
-                }
-                
+                            
                 // Show the next item after animation
                 setTimeout(() => {
                     showNextItem();
@@ -547,18 +600,12 @@ function setupMobileCarousel() {
         if (carouselItems[currentIndex]) {
             carouselItems[currentIndex].style.display = 'none';
         }
-        
-        if(currentIndex == carouselItems.length){
-            return;
-        }
 
-        // Move to next item or loop back to first
-        currentIndex = (currentIndex + 1);
+        currentIndex = (currentIndex + 1);  
         
-        if (currentIndex == carouselItems.length) {
+        if(carouselItems[currentIndex].data == diaDeHoje){
             // Select the first .item-container-mobile div
             const itemContainer = document.querySelector('.item-group-mobile');
-        
             if (itemContainer && !itemContainer.querySelector('img[src="images/nextDay.png"]')) {
                 // Create an <img> element only if it doesn't already exist
                 const img = document.createElement('img');
@@ -570,14 +617,17 @@ function setupMobileCarousel() {
                 // Append the image to the item container
                 itemContainer.appendChild(img);
             }
-            return;
+        } else {
+            // Show next item
+            if (carouselItems[currentIndex]) {
+                carouselItems[currentIndex].style.display = 'block';
+                resetCardStyles(carouselItems[currentIndex]);
+            }
         }
 
-        // Show next item
-        if (carouselItems[currentIndex]) {
-            carouselItems[currentIndex].style.display = 'block';
-            resetCardStyles(carouselItems[currentIndex]);
-        }
+
+
+
     }
 }
 
