@@ -534,7 +534,7 @@ function setupMobileCarousel() {
         const rotation = diff / 20; // Adjust divisor for more/less rotation
         currentItem.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
     }
-   
+    
     function handleTouchEnd(e) {
         if (!startX || !moveX) return;
         
@@ -616,11 +616,11 @@ function setupMobileCarousel() {
         if (carouselItems[currentIndex]) {
             carouselItems[currentIndex].style.display = 'none';
         }
-
-        currentIndex = (currentIndex + 1);  
+        currentIndex = (currentIndex + 1);
         
-        if(carouselItems[currentIndex].data == diaDeHoje){
-            // Select the first .item-container-mobile div
+        // If we've reached the end of the carousel items
+        if (currentIndex >= carouselItems.length) {
+            // Display "no more events" message
             const itemContainer = document.querySelector('.item-group-mobile');
             if (itemContainer && !itemContainer.querySelector('img[src="images/nextDay.png"]')) {
                 // Create an <img> element only if it doesn't already exist
@@ -633,17 +633,63 @@ function setupMobileCarousel() {
                 // Append the image to the item container
                 itemContainer.appendChild(img);
             }
-        } else {
-            // Show next item
-            if (carouselItems[currentIndex]) {
-                carouselItems[currentIndex].style.display = 'block';
-                resetCardStyles(carouselItems[currentIndex]);
-            }
+            return;
         }
-
-
-
-
+        
+        // Get current date
+        const today = new Date();
+        const currentDay = today.getDate(); // Gets day of month (1-31)
+        
+        // Convert month name to number for comparison
+        const monthMap = {
+            'janeiro': 0,      // January is 0 in JavaScript Date
+            'fevereiro': 1,
+            'março': 2,
+            'abril': 3,
+            'maio': 4, 
+            'junho': 5,
+            'julho': 6,
+            'agosto': 7,
+            'setembro': 8,
+            'outubro': 9,
+            'novembro': 10,
+            'dezembro': 11     // December is 11 in JavaScript Date
+        };
+        
+        // Get the current item's month as a number
+        const itemMonthNum = typeof carouselItems[currentIndex].month === 'string' ? 
+            monthMap[carouselItems[currentIndex].month.toLowerCase()] : 
+            parseInt(carouselItems[currentIndex].month, 10) - 1; // Subtract 1 if numeric (JS months are 0-11)
+        
+        // Compare day and month
+        if (carouselItems[currentIndex].day == currentDay && itemMonthNum == today.getMonth()) {
+            // Today's event
+            // Show next item
+            carouselItems[currentIndex].style.display = 'block';
+            resetCardStyles(carouselItems[currentIndex]);
+            
+            // Optionally add a "today" indicator
+            const todayIndicator = document.createElement('div');
+            todayIndicator.className = 'today-indicator';
+            todayIndicator.textContent = 'Hoje!';
+            todayIndicator.style.position = 'absolute';
+            todayIndicator.style.top = '10px';
+            todayIndicator.style.right = '10px';
+            todayIndicator.style.backgroundColor = '#ffcc00';
+            todayIndicator.style.color = '#000';
+            todayIndicator.style.padding = '4px 8px';
+            todayIndicator.style.borderRadius = '4px';
+            todayIndicator.style.fontWeight = 'bold';
+            
+            // Add the indicator if it doesn't already exist
+            if (!carouselItems[currentIndex].querySelector('.today-indicator')) {
+                carouselItems[currentIndex].appendChild(todayIndicator);
+            }
+        } else {
+            // Not today's event, just show it normally
+            carouselItems[currentIndex].style.display = 'block';
+            resetCardStyles(carouselItems[currentIndex]);
+        }
     }
 }
 
