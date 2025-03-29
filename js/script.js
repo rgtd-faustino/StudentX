@@ -542,52 +542,60 @@ function setupMobileCarousel() {
         const diff = moveX - startX;
         const swipeTime = new Date().getTime() - startTime;
         
-        // If swipe is significant enough or fast enough
+        // If swipe is significant enough or fast enough to count as an intentional swipe
         if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
-            // Calculate opacity to check if indicators are at full extent
-            const opacity = Math.min(Math.abs(diff) / 150, 1);
-            const indicatorsAtFullExtent = opacity >= 0.9; // Check if indicators are close to full opacity
+            // Always use the two-stage animation with pause for all successful swipes
             
-            // Set transition duration - longer if indicators at full extent
-            const transitionDuration = indicatorsAtFullExtent ? '0.6s' : '0.3s';
-            currentItem.style.transition = `transform ${transitionDuration} ease-out, box-shadow ${transitionDuration} ease-out, background-color ${transitionDuration} ease-out`;
+            // First set up transition for first half of animation
+            currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
             
-            // If at full extent, add a subtle pause in the middle of the animation
-            if (indicatorsAtFullExtent) {
-                // First move halfway with a longer pause to emphasize the indicator
-                const halfwayPosition = diff < 0 ? -75 : 75;
-                currentItem.style.transform = `translateX(${halfwayPosition}%) rotate(${diff < 0 ? -5 : 5}deg)`;
+            // Calculate direction
+            const isLeftSwipe = diff < 0;
+            
+            // First move halfway with a longer pause to emphasize the indicator
+            const halfwayPosition = isLeftSwipe ? -75 : 75;
+            currentItem.style.transform = `translateX(${halfwayPosition}px) rotate(${isLeftSwipe ? -5 : 5}deg)`;
+            
+            // Manually set indicator to full visibility at halfway point
+            const leftIndicator = currentItem.querySelector('.left-indicator');
+            const rightIndicator = currentItem.querySelector('.right-indicator');
+            
+            if (isLeftSwipe) {
+                leftIndicator.style.opacity = 1;
+                leftIndicator.style.transform = 'scale(1)';
+                rightIndicator.style.opacity = 0;
                 
-                // Show vibration feedback
-                if (navigator.vibrate) {
-                    navigator.vibrate(100);
-                }
-                
-                // Then complete the animation after a short delay
-                setTimeout(() => {
-                    currentItem.style.transition = 'transform 0.3s ease-out';
-                    currentItem.style.transform = diff < 0 ? 
-                        `translateX(-150%) rotate(-10deg)` : 
-                        `translateX(150%) rotate(10deg)`;
-                    
-                    // Show the next item after animation completes
-                    setTimeout(() => {
-                        showNextItem();
-                        resetCardStyles(currentItem);
-                    }, 300);
-                }, 300); // 300ms pause at the halfway point
+                // Add red tint at maximum intensity
+                currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
+                currentItem.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
             } else {
-                // Regular swipe without pause
-                currentItem.style.transform = diff < 0 ? 
+                rightIndicator.style.opacity = 1;
+                rightIndicator.style.transform = 'scale(1)';
+                leftIndicator.style.opacity = 0;
+                
+                // Add green tint at maximum intensity
+                currentItem.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
+                currentItem.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
+            }
+            
+            // Show vibration feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+            
+            // Then complete the animation after a short delay
+            setTimeout(() => {
+                currentItem.style.transition = 'transform 0.3s ease-out';
+                currentItem.style.transform = isLeftSwipe ? 
                     `translateX(-150%) rotate(-10deg)` : 
                     `translateX(150%) rotate(10deg)`;
                 
-                // Show the next item after animation
+                // Show the next item after animation completes
                 setTimeout(() => {
                     showNextItem();
                     resetCardStyles(currentItem);
                 }, 300);
-            }
+            }, 400); // Pause at the halfway point (increased to 400ms for better visibility)
         } else {
             // Not a strong enough swipe, return to center with animation
             currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
@@ -663,7 +671,6 @@ function setupMobileCarousel() {
         
         // Compare day and month
         if (carouselItems[currentIndex].day == currentDay && itemMonthNum == today.getMonth()) {
-            // Today's event
             // Show next item
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
