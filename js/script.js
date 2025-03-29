@@ -218,10 +218,6 @@ function initializeCarousel() {
             }
         });
         
-    // Window resize handling
-    window.addEventListener('resize', function() {
-        location.reload(); // Reload the page on resize to apply the correct layout
-    });
 }
 
 // Function to create carousel items dynamically
@@ -616,152 +612,6 @@ function setupMobileCarousel() {
         return colors[Math.floor(Math.random() * colors.length)];
     }
 }
-function addSwipeStyling() {
-    const style = document.createElement('style');
-    style.textContent = `
-        .swipe-indicators {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        .swipe-indicator {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%) scale(0.5);
-            opacity: 0;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.2s, transform 0.2s;
-            font-weight: bold;
-            color: white;
-        }
-        
-        .left-indicator {
-            left: 20px;
-            background-color: #FF3B30;
-            box-shadow: 0 0 10px rgba(255, 59, 48, 0.5);
-        }
-        
-        .right-indicator {
-            right: 20px;
-            background-color: #34C759;
-            box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
-        }
-        
-        .swipe-indicator i {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-        
-        .swipe-indicator span {
-            font-size: 14px;
-        }
-        
-        /* Confetti animation */
-        #confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-        }
-        
-        .confetti {
-            position: absolute;
-            top: -10px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: fall 3s linear forwards;
-        }
-        
-        @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-        
-        /* Card animations */
-        .item-container-mobile {
-            position: relative;
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out;
-        }
-        
-        /* Initial instructions overlay */
-        .swipe-instructions {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            opacity: 0.9;
-            transition: opacity 0.5s;
-            border-radius: 3vw;
-        }
-        
-        .swipe-instructions h3 {
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-        
-        .swipe-instructions p {
-            margin: 10px 0;
-            font-size: 16px;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .swipe-instructions .instruction-icon {
-            font-size: 20px;
-            margin-right: 10px;
-        }
-        
-        .swipe-instructions .instruction-right .instruction-icon {
-            color: #34C759;
-        }
-        
-        .swipe-instructions .instruction-left .instruction-icon {
-            color: #FF3B30;
-        }
-        
-        .swipe-instructions button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007AFF;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            font-weight: bold;
-        }
-    `;
-    document.head.appendChild(style);
-}
-
 
 // Function to add initial instructions overlay
 function addSwipeInstructions() {
@@ -772,14 +622,15 @@ function addSwipeInstructions() {
     const instructions = document.createElement('div');
     instructions.className = 'swipe-instructions';
     instructions.innerHTML = `
-        <h3>Swipe to Choose</h3>
+        <h3>Dá Swipe para escolher</h3>
         <p class="instruction-right">
             <i class="fa fa-check instruction-icon"></i>
             Swipe RIGHT to ACCEPT
+            Dá Swipe para a DIREITA para ACEITAR
         </p>
         <p class="instruction-left">
             <i class="fa fa-times instruction-icon"></i>
-            Swipe LEFT to REJECT
+            Dá Swipe para a ESQUERDA para RECUSAR
         </p>
         <button id="got-it-btn">Got it!</button>
     `;
@@ -802,11 +653,11 @@ function addSwipeInstructions() {
 
 // Call these functions when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
-    addSwipeStyling();
-    
     // The original initialization will call setupMobileCarousel
     initializeCarousel();
     
     // Add instructions once the carousel is loaded
-    setTimeout(addSwipeInstructions, 500);
+    if(window.innerWidth < 600){
+        setTimeout(addSwipeInstructions, 50);
+    }
 });
