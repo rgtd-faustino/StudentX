@@ -679,13 +679,11 @@ nav {
     background-color: #0056b3;
 }
 
+/* New container for arrows and dots */
 .arrows-and-dots {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 20%;
-    margin: 0 auto;
-    margin-top: 2vh;
 }
 
 /* Adjust existing styles */
