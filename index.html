@@ -1,688 +1,440 @@
-<!DOCTYPE html>
-<html lang="pt-pt">
-<head>
-    <!-- Essential Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A Student X é uma plataforma desenvolvida com o objetivo de aproximar estudantes de oportunidades de desenvolvimento pessoal, curricular e profissional."/>
-    
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval' *.googleapis.com *.gstatic.com *.google-analytics.com *.googletagmanager.com; img-src 'self' data: https: *.studentx.pt; font-src 'self' https: data: *.googleapis.com *.gstatic.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com">
-
-    <!--Google AdSense-->
-    <meta name="google-adsense-account" content="ca-pub-2455279266517679">    
-
-    <title>Student X - Aproxima estudantes de oportunidades</title>
-
-    <!-- Preconexões críticas -->
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- Preload de recursos críticos -->
-    <link rel="preload" href="/js/script.js" as="script">
-    <link rel="preload" href="/js/calendar.js" as="script">
-    <link rel="preload" href="/js/cookie-banner.js" as="script">
-    <link rel="preload" href="/videos/slogan.mp4" as="video" type="video/mp4">
-    <link rel="preload" as="image" href="/images/ELIPSE GRADIENTE TELEMOVEL.png" type="image/png">
-
-    <!-- Favicons -->
-    <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
-    
-    <!-- Canonical -->
-    <link rel="canonical" href="https://www.studentx.pt" />
-
-    <!-- Estilos -->
-    <link rel="stylesheet" href="/css/styles.css">
-    
-    <!-- Fontes com display swap -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    
-    <!-- Organization Information -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Student X",
-        "url": "https://studentx.pt",
-        "logo": "https://studentx.pt/images/logoStudentX.png",
-        "description": "A Student X é uma plataforma criada por estudantes para estudantes que oferece eventos, workshops e oportunidades.",
-        "sameAs": [
-            "https://www.instagram.com/studentx.pt",
-            "https://www.linkedin.com/company/studentx",
-            "https://www.tiktok.com/@studentx.pt",
-            "https://x.com/studentx_pt"
-        ],
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "email": "contact.studentx@gmail.com",
-            "contactType": "customer service"
-        }
-    }
-    </script>
-
-    <!-- Website Information -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Student X",
-        "url": "https://studentx.pt",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://studentx.pt/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
-
-
-    <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-            "@type": "Question",
-            "name": "1. O que é a Student X?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A Student X é uma plataforma criada por estudantes e para estudantes, que visa divulgar e organizar dinâmicas e iniciativas realizadas pelas mais diversas organizações e instituições. O nosso objetivo é aproximar os estudantes das inúmeras oportunidades de desenvolvimento pessoal, curricular e profissional disponíveis, promovendo o crescimento e a excelência académica e profissional."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "2. Como é que a Student X te pode ajudar?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A Student X pode ajudar-te a descobrir e aproveitar diversas oportunidades de desenvolvimento pessoal, curricular e profissional. Através da nossa plataforma, terás acesso a informações atualizadas sobre eventos, programas, workshops e outras iniciativas que contribuirão para o teu crescimento pessoal, académico e profissional. Queremos garantir que não perdes nenhuma oportunidade que possa ajudar-te a alcançar os teus objetivos."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "3. Como pode a Student X ajudar a tua organização?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Como referido anteriormente o nosso objetivo é aproximar os estudantes de oportunidades de enriquecimento e desenvolvimento pessoal, curricular e profissional, para tal procederemos à devida divulgação e promoção das iniciativas, eventos e dinâmicas realizadas pelas mais diversas organizações e instituições, permitindo assim alcançar um público-alvo de estudantes interessados e motivados. Através da nossa rede, as oportunidades disponibilizadas pela tua associação serão amplamente promovidas, de forma totalmente gratuita, através das nossas comunidades, redes sociais e site, procurando aumentar a visibilidade e participação nos projetos realizados."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "4. Como é que o Student X cria uma relação de benefício mútuo entre estudantes e organizações?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A Student X cria uma relação de benefício mútuo ao servir como uma ponte entre estudantes e organizações. As organizações beneficiam da nossa plataforma ao ganhar maior visibilidade e alcance para as suas iniciativas, enquanto os estudantes têm acesso facilitado a uma variedade de oportunidades que promovem o seu desenvolvimento. Esta colaboração permite que ambos os lados cresçam e alcancem os seus objetivos de forma mais eficaz."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "5.  As iniciativas divulgadas são regularmente atualizadas?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Sim, comprometemo-nos a manter todas as informações e iniciativas atualizadas. Trabalhamos continuamente para garantir que não perdes nenhuma oportunidade."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "6. Preciso de pagar para ter acesso à Student X?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Não, a Student X é completamente gratuito! Acreditamos que todos os alunos	devem ter conhecimento e acesso igualitário às oportunidades que os levarão a alcançar o sucesso académico e profissional, daí disponibilizarmos a plataforma de forma gratuita."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "7. Interessado em colaborar connosco?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Estamos sempre à procura de novas parcerias e colaborações que possam enriquecer a nossa comunidade. Se representas uma associação ou organização com iniciativas de desenvolvimento pessoal, curricular ou profissional, gostaríamos muito de te ouvir.
-                Se também fores um jovem, seja de idade ou de espírito, que queira contribuir, estamos ansiosos por contar com a tua ajuda e entusiasmo."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "8. Tens alguma pergunta, dúvida ou sugestão?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Questões, dúvidas ou sugestões serão sempre bem vindas! Não hesites em contactar-nos via email: contact.studentx@gmail.com ou através das nossas redes sociais."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "9. Como tirar partido do Calendário?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "O calendário organiza todas as iniciativas que ocorrerão ao longo do ano. Ao clicar numa determinada iniciativa que ocorrerá num determinado dia verás mais informações sobre a mesma. No canto superior direito encontrarás o botão: adicionar calendário, que te permitirá adicionar as iniciativas automaticamente ao teu próprio calendário."
-            }
-            },
-            {
-            "@type": "Question",
-            "name": "10. Posso aceder à plataforma da Student X pelo meu telemóvel ou tablet?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Sim, a nossa plataforma é adaptável a diferentes dispositivos, de forma a que estejas sempre a par de novas iniciativas, estejas onde estiveres."
-            }
-            }
-        ]
-        }
-    </script>
-
-    
-
-
-</head>
-
-<body>
-    <img id="image1" src="/images/ELIPSE GRADIENTE.png" alt="Blue Gradient Background">
-    <img id="image1tlm" src="/images/ELIPSE GRADIENTE TELEMOVEL.png" alt="Blue Gradient Background, phones' version">
-
-    <nav>
-        <!-- Hamburger Menu for Mobile -->
-        <div class="hamburger" onclick="toggleMenu()">
-            <div class="hamburger-line1"></div>
-            <div class="hamburger-line2"></div>
-            <div class="hamburger-line3"></div>
-        </div>
-    
-        <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
-        <div class="menu-content">
-            <ul class="nav-items">
-                <li><a href="/" style="color:#108CEC">Início</a></li>
-                <li id="opportunities-item-mobile"><a href="#subtitle">Oportunidades</a></li>
-                <li id="opportunities-item-pc"><a href="/oportunidades/">Oportunidades</a></li>
-                <li><a href="#opportunityTitle">Calendário</a></li>
-                <li><a href="#studentx-ajuda-title">Modus Operandi</a></li>
-                <li><a href="#questoes-frequentes-title">FAQ</a></li>
-            </ul>
-            <div class="right-side-nav">
-                <div class="contribui-wrapper">
-                    <a href="/" class="contribui-button">Contribui</a>
-                    <div class="tooltip">Ajuda-nos a manter a StudentX ativa através de pequenas, mas imprescindíveis doações, de modo a que consigamos oferecer conteúdo de qualidade.</div>
-                  </div>
-                <a href="/contacto/" class="contact-button">Contacta-nos</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="slogan-container">
-        <!-- Video showing the slogan -->
-        <div class="slogan-texts">
-            <h1 id="sloganTitle">WITH STUDENTX YOU WILL:</h1>
-            <div class="containerSlogan" id="textContainerSlogan">
-                <div class="animated-text-slogan">
-                    <span class="x-highlight-slogan">X</span>-CEED YOUR LIMITS
-                </div>
-            </div>
-        </div>
-        
-        <div class="slogan-buttons">
-            <div class="start-button">
-                <a href="#opportunityTitle">Começar Agora &nbsp; <img id="ArrowStartButton" src="/images/ArrowStartButton.png" alt="Arrow For Starting Now"></a>
-            </div>
-            <div class="watch-button">
-                <button onclick="openModal()"><img id="ArrowWatchButton" src="/images/ArrowWatchButton.png" alt="Arrow For Watching Video"> Ver Vídeo</button>
-            </div>
-        </div>
-
-        <img id="image2" src="/images/laptop.png" alt="Image of the Computer's View">
-
-    </div>
-    
-    <!-- VideoModal -->
-    <div id="videoModal" class="video-modal">
-        <div class="video-modal-content">
-        <!--<span class="close-modal" onclick="closeModal()">&times;</span>-->
-        <video id="modalVideo" class="modal-video" controls>
-            <source src="/videos/slogan.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        </div>
-    </div>
-
-    <div id="parentContainer">
-        <img id="gradienteP2" src="/images/gradiente pagina 2.png" alt="Blue Gradient Background Page 2" loading="lazy">
-        <img id="tlmP2" src="/images/telemovel imagem pagina 2.png" alt="Image of the Phone's View" loading="lazy">
-        <img id="logos" src="/images/logos.png" alt="Important Logos" loading="lazy">
-
-
-        <div id="logoWrapper">
-            <img id="logo1" src="/images/logo1tlm.png" alt="logo 1" loading="lazy">
-            <img id="logo2" src="/images/logo2tlm.png" alt="logo 2" loading="lazy">
-            <img id="logo3" src="/images/logo3tlm.png" alt="logo 3" loading="lazy">
-            <img id="logo4" src="/images/logo4tlm.png" alt="logo 4" loading="lazy">
-        </div>
-
-        <div id="starsContainer">
-            <img id="stars" src="/images/5stars.png" alt="5 Stars" loading="lazy">
-            <div class="starsText">| 50+ estudantes confiam na Student X</div>
-        </div>
-
-
-    </div>
-
-    
-
-
-    
-    <div class="secondPText">
-        A <span class="highlight">STUDENT X</span> é uma plataforma desenvolvida por estudantes,
-        que aproxima os jovens das inúmeras oportunidades organizadas por:<br>
-        <div class="containerOpportunities" id="textContainerOpportunities">
-            <div class="animated-text-opportunities">
-                Palestras e workshops
-            </div>
-        </div>
-    </div>
-
-    
-
-
-
-
-    <div class="title-container">
-        <h2 id="subtitle">OPORTUNIDADES RECENTES</h2>
-        <div class="title-background-container">
-            <img id="titleP3Background" src="/images/titleP3background.png" alt="Background for More Opportunities link" loading="lazy">
-            <h2 id="titleP3">Ver <a href="/oportunidades/" class="highlightP3">Mais Oportunidades</a></h2>
-            <h2 id="titleP3Mobile">Ver <span class="highlightP3">Mais Oportunidades</span></h2>
-        </div>
-    </div>
-
-
-    <div class="carousel-container-mobile" id="carousel-container">
-        <div class="carousel-mobile">
-            <div class="item-group-mobile" id="item-group-1-mobile">
-
-            </div>
-        </div>
-
-        <div class="arrows-and-dots">
-            <button id="prev-mobile">
-                <img id="prev-mobile-img" src="/images/leftarrow.png" alt="Previous image" loading="lazy">
-            </button>
-        
-            <script>
-                document.getElementById('prev-mobile').addEventListener('click', function() {
-                    var img = document.getElementById('prev-mobile-img');
-                    img.src = '/images/leftarrowclicked-mirrored.png'; // Use the mirrored image
-                    setTimeout(function() {
-                        img.src = '/images/leftarrow.png'; // Revert back to the original image
-                    }, 300); // 300 milliseconds = 0.3 seconds
-                });
-            </script>
-        
-            <div class="indicators-mobile">
-                <span class="dot-pc"></span>
-                <span class="dot-pc"></span>
-                <span class="dot-pc"></span>
-            </div>
-            
-            <button id="next-mobile">
-                <img id="next-mobile-img" src="/images/rightarrow.png" alt="Next image" loading="lazy">
-            </button>
-        
-            <script>
-                document.getElementById('next-mobile').addEventListener('click', function() {
-                    var img = document.getElementById('next-mobile-img');
-                    img.src = '/images/rightarrowclicked-mirrored.png'; // Use the mirrored image
-                    setTimeout(function() {
-                        img.src = '/images/rightarrow.png'; // Revert back to the original image
-                    }, 300); // 300 milliseconds = 0.3 seconds
-                });
-            </script>
-        </div>
-    </div>
-
-    <h2 id="opportunityTitle" class="opportunityTitle">Número de oportunidades hoje</h2>
-    <div class="timeContainer">
-        <div class="download-calendar"></div>
-        <button class="prevWeek" onclick="prevWeek()">&lt;|</button>
-        <div id="monthYear"></div>
-        <button class="nextWeek" onclick="nextWeek()">|&gt;</button>
-    </div>
-
-    
-
-    <div id="dayButtons" class="day-buttons"></div>
-
-    <div class="calendar-container">
-        <div id="calendar" class="calendar">
-            <div class="calendar-content">
-                <div id="hours" class="hours"></div>
-                <div id="events" class="events"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="caption-container">
-        <div class="caption-list">
-            <div class="caption-item">
-                <div class="color-indicator color-red"></div>
-                <span class="caption-text">Carreira</span>
-            </div>
-            
-            <div class="caption-item">
-                <div class="color-indicator color-blue"></div>
-                <span class="caption-text">Crescimento</span>
-            </div>
-            
-            <div class="caption-item">
-                <div class="color-indicator color-green"></div>
-                <span class="caption-text">Currículo</span>
-            </div>
-        </div>
-    </div>
-      
-      
-    <div class="parent-element">
-        <h1 id="studentx-ajuda-title">COMO PODE A&nbsp;<span class="highlight2">STUDENT X</span>&nbsp;AJUDAR?</h1>
-        <h2 id="studentx-ajuda-subtitle">Se és estudante, a Student X ajuda-te a descobrir e aproveitar estas oportunidades,
-         se representas uma organização, garantimos a promoção das tuas iniciativas a um público-alvo motivado.</h2>
-    </div>  
-
-    <img id="fluxograma" src="/images/fluxograma.png" alt="Flowchart of how StudentX can Help" loading="lazy">
-    <img id="fluxogramaMobile" src="/images/fluxogramaMobile.png" alt="Flowchart of how StudentX can Help, Phones' version" loading="lazy">
-
-    <div class="parent-element2"></div>
-        <h2 id="questoes-frequentes-title">Questões Frequentes</h2>
-        <img id="tituloFAQ" src="/images/tituloFAQ.png" alt="FAQ title's image" loading="lazy">
-        <h2 id="questoes-frequentes-subtitle">Encontra aqui as respostas às perguntas mais frequentes dos nossos utilizadores</h2>
-    </div>
-
-    <img id="gradienteFAQMobile" src="/images/gradienteFAQMobile.png" alt="Gradient for FAQ page, phones' version" loading="lazy">
-
-    
-    <div class="faq">
-        <img id="gradienteFAQ" src="/images/gradienteFAQ.png" alt="Gradient for FAQ page" loading="lazy">
-
-        <div class="faq-item">
-            <p class="faq-question">1. O que é a Student X?</p>
-            <div class="faq-answer">
-                <p>A Student X é uma plataforma criada por estudantes e para estudantes, que visa divulgar e organizar dinâmicas e iniciativas realizadas pelas mais diversas organizações e instituições. O nosso objetivo é aproximar os estudantes das inúmeras oportunidades de desenvolvimento pessoal, curricular e profissional disponíveis, promovendo o crescimento e a excelência académica e profissional.</p>
-            </div>
-        </div>
-        
-        <div class="faq-item">
-            <p class="faq-question">2. Como é que a Student X te pode ajudar?</p>
-            <div class="faq-answer">
-                <p>A Student X pode ajudar-te a descobrir e aproveitar diversas oportunidades de desenvolvimento pessoal, curricular e profissional. Através da nossa plataforma, terás acesso a informações atualizadas sobre eventos, programas, workshops e outras iniciativas que contribuirão para o teu crescimento pessoal, académico e profissional. Queremos garantir que não perdes nenhuma oportunidade que possa ajudar-te a alcançar os teus objetivos.
-                </p>
-            </div>
-        </div>
-
-        <!-- Add more FAQ items here in the same format -->
-        <div class="faq-item">
-            <p class="faq-question">3. Como pode a Student X ajudar a tua organização?</p>
-            <div class="faq-answer">
-                <p>Como referido anteriormente o nosso objetivo é aproximar os estudantes de oportunidades de enriquecimento e desenvolvimento pessoal, curricular e profissional, para tal procederemos à devida divulgação e promoção das iniciativas, eventos e dinâmicas realizadas pelas mais diversas organizações e instituições, permitindo assim alcançar um público-alvo de estudantes interessados e motivados. Através da nossa rede, as oportunidades disponibilizadas pela tua associação serão amplamente promovidas, de forma totalmente gratuita, através das nossas comunidades, redes sociais e site, procurando aumentar a visibilidade e participação nos projetos realizados.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <p class="faq-question">4. Como é que a Student X cria uma relação de benefício mútuo entre estudantes e organizações?</p>
-            <div class="faq-answer">
-                <p>A Student X cria uma relação de benefício mútuo ao servir como uma ponte entre estudantes e organizações. As organizações beneficiam da nossa plataforma ao ganhar maior visibilidade e alcance para as suas iniciativas, enquanto os estudantes têm acesso facilitado a uma variedade de oportunidades que promovem o seu desenvolvimento. Esta colaboração permite que ambos os lados cresçam e alcancem os seus objetivos de forma mais eficaz.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <p class="faq-question">5.  As iniciativas divulgadas são regularmente atualizadas?</p>
-            <div class="faq-answer">
-                <p>	Sim, comprometemo-nos a manter todas as informações e iniciativas atualizadas. Trabalhamos continuamente para garantir que não perdes nenhuma oportunidade.
-                </p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <p class="faq-question">6. Preciso de pagar para ter acesso à Student X?</p>
-            <div class="faq-answer">
-                <p>	Não, a Student X é completamente gratuito! Acreditamos que todos os alunos	devem ter conhecimento e acesso igualitário às oportunidades que os levarão a alcançar o sucesso académico e profissional, daí disponibilizarmos a plataforma de forma gratuita.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <p class="faq-question">7. Interessado em colaborar connosco?</p>
-            <div class="faq-answer">
-                <p>Estamos sempre à procura de novas parcerias e colaborações que possam enriquecer a nossa comunidade. Se representas uma associação ou organização com iniciativas de desenvolvimento pessoal, curricular ou profissional, gostaríamos muito de te ouvir.
-                    Se também fores um jovem, seja de idade ou de espírito, que queira contribuir, estamos ansiosos por contar com a tua ajuda e entusiasmo.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <p class="faq-question">8. Tens alguma pergunta, dúvida ou sugestão?</p>
-            <div class="faq-answer">
-                <p>Questões, dúvidas ou sugestões serão sempre bem vindas! Não hesites em contactar-nos via email: contact.studentx@gmail.com ou através das nossas redes sociais.</p>
-            </div>
-        </div>
-        
-        <div class="faq-item">
-            <p class="faq-question">9. Como tirar partido do Calendário?</p>
-            <div class="faq-answer">
-                <p>O calendário organiza todas as iniciativas que ocorrerão ao longo do ano. Ao clicar numa determinada iniciativa que ocorrerá num determinado dia verás mais informações sobre a mesma. No canto superior direito encontrarás o botão: adicionar calendário, que te permitirá adicionar as iniciativas automaticamente ao teu próprio calendário.</p>
-            </div>
-        </div>
-        
-        <div class="faq-item">
-            <p class="faq-question">10. Posso aceder à plataforma da Student X pelo meu telemóvel ou tablet?</p>
-            <div class="faq-answer">
-                <p>	Sim, a nossa plataforma é adaptável a diferentes dispositivos, de forma a que estejas sempre a par de novas iniciativas, estejas onde estiveres.</p>
-            </div>
-        </div>
-    </div>
-
-    <img id="gradienteAboutUs" src="/images/aboutusGradiente.png" alt="Gradient for the About Us page">
-    
-    <div class="aboutus-page">
-        <div class="tituloimage">
-            <h2 id="titulo-aboutus">ABOUT <span class="highlight-us">US</span></h2>
-            <img id="aboututsTitleImage" src="/images/aboututsTitleImage.png" alt="About Us Title Image">
-        </div>
-        <div class="text-aboutus">
-            <p>Atualmente, existem inúmeras iniciativas e oportunidades organizadas pelas mais diversas associações e instituições, mas muitos estudantes não têm conhecimento das mesmas ou têm dificuldade em encontrá-las.
-                A falta de uma plataforma unificada e eficaz que organize estas oportunidades leva a que inúmeros estudantes percam valiosas experiências que fariam a diferença no seu percurso pessoal, curricular e profissional.
-                Com este objetivo em mente, unimos as valências das nossas áreas de estudo tão distintas, mas complementares, gestão de recursos humanos, design e engenharia informática e multimédia para desenvolver a Student X, uma plataforma online que funciona como uma ponte entre quem proporciona essas oportunidades: organizações, instituições, associações e quem as procura: os estudantes.</p>
-        </div>
-        <div class="team-container">
-            <div class="team-member">
-                <img src="/images/abelho.jpg" alt="Miguel Abelho" loading="lazy">
-                <h3>
-                <a href="https://www.linkedin.com/in/miguelabelho" target="_blank" rel="noopener">
-                    Miguel Abelho
-                    <img src="/images/linkedinAboutUs.png" alt="LinkedIn" class="linkedin-icon" loading="lazy">
-                </a>
-                </h3>
-                <p>ISCSP - Gestão de Recursos Humanos</p>
-            </div>
-            <div class="team-member">
-                <img src="/images/rafael.jpg" alt="Rafael Faustino" loading="lazy">
-                <h3>
-                <a href="https://www.linkedin.com/in/rgtdfaustino" target="_blank" rel="noopener">
-                    Rafael Faustino
-                    <img src="/images/linkedinAboutUs.png" alt="LinkedIn" class="linkedin-icon" loading="lazy">
-                </a>
-                </h3>
-                <p>ISEL - Engenharia Informática e Multimédia</p>
-            </div>
-            <div class="team-member">
-                <img src="/images/tomas.jpg" alt="Tomás Sousa" loading="lazy">
-                <h3>
-                <a href="https://www.linkedin.com/in/tomás-lopes-patrão-de-figueiredo-e-sousa-25ab0131a" target="_blank" rel="noopener">
-                    Tomás Sousa
-                    <img src="/images/linkedinAboutUs.png" alt="LinkedIn" class="linkedin-icon" loading="lazy">
-                </a>
-                </h3>
-                <p>ULL - Design</p>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-    <footer class="footer">
-        <div class="footer-image-container">
-            <img id="gradienteFooter" src="/images/gradienteFooter.png" alt="Footer's Gradient" loading="lazy">
-            
-            <img id="footerlogoStudentX" src="/images/logoStudentX.png" alt="Footer StudentX's logo" loading="lazy">
-    
-            <div class="footer-links-text">
-                <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="#titulo-aboutus">Sobre</a></li>
-                    <li><a href="#questoes-frequentes-title">FAQs</a></li>
-                    <li><a href="/">Contribui</a></li>
-                    <li><a href="/contacto/">Contacta-nos</a></li>
-                </ul>
-            </div>
-    
-            <div class="social-media-container">
-                <a href="https://www.instagram.com/studentx.pt" target="_blank">
-                    <img class="social-media-icon" src="/images/instagram.png" alt="Instagram" loading="lazy">
-                </a>
-                <a href="https://www.tiktok.com/" target="_blank">
-                    <img class="social-media-icon" src="/images/tiktok.png" alt="TikTok" loading="lazy">
-                </a>
-                <a href="https://www.twitter.com/" target="_blank">
-                    <img class="social-media-icon" src="/images/x.png" alt="Twitter" loading="lazy">
-                </a>
-                <a href="https://www.linkedin.com/" target="_blank">
-                    <img class="social-media-icon" src="/images/linkedin.png" alt="LinkedIn" loading="lazy">
-                </a>
-            </div>
-
-            <div id="inicio-button-container">
-                <a id="inicio-button" href="/">De volta ao Início</a>
-                <img id="arrowUp" src="/images/arrowUp.png" alt="Arrow pointing Up" loading="lazy">
-            </div>
-            
-        </div>
-        <div class="blue-box">
-
-            <div class="right-text">
-                <div class="computer-right-text">
-                    <a>Whitepaper</a>
-                    <a>Manual de Normas</a>
-                    <a href="/Termos e Condições/">Termos e Condições</a>
-                    <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                    <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
-                </div>
-                <div class="mobile-right-text">
-                    <a href="/Termos e Condições/">Termos e Condições</a>
-                    <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                    <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
-                </div>
-            </div>
-
-            <div>
-                <p class="left-text">Copyright © Student X. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    
-
-
-    <div class="cookie-banner" id="cookieBanner" style="display: none;">
-        <div class="cookie-content">
-            <div class="cookie-initial">
-                <h3>Preferências Cookies</h3>
-                <p>Usamos cookies para melhorar a tua experiência. Escolhe as tuas opções abaixo.</p>
-                <div class="cookie-buttons">
-                    <button id="accept-all" class="cookie-btn">Aceitar Todas</button>
-                    <button id="reject-all" class="cookie-btn">Rejeitar Todas</button>
-                    <button id="more-options" class="cookie-btn">Mais...</button>
-                </div>
-            </div>
-            <div class="cookie-expanded">
-                <h3>Preferências Cookies</h3>
-                <div class="cookie-categories">
-                    <div class="cookie-category">
-                        <input type="checkbox" id="functional-cookies" checked disabled>
-                        <label class="category-name" for="functional-cookies">Essenciais</label>
-                        <span class="category-info">Necessário para o funcionamento do website</span>
-                    </div>
-                    <div class="cookie-category">
-                        <input type="checkbox" id="analytics-cookies">
-                        <label class="category-name" for="analytics-cookies">Análise</label>
-                        <span class="category-info">Ajuda-nos a melhorar o nosso website através do Google Analytics</span>
-                    </div>
-                    <div class="cookie-category">
-                        <input type="checkbox" id="marketing-cookies">
-                        <label class="category-name" for="marketing-cookies">Publicidade</label>
-                        <span class="category-info">Usado para entregar anúncios personalizados através do Google Ads</span>
-                    </div>
-                </div>
-                <div class="cookie-buttons">
-                    <button id="accept-selected" class="cookie-btn">Aceitar Selecionadas</button>
-                    <button id="reject-all-expanded" class="cookie-btn">Rejeitar Todas</button>
-                </div>
-                <div class="privacy-policy">
-                    <a href="/Política de Privacidade e Cookies/" id="read-more">Ler mais sobre a nossa política de cookies</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--
-    <div id="coming-soon-overlay" class="coming-soon-overlay">
-        <video autoplay muted playsinline id="coming-soon-video">
-            <source src="/videos/comingSoon.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <style>
-        .coming-soon-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-        }
-    
-        .coming-soon-overlay video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    
-        /* Disable scrolling when overlay is active */
-        .no-scroll {
-            overflow: hidden;
-            height: 100%;
-        }
-    </style>
-    
-    <script>
-        const overlay = document.getElementById('coming-soon-overlay');
-        const video = document.getElementById('coming-soon-video');
-    
-        // Disable scrolling when the overlay is displayed
-        document.body.classList.add('no-scroll');
-    
-        video.addEventListener('ended', function () {
-            overlay.style.display = 'none';
-            document.body.classList.remove('no-scroll'); // Re-enable scrolling
+document.addEventListener("DOMContentLoaded", function() {
+    // Hamburger menu code
+    var hamburger = document.querySelector(".hamburger");
+    const menuContent = document.querySelector('.menu-content');
+
+    if (hamburger && menuContent) {
+        hamburger.addEventListener("click", function(e) {
+            e.stopPropagation();
+            toggleMenu();
         });
-    </script>
-    -->
 
-    <script defer src="/js/script.js"></script>
-    <script defer src="/js/calendar.js"></script>
-    <script defer src="/js/cookie-banner.js"></script>
+        function toggleMenu() {
+            menuContent.classList.toggle('active');
+            hamburger.classList.toggle('open');
+            menuContent.classList.toggle('show');
+        }
+
+        document.addEventListener("click", function(event) {
+            if (!menuContent.contains(event.target) && !hamburger.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        const navLinks = menuContent.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
+
+        function closeMenu() {
+            menuContent.classList.remove('active');
+            hamburger.classList.remove('open');
+            menuContent.classList.remove('show');
+        }
+    }
+
+    // PC Carousel code (only execute if window width >= 600)
+    if (window.innerWidth >= 600) {
+        const itemGroup = document.querySelector('.item-group-mobile');
+        const dotsPC = document.querySelectorAll('.dot-pc');
+
+        if (itemGroup && dotsPC.length > 0) {
+            let currentIndexPC = 0;
+            const itemsPerViewPC = 4;
+            const totalItems = 12;
+
+            function updateTransformPC() {
+                const translatePercentage = -(currentIndexPC / totalItems) * 100 * (totalItems / itemsPerViewPC);
+                itemGroup.style.transform = `translateX(${translatePercentage}%)`;
+                updateDotsPC();
+            }
+            
+            function updateDotsPC() {
+                dotsPC.forEach((dot, index) => {
+                    if (index === Math.floor(currentIndexPC / itemsPerViewPC)) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            updateTransformPC();
+            
+            const nextBtn = document.getElementById('next-mobile');
+            const prevBtn = document.getElementById('prev-mobile');
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (currentIndexPC >= totalItems - itemsPerViewPC) {
+                        currentIndexPC = 0;
+                    } else {
+                        currentIndexPC += itemsPerViewPC;
+                    }
+                    updateTransformPC();
+                });
+            }
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    if (currentIndexPC <= 0) {
+                        currentIndexPC = totalItems - itemsPerViewPC;
+                    } else {
+                        currentIndexPC -= itemsPerViewPC;
+                    }
+                    updateTransformPC();
+                });
+            }
+        }
+    }
+
+    // Mobile Carousel with swipe functionality (only execute if window width <= 600)
+    if (window.innerWidth <= 600) {
+        // Function to create carousel items dynamically
+        function createCarouselItems(data) {
+            const container = document.getElementById('item-group-1-mobile');
+            if (!container) return;
+            
+            // Clear previous items if any
+            container.innerHTML = '';
+            
+            data.items.forEach(item => {
+                const itemContainer = document.createElement('div');
+                itemContainer.className = 'item-container-mobile';
+                
+                // Item Image
+                const img = document.createElement('img');
+                img.src = item.imageSrc;
+                img.alt = item.altText;
+                itemContainer.appendChild(img);
+                
+                // Description
+                const description = document.createElement('div');
+                description.className = 'description-mobile';
+                
+                const descriptionTitle = document.createElement('p');
+                descriptionTitle.className = 'description-title-mobile';
+                descriptionTitle.textContent = item.descriptionTitle;
+                
+                const descriptionSubtitle = document.createElement('p');
+                descriptionSubtitle.className = 'description-subtitle-mobile';
+                descriptionSubtitle.textContent = item.descriptionSubtitle;
+                
+                description.appendChild(descriptionTitle);
+                description.appendChild(descriptionSubtitle);
+                itemContainer.appendChild(description);
+                
+                // Carousel Line
+                const carouselLine = document.createElement('div');
+                carouselLine.className = 'carousel-line';
+                itemContainer.appendChild(carouselLine);
+                
+                // Opportunity Place
+                const oppPlace = document.createElement('div');
+                oppPlace.className = 'opp-place-mobile';
+                
+                const oppPlaceContainer = document.createElement('div');
+                oppPlaceContainer.className = 'opp-place-container';
+                
+                const logoImg = document.createElement('img');
+                logoImg.src = item.logoSrc;
+                logoImg.alt = item.logoAlt;
+                
+                const oppPlaceTexts = document.createElement('div');
+                oppPlaceTexts.className = 'opp-place-texts';
+                
+                const oppPlaceTitle = document.createElement('p');
+                oppPlaceTitle.className = 'opp-place-title-mobile';
+                oppPlaceTitle.textContent = item.oppPlaceTitle;
+                
+                const oppPlaceSubtitle = document.createElement('p');
+                oppPlaceSubtitle.className = 'opp-place-subtitle-mobile';
+                oppPlaceSubtitle.textContent = item.oppPlaceSubtitle;
+                
+                oppPlaceTexts.appendChild(oppPlaceTitle);
+                oppPlaceTexts.appendChild(oppPlaceSubtitle);
+                oppPlaceContainer.appendChild(logoImg);
+                oppPlaceContainer.appendChild(oppPlaceTexts);
+                oppPlace.appendChild(oppPlaceContainer);
+                itemContainer.appendChild(oppPlace);
+                
+                // More Info Button
+                const moreInfoBtn = document.createElement('a');
+                moreInfoBtn.href = item.moreInfoLink;
+                moreInfoBtn.className = 'button-carousel-mobile';
+                moreInfoBtn.textContent = 'Mais Informações';
+                
+                itemContainer.appendChild(moreInfoBtn);
+                
+                // Append item container to the carousel container
+                container.appendChild(itemContainer);
+            });
+            
+            // Initialize swipe functionality after a short delay to ensure DOM is ready
+            setTimeout(initSwipeFunctionality, 100);
+        }
+        
+        // Fetch the JSON file and populate the carousel
+        fetch('/json/events.json')
+            .then(response => response.json())
+            .then(data => createCarouselItems(data))
+            .catch(error => {
+                console.error('Error loading carousel data:', error);
+                // Initialize swipe even if fetch fails (in case items are already in DOM)
+                setTimeout(initSwipeFunctionality, 100);
+            });
+        
+        // Function to initialize swipe functionality
+        function initSwipeFunctionality() {
+            const carousel = document.querySelector('.carousel-mobile');
+            const items = document.querySelectorAll('.item-container-mobile');
+            
+            if (!carousel || items.length === 0) {
+                console.log("Carousel or items not found, will try again later");
+                return; // Exit if elements aren't found
+            }
+            
+            console.log("Initializing swipe with", items.length, "items");
+            
+            let currentIndex = 0;
+            let startX, moveX;
+            let isDragging = false;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            
+            // Use event delegation to handle all events on the carousel container
+            // This handles touch events on the carousel
+            carousel.addEventListener('touchstart', function(e) {
+                if (e.target.closest('.item-container-mobile')) {
+                    isDragging = true;
+                    startX = e.touches[0].clientX;
+                    // Find the index of the touched item
+                    const touchedItem = e.target.closest('.item-container-mobile');
+                    items.forEach((item, idx) => {
+                        if (item === touchedItem) currentIndex = idx;
+                    });
+                    
+                    // Add active class
+                    items[currentIndex].classList.add('active');
+                    
+                    // Prevent default only for non-button elements
+                    if (!e.target.closest('a.button-carousel-mobile')) {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
+            
+            carousel.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+                
+                moveX = e.touches[0].clientX;
+                
+                // Calculate how far we've moved
+                const currentPosition = moveX - startX;
+                currentTranslate = prevTranslate + currentPosition;
+                
+                // Add rotation effect based on swipe direction/distance
+                const rotate = currentPosition / 20;
+                
+                // Apply transform for tinder-like effect
+                items[currentIndex].style.transform = `translateX(${currentPosition}px) rotate(${rotate}deg)`;
+                
+                // Change shadow color based on swipe direction
+                if (currentPosition > 0) {
+                    // Swiping right (green indicator)
+                    items[currentIndex].style.boxShadow = `0 0 10px rgba(0, 255, 0, ${Math.min(Math.abs(currentPosition) / 200, 0.5)})`;
+                } else if (currentPosition < 0) {
+                    // Swiping left (red indicator)
+                    items[currentIndex].style.boxShadow = `0 0 10px rgba(255, 0, 0, ${Math.min(Math.abs(currentPosition) / 200, 0.5)})`;
+                }
+                
+                // Prevent default to stop scrolling
+                if (!e.target.closest('a.button-carousel-mobile')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            carousel.addEventListener('touchend', function(e) {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                const movedBy = currentTranslate - prevTranslate;
+                
+                // Reset active class
+                items[currentIndex].classList.remove('active');
+                
+                // If moved enough to register as a swipe
+                if (Math.abs(movedBy) > 50) { // Lower threshold for easier swiping
+                    if (movedBy < 0) {
+                        // Swiped left - go to next item
+                        if (currentIndex < items.length - 1) {
+                            // Animate current item flying off to the left
+                            animateSwipe(items[currentIndex], -window.innerWidth, -15);
+                            setTimeout(() => {
+                                // After animation, hide current and show next
+                                items[currentIndex].style.display = 'none';
+                                currentIndex++;
+                                // Make sure next item is visible and properly positioned
+                                if (items[currentIndex]) {
+                                    items[currentIndex].style.display = 'block';
+                                    items[currentIndex].style.transform = 'translateX(0) rotate(0deg)';
+                                    items[currentIndex].style.boxShadow = 'none';
+                                }
+                            }, 300);
+                        }
+                    } else {
+                        // Swiped right - go to previous item
+                        if (currentIndex > 0) {
+                            // Animate current item flying off to the right
+                            animateSwipe(items[currentIndex], window.innerWidth, 15);
+                            setTimeout(() => {
+                                // After animation, hide current and show previous
+                                items[currentIndex].style.display = 'none';
+                                currentIndex--;
+                                // Make sure previous item is visible and properly positioned
+                                if (items[currentIndex]) {
+                                    items[currentIndex].style.display = 'block';
+                                    items[currentIndex].style.transform = 'translateX(0) rotate(0deg)';
+                                    items[currentIndex].style.boxShadow = 'none';
+                                }
+                            }, 300);
+                        }
+                    }
+                } else {
+                    // If not swiped far enough, return to center
+                    items[currentIndex].style.transform = 'translateX(0) rotate(0deg)';
+                    items[currentIndex].style.boxShadow = 'none';
+                }
+                
+                // Hide all items except the current one
+                items.forEach((item, idx) => {
+                    if (idx !== currentIndex) {
+                        item.style.display = 'none';
+                    } else {
+                        item.style.display = 'block';
+                    }
+                });
+                
+                // Reset tracking variables
+                prevTranslate = currentTranslate;
+            });
+            
+            // Animate the swipe effect
+            function animateSwipe(element, targetX, rotation) {
+                element.style.transition = 'transform 0.3s ease-out';
+                element.style.transform = `translateX(${targetX}px) rotate(${rotation}deg)`;
+                
+                // Remove transition after animation completes
+                setTimeout(() => {
+                    element.style.transition = '';
+                }, 300);
+            }
+            
+            // Set initial state - hide all items except the first one
+            items.forEach((item, index) => {
+                if (index !== 0) {
+                    item.style.display = 'none';
+                }
+            });
+            
+            console.log("Swipe functionality initialized");
+        }
+    }
+
+    // FAQ accordion functionality
+    var questions = document.querySelectorAll(".faq-question");
     
-
-
-
-
-</body>
-</html>
+    questions.forEach(function(question) {
+        question.addEventListener("click", function() {
+            var answer = this.nextElementSibling;
+            
+            if (answer.classList.contains("show")) {
+                answer.classList.remove("show");
+                this.classList.remove("active");
+            } else {
+                // Hide other answers
+                document.querySelectorAll(".faq-answer.show").forEach(function(item) {
+                    item.classList.remove("show");
+                    item.previousElementSibling.classList.remove("active");
+                });
+                
+                answer.classList.add("show");
+                this.classList.add("active");
+            }
+        });
+    });
+    
+    // Initialize text animations
+    const sloganMessages = [
+        "<span class='x-highlight'>X</span>-CEED YOUR LIMITS",
+        "<span class='x-highlight'>X</span>-PLORE NEW OPPORTUNITIES",
+        "LEARN FROM<span class='x-highlight'>&nbsp;X</span>-PERTS",
+        "PURSUE<span class='x-highlight'>&nbsp;X</span>-CELLENCE",
+        "<span class='x-highlight'>X</span>-PAND YOUR NETWORK",
+        "GET<span class='x-highlight'>&nbsp;X</span>-CLUSIVE INSIGHTS",
+        "<span class='x-highlight'>X</span>-PECT THE BEST"
+    ];
+    
+    const opportunitiesMessages = [
+        "Palestras e workshops",
+        "Academias e grupos de jovens",
+        "Programas de embaixadores",
+        "Núcleos de estudantes",
+        "Voluntariado",
+        "Júnior empresas",
+        "Feiras de emprego",
+        "Empresas",
+        "Instituições de ensino",
+        "Associações e federações de estudantes"
+    ];
+    
+    function startMessageRotation(containerId, messages, animationClass) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        let currentIndex = 0;
+        
+        function showNextMessage() {
+            const currentElement = container.querySelector(`.${animationClass}`);
+            
+            // Remove previous message with fade-out animation
+            if (currentElement) {
+                currentElement.classList.add('fade-out');
+                setTimeout(() => {
+                    currentElement.remove();
+                }, 1000);
+            }
+            
+            // Create and show new message
+            const newElement = document.createElement('div');
+            newElement.className = animationClass;
+            newElement.innerHTML = messages[currentIndex];
+            container.appendChild(newElement);
+            
+            // Trigger animation
+            setTimeout(() => {
+                newElement.classList.add('active');
+            }, 100);
+            
+            // Update index
+            currentIndex = (currentIndex + 1) % messages.length;
+        }
+        
+        // Initial display
+        showNextMessage();
+        
+        // Set interval for message rotation
+        setInterval(showNextMessage, 2000);
+    }
+    
+    // Start rotations if elements exist
+    if (document.getElementById('textContainerSlogan')) {
+        startMessageRotation('textContainerSlogan', sloganMessages, 'animated-text-slogan');
+    }
+    
+    if (document.getElementById('textContainerOpportunities')) {
+        startMessageRotation('textContainerOpportunities', opportunitiesMessages, 'animated-text-opportunities');
+    }
+});
