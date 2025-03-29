@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let currentX = 0;
         
         // Select all carousel items
-        const carouselItems = document.querySelectorAll('item-group-mobile');
+        const carouselItems = document.querySelectorAll('.item-group-mobile');
         
         carouselItems.forEach(item => {
             // Touch events for mobile swipe
