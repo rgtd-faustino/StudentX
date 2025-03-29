@@ -463,8 +463,8 @@ function setupMobileCarousel() {
             rightIndicator.style.opacity = 0;
             
             // Add a red tint to the card when swiping left
-            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 10}px rgba(255, 0, 0, ${opacity * 0.5})`;
-            currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.3})`;
+            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
+            currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.9})`;
         } else if (diff > 0) {
             // Swiping right (accept)
             const opacity = Math.min(Math.abs(diff) / 150, 1);
@@ -473,8 +473,8 @@ function setupMobileCarousel() {
             leftIndicator.style.opacity = 0;
             
             // Add a green tint to the card when swiping right
-            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 10}px rgba(0, 255, 0, ${opacity * 0.5})`;
-            currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.3})`;
+            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
+            currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.9})`;
         }
         
         // Add rotation for a more natural feel
