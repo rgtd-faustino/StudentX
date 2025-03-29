@@ -834,10 +834,19 @@ nav {
 
 
 
+.opportunityTitleMobile{
+    font-size: 2.5vw;
+    margin-left:5vw;
+    position:relative;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    margin-bottom:4vw;
+    text-align: left;
+}
 
 
-
-.opportunityTitle{
+.opportunityTitlePC{
     font-size: 2.5vw;
     margin-left:5vw;
     position:relative;
@@ -2718,10 +2727,21 @@ input[type="checkbox"] {
     }
 
 
-
+    .opportunityTitleMobile{
+        font-size: 5vw;
+        margin-left:5vw;
+        position:relative;
+        font-family: 'Inter', sans-serif;
+        font-style: normal;
+        font-weight: 200;
+        margin-bottom:2vw;
+        margin-top:10vw;
+        text-align: left;
+    
+    }
 
     
-.opportunityTitle{
+.opportunityTitlePC{
     font-size: 5vw;
     margin-left:5vw;
     position:relative;

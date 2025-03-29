@@ -1,7 +1,7 @@
 {
     "items": [
       {
-        "day": 1,
+        "day": 29,
         "month": "janeiro",
         "imageSrc": "/events/image3.png",
         "altText": "Image 3 mobile",
@@ -17,7 +17,7 @@
         "colorOfEvent": "blue",
         "moreInfoText": "Olá, conhecem o Garen? Ele é aquele guerreiro de Demacia, sempre na linha de frente, com sua armadura brilhante e espada imensa. Sim, ele é o tipo de campeão que corre direto para o combate, e não foge de uma luta. Mas e a Ahri? Ah, essa é outra história! Com seu charme irresistível e suas esferas encantadas, ela dança pelo campo de batalha, seduzindo e atacando com uma precisão mortal. Uma vez que ela te tenha no olhar, é difícil escapar."      },
       {
-        "day": 31,
+        "day": 29,
         "month": "dezembro",
         "imageSrc": "/events/image1.png",
         "altText": "Image 1 mobile",
@@ -33,7 +33,7 @@
         "colorOfEvent": "red",
         "moreInfoText": "Olá, conhecem o Garen? Ele é aquele guerreiro de Demacia, sempre na linha de frente, com sua armadura brilhante e espada imensa. Sim, ele é o tipo de campeão que corre direto para o combate, e não foge de uma luta. Mas e a Ahri? Ah, essa é outra história! Com seu charme irresistível e suas esferas encantadas, ela dança pelo campo de batalha, seduzindo e atacando com uma precisão mortal. Uma vez que ela te tenha no olhar, é difícil escapar."      },
       {
-        "day": 28,
+        "day": 29,
         "month": "março",
         "imageSrc": "/events/image2.png",
         "altText": "Image 2 mobile",
