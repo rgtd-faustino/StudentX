@@ -643,7 +643,7 @@
     </div>
 
     <div id="coming-soon-overlay" class="coming-soon-overlay">
-        <video autoplay muted loop playsinline id="coming-soon-video">
+        <video autoplay muted playsinline id="coming-soon-video">
             <source src="/videos/comingSoon.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -681,10 +681,10 @@
         // Disable scrolling when the overlay is displayed
         document.body.classList.add('no-scroll');
     
-        /*video.addEventListener('ended', function () {
+        video.addEventListener('ended', function () {
             overlay.style.display = 'none';
             document.body.classList.remove('no-scroll'); // Re-enable scrolling
-        });*/
+        });
     </script>
 
 
