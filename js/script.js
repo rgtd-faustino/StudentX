@@ -193,7 +193,6 @@ document.addEventListener("DOMContentLoaded", function() {
 function initializeCarousel() {
     const isMobile = window.innerWidth < 600;
     const itemGroup = document.querySelector('.item-group-mobile');
-    const arrowsAndDots = document.querySelector('.arrows-and-dots');
     
     if (!itemGroup) return; // Exit if carousel elements don't exist
     
@@ -376,20 +375,20 @@ function setupMobileCarousel() {
     const carouselContainer = document.querySelector('.carousel-container-mobile');
     const itemGroup = document.querySelector('.item-group-mobile');
     const arrowsAndDots = document.querySelector('.arrows-and-dots');
-    
+   
     if (!carouselContainer || !itemGroup) return;
-    
+   
     // Hide arrows and dots for mobile
     if (arrowsAndDots) arrowsAndDots.style.display = 'none';
-    
+   
     // Get all items
     const carouselItems = document.querySelectorAll('.item-container-mobile');
     if (!carouselItems.length) return;
-    
+   
     // Reset any previous styles
     itemGroup.style.transform = 'none';
     itemGroup.style.display = 'block';
-    
+   
     // Hide all items except the first one
     carouselItems.forEach((item, index) => {
         item.style.transform = 'none';
@@ -398,104 +397,416 @@ function setupMobileCarousel() {
         } else {
             item.style.display = 'block';
         }
+        
+        // Add swipe indicator containers to each item
+        const swipeIndicators = document.createElement('div');
+        swipeIndicators.className = 'swipe-indicators';
+        
+        // Create left (bad) indicator
+        const leftIndicator = document.createElement('div');
+        leftIndicator.className = 'swipe-indicator left-indicator';
+        leftIndicator.innerHTML = '<i class="fa fa-times"></i><span>Reject</span>';
+        
+        // Create right (good) indicator
+        const rightIndicator = document.createElement('div');
+        rightIndicator.className = 'swipe-indicator right-indicator';
+        rightIndicator.innerHTML = '<i class="fa fa-check"></i><span>Accept</span>';
+        
+        swipeIndicators.appendChild(leftIndicator);
+        swipeIndicators.appendChild(rightIndicator);
+        item.appendChild(swipeIndicators);
     });
-    
+   
+    // Add Font Awesome for icons if not already present
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        document.head.appendChild(fontAwesome);
+    }
+   
     let currentIndex = 0;
-    
+   
     // Touch event variables
     let startX, moveX, startTime;
     const minSwipeDistance = 50; // Minimum distance for a swipe to be registered
-    
+   
     // Add touch event listeners
     carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
     carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
     carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
-    
+   
     function handleTouchStart(e) {
         startX = e.touches[0].clientX;
         startTime = new Date().getTime();
-        
+       
         // Get the current visible item and prepare it for animation
         const currentItem = carouselItems[currentIndex];
         currentItem.style.transition = 'none';
     }
-    
+   
     function handleTouchMove(e) {
         if (!startX) return;
-        
+       
         moveX = e.touches[0].clientX;
         const diff = moveX - startX;
-        
+       
         // Move the current item with the finger
         const currentItem = carouselItems[currentIndex];
         currentItem.style.transform = `translateX(${diff}px)`;
+        
+        // Show and animate the appropriate indicator based on swipe direction
+        const leftIndicator = currentItem.querySelector('.left-indicator');
+        const rightIndicator = currentItem.querySelector('.right-indicator');
+        
+        if (diff < 0) {
+            // Swiping left (reject)
+            const opacity = Math.min(Math.abs(diff) / 150, 1);
+            leftIndicator.style.opacity = opacity;
+            leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
+            rightIndicator.style.opacity = 0;
+            
+            // Add a red tint to the card when swiping left
+            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 10}px rgba(255, 0, 0, ${opacity * 0.5})`;
+            currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.3})`;
+        } else if (diff > 0) {
+            // Swiping right (accept)
+            const opacity = Math.min(Math.abs(diff) / 150, 1);
+            rightIndicator.style.opacity = opacity;
+            rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
+            leftIndicator.style.opacity = 0;
+            
+            // Add a green tint to the card when swiping right
+            currentItem.style.boxShadow = `0 0 ${Math.abs(diff) / 10}px rgba(0, 255, 0, ${opacity * 0.5})`;
+            currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.3})`;
+        }
+        
+        // Add rotation for a more natural feel
+        const rotation = diff / 20; // Adjust divisor for more/less rotation
+        currentItem.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
     }
-    
+   
     function handleTouchEnd(e) {
         if (!startX || !moveX) return;
-        
+       
         const currentItem = carouselItems[currentIndex];
         const diff = moveX - startX;
         const swipeTime = new Date().getTime() - startTime;
-        
-        // Reset styles first
-        currentItem.style.transition = 'transform 0.3s ease-out';
-        
+       
+        // Reset transition for smooth animation
+        currentItem.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
+       
         // If swipe is significant enough or fast enough
         if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
             // Decide direction based on swipe
             if (diff < 0) {
-                // Swipe left - show next item
-                showNextItem();
+                // Swipe left - show next item with reject animation
+                currentItem.style.transform = `translateX(-150%) rotate(-10deg)`;
+                currentItem.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
+                
+                // Add vibration for rejection if supported
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+                
+                // Show the next item after animation
+                setTimeout(() => {
+                    showNextItem();
+                    resetCardStyles(currentItem);
+                }, 300);
             } else {
-                // Swipe right - show previous item
-                showPreviousItem();
+                // Swipe right - show previous item with accept animation
+                currentItem.style.transform = `translateX(150%) rotate(10deg)`;
+                currentItem.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.5)';
+                
+                // Show confetti effect for acceptance
+                showConfettiEffect();
+                
+                // Show the next item after animation
+                setTimeout(() => {
+                    showNextItem();
+                    resetCardStyles(currentItem);
+                }, 300);
             }
         } else {
-            // Not a strong enough swipe, return to center
-            currentItem.style.transform = 'translateX(0)';
+            // Not a strong enough swipe, return to center with animation
+            resetCardStyles(currentItem);
         }
-        
+       
         // Reset variables
         startX = null;
         moveX = null;
     }
     
-    function showNextItem() {
-        // Hide current item with animation
-        const currentItem = carouselItems[currentIndex];
-        currentItem.style.transform = 'translateX(-100%)';
+    function resetCardStyles(item) {
+        item.style.transform = 'translateX(0) rotate(0deg)';
+        item.style.boxShadow = 'none';
+        item.style.backgroundColor = '';
         
-        setTimeout(() => {
-            currentItem.style.display = 'none';
-            currentItem.style.transform = 'translateX(0)';
-            
-            // Update index
-            currentIndex = (currentIndex + 1) % carouselItems.length;
-            
-            // Show next item
-            const nextItem = carouselItems[currentIndex];
-            nextItem.style.display = 'block';
-            nextItem.style.transform = 'translateX(0)';
-        }, 300);
+        // Reset indicators
+        const leftIndicator = item.querySelector('.left-indicator');
+        const rightIndicator = item.querySelector('.right-indicator');
+        if (leftIndicator) leftIndicator.style.opacity = 0;
+        if (rightIndicator) rightIndicator.style.opacity = 0;
+    }
+    
+    function showNextItem() {
+        // Hide current item
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'none';
+        }
+        
+        // Move to next item or loop back to first
+        currentIndex = (currentIndex + 1) % carouselItems.length;
+        
+        // Show next item
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'block';
+            resetCardStyles(carouselItems[currentIndex]);
+        }
     }
     
     function showPreviousItem() {
-        // Hide current item with animation
-        const currentItem = carouselItems[currentIndex];
-        currentItem.style.transform = 'translateX(100%)';
+        // Hide current item
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'none';
+        }
         
+        // Move to previous item or loop to last
+        currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+        
+        // Show previous item
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'block';
+            resetCardStyles(carouselItems[currentIndex]);
+        }
+    }
+    
+    // Function to show confetti effect on successful swipe
+    function showConfettiEffect() {
+        // Create confetti container if it doesn't exist
+        let confettiContainer = document.getElementById('confetti-container');
+        if (!confettiContainer) {
+            confettiContainer = document.createElement('div');
+            confettiContainer.id = 'confetti-container';
+            document.body.appendChild(confettiContainer);
+        }
+        
+        // Clear previous confetti
+        confettiContainer.innerHTML = '';
+        
+        // Create confetti particles
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = `${Math.random() * 100}%`;
+            confetti.style.animationDelay = `${Math.random() * 2}s`;
+            confetti.style.backgroundColor = getRandomConfettiColor();
+            confettiContainer.appendChild(confetti);
+        }
+        
+        // Remove confetti after animation completes
         setTimeout(() => {
-            currentItem.style.display = 'none';
-            currentItem.style.transform = 'translateX(0)';
-            
-            // Update index
-            currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-            
-            // Show previous item
-            const prevItem = carouselItems[currentIndex];
-            prevItem.style.display = 'block';
-            prevItem.style.transform = 'translateX(0)';
-        }, 300);
+            confettiContainer.innerHTML = '';
+        }, 3000);
+    }
+    
+    function getRandomConfettiColor() {
+        const colors = ['#00E676', '#76FF03', '#C6FF00', '#FFEB3B', '#FFC107', '#FF9800'];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 }
+function addSwipeStyling() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .swipe-indicators {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .swipe-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%) scale(0.5);
+            opacity: 0;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s, transform 0.2s;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .left-indicator {
+            left: 20px;
+            background-color: #FF3B30;
+            box-shadow: 0 0 10px rgba(255, 59, 48, 0.5);
+        }
+        
+        .right-indicator {
+            right: 20px;
+            background-color: #34C759;
+            box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
+        }
+        
+        .swipe-indicator i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .swipe-indicator span {
+            font-size: 14px;
+        }
+        
+        /* Confetti animation */
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            top: -10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: fall 3s linear forwards;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Card animations */
+        .item-container-mobile {
+            position: relative;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out;
+        }
+        
+        /* Initial instructions overlay */
+        .swipe-instructions {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            opacity: 0.9;
+            transition: opacity 0.5s;
+            border-radius: 3vw;
+        }
+        
+        .swipe-instructions h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .swipe-instructions p {
+            margin: 10px 0;
+            font-size: 16px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .swipe-instructions .instruction-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        .swipe-instructions .instruction-right .instruction-icon {
+            color: #34C759;
+        }
+        
+        .swipe-instructions .instruction-left .instruction-icon {
+            color: #FF3B30;
+        }
+        
+        .swipe-instructions button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007AFF;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+
+// Function to add initial instructions overlay
+function addSwipeInstructions() {
+    // Add instructions only to the first card
+    const firstCard = document.querySelector('.item-container-mobile');
+    if (!firstCard) return;
+    
+    const instructions = document.createElement('div');
+    instructions.className = 'swipe-instructions';
+    instructions.innerHTML = `
+        <h3>Swipe to Choose</h3>
+        <p class="instruction-right">
+            <i class="fa fa-check instruction-icon"></i>
+            Swipe RIGHT to ACCEPT
+        </p>
+        <p class="instruction-left">
+            <i class="fa fa-times instruction-icon"></i>
+            Swipe LEFT to REJECT
+        </p>
+        <button id="got-it-btn">Got it!</button>
+    `;
+    
+    firstCard.appendChild(instructions);
+    
+    // Add event listener to dismiss instructions
+    setTimeout(() => {
+        const gotItBtn = document.getElementById('got-it-btn');
+        if (gotItBtn) {
+            gotItBtn.addEventListener('click', () => {
+                instructions.style.opacity = '0';
+                setTimeout(() => {
+                    instructions.remove();
+                }, 500);
+            });
+        }
+    }, 0);
+}
+
+// Call these functions when the document is ready
+document.addEventListener('DOMContentLoaded', function() {
+    addSwipeStyling();
+    
+    // The original initialization will call setupMobileCarousel
+    initializeCarousel();
+    
+    // Add instructions once the carousel is loaded
+    setTimeout(addSwipeInstructions, 500);
+});
