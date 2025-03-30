@@ -753,78 +753,88 @@ function setupMobileCarousel() {
         }
     }
 
+   
+
+    function extractDayFromItem(item) {
+        // Try to find a subtitle element
+        const subtitle = item.querySelector('.description-subtitle-mobile');
+        if (subtitle) {
+            const dateRegex = /(\d+)\s+de\s+(\w+)(?:\s+de\s+(\d{4}))?/i;
+            const match = subtitle.textContent.match(dateRegex);
+            if (match) {
+                return parseInt(match[1], 10);
+            }
+        }
+        
+        // Default to 1 if we couldn't find it
+        return 1;
+    }
+
+    function extractMonthFromItem(item) {
+        // Month name to number mapping
+        const monthMap = {
+            'janeiro': 1,
+            'fevereiro': 2,
+            'março': 3,
+            'abril': 4,
+            'maio': 5, 
+            'junho': 6,
+            'julho': 7,
+            'agosto': 8,
+            'setembro': 9,
+            'outubro': 10,
+            'novembro': 11,
+            'dezembro': 12
+        };
+        
+        // Try to find a subtitle element
+        const subtitle = item.querySelector('.description-subtitle-mobile');
+        if (subtitle) {
+            const dateRegex = /(\d+)\s+de\s+(\w+)(?:\s+de\s+(\d{4}))?/i;
+            const match = subtitle.textContent.match(dateRegex);
+            if (match && match[2]) {
+                return monthMap[match[2].toLowerCase()] || 1;
+            }
+        }
+        
+        // Default to 1 (January) if we couldn't find it
+        return 1;
+    }
+
+    function createDateValue(day, month, year) {
+        // Ensure all values are numbers
+        const d = parseInt(day, 10) || 1;
+        const m = parseInt(month, 10) || 1;
+        const y = parseInt(year, 10) || new Date().getFullYear();
+        
+        // Create a numeric date value (YYYYMMDD format)
+        return (y * 10000) + (m * 100) + d;
+    }
+
+    function showEndOfEventsMessage() {
+        const itemContainer = document.querySelector('.item-group-mobile');
+        if (itemContainer && !itemContainer.querySelector('#endOfEvents')) {
+            // Create an end-of-events message
+            const endMessage = document.createElement('div');
+            endMessage.id = 'endOfEvents';
+            endMessage.className = 'item-container-mobile end-events-message';
+            endMessage.innerHTML = `
+                <div class="no-more-events">
+                    <img src="images/nextDay.png" alt="Fim dos eventos">
+                    <h3>Não há mais eventos!</h3>
+                    <p>Verifica mais tarde para novas oportunidades.</p>
+                </div>
+            `;
+            
+            // Append the message to the item container
+            itemContainer.appendChild(endMessage);
+        }
+    }
+    
     function showNextItem() {
         // Hide current item
         if (carouselItems[currentIndex]) {
             carouselItems[currentIndex].style.display = 'none';
-        }
-        
-        const today = new Date();
-        const currentDay = today.getDate();
-        const currentMonth = today.getMonth(); // JavaScript months are 0-11
-        const currentYear = today.getFullYear();
-        
-        // Map of month names to their numerical values (0-11 to match JavaScript)
-        const monthMap = {
-            'janeiro': 0,      // January is 0 in JavaScript Date
-            'fevereiro': 1,
-            'março': 2,
-            'abril': 3,
-            'maio': 4,
-            'junho': 5,
-            'julho': 6,
-            'agosto': 7,
-            'setembro': 8,
-            'outubro': 9,
-            'novembro': 10,
-            'dezembro': 11     // December is 11 in JavaScript Date
-        };
-        
-        // Group items by date (YYYYMMDD format)
-        let dateGroups = {};
-        let orderedDates = [];
-        
-        // First pass: group items by date and identify ordered dates
-        for (let i = 0; i < carouselItems.length; i++) {
-            const item = carouselItems[i];
-            
-            // Get item date information
-            const itemDay = parseInt(item.day, 10);
-            const itemMonthNum = typeof item.month === 'string' ?
-                monthMap[item.month.toLowerCase()] :
-                parseInt(item.month, 10) - 1; // Subtract 1 if numeric (JS months are 0-11)
-            const itemYear = item.year ? parseInt(item.year, 10) : currentYear;
-            
-            // Create date key in format YYYYMMDD
-            const dateKey = (itemYear * 10000) + ((itemMonthNum + 1) * 100) + itemDay;
-            
-            if (!dateGroups[dateKey]) {
-                dateGroups[dateKey] = [];
-                orderedDates.push(dateKey);
-            }
-            
-            dateGroups[dateKey].push(i); // Store the index of the item
-        }
-        
-        // Sort dates in ascending order
-        orderedDates.sort((a, b) => a - b);
-        
-        // Find the current date's position in orderedDates
-        const todayDateKey = (currentYear * 10000) + ((currentMonth + 1) * 100) + currentDay;
-        let currentDateIndex = orderedDates.indexOf(todayDateKey);
-        
-        // If today's date is not found, start with the nearest future date
-        if (currentDateIndex === -1) {
-            for (let i = 0; i < orderedDates.length; i++) {
-                if (orderedDates[i] > todayDateKey) {
-                    currentDateIndex = i - 1;
-                    break;
-                }
-            }
-            // If no future date, start with the last date
-            if (currentDateIndex === -1) {
-                currentDateIndex = orderedDates.length - 1;
-            }
         }
         
         // Increment to next item
@@ -836,127 +846,60 @@ function setupMobileCarousel() {
             return;
         }
         
-        // Determine which date group the current index belongs to
-        let currentDateKey = null;
-        let currentGroupIndex = -1;
+        // Get current date
+        const today = new Date();
+        const currentDay = today.getDate();
+        const currentMonth = today.getMonth(); // 0-11
+        const currentYear = today.getFullYear();
         
-        for (let dateKey of orderedDates) {
-            const group = dateGroups[dateKey];
-            if (group.includes(currentIndex)) {
-                currentDateKey = dateKey;
-                currentGroupIndex = orderedDates.indexOf(dateKey);
-                break;
-            }
+        // Create a date value for today (YYYYMMDD format)
+        const todayDateValue = (currentYear * 10000) + ((currentMonth + 1) * 100) + currentDay;
+        
+        // Group items by date
+        let lastDateValue = 0;
+        let currentDateValue = 0;
+        
+        // Get date for previous item (if exists)
+        if (currentIndex > 0) {
+            const prevItem = carouselItems[currentIndex - 1];
+            
+            // Try to extract date info from the item
+            const prevDay = prevItem.getAttribute('data-day') || extractDayFromItem(prevItem);
+            const prevMonth = prevItem.getAttribute('data-month') || extractMonthFromItem(prevItem);
+            const prevYear = prevItem.getAttribute('data-year') || currentYear;
+            
+            // Create a numeric date value (YYYYMMDD)
+            lastDateValue = createDateValue(prevDay, prevMonth, prevYear);
         }
         
-        // If we're moving to a new date, show the "next day" image
-        if (currentGroupIndex > 0 && 
-            dateGroups[orderedDates[currentGroupIndex-1]].includes(currentIndex-1)) {
+        // Get date for current item
+        const currentItem = carouselItems[currentIndex];
+        const itemDay = currentItem.getAttribute('data-day') || extractDayFromItem(currentItem);
+        const itemMonth = currentItem.getAttribute('data-month') || extractMonthFromItem(currentItem);
+        const itemYear = currentItem.getAttribute('data-year') || currentYear;
+        
+        // Create a numeric date value (YYYYMMDD)
+        currentDateValue = createDateValue(itemDay, itemMonth, itemYear);
+        
+        // If we're moving to a new date, show the "next day" transition
+        if (lastDateValue > 0 && currentDateValue > lastDateValue) {
             showNextDayImage();
             // Call this function again after a delay to show the next item
-            setTimeout(showNextItem, 1500);
+            setTimeout(() => {
+                // Show the current item
+                carouselItems[currentIndex].style.display = 'block';
+                resetCardStyles(carouselItems[currentIndex]);
+            }, 1500);
             return;
         }
         
         // Show the current item
         carouselItems[currentIndex].style.display = 'block';
         resetCardStyles(carouselItems[currentIndex]);
+        }
     }
 
-    function showEndOfEventsMessage() {
-        const itemContainer = document.querySelector('.item-group-mobile');
-        if (itemContainer && !itemContainer.querySelector('img#endOfEvents')) {
-            // Create an <img> element for end of all events
-            const img = document.createElement('img');
-            img.src = 'images/nextDay.png';
-            img.alt = 'Não há mais eventos!';
-            img.id = 'endOfEvents';
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                #endOfEvents {
-                    pointer-events: none;
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Append the image to the item container
-            itemContainer.appendChild(img);
-        }
-    }
-    
-    function showNextItem() {
-        // Hide current item
-        if (carouselItems[currentIndex]) {
-            carouselItems[currentIndex].style.display = 'none';
-        }
-        currentIndex = (currentIndex + 1);
-        
-        // If we've reached the end of the carousel items
-        if (currentIndex >= carouselItems.length) {
-            // Display "no more events" message
-            const itemContainer = document.querySelector('.item-group-mobile');
-            if (itemContainer && !itemContainer.querySelector('img[src="images/nextDay.png"]')) {
-                // Create an <img> element only if it doesn't already exist
-                const img = document.createElement('img');
-                
-                // Set the image source and alt attributes
-                img.src = 'images/nextDay.png'; // Replace with the actual image path
-                img.alt = 'Não há mais eventos para o dia!'; // Replace with a meaningful description
-                img.id = 'nextDay';
-                
-                const style = document.createElement('style');
-                style.textContent = `
-                    #nextDay {
-                        pointer-events: none;
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                // Append the image to the item container
-                itemContainer.appendChild(img);
-            }
-            return;
-        }
-        
-        // Get current date
-        const today = new Date();
-        const currentDay = today.getDate(); // Gets day of month (1-31)
-        
-        // Convert month name to number for comparison
-        const monthMap = {
-            'janeiro': 0,      // January is 0 in JavaScript Date
-            'fevereiro': 1,
-            'março': 2,
-            'abril': 3,
-            'maio': 4, 
-            'junho': 5,
-            'julho': 6,
-            'agosto': 7,
-            'setembro': 8,
-            'outubro': 9,
-            'novembro': 10,
-            'dezembro': 11     // December is 11 in JavaScript Date
-        };
-        
-        // Get the current item's month as a number
-        const itemMonthNum = typeof carouselItems[currentIndex].month === 'string' ? 
-            monthMap[carouselItems[currentIndex].month.toLowerCase()] : 
-            parseInt(carouselItems[currentIndex].month, 10) - 1; // Subtract 1 if numeric (JS months are 0-11)
-        
-        // Compare day and month
-        if (carouselItems[currentIndex].day == currentDay && itemMonthNum == today.getMonth()) {
-            // Show next item
-            carouselItems[currentIndex].style.display = 'block';
-            resetCardStyles(carouselItems[currentIndex]);
-            
-        } else {
-            // Not today's event, just show it normally
-            carouselItems[currentIndex].style.display = 'block';
-            resetCardStyles(carouselItems[currentIndex]);
-        }
-    }
-}
+
 // Function to add initial instructions overlay
 function addSwipeInstructions() {
     // Add instructions only to the first card
