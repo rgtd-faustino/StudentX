@@ -71,13 +71,13 @@
                 <div class="hamburger-line2"></div>
                 <div class="hamburger-line3"></div>
             </div>
-        
+    
             <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
             <div class="menu-content">
                 <ul class="nav-items">
                     <li><a href="/">Início</a></li>
-                    <li><a href="/oportunidades/">Oportunidades</a></li>
-                    <li><a href="/#opportunityTitle">Calendário</a></li>
+                    <li id="opportunities-item-mobile"><a href="/#logo1">Oportunidades</a></li>
+                    <li id="opportunities-item-pc"><a href="/oportunidades/">Oportunidades</a></li>
                     <li><a href="/#studentx-ajuda-title">Modus Operandi</a></li>
                     <li><a href="/#questoes-frequentes-title">FAQ</a></li>
                 </ul>
@@ -86,7 +86,6 @@
                         <a href="/" class="contribui-button">Contribui</a>
                         <div class="tooltip">Ajuda-nos a manter a StudentX ativa através de pequenas, mas imprescindíveis doações, de modo a que consigamos oferecer conteúdo de qualidade.</div>
                       </div>
-                    <a href="/contacto/" class="contact-button">Contacta-nos</a>
                 </div>
             </div>
         </nav>
@@ -322,12 +321,11 @@
             // Disable scrolling when the overlay is displayed
             document.body.classList.add('no-scroll');
         
-            /*video.addEventListener('ended', function () {
+            video.addEventListener('ended', function () {
                 overlay.style.display = 'none';
                 document.body.classList.remove('no-scroll'); // Re-enable scrolling
-            });*/
+            });
         </script>
-    
         
         <script defer src="/js/script.js"></script>
         <script defer src="/js/cookie-banner.js"></script>

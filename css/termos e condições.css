@@ -458,6 +458,72 @@ input[type="checkbox"] {
     text-align: center;
     margin-top: 1vw;
 }
+#opportunities-item-mobile{
+    display: none;
+}
+
+
+.opportunityTitleMobile{
+    font-size: 2.5vw;
+    margin-left:5vw;
+    position:relative;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    margin-bottom:4vw;
+    text-align: left;
+    display:none;
+}
+
+
+.opportunityTitlePC{
+    font-size: 2.5vw;
+    margin-left:5vw;
+    position:relative;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    margin-bottom:4vw;
+    text-align: left;
+}
+
+
+    
+#opportunities-item-pc{
+    display: none;
+}
+#opportunities-item-mobile{
+    display: block;
+}
+
+
+.opportunityTitleMobile{
+    font-size: 5vw;
+    margin-left:5vw;
+    position:relative;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    margin-bottom:0vw;
+    margin-top:5vw;
+    text-align: left;
+
+}
+
+
+.opportunityTitlePC{
+font-size: 5vw;
+margin-left:5vw;
+position:relative;
+font-family: 'Inter', sans-serif;
+font-style: normal;
+font-weight: 200;
+margin-bottom:2vw;
+margin-top:10vw;
+text-align: left;
+display:none;
+
+}
 
 .privacy-policy a {
     color: var(--primary-color);
