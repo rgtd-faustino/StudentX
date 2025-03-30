@@ -717,24 +717,19 @@ function setupMobileCarousel() {
     }
     
     function showNextItem() {
-        // Hide current item
-        if (carouselItems[currentIndex]) {
-            carouselItems[currentIndex].style.display = 'none';
-        }
-        currentIndex = (currentIndex + 1);
-        
-        // If we've reached the end of the carousel items
-        if (currentIndex >= carouselItems.length) {
-            // Display "no more events" message
+        // Check if next item would be beyond the end
+        if (currentIndex + 1 >= carouselItems.length) {
+            // Create "no more events" message if it doesn't exist yet
             const itemContainer = document.querySelector('.item-group-mobile');
-            if (itemContainer && !itemContainer.querySelector('img[src="images/nextDay.png"]')) {
-                // Create an <img> element only if it doesn't already exist
-                const img = document.createElement('img');
-                
-                // Set the image source and alt attributes
-                img.src = 'images/nextDay.png'; // Replace with the actual image path
-                img.alt = 'Não há mais eventos para o dia!'; // Replace with a meaningful description
-                img.id = 'nextDay';
+            let nextDayImg = itemContainer.querySelector('img[src="images/nextDay.png"]');
+            
+            if (!nextDayImg) {
+                // Create the image only if it doesn't already exist
+                nextDayImg = document.createElement('img');
+                nextDayImg.src = 'images/nextDay.png';
+                nextDayImg.alt = 'Não há mais eventos para o dia!';
+                nextDayImg.id = 'nextDay';
+                nextDayImg.style.display = 'none'; // Initially hidden
                 
                 const style = document.createElement('style');
                 style.textContent = `
@@ -745,14 +740,27 @@ function setupMobileCarousel() {
                 document.head.appendChild(style);
                 
                 // Append the image to the item container
-                itemContainer.appendChild(img);
+                itemContainer.appendChild(nextDayImg);
             }
+            
+            // Now hide current item and show nextDay
+            if (carouselItems[currentIndex]) {
+                carouselItems[currentIndex].style.display = 'none';
+            }
+            nextDayImg.style.display = 'block';
+            currentIndex++; // Still increment the index
             return;
         }
         
+        // Normal case - hide current, show next
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'none';
+        }
+        currentIndex = (currentIndex + 1);
+        
         // Get current date
         const today = new Date();
-        const currentDay = today.getDate(); // Gets day of month (1-31)
+        const currentDay = today.getDate();
         
         // Convert month name to number for comparison
         const monthMap = {
