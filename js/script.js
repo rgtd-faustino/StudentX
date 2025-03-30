@@ -426,6 +426,7 @@ function setupDesktopCarousel() {
 }
 
 function setupMobileCarousel() {
+    let isSwipeLocked = false;
     const carouselContainer = document.querySelector('.carousel-container-mobile');
     const itemGroup = document.querySelector('.item-group-mobile');
     const arrowsAndDots = document.querySelector('.arrows-and-dots');
@@ -502,6 +503,9 @@ function setupMobileCarousel() {
     });
    
     function handleTouchStart(e) {
+        // Prevent starting a new swipe if locked
+        if (isSwipeLocked) return;
+        
         // Cancel any ongoing animation
         if (animationRequest) {
             cancelAnimationFrame(animationRequest);
@@ -513,7 +517,7 @@ function setupMobileCarousel() {
         initialTouchY = e.touches[0].clientY;
         startTime = new Date().getTime();
         isHorizontalSwipe = null; // Reset direction detection
-       
+        
         // Get the current visible item and prepare it for animation
         currentItem = carouselItems[currentIndex];
         if (currentItem) {
@@ -607,7 +611,6 @@ function setupMobileCarousel() {
         if (!isTouchActive) return;
         
         // Store a local reference to the current item and indicators
-        // This ensures we have access even if they're reset during the animation
         const item = currentItem;
         const leftInd = leftIndicator;
         const rightInd = rightIndicator;
@@ -628,6 +631,9 @@ function setupMobileCarousel() {
         if (item && isHorizontal === true) {
             // If swipe is significant enough or fast enough to count as an intentional swipe
             if (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300)) {
+                // Lock swipes during animation
+                isSwipeLocked = true;
+                
                 // Calculate direction
                 const isLeftSwipe = diff < 0;
                 
@@ -675,17 +681,32 @@ function setupMobileCarousel() {
                         setTimeout(() => {
                             showNextItem();
                             resetCardStyles(item);
+                            // Unlock swipes after the full animation sequence is complete
+                            isSwipeLocked = false;
                         }, 300);
+                    } else {
+                        // Unlock swipes if item becomes invalid
+                        isSwipeLocked = false;
                     }
                 }, 400);
             } else {
                 // Not a strong enough swipe, return to center with animation
+                isSwipeLocked = true;
                 item.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
                 resetCardStyles(item);
+                
+                // Unlock after the reset animation completes
+                setTimeout(() => {
+                    isSwipeLocked = false;
+                }, 300);
             }
         } else if (item) {
             // If it wasn't a horizontal swipe but we have an item, just reset the card
+            isSwipeLocked = true;
             resetCardStyles(item);
+            setTimeout(() => {
+                isSwipeLocked = false;
+            }, 300);
         }
     }
     
