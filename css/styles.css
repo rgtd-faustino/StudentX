@@ -610,6 +610,8 @@ nav {
     transition: transform 0.3s ease-in-out;
     z-index: 3;
     gap: 5%;
+    height: 100%;
+    width:100%;
 }
 
 .item-container-mobile {
@@ -619,6 +621,15 @@ nav {
     border: 0.1vw solid rgba(52, 52, 52, 0.25);
     border-radius: 1vw;
     transition: transform 0.3s ease-in-out;
+    height: 100%;
+    width:100%;
+}
+
+.item-container-mobile img {
+    max-width: 500px; /* Maximum width of 500 pixels */
+    max-height: 16vw; /* Maximum height of 300 pixels */
+    width: 100%; /* Optional: Makes the element responsive */
+    height: auto; 
 }
 
 .item-container-mobile:first-child {
