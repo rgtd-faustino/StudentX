@@ -2393,7 +2393,10 @@ input[type="checkbox"] {
     }
 
     .item-container-mobile img {
-        all: unset;
+        max-width: 100%; /* Maximum width of 500 pixels */
+        max-height: 60vw; /* Maximum height of 300 pixels */
+        width: 100%; /* Optional: Makes the element responsive */
+        height: auto; 
     }
     
     
