@@ -366,7 +366,13 @@ function setupDesktopCarousel() {
     
     let currentIndexPC = 0;
     const itemsPerViewPC = 4;
-    const totalItems = document.querySelectorAll('.item-container-mobile').length || 12;
+    let totalItems;
+
+    if(document.querySelectorAll('.item-container-mobile').length <= 12){
+       totalItems = document.querySelectorAll('.item-container-mobile').length;
+    } else {
+        totalItems = 12;
+    }
     
     function updateTransformPC() {
         // Calculate the percentage translation based on currentIndex
