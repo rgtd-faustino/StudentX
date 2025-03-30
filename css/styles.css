@@ -626,7 +626,7 @@ nav {
 }
 
 .item-container-mobile img {
-    max-width: 500px; /* Maximum width of 500 pixels */
+    max-width: 100%; /* Maximum width of 500 pixels */
     max-height: 16vw; /* Maximum height of 300 pixels */
     width: 100%; /* Optional: Makes the element responsive */
     height: auto; 
@@ -2391,6 +2391,11 @@ input[type="checkbox"] {
         position: relative;
         transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out;
     }
+
+    .item-container-mobile img {
+        all: unset;
+    }
+    
     
     /* Initial instructions overlay */
     .swipe-instructions {
