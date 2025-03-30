@@ -715,6 +715,175 @@ function setupMobileCarousel() {
         if (leftInd) leftInd.style.opacity = 0;
         if (rightInd) rightInd.style.opacity = 0;
     }
+
+    function showNextDayImage() {
+        const itemContainer = document.querySelector('.item-group-mobile');
+        if (itemContainer) {
+            // Create an <img> element for next day transition
+            const img = document.createElement('img');
+            img.src = 'images/nextDay.png';
+            img.alt = 'Próximo dia';
+            img.id = 'nextDayTransition';
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                #nextDayTransition {
+                    pointer-events: none;
+                    animation: fadeInOut 1.5s ease;
+                }
+                
+                @keyframes fadeInOut {
+                    0% { opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Append the image to the item container
+            itemContainer.appendChild(img);
+            
+            // Remove the image after animation
+            setTimeout(() => {
+                const transitionImg = document.getElementById('nextDayTransition');
+                if (transitionImg) {
+                    transitionImg.remove();
+                }
+            }, 1500);
+        }
+    }
+
+    function showNextItem() {
+        // Hide current item
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'none';
+        }
+        
+        const today = new Date();
+        const currentDay = today.getDate();
+        const currentMonth = today.getMonth(); // JavaScript months are 0-11
+        const currentYear = today.getFullYear();
+        
+        // Map of month names to their numerical values (0-11 to match JavaScript)
+        const monthMap = {
+            'janeiro': 0,      // January is 0 in JavaScript Date
+            'fevereiro': 1,
+            'março': 2,
+            'abril': 3,
+            'maio': 4,
+            'junho': 5,
+            'julho': 6,
+            'agosto': 7,
+            'setembro': 8,
+            'outubro': 9,
+            'novembro': 10,
+            'dezembro': 11     // December is 11 in JavaScript Date
+        };
+        
+        // Group items by date (YYYYMMDD format)
+        let dateGroups = {};
+        let orderedDates = [];
+        
+        // First pass: group items by date and identify ordered dates
+        for (let i = 0; i < carouselItems.length; i++) {
+            const item = carouselItems[i];
+            
+            // Get item date information
+            const itemDay = parseInt(item.day, 10);
+            const itemMonthNum = typeof item.month === 'string' ?
+                monthMap[item.month.toLowerCase()] :
+                parseInt(item.month, 10) - 1; // Subtract 1 if numeric (JS months are 0-11)
+            const itemYear = item.year ? parseInt(item.year, 10) : currentYear;
+            
+            // Create date key in format YYYYMMDD
+            const dateKey = (itemYear * 10000) + ((itemMonthNum + 1) * 100) + itemDay;
+            
+            if (!dateGroups[dateKey]) {
+                dateGroups[dateKey] = [];
+                orderedDates.push(dateKey);
+            }
+            
+            dateGroups[dateKey].push(i); // Store the index of the item
+        }
+        
+        // Sort dates in ascending order
+        orderedDates.sort((a, b) => a - b);
+        
+        // Find the current date's position in orderedDates
+        const todayDateKey = (currentYear * 10000) + ((currentMonth + 1) * 100) + currentDay;
+        let currentDateIndex = orderedDates.indexOf(todayDateKey);
+        
+        // If today's date is not found, start with the nearest future date
+        if (currentDateIndex === -1) {
+            for (let i = 0; i < orderedDates.length; i++) {
+                if (orderedDates[i] > todayDateKey) {
+                    currentDateIndex = i - 1;
+                    break;
+                }
+            }
+            // If no future date, start with the last date
+            if (currentDateIndex === -1) {
+                currentDateIndex = orderedDates.length - 1;
+            }
+        }
+        
+        // Increment to next item
+        currentIndex++;
+        
+        // If we've reached the end of all carousel items
+        if (currentIndex >= carouselItems.length) {
+            showEndOfEventsMessage();
+            return;
+        }
+        
+        // Determine which date group the current index belongs to
+        let currentDateKey = null;
+        let currentGroupIndex = -1;
+        
+        for (let dateKey of orderedDates) {
+            const group = dateGroups[dateKey];
+            if (group.includes(currentIndex)) {
+                currentDateKey = dateKey;
+                currentGroupIndex = orderedDates.indexOf(dateKey);
+                break;
+            }
+        }
+        
+        // If we're moving to a new date, show the "next day" image
+        if (currentGroupIndex > 0 && 
+            dateGroups[orderedDates[currentGroupIndex-1]].includes(currentIndex-1)) {
+            showNextDayImage();
+            // Call this function again after a delay to show the next item
+            setTimeout(showNextItem, 1500);
+            return;
+        }
+        
+        // Show the current item
+        carouselItems[currentIndex].style.display = 'block';
+        resetCardStyles(carouselItems[currentIndex]);
+    }
+
+    function showEndOfEventsMessage() {
+        const itemContainer = document.querySelector('.item-group-mobile');
+        if (itemContainer && !itemContainer.querySelector('img#endOfEvents')) {
+            // Create an <img> element for end of all events
+            const img = document.createElement('img');
+            img.src = 'images/nextDay.png';
+            img.alt = 'Não há mais eventos!';
+            img.id = 'endOfEvents';
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                #endOfEvents {
+                    pointer-events: none;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Append the image to the item container
+            itemContainer.appendChild(img);
+        }
+    }
     
     function showNextItem() {
         // Hide current item
