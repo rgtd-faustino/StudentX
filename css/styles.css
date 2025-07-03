@@ -577,6 +577,10 @@ nav {
 
 
 
+    #opportunities-item{
+        display: block;
+    }
+
 
 
 
@@ -639,16 +643,6 @@ nav {
 .item {
     width: calc(100% / 4); /* Adjust based on the itemsPerView */
 }
-
-
-
-
-
-#opportunities-item-mobile{
-    display: none;
-}
-
-
 
 
 
@@ -2790,13 +2784,6 @@ input[type="checkbox"] {
 
 
 
-    #opportunities-item-pc{
-        display: none;
-    }
-    #opportunities-item-mobile{
-        display: block;
-    }
-
 
     .opportunityTitleMobile{
         font-size: 5vw;
@@ -3527,12 +3514,6 @@ input[type="checkbox"] {
       #inicio-button-container {
         display:none;
       }
-
-
-
-
-
-
 
 
       .blue-box {
