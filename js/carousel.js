@@ -735,8 +735,18 @@ function addAcceptedItem(item) {
         dateValue: item._dateValue || null
     };
     
-    acceptedItems.push(itemData);
-    setEssentialData('userEventPreferences_accepted', acceptedItems);
+    // Check if this event is already in the accepted list
+    const isDuplicate = acceptedItems.some(existingItem => 
+        existingItem.descriptionTitle === itemData.descriptionTitle && 
+        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
+        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
+    );
+    
+    // Only add if it's not a duplicate
+    if (!isDuplicate) {
+        acceptedItems.push(itemData);
+        setEssentialData('userEventPreferences_accepted', acceptedItems);
+    }
 }
 
 function addRejectedItem(item) {
@@ -752,8 +762,18 @@ function addRejectedItem(item) {
         dateValue: item._dateValue || null
     };
     
-    rejectedItems.push(itemData);
-    setEssentialData('userEventPreferences_rejected', rejectedItems);
+    // Check if this event is already in the rejected list
+    const isDuplicate = rejectedItems.some(existingItem => 
+        existingItem.descriptionTitle === itemData.descriptionTitle && 
+        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
+        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
+    );
+    
+    // Only add if it's not a duplicate
+    if (!isDuplicate) {
+        rejectedItems.push(itemData);
+        setEssentialData('userEventPreferences_rejected', rejectedItems);
+    }
 }
 
 // Function to clean up old preferences (optional - helps with storage management)
@@ -806,16 +826,21 @@ function getUserPreferenceStats() {
 function hasUserInteractedWithEvent(eventItem) {
     const eventTitle = eventItem.querySelector('.description-title-mobile')?.textContent || '';
     const eventSubtitle = eventItem.querySelector('.description-subtitle-mobile')?.textContent || '';
+    const eventPlace = eventItem.querySelector('.opp-place-title-mobile')?.textContent || '';
     
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
     const hasAccepted = accepted.some(item => 
-        item.descriptionTitle === eventTitle && item.descriptionSubtitle === eventSubtitle
+        item.descriptionTitle === eventTitle && 
+        item.descriptionSubtitle === eventSubtitle &&
+        item.oppPlaceTitle === eventPlace
     );
     
     const hasRejected = rejected.some(item => 
-        item.descriptionTitle === eventTitle && item.descriptionSubtitle === eventSubtitle
+        item.descriptionTitle === eventTitle && 
+        item.descriptionSubtitle === eventSubtitle &&
+        item.oppPlaceTitle === eventPlace
     );
     
     return hasAccepted || hasRejected;
