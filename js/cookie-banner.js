@@ -6,9 +6,20 @@ const CONSENT_CONFIG = {
             name: 'Essenciais',
             required: true,
             sameSite: 'Lax',
-            description: 'Cookies estritamente necessários para o funcionamento do website. Validade: Sessão',
-            purposes: ['Autenticação', 'Segurança', 'Funcionalidades básicas'],
-            duration: 'Sessão'
+            description: 'Cookies estritamente necessários para o funcionamento do website, incluindo preferências de eventos. Validade: 30 dias',
+            purposes: [
+                'Autenticação', 
+                'Segurança', 
+                'Funcionalidades básicas',
+                'Preferências de eventos do utilizador',
+                'Configurações da interface'
+            ],
+            duration: 'Sessão a 30 dias',
+            cookies: [
+                'cookieConsent',
+                'userEventPreferences_accepted',
+                'userEventPreferences_rejected'
+            ]
         },
         analytics: {
             name: 'Análise',
@@ -18,6 +29,7 @@ const CONSENT_CONFIG = {
             purposes: ['Análise de tráfego', 'Melhorias do website', 'Estatísticas de uso'],
             thirdParties: ['Google LLC'],
             duration: '2 anos',
+            cookies: ['_ga', '_gid', '_gat_*'],
             scripts: [
                 {
                     id: 'analytics-proxy',
@@ -64,6 +76,7 @@ const CONSENT_CONFIG = {
             thirdParties: ['Google LLC', 'Parceiros de publicidade'],
             dataTransfers: ['EUA (Privacy Shield)'],
             duration: '1 ano',
+            cookies: ['_fbp', '_gcl_au', '__gads', '__gpi'],
             scripts: [
                 {
                     id: 'google-adsense',
@@ -257,8 +270,10 @@ class CookieConsentManager {
         this.removeAnalyticsCookies();
         this.removeMarketingCookies();
         
-        // Remove any remaining Google marketing-related cookies
+        // Remove any remaining Google marketing-related cookies while preserving essential ones
         const allCookies = document.cookie.split(';');
+        const essentialCookieNames = CONSENT_CONFIG.cookieCategories.essential.cookies || [];
+        
         allCookies.forEach(cookie => {
             const name = cookie.split('=')[0].trim();
             const marketingCookiePatterns = [
@@ -267,11 +282,51 @@ class CookieConsentManager {
                 'personalization_id'
             ];
             
-            if (marketingCookiePatterns.some(pattern => 
+            // Only remove if it's not an essential cookie
+            const isEssential = essentialCookieNames.some(essentialName => {
+                if (essentialName.includes('*')) {
+                    const prefix = essentialName.split('*')[0];
+                    return name.startsWith(prefix);
+                }
+                return name === essentialName;
+            });
+            
+            if (!isEssential && marketingCookiePatterns.some(pattern => 
                 name.startsWith(pattern))) {
                 this.deleteCookie(name);
             }
         });
+    }
+
+    // Method to get all essential cookies for transparency
+    getEssentialCookiesInfo() {
+        const essentialCookies = [];
+        const essentialConfig = CONSENT_CONFIG.cookieCategories.essential;
+        
+        if (essentialConfig.cookies) {
+            essentialConfig.cookies.forEach(cookieName => {
+                const value = this.getCookie(cookieName);
+                if (value) {
+                    essentialCookies.push({
+                        name: cookieName,
+                        purpose: this.getEssentialCookiePurpose(cookieName),
+                        hasValue: !!value,
+                        size: value.length
+                    });
+                }
+            });
+        }
+        
+        return essentialCookies;
+    }
+
+    getEssentialCookiePurpose(cookieName) {
+        const purposes = {
+            'cookieConsent': 'Armazenar preferências de cookies do utilizador',
+            'userEventPreferences_accepted': 'Eventos aceites pelo utilizador',
+            'userEventPreferences_rejected': 'Eventos rejeitados pelo utilizador'
+        };
+        return purposes[cookieName] || 'Funcionalidade essencial do website';
     }
 
     withdrawConsent() {
@@ -476,14 +531,47 @@ class CookieConsentManager {
     }
 
     getCookie(name) {
-        const cookies = document.cookie.split(';');
-        for (const cookie of cookies) {
-            const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
-            if (cookieName === name) {
-                return decodeURIComponent(cookieValue);
+        const nameEQ = encodeURIComponent(name) + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) {
+                return decodeURIComponent(c.substring(nameEQ.length, c.length));
             }
         }
         return null;
+    }
+
+    getCookieCategory(cookieName) {
+        // Check each category for the cookie name
+        for (const [categoryKey, categoryConfig] of Object.entries(CONSENT_CONFIG.cookieCategories)) {
+            if (categoryConfig.cookies && categoryConfig.cookies.includes(cookieName)) {
+                return categoryKey;
+            }
+            // Handle wildcard patterns
+            if (categoryConfig.cookies) {
+                for (const pattern of categoryConfig.cookies) {
+                    if (pattern.includes('*')) {
+                        const prefix = pattern.split('*')[0];
+                        if (cookieName.startsWith(prefix)) {
+                            return categoryKey;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Fallback logic for known cookies
+        const marketingCookies = ['_fbp', '_gcl_au', '__gads', '__gpi'];
+        const analyticsCookies = ['_ga', '_gid', '_gat'];
+        const essentialCookies = ['cookieConsent', 'userEventPreferences_accepted', 'userEventPreferences_rejected'];
+        
+        if (marketingCookies.includes(cookieName)) return 'marketing';
+        if (analyticsCookies.includes(cookieName)) return 'analytics';
+        if (essentialCookies.includes(cookieName)) return 'essential';
+        
+        return 'essential'; // Default to essential for unknown cookies
     }
 
     getCookieCategory(cookieName) {

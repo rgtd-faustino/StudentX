@@ -24,6 +24,7 @@
 
     <!-- Preload de recursos críticos -->
     <link rel="preload" href="/js/script.js" as="script">
+    <link rel="preload" href="/js/carousel.js" as="script">
     <link rel="preload" href="/js/calendar.js" as="script">
     <link rel="preload" href="/js/cookie-banner.js" as="script">
     <link rel="preload" href="/videos/slogan.mp4" as="video" type="video/mp4">
@@ -629,7 +630,7 @@
         </div>
     </div>
 
-    <div id="coming-soon-overlay" class="coming-soon-overlay">
+    <!--<div id="coming-soon-overlay" class="coming-soon-overlay">
         <video autoplay muted playsinline id="coming-soon-video">
             <source src="/videos/comingSoon.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -661,6 +662,7 @@
         }
     </style>
     
+    
     <script>
         const overlay = document.getElementById('coming-soon-overlay');
         const video = document.getElementById('coming-soon-video');
@@ -672,9 +674,10 @@
             overlay.style.display = 'none';
             document.body.classList.remove('no-scroll'); // Re-enable scrolling
         });
-    </script>
+    </script>-->
 
     <script defer src="/js/script.js?v=2"></script>
+    <script defer src="/js/carousel.js?v=2"></script>
     <script defer src="/js/calendar.js?v=2"></script>
     <script defer src="/js/cookie-banner.js?v=2"></script>
     
