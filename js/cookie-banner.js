@@ -1,35 +1,55 @@
 const CONSENT_CONFIG = {
-    version: '1.1',
-    cookieMaxAge: 180,
+    version: '1.2',
     cookieCategories: {
         essential: {
             name: 'Essenciais',
             required: true,
             sameSite: 'Lax',
-            description: 'Cookies estritamente necessários para o funcionamento do website, incluindo preferências de eventos. Validade: 30 dias',
+            maxAge: 365, // Essential cookies can be longer (1 year)
+            description: 'Cookies estritamente necessários para o funcionamento do website. Validade: 1 ano',
             purposes: [
                 'Autenticação', 
                 'Segurança', 
                 'Funcionalidades básicas',
-                'Preferências de eventos do utilizador',
                 'Configurações da interface'
             ],
-            duration: 'Sessão a 30 dias',
+            duration: '1 ano',
             cookies: [
                 'cookieConsent',
+                'sessionId',
+                'csrfToken'
+            ]
+        },
+        preferences: {
+            name: 'Preferências',
+            required: false,
+            sameSite: 'Lax',
+            maxAge: 365, // User preferences typically last 1 year
+            description: 'Cookies para guardar as suas preferências de eventos e configurações. Validade: 1 ano',
+            purposes: [
+                'Preferências de eventos do utilizador',
+                'Configurações personalizadas',
+                'Idioma preferido'
+            ],
+            duration: '1 ano',
+            cookies: [
                 'userEventPreferences_accepted',
-                'userEventPreferences_rejected'
+                'userEventPreferences_rejected',
+                'userLanguage',
+                'userTheme'
             ]
         },
         analytics: {
             name: 'Análise',
             required: false,
             sameSite: 'Lax',
-            description: 'Cookies para análise de uso do website através do Google Analytics. Validade: 2 anos',
+            maxAge: 90, // 3 months - reasonable for analytics
+            description: 'Cookies para análise de uso do website através do Google Analytics. Validade: 3 meses',
             purposes: ['Análise de tráfego', 'Melhorias do website', 'Estatísticas de uso'],
             thirdParties: ['Google LLC'],
-            duration: '2 anos',
-            cookies: ['_ga', '_gid', '_gat_*'],
+            dataTransfers: ['Estados Unidos (adequacy decision)'],
+            duration: '3 meses',
+            cookies: ['_ga', '_gid', '_gat_*', '_ga_*'],
             scripts: [
                 {
                     id: 'analytics-proxy',
@@ -49,7 +69,7 @@ const CONSENT_CONFIG = {
                     
                             if (!response.ok) {
                                 const errorText = await response.text();
-                                console.error('Full error response:', errorText);
+                                console.error('Analytics proxy error:', errorText);
                                 throw new Error(`HTTP error! status: ${response.status}`);
                             }
                     
@@ -57,11 +77,10 @@ const CONSENT_CONFIG = {
                             const scriptElement = document.createElement('script');
                             scriptElement.textContent = script;
                             scriptElement.async = true;
+                            scriptElement.setAttribute('data-category', 'analytics');
                             document.head.appendChild(scriptElement);
                         } catch (error) {
-                            console.error('Complete analytics load error:', error);
-                            console.error('Error name:', error.name);
-                            console.error('Error message:', error.message);
+                            console.error('Analytics loading failed:', error);
                         }
                     }
                 }
@@ -71,12 +90,13 @@ const CONSENT_CONFIG = {
             name: 'Publicidade',
             required: false,
             sameSite: 'None',
-            description: 'Cookies para publicidade personalizada através do Google Ads. Validade: 1 ano',
-            purposes: ['Publicidade direcionada', 'Personalização de anúncios'],
-            thirdParties: ['Google LLC', 'Parceiros de publicidade'],
-            dataTransfers: ['EUA (Privacy Shield)'],
-            duration: '1 ano',
-            cookies: ['_fbp', '_gcl_au', '__gads', '__gpi'],
+            maxAge: 90, // 3 months - more reasonable for marketing
+            duration: '3 meses',
+            description: 'Cookies para publicidade personalizada através do Google Ads. Validade: 3 meses',
+            purposes: ['Publicidade direcionada', 'Personalização de anúncios', 'Medição de eficácia'],
+            thirdParties: ['Google LLC', 'Meta Platforms'],
+            dataTransfers: ['Estados Unidos (adequacy decision)'],
+            cookies: ['_fbp', '_gcl_au', '__gads', '__gpi', 'IDE'],
             scripts: [
                 {
                     id: 'google-adsense',
@@ -87,6 +107,7 @@ const CONSENT_CONFIG = {
                         adsenseScript.async = true;
                         adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
                         adsenseScript.crossOrigin = 'anonymous';
+                        adsenseScript.setAttribute('data-category', 'marketing');
                         document.head.appendChild(adsenseScript);
                     }
                 }
@@ -102,6 +123,8 @@ class CookieConsentManager {
         this.initialized = false;
         this.loadedScripts = new Set();
         this.consentHistory = [];
+        this.cookieInventory = new Map();
+        this.consentExpiryDays = 365; // GDPR: consent expires after 1 year
     }
 
     init() {
@@ -113,8 +136,9 @@ class CookieConsentManager {
         this.setupDOMElements();
         this.setupEventListeners();
         this.checkAndEnforceExpiry();
+        this.startCookieInventoryMonitoring();
         
-        if (this.consentData) {
+        if (this.consentData && this.isConsentValid()) {
             this.applyConsent();
         } else {
             this.showBanner();
@@ -124,21 +148,111 @@ class CookieConsentManager {
     }
 
     hasConsent(category) {
-        return this.consentData?.[category] === true;
+        return this.consentData?.[category] === true && this.isConsentValid();
+    }
+
+    isConsentValid() {
+        if (!this.consentData?.timestamp) return false;
+        
+        const consentDate = new Date(this.consentData.timestamp);
+        const expiryDate = new Date(consentDate.getTime() + (this.consentExpiryDays * 24 * 60 * 60 * 1000));
+        
+        return new Date() < expiryDate;
+    }
+
+    // Enhanced cookie inventory monitoring
+    startCookieInventoryMonitoring() {
+        // Monitor cookies every 5 minutes
+        setInterval(() => {
+            this.updateCookieInventory();
+            this.enforceRetentionLimits();
+        }, 5 * 60 * 1000);
+        
+        // Initial inventory
+        this.updateCookieInventory();
+    }
+
+    updateCookieInventory() {
+        const currentCookies = document.cookie.split(';').filter(c => c.trim());
+        const now = new Date();
+        
+        // Track existing cookies
+        const existingCookieNames = new Set();
+        
+        currentCookies.forEach(cookie => {
+            const [name] = cookie.split('=');
+            const cookieName = name.trim();
+            existingCookieNames.add(cookieName);
+            
+            if (!this.cookieInventory.has(cookieName)) {
+                const category = this.getCookieCategory(cookieName);
+                const categoryConfig = CONSENT_CONFIG.cookieCategories[category];
+                
+                this.cookieInventory.set(cookieName, {
+                    category,
+                    firstSeen: now,
+                    lastSeen: now,
+                    maxAge: categoryConfig?.maxAge || 30,
+                    hasConsent: this.hasConsent(category)
+                });
+            } else {
+                // Update last seen and consent status
+                const entry = this.cookieInventory.get(cookieName);
+                entry.lastSeen = now;
+                entry.hasConsent = this.hasConsent(entry.category);
+            }
+        });
+        
+        // Remove cookies that no longer exist from inventory
+        for (const cookieName of this.cookieInventory.keys()) {
+            if (!existingCookieNames.has(cookieName)) {
+                this.cookieInventory.delete(cookieName);
+            }
+        }
+    }
+
+    enforceRetentionLimits() {
+        const now = new Date();
+        
+        this.cookieInventory.forEach((info, cookieName) => {
+            const ageInDays = (now - info.firstSeen) / (1000 * 60 * 60 * 24);
+            
+            // Remove if expired OR if no consent for non-essential cookies
+            const shouldRemove = ageInDays > info.maxAge || 
+                                (info.category !== 'essential' && !info.hasConsent);
+            
+            if (shouldRemove) {
+                console.log(`Removing ${shouldRemove ? 'expired' : 'unconsented'} cookie: ${cookieName}`);
+                this.deleteCookie(cookieName);
+                this.cookieInventory.delete(cookieName);
+            }
+        });
     }
 
     blockTrackingScripts() {
-        // Create a mutation observer to prevent script loading
+        const blockedPatterns = [
+            'google-analytics.com',
+            'googletagmanager.com',
+            'googlesyndication.com',
+            'facebook.net',
+            'doubleclick.net',
+            'googleadservices.com'
+        ];
+
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
-                    if (node.tagName === 'SCRIPT') {
-                        const src = node.src || '';
-                        if (src.includes('google-analytics') || 
-                            src.includes('googletagmanager') || 
-                            src.includes('facebook')) {
+                    if (node.tagName === 'SCRIPT' && node.src) {
+                        const shouldBlock = blockedPatterns.some(pattern => 
+                            node.src.includes(pattern)
+                        );
+                        
+                        if (shouldBlock && !node.hasAttribute('data-category')) {
+                            console.log('Blocking unconsented script:', node.src);
                             node.type = 'javascript/blocked';
-                            node.parentNode.removeChild(node);
+                            if (node.parentNode) {
+                                node.parentNode.removeChild(node);
+                            }
                         }
                     }
                 });
@@ -159,6 +273,7 @@ class CookieConsentManager {
             moreOptionsBtn: document.getElementById('more-options'),
             acceptSelectedBtn: document.getElementById('accept-selected'),
             rejectAllExpandedBtn: document.getElementById('reject-all-expanded'),
+            preferencesCookie: document.getElementById('preferences-cookies'),
             analyticsCookie: document.getElementById('analytics-cookies'),
             marketingCookie: document.getElementById('marketing-cookies'),
             privacyPolicyLink: document.getElementById('read-more')
@@ -166,11 +281,11 @@ class CookieConsentManager {
     }
 
     setupEventListeners() {
-        this.domElements.acceptAllBtn.addEventListener('click', () => this.handleAcceptAll());
-        this.domElements.rejectAllBtn.addEventListener('click', () => this.handleRejectAll());
-        this.domElements.moreOptionsBtn.addEventListener('click', () => this.expandBanner());
-        this.domElements.acceptSelectedBtn.addEventListener('click', () => this.handleSavePreferences());
-        this.domElements.rejectAllExpandedBtn.addEventListener('click', () => this.handleRejectAll());
+        this.domElements.acceptAllBtn?.addEventListener('click', () => this.handleAcceptAll());
+        this.domElements.rejectAllBtn?.addEventListener('click', () => this.handleRejectAll());
+        this.domElements.moreOptionsBtn?.addEventListener('click', () => this.expandBanner());
+        this.domElements.acceptSelectedBtn?.addEventListener('click', () => this.handleSavePreferences());
+        this.domElements.rejectAllExpandedBtn?.addEventListener('click', () => this.handleRejectAll());
         
         this.domElements.privacyPolicyLink?.addEventListener('click', (e) => {
             e.preventDefault();
@@ -191,7 +306,24 @@ class CookieConsentManager {
         if (savedConsent) {
             try {
                 this.consentData = JSON.parse(savedConsent);
-                // Don't call showBanner/hideBanner here since DOM isn't ready
+                
+                // Check if consent structure is outdated or expired
+                if (this.consentData.version !== CONSENT_CONFIG.version || !this.isConsentValid()) {
+                    console.log('Consent version mismatch or expired, resetting');
+                    this.resetConsent();
+                    return;
+                }
+                
+                // Load consent history
+                try {
+                    const history = localStorage.getItem('consentHistory');
+                    if (history) {
+                        this.consentHistory = JSON.parse(history);
+                    }
+                } catch (e) {
+                    console.warn('Could not load consent history:', e);
+                }
+                
             } catch (e) {
                 console.error('Error parsing saved consent:', e);
                 this.consentData = null;
@@ -204,158 +336,147 @@ class CookieConsentManager {
             timestamp: new Date().toISOString(),
             categories: { ...this.consentData },
             userAgent: navigator.userAgent,
-            version: CONSENT_CONFIG.version
+            version: CONSENT_CONFIG.version,
+            cookieInventory: Array.from(this.cookieInventory.entries()),
+            ipAddress: 'anonymized', // For GDPR compliance
+            consentMethod: 'explicit' // Track how consent was given
         };
         
         this.consentHistory.push(record);
-        localStorage.setItem('consentHistory', JSON.stringify(this.consentHistory));
+        // Keep only last 10 records for storage efficiency
+        if (this.consentHistory.length > 10) {
+            this.consentHistory = this.consentHistory.slice(-10);
+        }
+        
+        try {
+            localStorage.setItem('consentHistory', JSON.stringify(this.consentHistory));
+        } catch (e) {
+            console.warn('Could not save consent history:', e);
+        }
     }
 
     async handleAcceptAll() {
-        // First remove all existing scripts and cookies
+        // Clean up first
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
 
-        // Then save new consent
         this.saveConsent({
             essential: true,
+            preferences: true,
             analytics: true,
             marketing: true
         });
     }
 
     async handleRejectAll() {
-        // First remove all existing scripts and cookies
+        // Clean up first
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
     
-        // Then save new consent with only essential cookies
         this.saveConsent({
             essential: true,
+            preferences: false,
             analytics: false,
             marketing: false
         });
-    
-        // Update Google consent mode explicitly
-        this.updateGoogleConsent();
-    
-        // Reload the page to ensure clean state
-        window.location.reload();
     }
 
     async handleSavePreferences() {
-        // First remove all existing scripts and cookies
+        // Clean up first
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
     
-        // Then save new preferences
         this.saveConsent({
             essential: true,
-            analytics: this.domElements.analyticsCookie.checked,
-            marketing: this.domElements.marketingCookie.checked
+            preferences: this.domElements.preferencesCookie?.checked || false,
+            analytics: this.domElements.analyticsCookie?.checked || false,
+            marketing: this.domElements.marketingCookie?.checked || false
         });
     }
 
     async removeAllTrackingScripts() {
-        // Remove all tracking scripts
         await this.unloadCategoryScripts('analytics');
         await this.unloadCategoryScripts('marketing');
+        await this.unloadCategoryScripts('preferences');
         
-        // Remove any remaining Google scripts specific to marketing
-        document.querySelectorAll('script[src*="pagead2.googlesyndication.com"], script[src*="googleads.g.doubleclick.net"]')
+        // Remove any remaining tracking scripts
+        document.querySelectorAll('script[data-category="analytics"], script[data-category="marketing"], script[data-category="preferences"]')
             .forEach(script => script.remove());
     }
 
     async removeAllTrackingCookies() {
         this.removeAnalyticsCookies();
         this.removeMarketingCookies();
+        this.removePreferencesCookies();
         
-        // Remove any remaining Google marketing-related cookies while preserving essential ones
-        const allCookies = document.cookie.split(';');
-        const essentialCookieNames = CONSENT_CONFIG.cookieCategories.essential.cookies || [];
-        
-        allCookies.forEach(cookie => {
-            const name = cookie.split('=')[0].trim();
-            const marketingCookiePatterns = [
-                '_fbp', '_gcl_au', '__gads', '__gpi', 'IDE', 
-                'test_cookie', 'DSID', 'TAID', '_gac_', 
-                'personalization_id'
-            ];
-            
-            // Only remove if it's not an essential cookie
-            const isEssential = essentialCookieNames.some(essentialName => {
-                if (essentialName.includes('*')) {
-                    const prefix = essentialName.split('*')[0];
-                    return name.startsWith(prefix);
-                }
-                return name === essentialName;
-            });
-            
-            if (!isEssential && marketingCookiePatterns.some(pattern => 
-                name.startsWith(pattern))) {
-                this.deleteCookie(name);
+        // Clean up cookie inventory for non-essential cookies
+        this.cookieInventory.forEach((info, cookieName) => {
+            if (info.category !== 'essential') {
+                this.deleteCookie(cookieName);
+                this.cookieInventory.delete(cookieName);
             }
         });
     }
 
-    // Method to get all essential cookies for transparency
-    getEssentialCookiesInfo() {
-        const essentialCookies = [];
-        const essentialConfig = CONSENT_CONFIG.cookieCategories.essential;
-        
-        if (essentialConfig.cookies) {
-            essentialConfig.cookies.forEach(cookieName => {
-                const value = this.getCookie(cookieName);
-                if (value) {
-                    essentialCookies.push({
-                        name: cookieName,
-                        purpose: this.getEssentialCookiePurpose(cookieName),
-                        hasValue: !!value,
-                        size: value.length
-                    });
-                }
-            });
+    removePreferencesCookies() {
+        const preferencesCookies = CONSENT_CONFIG.cookieCategories.preferences.cookies || [];
+        preferencesCookies.forEach(cookieName => {
+            this.deleteCookie(cookieName);
+        });
+    }
+
+    removeAnalyticsCookies() {
+        const analyticsCookies = CONSENT_CONFIG.cookieCategories.analytics.cookies || [];
+        this.removeMatchingCookies(analyticsCookies);
+    }
+
+    removeMarketingCookies() {
+        const marketingCookies = CONSENT_CONFIG.cookieCategories.marketing.cookies || [];
+        this.removeMatchingCookies(marketingCookies);
+    }
+
+    removeMatchingCookies(cookiePatterns) {
+        cookiePatterns.forEach(pattern => {
+            if (pattern.includes('*')) {
+                const prefix = pattern.split('*')[0];
+                document.cookie.split(';').forEach(cookie => {
+                    const name = cookie.split('=')[0].trim();
+                    if (name.startsWith(prefix)) {
+                        this.deleteCookie(name);
+                    }
+                });
+            } else {
+                this.deleteCookie(pattern);
+            }
+        });
+    }
+
+    checkAndEnforceExpiry() {
+        if (!this.isConsentValid()) {
+            console.log('Consent expired, resetting');
+            this.resetConsent();
         }
-        
-        return essentialCookies;
     }
 
-    getEssentialCookiePurpose(cookieName) {
-        const purposes = {
-            'cookieConsent': 'Armazenar preferências de cookies do utilizador',
-            'userEventPreferences_accepted': 'Eventos aceites pelo utilizador',
-            'userEventPreferences_rejected': 'Eventos rejeitados pelo utilizador'
-        };
-        return purposes[cookieName] || 'Funcionalidade essencial do website';
-    }
-
-    withdrawConsent() {
-        this.handleRejectAll();
+    resetConsent() {
+        this.deleteCookie('cookieConsent');
+        this.consentData = null;
+        this.removeAllTrackingCookies();
         this.showBanner();
     }
 
-    saveConsent(consentData) {
-        this.consentData = {
-            ...consentData,
-            timestamp: new Date().toISOString(),
-            version: CONSENT_CONFIG.version
-        };
-
-        // Save consent cookie with Lax SameSite as it's essential
-        this.setCookie('cookieConsent', JSON.stringify(this.consentData), {
-            days: CONSENT_CONFIG.cookieMaxAge,
-            sameSite: 'Lax',
-            secure: true
-        });
-
-        this.applyConsent();
-        this.hideBanner();
-        this.dispatchConsentEvent();
+    expandBanner() {
+        this.domElements.banner?.classList.add('expanded');
+        this.updateBannerContent();
     }
 
     updateBannerContent() {
         const expandedContent = document.querySelector('.cookie-expanded');
+        if (!expandedContent) return;
+        
         const categoriesContainer = expandedContent.querySelector('.cookie-categories');
+        if (!categoriesContainer) return;
+        
         categoriesContainer.innerHTML = '';
 
         Object.entries(CONSENT_CONFIG.cookieCategories).forEach(([key, category]) => {
@@ -375,54 +496,83 @@ class CookieConsentManager {
                     ${category.dataTransfers ? 
                       `<p><strong>Transferências:</strong> ${category.dataTransfers.join(', ')}</p>` : ''}
                     <p><strong>Duração:</strong> ${category.duration}</p>
+                    <p><strong>Cookies:</strong> ${category.cookies?.join(', ') || 'N/A'}</p>
                 </div>
             `;
             categoriesContainer.appendChild(div);
         });
     }
 
-    async applyConsent() {
-        if (!this.consentData) return;
+    saveConsent(consentData) {
+        this.consentData = {
+            ...consentData,
+            timestamp: new Date().toISOString(),
+            version: CONSENT_CONFIG.version
+        };
 
-        // Update Google consent mode
-        gtag('consent', 'update', {
-            'analytics_storage': this.consentData.analytics ? 'granted' : 'denied',
-            'ad_storage': this.consentData.marketing ? 'granted' : 'denied',
-            'functionality_storage': 'granted',
-            'personalization_storage': this.consentData.marketing ? 'granted' : 'denied',
-            'security_storage': 'granted'
+        // Save consent cookie with proper duration (1 year for consent validity)
+        this.setCookie('cookieConsent', JSON.stringify(this.consentData), {
+            days: this.consentExpiryDays,
+            sameSite: 'Lax',
+            secure: window.location.protocol === 'https:'
         });
 
-        // Handle analytics scripts
-        if (this.consentData.analytics) {
-            await this.loadCategoryScripts('analytics');
-        } else {
-            this.unloadCategoryScripts('analytics');
-            this.removeAnalyticsCookies();
-        }
+        this.saveConsentRecord();
+        this.applyConsent();
+        this.hideBanner();
+        this.dispatchConsentEvent();
+    }
 
-        // Handle marketing scripts
-        if (this.consentData.marketing) {
-            await this.loadCategoryScripts('marketing');
-        } else {
-            this.unloadCategoryScripts('marketing');
-            this.removeMarketingCookies();
+    async applyConsent() {
+        if (!this.consentData || !this.isConsentValid()) return;
+
+        // Update Google consent mode
+        this.updateGoogleConsent();
+
+        // Handle category scripts
+        for (const [category, hasConsent] of Object.entries(this.consentData)) {
+            if (category === 'essential' || category === 'timestamp' || category === 'version') continue;
+            
+            if (hasConsent) {
+                await this.loadCategoryScripts(category);
+            } else {
+                this.unloadCategoryScripts(category);
+                this.removeCategoryCookies(category);
+            }
         }
     }
 
+    removeCategoryCookies(category) {
+        const categoryConfig = CONSENT_CONFIG.cookieCategories[category];
+        if (!categoryConfig?.cookies) return;
+
+        categoryConfig.cookies.forEach(cookieName => {
+            if (cookieName.includes('*')) {
+                const prefix = cookieName.split('*')[0];
+                document.cookie.split(';').forEach(cookie => {
+                    const name = cookie.split('=')[0].trim();
+                    if (name.startsWith(prefix)) {
+                        this.deleteCookie(name);
+                    }
+                });
+            } else {
+                this.deleteCookie(cookieName);
+            }
+        });
+    }
+
     updateGoogleConsent() {
-        if (typeof window.gtag === 'undefined') {
+        if (typeof gtag === 'undefined') {
             window.gtag = function() { 
                 (window.dataLayer = window.dataLayer || []).push(arguments);
             }
         }
         
-        // Explicitly deny all non-essential storage types when consent is withdrawn
         gtag('consent', 'update', {
-            'analytics_storage': this.consentData.analytics ? 'granted' : 'denied',
-            'ad_storage': this.consentData.marketing ? 'granted' : 'denied',
-            'functionality_storage': 'granted',
-            'personalization_storage': this.consentData.marketing ? 'granted' : 'denied',
+            'analytics_storage': this.consentData?.analytics ? 'granted' : 'denied',
+            'ad_storage': this.consentData?.marketing ? 'granted' : 'denied',
+            'functionality_storage': this.consentData?.preferences ? 'granted' : 'denied',
+            'personalization_storage': this.consentData?.marketing ? 'granted' : 'denied',
             'security_storage': 'granted'
         });
     }
@@ -440,94 +590,50 @@ class CookieConsentManager {
         });
     }
 
-    removeAnalyticsCookies() {
-        const analyticsCookies = [
-            '_ga', '_gid', '_gat', '_ga_*', 
-            '_gac_*', '_gat_gtag_*', '_gat_*'
-        ];
-        this.removeMatchingCookies(analyticsCookies);
-    }
-
-    removeMarketingCookies() {
-        const marketingCookies = [
-            '_fbp',     // Facebook pixel
-            '_gcl_au',  // Google Ads conversion tracking
-            '__gads',   // Google Ads tracking
-            '__gpi',    // Google Personalized Advertising
-            '_gac_*',   // Google Ads conversion tracking
-            'IDE',      // DoubleClick cookie
-            'test_cookie', // Google Ads test cookie
-            'DSID',     // DoubleClick sign-in
-            'TAID'      // DoubleClick tracking
-        ];
-        this.removeMatchingCookies(marketingCookies);
-    }
-
-    removeMatchingCookies(cookiePatterns) {
-        cookiePatterns.forEach(pattern => {
-            if (pattern.includes('*')) {
-                // Handle wildcard patterns
-                const prefix = pattern.split('*')[0];
-                document.cookie.split(';').forEach(cookie => {
-                    const name = cookie.split('=')[0].trim();
-                    if (name.startsWith(prefix)) {
-                        this.deleteCookie(name);
-                    }
-                });
-            } else {
-                this.deleteCookie(pattern);
-            }
-        });
-    }
-
-    checkAndEnforceExpiry() {
-        if (this.consentData?.timestamp) {
-            const consentDate = new Date(this.consentData.timestamp);
-            const expiryDate = new Date(consentDate.getTime() + (CONSENT_CONFIG.cookieMaxAge * 24 * 60 * 60 * 1000));
-            
-            if (new Date() > expiryDate) {
-                this.resetConsent();
-            }
-        }
-    }
-
-    resetConsent() {
-        this.deleteCookie('cookieConsent');
-        this.consentData = null;
-        this.showBanner();
-    }
-
-    expandBanner() {
-        this.domElements.banner.classList.add('expanded');
-    }
-
     setCookie(name, value, options = {}) {
-        let cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
-        
-        if (options.days) {
-            const expiry = new Date();
-            expiry.setDate(expiry.getDate() + options.days);
-            cookie += `; expires=${expiry.toUTCString()}`;
+        try {
+            let cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+            
+            // Get category-specific settings
+            const cookieCategory = this.getCookieCategory(name);
+            const categoryConfig = CONSENT_CONFIG.cookieCategories[cookieCategory];
+            
+            // Use the category's maxAge or provided days
+            let days = options.days;
+            if (!days) {
+                days = categoryConfig?.maxAge || 30;
+            }
+            
+            if (days > 0) {
+                const expiry = new Date();
+                expiry.setDate(expiry.getDate() + days);
+                cookie += `; expires=${expiry.toUTCString()}`;
+                cookie += `; max-age=${days * 24 * 60 * 60}`;
+            }
+            
+            cookie += '; path=/';
+            
+            const sameSite = options.sameSite || categoryConfig?.sameSite || 'Lax';
+            cookie += `; SameSite=${sameSite}`;
+            
+            if (sameSite === 'None' || options.secure) {
+                cookie += '; Secure';
+            }
+            
+            document.cookie = cookie;
+            
+            // Update inventory
+            this.cookieInventory.set(name, {
+                category: cookieCategory,
+                firstSeen: new Date(),
+                lastSeen: new Date(),
+                maxAge: days,
+                hasConsent: this.hasConsent(cookieCategory)
+            });
+            
+        } catch (error) {
+            console.error('Error setting cookie:', error);
         }
-        
-        cookie += '; path=/';
-        
-        // Handle SameSite attribute based on cookie category
-        const cookieCategory = this.getCookieCategory(name);
-        const sameSite = options.sameSite || 
-                        (cookieCategory && CONSENT_CONFIG.cookieCategories[cookieCategory].sameSite) ||
-                        'Lax';
-        
-        cookie += `; SameSite=${sameSite}`;
-        
-        // If SameSite=None, the Secure attribute must be set
-        if (sameSite === 'None') {
-            cookie += '; Secure';
-        } else if (options.secure) {
-            cookie += '; Secure';
-        }
-        
-        document.cookie = cookie;
     }
 
     getCookie(name) {
@@ -546,9 +652,10 @@ class CookieConsentManager {
     getCookieCategory(cookieName) {
         // Check each category for the cookie name
         for (const [categoryKey, categoryConfig] of Object.entries(CONSENT_CONFIG.cookieCategories)) {
-            if (categoryConfig.cookies && categoryConfig.cookies.includes(cookieName)) {
+            if (categoryConfig.cookies?.includes(cookieName)) {
                 return categoryKey;
             }
+            
             // Handle wildcard patterns
             if (categoryConfig.cookies) {
                 for (const pattern of categoryConfig.cookies) {
@@ -562,32 +669,38 @@ class CookieConsentManager {
             }
         }
         
-        // Fallback logic for known cookies
-        const marketingCookies = ['_fbp', '_gcl_au', '__gads', '__gpi'];
-        const analyticsCookies = ['_ga', '_gid', '_gat'];
-        const essentialCookies = ['cookieConsent', 'userEventPreferences_accepted', 'userEventPreferences_rejected'];
+        // Fallback logic for common cookie patterns
+        if (cookieName.startsWith('_ga') || cookieName.startsWith('_gid') || cookieName.startsWith('_gat')) {
+            return 'analytics';
+        }
+        if (cookieName.startsWith('_fbp') || cookieName.startsWith('_gcl') || cookieName.startsWith('__gads')) {
+            return 'marketing';
+        }
+        if (cookieName.startsWith('userEvent') || cookieName.includes('Preferences')) {
+            return 'preferences';
+        }
         
-        if (marketingCookies.includes(cookieName)) return 'marketing';
-        if (analyticsCookies.includes(cookieName)) return 'analytics';
-        if (essentialCookies.includes(cookieName)) return 'essential';
-        
-        return 'essential'; // Default to essential for unknown cookies
-    }
-
-    getCookieCategory(cookieName) {
-        const marketingCookies = ['_fbp', '_gcl_au'];
-        const analyticsCookies = ['_ga', '_gid', '_gat'];
-        
-        if (marketingCookies.includes(cookieName)) return 'marketing';
-        if (analyticsCookies.includes(cookieName)) return 'analytics';
         return 'essential';
     }
 
     deleteCookie(name, options = {}) {
-        this.setCookie(name, '', { 
-            days: -1,
-            ...options
-        });
+        // Set expiry to past date
+        const pastDate = new Date(0).toUTCString();
+        
+        // Delete for current path
+        document.cookie = `${encodeURIComponent(name)}=; expires=${pastDate}; path=/`;
+        
+        // Delete for root path
+        document.cookie = `${encodeURIComponent(name)}=; expires=${pastDate}; path=/; max-age=0`;
+        
+        // Try to delete for parent domain if applicable
+        if (window.location.hostname !== 'localhost' && !window.location.hostname.match(/^\d+\.\d+\.\d+\.\d+$/)) {
+            const domain = '.' + window.location.hostname.split('.').slice(-2).join('.');
+            document.cookie = `${encodeURIComponent(name)}=; expires=${pastDate}; path=/; domain=${domain}; max-age=0`;
+        }
+        
+        // Remove from inventory
+        this.cookieInventory.delete(name);
     }
 
     showBanner() {
@@ -598,66 +711,27 @@ class CookieConsentManager {
     }
 
     hideBanner() {
-        this.domElements.banner.style.display = 'none';
-        document.dispatchEvent(new Event('cookieBannerHide'));
+        if (this.domElements.banner) {
+            this.domElements.banner.style.display = 'none';
+            document.dispatchEvent(new Event('cookieBannerHide'));
+        }
     }
 
     dispatchConsentEvent() {
         const event = new CustomEvent('cookieConsentUpdate', {
-            detail: this.consentData
+            detail: {
+                consent: this.consentData,
+                inventory: Array.from(this.cookieInventory.entries()),
+                isValid: this.isConsentValid()
+            }
         });
         document.dispatchEvent(event);
     }
 
     showPrivacyPolicy() {
-        // Implement privacy policy display logic or navigation
-        window.location.href = this.domElements.privacyPolicyLink.href;
-    }
-
-    setupPreferencesLink() {
-        const preferencesLink = document.getElementById('cookie-preferences');
-        if (preferencesLink) {
-            preferencesLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.showBanner();
-                this.expandBanner();
-                
-                // Pre-fill checkboxes based on current consent
-                if (this.consentData) {
-                    this.domElements.analyticsCookie.checked = this.consentData.analytics;
-                    this.domElements.marketingCookie.checked = this.consentData.marketing;
-                }
-            });
+        if (this.domElements.privacyPolicyLink?.href) {
+            window.open(this.domElements.privacyPolicyLink.href, '_blank');
         }
-    }
-
-    loadScript(script) {
-        if (this.loadedScripts.has(script.id)) return Promise.resolve();
-
-        return new Promise((resolve, reject) => {
-            if (script.inline) {
-                try {
-                    const scriptElement = document.createElement('script');
-                    scriptElement.id = script.id;
-                    scriptElement.text = script.content;
-                    document.head.appendChild(scriptElement);
-                    this.loadedScripts.add(script.id);
-                    resolve();
-                } catch (error) {
-                    reject(error);
-                }
-            } else {
-                const scriptElement = document.createElement('script');
-                scriptElement.id = script.id;
-                scriptElement.src = script.src;
-                scriptElement.onload = () => {
-                    this.loadedScripts.add(script.id);
-                    resolve();
-                };
-                scriptElement.onerror = reject;
-                document.head.appendChild(scriptElement);
-            }
-        });
     }
 
     async loadCategoryScripts(category) {
@@ -668,64 +742,103 @@ class CookieConsentManager {
 
         for (const script of categoryConfig.scripts) {
             try {
-                await script.init(this);  // Pass manager instance
-                
-                // Mark scripts with data-category for easy identification and removal
-                document.querySelectorAll(`script[src*="${script.id}"]`)
-                    .forEach(s => {
-                        s.setAttribute('data-category', category);
-                        // Ensure cross-origin scripts are marked properly
-                        if (category === 'marketing') {
-                            s.crossOrigin = 'anonymous';
-                        }
-                    });
+                await script.init(this);
+                this.loadedScripts.add(category);
             } catch (error) {
                 console.error(`Error loading script ${script.id}:`, error);
             }
         }
-        
-        this.loadedScripts.add(category);
     }
 
     unloadCategoryScripts(category) {
-        // Remove scripts
+        // Remove scripts with category attribute
         document.querySelectorAll(`script[data-category="${category}"]`)
             .forEach(script => script.remove());
         
-        // Clear from loaded scripts set
         this.loadedScripts.delete(category);
 
-        // Reset consent mode for the category
-        if (category === 'analytics') {
-            gtag('consent', 'update', {
-                'analytics_storage': 'denied',
-                'personalization_storage': 'denied'
-            });
-        } else if (category === 'marketing') {
-            gtag('consent', 'update', {
-                'ad_storage': 'denied',
-                'personalization_storage': 'denied'
-            });
-
-            // Clear any inline or dynamic marketing scripts
-            document.querySelectorAll('script[type="text/javascript"][data-category="marketing"]')
-                .forEach(script => script.remove());
-
-            // Remove Google Ads related elements
-            document.querySelectorAll('ins.adsbygoogle')
-                .forEach(adElement => adElement.remove());
+        // Update consent mode
+        if (typeof gtag !== 'undefined') {
+            const updates = {};
+            if (category === 'analytics') {
+                updates.analytics_storage = 'denied';
+            }
+            if (category === 'marketing') {
+                updates.ad_storage = 'denied';
+                updates.personalization_storage = 'denied';
+            }
+            if (category === 'preferences') {
+                updates.functionality_storage = 'denied';
+            }
+            
+            if (Object.keys(updates).length > 0) {
+                gtag('consent', 'update', updates);
+            }
         }
+    }
+
+    // Public method to get consent status for external use
+    getConsentStatus() {
+        return {
+            consent: this.consentData,
+            inventory: Array.from(this.cookieInventory.entries()),
+            history: this.consentHistory,
+            isValid: this.isConsentValid(),
+            expiryDate: this.consentData?.timestamp ? 
+                new Date(new Date(this.consentData.timestamp).getTime() + (this.consentExpiryDays * 24 * 60 * 60 * 1000)) : null
+        };
+    }
+
+    // Public method to programmatically update consent
+    updateConsent(newConsent) {
+        this.saveConsent({
+            essential: true,
+            ...newConsent
+        });
+    }
+
+    // Public method to withdraw consent (GDPR right)
+    withdrawConsent() {
+        this.resetConsent();
+        this.showBanner();
+        this.expandBanner();
+    }
+
+    // Public method to export consent data (GDPR right to data portability)
+    exportConsentData() {
+        return {
+            consentData: this.consentData,
+            consentHistory: this.consentHistory,
+            cookieInventory: Array.from(this.cookieInventory.entries()),
+            exportDate: new Date().toISOString(),
+            version: CONSENT_CONFIG.version
+        };
     }
 }
 
-
-
+// Initialize the manager
 const cookieConsent = new CookieConsentManager();
 document.addEventListener('DOMContentLoaded', () => {
     cookieConsent.init();
 });
 
+// Global functions for external use
+window.cookieConsent = cookieConsent;
 window.showCookieBanner = function() {
     cookieConsent.showBanner();
-    return false; // Prevents default link behavior
+    cookieConsent.expandBanner();
+    return false;
+};
+
+window.getCookieConsent = function() {
+    return cookieConsent.getConsentStatus();
+};
+
+window.withdrawCookieConsent = function() {
+    cookieConsent.withdrawConsent();
+    return false;
+};
+
+window.exportCookieData = function() {
+    return cookieConsent.exportConsentData();
 };
