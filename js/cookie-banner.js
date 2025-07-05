@@ -238,51 +238,56 @@ class CookieConsentManager {
     }
 
     blockTrackingScripts() {
-        const blockedPatterns = [
-            'google-analytics.com',
-            'googletagmanager.com',
-            'googlesyndication.com',
-            'facebook.net',
-            'doubleclick.net',
-            'googleadservices.com'
-        ];
-
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.tagName === 'SCRIPT' && node.src) {
-                        const shouldBlock = blockedPatterns.some(pattern => 
-                            node.src.includes(pattern)
-                        );
+    const blockedPatterns = [
+        'google-analytics.com',
+        'googletagmanager.com',
+        'googlesyndication.com',
+        'facebook.net',
+        'doubleclick.net',
+        'googleadservices.com'
+    ];
+    
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.tagName === 'SCRIPT' && node.src) {
+                    const shouldBlock = blockedPatterns.some(pattern =>
+                        node.src.includes(pattern)
+                    );
+                    
+                    // Only block if we don't have consent AND script isn't already approved
+                    if (shouldBlock && !node.hasAttribute('data-category') && !node.hasAttribute('data-consent-category')) {
+                        const category = this.getScriptCategory(node.src);
                         
-                        // Only block if we don't have consent AND script isn't already approved
-                        if (shouldBlock && !node.hasAttribute('data-category') && !node.hasAttribute('data-consent-category')) {
-                            const category = this.getScriptCategory(node.src);
-                            
-                            // Check if we have consent for this category
-                            if (!this.hasConsent(category)) {
-                                console.log('Blocking unconsented script:', node.src);
-                                node.type = 'javascript/blocked';
-                                if (node.parentNode) {
-                                    node.parentNode.removeChild(node);
-                                }
-                            } else {
-                                // Mark as approved - don't add attributes to AdSense scripts as they don't support them
-                                if (!node.src.includes('adsbygoogle.js') && !node.src.includes('googlesyndication.com')) {
-                                    node.setAttribute('data-category', category);
-                                }
+                        // Check if we have consent for this category
+                        if (!this.hasConsent(category)) {
+                            console.log('Blocking unconsented script:', node.src);
+                            node.type = 'javascript/blocked';
+                            if (node.parentNode) {
+                                node.parentNode.removeChild(node);
                             }
+                        } else {
+                            // Mark as approved - but DON'T add attributes to AdSense/GoogleSyndication scripts
+                            const isAdSenseScript = node.src.includes('adsbygoogle.js') || 
+                                                   node.src.includes('googlesyndication.com') ||
+                                                   node.src.includes('googleadservices.com');
+                            
+                            if (!isAdSenseScript) {
+                                node.setAttribute('data-category', category);
+                            }
+                            // AdSense scripts are allowed to load without data attributes
                         }
                     }
-                });
+                }
             });
         });
-
-        observer.observe(document.documentElement, {
-            childList: true,
-            subtree: true
-        });
-    }
+    });
+    
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+}
 
     // Add method to determine script category
     getScriptCategory(src) {
@@ -444,9 +449,26 @@ class CookieConsentManager {
         await this.unloadCategoryScripts('marketing');
         await this.unloadCategoryScripts('preferences');
         
-        // Remove any remaining tracking scripts - only use data-category attribute
+        // Remove scripts with data-category attribute
         document.querySelectorAll('script[data-category="analytics"], script[data-category="marketing"], script[data-category="preferences"]')
             .forEach(script => script.remove());
+        
+        // Remove AdSense scripts by URL since they don't have data attributes
+        document.querySelectorAll('script[src*="adsbygoogle.js"], script[src*="googlesyndication.com"], script[src*="googleadservices.com"]')
+            .forEach(script => script.remove());
+        
+        // Remove other tracking scripts by URL patterns
+        const trackingPatterns = [
+            'google-analytics.com',
+            'googletagmanager.com',
+            'facebook.net',
+            'doubleclick.net'
+        ];
+        
+        trackingPatterns.forEach(pattern => {
+            document.querySelectorAll(`script[src*="${pattern}"]`)
+                .forEach(script => script.remove());
+        });
     }
 
     async removeAllTrackingCookies() {
