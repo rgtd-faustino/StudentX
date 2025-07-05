@@ -269,8 +269,8 @@ class CookieConsentManager {
                         } else {
                             // Mark as approved - but DON'T add attributes to AdSense/GoogleSyndication scripts
                             const isAdSenseScript = node.src.includes('adsbygoogle.js') || 
-                                                   node.src.includes('googlesyndication.com') ||
-                                                   node.src.includes('googleadservices.com');
+                                                node.src.includes('googlesyndication.com') ||
+                                                node.src.includes('googleadservices.com');
                             
                             if (!isAdSenseScript) {
                                 node.setAttribute('data-category', category);
