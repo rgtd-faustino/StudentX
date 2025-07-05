@@ -125,6 +125,7 @@ class CookieConsentManager {
         this.consentHistory = [];
         this.cookieInventory = new Map();
         this.consentExpiryDays = 365; // GDPR: consent expires after 1 year
+        this.scriptBlockingActive = false;
     }
 
     init() {
@@ -138,10 +139,13 @@ class CookieConsentManager {
         this.checkAndEnforceExpiry();
         this.startCookieInventoryMonitoring();
         
-        if (this.consentData && this.isConsentValid()) {
-            this.applyConsent();
-        } else {
+        // Only start blocking if we don't have valid consent
+        if (!this.consentData || !this.isConsentValid()) {
+            this.blockTrackingScripts();
             this.showBanner();
+        } else {
+            // Apply existing valid consent immediately
+            this.applyConsent();
         }
         
         this.initialized = true;
@@ -247,11 +251,20 @@ class CookieConsentManager {
                             node.src.includes(pattern)
                         );
                         
+                        // Only block if we don't have consent AND script isn't already approved
                         if (shouldBlock && !node.hasAttribute('data-category')) {
-                            console.log('Blocking unconsented script:', node.src);
-                            node.type = 'javascript/blocked';
-                            if (node.parentNode) {
-                                node.parentNode.removeChild(node);
+                            const category = this.getScriptCategory(node.src);
+                            
+                            // Check if we have consent for this category
+                            if (!this.hasConsent(category)) {
+                                console.log('Blocking unconsented script:', node.src);
+                                node.type = 'javascript/blocked';
+                                if (node.parentNode) {
+                                    node.parentNode.removeChild(node);
+                                }
+                            } else {
+                                // Mark as approved
+                                node.setAttribute('data-category', category);
                             }
                         }
                     }
@@ -263,6 +276,17 @@ class CookieConsentManager {
             childList: true,
             subtree: true
         });
+    }
+
+    // Add method to determine script category
+    getScriptCategory(src) {
+        if (src.includes('google-analytics.com') || src.includes('googletagmanager.com')) {
+            return 'analytics';
+        }
+        if (src.includes('googlesyndication.com') || src.includes('doubleclick.net')) {
+            return 'marketing';
+        }
+        return 'analytics'; // default
     }
 
     setupDOMElements() {
@@ -355,8 +379,15 @@ class CookieConsentManager {
         }
     }
 
+    stopScriptBlocking() {
+        this.scriptBlockingActive = false;
+    }
+
     async handleAcceptAll() {
-        // Clean up first
+        // Stop blocking scripts first
+        this.stopScriptBlocking();
+        
+        // Clean up existing unwanted cookies/scripts
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
 
@@ -369,7 +400,7 @@ class CookieConsentManager {
     }
 
     async handleRejectAll() {
-        // Clean up first
+        // Keep blocking active for rejected categories
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
     
@@ -382,7 +413,15 @@ class CookieConsentManager {
     }
 
     async handleSavePreferences() {
-        // Clean up first
+        // Stop blocking for accepted categories
+        const hasAnyConsent = this.domElements.preferencesCookie?.checked || 
+                             this.domElements.analyticsCookie?.checked || 
+                             this.domElements.marketingCookie?.checked;
+        
+        if (hasAnyConsent) {
+            this.stopScriptBlocking();
+        }
+        
         await this.removeAllTrackingScripts();
         await this.removeAllTrackingCookies();
     
@@ -462,6 +501,7 @@ class CookieConsentManager {
         this.deleteCookie('cookieConsent');
         this.consentData = null;
         this.removeAllTrackingCookies();
+        this.blockTrackingScripts(); // Resume blocking
         this.showBanner();
     }
 
@@ -510,7 +550,7 @@ class CookieConsentManager {
             version: CONSENT_CONFIG.version
         };
 
-        // Save consent cookie with proper duration (1 year for consent validity)
+        // Save consent cookie with proper duration
         this.setCookie('cookieConsent', JSON.stringify(this.consentData), {
             days: this.consentExpiryDays,
             sameSite: 'Lax',
@@ -521,6 +561,13 @@ class CookieConsentManager {
         this.applyConsent();
         this.hideBanner();
         this.dispatchConsentEvent();
+        
+        // Force page reload to ensure scripts load properly
+        if (consentData.analytics || consentData.marketing || consentData.preferences) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        }
     }
 
     async applyConsent() {
