@@ -14,39 +14,77 @@
             return null;
         }
 
-        function parseEventPreferences() {
-            const acceptedCookie = getCookie('userEventPreferences_accepted');
-            const rejectedCookie = getCookie('userEventPreferences_rejected');
-            
-            let accepted = [];
-            let rejected = [];
-            let hasData = false;
+       function parseEventPreferences() {
+        const acceptedCookie = getCookie('userEventPreferences_accepted');
+        const rejectedCookie = getCookie('userEventPreferences_rejected');
+        
+        let accepted = [];
+        let rejected = [];
+        let hasData = false;
 
-            try {
-                if (acceptedCookie) {
-                    accepted = JSON.parse(acceptedCookie);
-                    hasData = true;
-                }
-                if (rejectedCookie) {
-                    rejected = JSON.parse(rejectedCookie);
-                    hasData = true;
-                }
-            } catch (e) {
-                console.error('Erro ao processar preferências dos cookies:', e);
-                // Show warning if cookies exist but can't be parsed
-                if (acceptedCookie || rejectedCookie) {
-                    showNoCookiesWarning();
-                }
-                return { accepted: [], rejected: [], hasData: false };
+        try {
+            if (acceptedCookie) {
+                accepted = JSON.parse(acceptedCookie);
+                hasData = true;
             }
-
-            // Show warning if no cookie data was found
-            if (!hasData) {
+            if (rejectedCookie) {
+                rejected = JSON.parse(rejectedCookie);
+                hasData = true;
+            }
+        } catch (e) {
+            console.error('Erro ao processar preferências dos cookies:', e);
+            if (acceptedCookie || rejectedCookie) {
                 showNoCookiesWarning();
             }
-
-            return { accepted, rejected, hasData };
+            return { accepted: [], rejected: [], hasData: false };
         }
+
+        if (!hasData) {
+            showNoCookiesWarning();
+            return { accepted: [], rejected: [], hasData: false };
+        }
+
+        // Filter out expired events
+        const today = new Date();
+        const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
+        
+        const activeAccepted = accepted.filter(event => {
+            if (event.dateValue && typeof event.dateValue === 'number') {
+                return event.dateValue >= todayValue;
+            }
+            if (event.parsedDay && event.parsedMonth && event.parsedYear) {
+                const eventDateValue = (event.parsedYear * 10000) + (event.parsedMonth * 100) + event.parsedDay;
+                return eventDateValue >= todayValue;
+            }
+            return true; // Keep events where we can't determine the date
+        });
+        
+        const activeRejected = rejected.filter(event => {
+            if (event.dateValue && typeof event.dateValue === 'number') {
+                return event.dateValue >= todayValue;
+            }
+            if (event.parsedDay && event.parsedMonth && event.parsedYear) {
+                const eventDateValue = (event.parsedYear * 10000) + (event.parsedMonth * 100) + event.parsedDay;
+                return eventDateValue >= todayValue;
+            }
+            return true; // Keep events where we can't determine the date
+        });
+
+        // Update cookies if expired events were removed
+        if (activeAccepted.length !== accepted.length) {
+            document.cookie = `userEventPreferences_accepted=${encodeURIComponent(JSON.stringify(activeAccepted))};path=/;max-age=${30 * 24 * 60 * 60}`;
+        }
+        
+        if (activeRejected.length !== rejected.length) {
+            document.cookie = `userEventPreferences_rejected=${encodeURIComponent(JSON.stringify(activeRejected))};path=/;max-age=${30 * 24 * 60 * 60}`;
+        }
+
+        return { 
+            accepted: activeAccepted, 
+            rejected: activeRejected, 
+            hasData: activeAccepted.length > 0 || activeRejected.length > 0 
+        };
+    }
 
         function showNoCookiesWarning() {
             const warning = document.getElementById('noCookiesWarning');
