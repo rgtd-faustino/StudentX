@@ -43,12 +43,20 @@ function createCarouselItems(data) {
     
     // after we add a datevalue to each of the items in format YYYYMMDD and sort them by the most recent we can show them
     sortItemsByDate(data.items);
+
+    const filteredItems = data.items.filter(item => {
+        return !hasUserInteractedWithItem(item);
+    });
     
     // so for each item we add all of their informations
-    data.items.forEach(item => {
+    filteredItems.forEach(item => {
         const itemContainer = document.createElement('div');
         itemContainer.className = 'item-container-mobile';
         
+        // IMPORTANT: Store the original event data on the DOM element
+        itemContainer._originalEventData = { ...item }; // Store complete original data
+        
+        // Rest of your existing code...
         // item Image
         const img = document.createElement('img');
         img.src = item.imageSrc;
@@ -580,16 +588,36 @@ function setupMobileCarousel() {
         if (leftInd) leftInd.style.opacity = 0;
         if (rightInd) rightInd.style.opacity = 0;
     }
-    
+
     function showNextItem() {
         // Get today's date in YYYYMMDD format
         const today = new Date();
         const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
         
-        // Check if the next event is not today
-        const nextItem = carouselItems[currentIndex + 1];
-        if (nextItem && nextItem._dateValue !== todayValue) {
-            // Create "no more events" message if it doesn't exist yet
+        // Hide current item
+        if (carouselItems[currentIndex]) {
+            carouselItems[currentIndex].style.display = 'none';
+        }
+        
+        // Move to next index
+        currentIndex++;
+        
+        // Look for the next item that's for today, starting from currentIndex
+        let nextTodayItemIndex = -1;
+        for (let i = currentIndex; i < carouselItems.length; i++) {
+            if (carouselItems[i]._dateValue === todayValue) {
+                nextTodayItemIndex = i;
+                break;
+            }
+        }
+        
+        if (nextTodayItemIndex !== -1) {
+            // Found an item for today - update currentIndex and show it
+            currentIndex = nextTodayItemIndex;
+            carouselItems[currentIndex].style.display = 'block';
+            resetCardStyles(carouselItems[currentIndex]);
+        } else {
+            // No more items for today - show "no more events" message
             const itemContainer = document.querySelector('.item-group-mobile');
             let nextDayImg = itemContainer.querySelector('img[src="images/nextDay.png"]');
             
@@ -613,24 +641,9 @@ function setupMobileCarousel() {
                 itemContainer.appendChild(nextDayImg);
             }
             
-            // Hide current item and show nextDay
-            if (carouselItems[currentIndex]) {
-                carouselItems[currentIndex].style.display = 'none';
-            }
+            // Show the "no more events" image
             nextDayImg.style.display = 'block';
-            currentIndex++; // Still increment the index
-            return;
         }
-        
-        // Normal case - hide current, show next
-        if (carouselItems[currentIndex]) {
-            carouselItems[currentIndex].style.display = 'none';
-        }
-        currentIndex = (currentIndex + 1);
-        
-        carouselItems[currentIndex].style.display = 'block';
-        resetCardStyles(carouselItems[currentIndex]);
-            
     }
 
     addSwipeInstructions();
@@ -724,15 +737,41 @@ function getRejectedItems() {
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
-    // Create a simplified version of the item for storage (avoid storing DOM elements)
+    // Create a comprehensive version of the item for storage with all available data
     const itemData = {
         id: item.id || `event_${Date.now()}`,
+        // Text content
         descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
         descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
         oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
         moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
+        
+        // Image sources and alt texts
+        imageSrc: item.querySelector('img')?.src || '',
+        altText: item.querySelector('img')?.alt || '',
+        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
+        
+        // Date and sorting information
+        dateValue: item._dateValue || null,
+        parsedDay: item._parsedDay || null,
+        parsedMonth: item._parsedMonth || null,
+        parsedYear: item._parsedYear || null,
+        
+        // Get any original JSON data if available (from the events.json)
+        // This would require passing the original event data, but we can try to reconstruct
+        day: item.day || null,
+        month: item.month || null,
+        
+        // Styling information (colors, etc.) - you might need to extract these from CSS
+        // or store them in the original event data
+        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
+        borderColor: window.getComputedStyle(item).borderColor || '',
+        
+        // Metadata
         timestamp: new Date().toISOString(),
-        dateValue: item._dateValue || null
+        userAction: 'accepted'
     };
     
     // Check if this event is already in the accepted list
@@ -752,14 +791,39 @@ function addAcceptedItem(item) {
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
-    // Create a simplified version of the item for storage
+    // Create a comprehensive version of the item for storage with all available data
     const itemData = {
         id: item.id || `event_${Date.now()}`,
+        // Text content
         descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
         descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
         oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
+        
+        // Image sources and alt texts
+        imageSrc: item.querySelector('img')?.src || '',
+        altText: item.querySelector('img')?.alt || '',
+        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
+        
+        // Date and sorting information
+        dateValue: item._dateValue || null,
+        parsedDay: item._parsedDay || null,
+        parsedMonth: item._parsedMonth || null,
+        parsedYear: item._parsedYear || null,
+        
+        // Get any original JSON data if available
+        day: item.day || null,
+        month: item.month || null,
+        
+        // Styling information
+        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
+        borderColor: window.getComputedStyle(item).borderColor || '',
+        
+        // Metadata
         timestamp: new Date().toISOString(),
-        dateValue: item._dateValue || null
+        userAction: 'rejected'
     };
     
     // Check if this event is already in the rejected list
@@ -775,6 +839,7 @@ function addRejectedItem(item) {
         setEssentialData('userEventPreferences_rejected', rejectedItems);
     }
 }
+
 
 // Function to clean up old preferences (optional - helps with storage management)
 function cleanupOldPreferences() {
@@ -846,13 +911,21 @@ function hasUserInteractedWithEvent(eventItem) {
     return hasAccepted || hasRejected;
 }
 
-// Initialize cleanup on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Clean up old preferences when the page loads
-    cleanupOldPreferences();
+function hasUserInteractedWithItem(item) {
+    const accepted = getAcceptedItems();
+    const rejected = getRejectedItems();
     
-    // Initialize carousel as before
-    initializeCarousel();
+    const hasAccepted = accepted.some(userItem => 
+        userItem.descriptionTitle === item.descriptionTitle && 
+        userItem.descriptionSubtitle === item.descriptionSubtitle &&
+        userItem.oppPlaceTitle === item.oppPlaceTitle
+    );
     
-
-});
+    const hasRejected = rejected.some(userItem => 
+        userItem.descriptionTitle === item.descriptionTitle && 
+        userItem.descriptionSubtitle === item.descriptionSubtitle &&
+        userItem.oppPlaceTitle === item.oppPlaceTitle
+    );
+    
+    return hasAccepted || hasRejected;
+}

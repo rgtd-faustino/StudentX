@@ -25,7 +25,8 @@
         <!-- Preload de recursos críticos -->
         <link rel="preload" href="/js/script.js" as="script">
         <link rel="preload" href="/js/cookie-banner.js" as="script">
-    
+        <link rel="preload" href="/js/carousel.js" as="script">
+
         <!-- Favicons -->
         <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
         
@@ -204,158 +205,10 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 
-    <script>
-        function getCookie(name) {
-            const nameEQ = encodeURIComponent(name) + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) {
-                    return decodeURIComponent(c.substring(nameEQ.length, c.length));
-                }
-            }
-            return null;
-        }
-
-        function parseEventPreferences() {
-            const acceptedCookie = getCookie('userEventPreferences_accepted');
-            const rejectedCookie = getCookie('userEventPreferences_rejected');
-            
-            let accepted = [];
-            let rejected = [];
-            let hasData = false;
-
-            try {
-                if (acceptedCookie) {
-                    accepted = JSON.parse(acceptedCookie);
-                    hasData = true;
-                }
-                if (rejectedCookie) {
-                    rejected = JSON.parse(rejectedCookie);
-                    hasData = true;
-                }
-            } catch (e) {
-                console.error('Erro ao processar preferências dos cookies:', e);
-                // Show warning if cookies exist but can't be parsed
-                if (acceptedCookie || rejectedCookie) {
-                    showNoCookiesWarning();
-                }
-                return { accepted: [], rejected: [], hasData: false };
-            }
-
-            // Show warning if no cookie data was found
-            if (!hasData) {
-                showNoCookiesWarning();
-            }
-
-            return { accepted, rejected, hasData };
-        }
-
-        function showNoCookiesWarning() {
-            const warning = document.getElementById('noCookiesWarning');
-            warning.style.display = 'block';
-        }
-
-        function createEventCard(event, type) {
-            const card = document.createElement('div');
-            card.className = `event-card ${type}`;
-            
-            const icon = type === 'accepted' ? '✓' : '✗';
-            const statusClass = type === 'accepted' ? 'status-accepted' : 'status-rejected';
-            const statusText = type === 'accepted' ? 'Aceite' : 'Rejeitado';
-            
-            // Handle different event object structures
-            const eventName = event.name || event.title || event.eventName || 'Nome não disponível';
-            const eventDate = event.date || event.eventDate || event.timestamp || null;
-            
-            let dateDisplay = 'Data não disponível';
-            if (eventDate) {
-                try {
-                    const date = new Date(eventDate);
-                    if (!isNaN(date.getTime())) {
-                        dateDisplay = date.toLocaleDateString('pt-PT');
-                    }
-                } catch (e) {
-                    console.warn('Erro ao formatar data:', eventDate);
-                }
-            }
-            
-            card.innerHTML = `
-                <div class="icon ${type}">${icon}</div>
-                <div class="event-name">${eventName}</div>
-                <div class="event-status ${statusClass}">${statusText}</div>
-                <div class="event-date">Data: ${dateDisplay}</div>
-            `;
-            
-            return card;
-        }
-
-        function updateStats(accepted, rejected) {
-            document.getElementById('acceptedCount').textContent = accepted.length;
-            document.getElementById('rejectedCount').textContent = rejected.length;
-            document.getElementById('totalCount').textContent = accepted.length + rejected.length;
-        }
-
-        function loadEventPreferences() {
-            const preferences = parseEventPreferences();
-            const acceptedContainer = document.getElementById('acceptedEvents');
-            const rejectedContainer = document.getElementById('rejectedEvents');
-            
-            // Clear existing content
-            acceptedContainer.innerHTML = '';
-            rejectedContainer.innerHTML = '';
-            
-            // Update statistics
-            updateStats(preferences.accepted, preferences.rejected);
-            
-            // Display accepted events
-            if (preferences.accepted.length > 0) {
-                preferences.accepted.forEach(event => {
-                    acceptedContainer.appendChild(createEventCard(event, 'accepted'));
-                });
-            } else {
-                acceptedContainer.innerHTML = `
-                    <div class="empty-state">
-                        <h3>Nenhum evento aceite</h3>
-                        <p>Os eventos que aceitar aparecerão aqui</p>
-                    </div>
-                `;
-            }
-            
-            // Display rejected events
-            if (preferences.rejected.length > 0) {
-                preferences.rejected.forEach(event => {
-                    rejectedContainer.appendChild(createEventCard(event, 'rejected'));
-                });
-            } else {
-                rejectedContainer.innerHTML = `
-                    <div class="empty-state">
-                        <h3>Nenhum evento rejeitado</h3>
-                        <p>Os eventos que rejeitar aparecerão aqui</p>
-                    </div>
-                `;
-            }
-
-            // Debug information (remove in production)
-            console.log('Event preferences loaded:', {
-                accepted: preferences.accepted,
-                rejected: preferences.rejected,
-                hasData: preferences.hasData
-            });
-        }
-
-        // Load preferences when page loads
-        document.addEventListener('DOMContentLoaded', loadEventPreferences);
-
-        // Optional: Refresh data periodically in case cookies are updated
-        setInterval(loadEventPreferences, 30000); // Refresh every 30 seconds
-    </script>
+    <div id="eventModal" class="event-modal"></div>
 
 
 <footer class="footer">
@@ -464,6 +317,7 @@
 
 <script defer src="/js/script.js"></script>
 <script defer src="/js/cookie-banner.js"></script>
+<script defer src="/js/opportunities.js"></script>
 
 </body>
 </html>
