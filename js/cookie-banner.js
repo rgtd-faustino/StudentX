@@ -111,8 +111,7 @@ const CONSENT_CONFIG = {
                         adsenseScript.async = true;
                         adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
                         adsenseScript.crossOrigin = 'anonymous';
-                        // Don't add data-category attribute for AdSense scripts as they don't support it
-                        adsenseScript.setAttribute('data-consent-category', 'marketing');
+                        // AdSense scripts don't support data attributes for consent
                         document.head.appendChild(adsenseScript);
                     }
                 }
@@ -268,10 +267,8 @@ class CookieConsentManager {
                                     node.parentNode.removeChild(node);
                                 }
                             } else {
-                                // Mark as approved - use data-consent-category for AdSense scripts since they don't support data-category
-                                if (node.src.includes('adsbygoogle.js') || node.src.includes('googlesyndication.com')) {
-                                    node.setAttribute('data-consent-category', category);
-                                } else {
+                                // Mark as approved - don't add attributes to AdSense scripts as they don't support them
+                                if (!node.src.includes('adsbygoogle.js') && !node.src.includes('googlesyndication.com')) {
                                     node.setAttribute('data-category', category);
                                 }
                             }
@@ -447,8 +444,8 @@ class CookieConsentManager {
         await this.unloadCategoryScripts('marketing');
         await this.unloadCategoryScripts('preferences');
         
-        // Remove any remaining tracking scripts - using both attribute types for compatibility
-        document.querySelectorAll('script[data-category="analytics"], script[data-category="marketing"], script[data-category="preferences"], script[data-consent-category="analytics"], script[data-consent-category="marketing"], script[data-consent-category="preferences"]')
+        // Remove any remaining tracking scripts - only use data-category attribute
+        document.querySelectorAll('script[data-category="analytics"], script[data-category="marketing"], script[data-category="preferences"]')
             .forEach(script => script.remove());
     }
 
@@ -807,8 +804,8 @@ class CookieConsentManager {
     }
 
     unloadCategoryScripts(category) {
-        // Remove scripts with category attribute (both standard and AdSense-compatible)
-        document.querySelectorAll(`script[data-category="${category}"], script[data-consent-category="${category}"]`)
+        // Remove scripts with category attribute
+        document.querySelectorAll(`script[data-category="${category}"]`)
             .forEach(script => script.remove());
         
         this.loadedScripts.delete(category);
