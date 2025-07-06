@@ -167,8 +167,6 @@ function getCookie(name) {
             let cardContent = `
                 <div class="icon ${type}">${icon}</div>
                 <div class="event-name">${eventName}</div>
-                <div class="event-subtitle">${eventSubtitle}</div>
-                <div class="event-place">${eventPlace}</div>
                 <div class="event-status ${statusClass}">${statusText}</div>
                 <div class="event-date">Data: ${dateDisplay}</div>
             `;

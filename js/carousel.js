@@ -14,6 +14,12 @@ function initializeCarousel() {
             // Store all events globally for day navigation
             allEventsData = data.items;
             
+            // Now that events data is loaded, we can safely run maintenance cleanup
+            performMaintenanceCleanup();
+            
+            // Set up periodic cleanup (every hour) - only after data is loaded
+            setInterval(performMaintenanceCleanup, 60 * 60 * 1000);
+            
             createCarouselItems(data);
             
             if (isMobile) {
@@ -1258,14 +1264,13 @@ function filterExpiredEvents() {
     };
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    performMaintenanceCleanup();
-    
-    // Set up periodic cleanup (every hour)
-    setInterval(performMaintenanceCleanup, 60 * 60 * 1000);
-});
-
 function performMaintenanceCleanup() {
+    // Only run cleanup if events data is loaded
+    if (!allEventsData || allEventsData.length === 0) {
+        console.log('Skipping maintenance cleanup - events data not loaded yet');
+        return;
+    }
+    
     const result = filterExpiredEvents();
     if (result.removedCount > 0) {
         console.log(`Removed ${result.removedCount} expired events from preferences`);
