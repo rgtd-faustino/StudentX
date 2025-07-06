@@ -1044,32 +1044,18 @@ function addSwipeInstructions() {
 }
 
 function setEssentialData(key, value, days = 30) {
-    try {
-        // Use the existing cookie consent manager's setCookie method for essential cookies
-        if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
-            window.cookieConsent.setCookie(key, JSON.stringify(value), {
-                days: days,
-                sameSite: 'Lax',
-                secure: true
-            });
-        } else {
-            // Fallback method if consent manager isn't available
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
-        }
-        
-        // Verify the data was actually saved by trying to read it back
-        const savedData = getEssentialData(key);
-        if (!savedData || JSON.stringify(savedData) !== JSON.stringify(value)) {
-            console.warn(`Failed to save essential data for key: ${key}. Data verification failed.`);
-            return false;
-        }
-        
-        return true;
-    } catch (error) {
-        console.error(`Error saving essential data for key: ${key}`, error);
-        return false;
+    // Use the existing cookie consent manager's setCookie method for essential cookies
+    if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
+        window.cookieConsent.setCookie(key, JSON.stringify(value), {
+            days: days,
+            sameSite: 'Lax',
+            secure: true
+        });
+    } else {
+        // Fallback method if consent manager isn't available
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
     }
 }
 
@@ -1106,31 +1092,31 @@ function getRejectedItems() {
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
-    // Use the stored original event data instead of querying DOM
-    const originalData = item._originalEventData || {};
+    // Get the current year for date calculation
+    const currentYear = new Date().getFullYear();
     
     const itemData = {
-        id: item.eventId || `event_${Date.now()}`,
-        descriptionTitle: originalData.descriptionTitle || '',
-        descriptionSubtitle: originalData.descriptionSubtitle || '',
-        oppPlaceTitle: originalData.oppPlaceTitle || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle || '',
-        moreInfoLink: originalData.moreInfoLink || '',
-        imageSrc: originalData.imageSrc || '',
-        altText: originalData.altText || '',
-        logoSrc: originalData.logoSrc || '',
-        logoAlt: originalData.logoAlt || '',
+        id: item.id || `event_${Date.now()}`,
+        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
+        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
+        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
+        imageSrc: item.querySelector('img')?.src || '',
+        altText: item.querySelector('img')?.alt || '',
+        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
         
         // Enhanced date storage
         dateValue: item._dateValue || null,
         parsedDay: item._parsedDay || null,
         parsedMonth: item._parsedMonth || null,
-        parsedYear: item._parsedYear || new Date().getFullYear(),
+        parsedYear: item._parsedYear || currentYear,
         day: item.day || null,
         month: item.month || null,
-        startTime: item.startTime || null,
-        endTime: item.endTime || null,
         
+        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
+        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'accepted'
     };
@@ -1143,48 +1129,39 @@ function addAcceptedItem(item) {
     
     if (!isDuplicate) {
         acceptedItems.push(itemData);
-        const saveSuccessful = setEssentialData('userEventPreferences_accepted', acceptedItems);
-        
-        if (saveSuccessful) {
-            console.log('Added accepted item:', itemData.descriptionTitle); // Debug log
-        } else {
-            // Remove the item we just added since saving failed
-            acceptedItems.pop();
-            console.error('Failed to save accepted item:', itemData.descriptionTitle, 'Cookie save operation failed');
-        }
-    } else {
-        console.log('Duplicate accepted item not added:', itemData.descriptionTitle); // Debug log
+        setEssentialData('userEventPreferences_accepted', acceptedItems);
     }
 }
 
+// Updated addRejectedItem function to ensure proper date storage
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
-    // Use the stored original event data instead of querying DOM
-    const originalData = item._originalEventData || {};
+    // Get the current year for date calculation
+    const currentYear = new Date().getFullYear();
     
     const itemData = {
-        id: item.eventId || `event_${Date.now()}`,
-        descriptionTitle: originalData.descriptionTitle || '',
-        descriptionSubtitle: originalData.descriptionSubtitle || '',
-        oppPlaceTitle: originalData.oppPlaceTitle || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle || '',
-        moreInfoLink: originalData.moreInfoLink || '',
-        imageSrc: originalData.imageSrc || '',
-        altText: originalData.altText || '',
-        logoSrc: originalData.logoSrc || '',
-        logoAlt: originalData.logoAlt || '',
+        id: item.id || `event_${Date.now()}`,
+        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
+        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
+        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
+        imageSrc: item.querySelector('img')?.src || '',
+        altText: item.querySelector('img')?.alt || '',
+        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
         
         // Enhanced date storage
         dateValue: item._dateValue || null,
         parsedDay: item._parsedDay || null,
         parsedMonth: item._parsedMonth || null,
-        parsedYear: item._parsedYear || new Date().getFullYear(),
+        parsedYear: item._parsedYear || currentYear,
         day: item.day || null,
         month: item.month || null,
-        startTime: item.startTime || null,
-        endTime: item.endTime || null,
         
+        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
+        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'rejected'
     };
@@ -1197,17 +1174,7 @@ function addRejectedItem(item) {
     
     if (!isDuplicate) {
         rejectedItems.push(itemData);
-        const saveSuccessful = setEssentialData('userEventPreferences_rejected', rejectedItems);
-        
-        if (saveSuccessful) {
-            console.log('Added rejected item:', itemData.descriptionTitle); // Debug log
-        } else {
-            // Remove the item we just added since saving failed
-            rejectedItems.pop();
-            console.error('Failed to save rejected item:', itemData.descriptionTitle, 'Cookie save operation failed');
-        }
-    } else {
-        console.log('Duplicate rejected item not added:', itemData.descriptionTitle); // Debug log
+        setEssentialData('userEventPreferences_rejected', rejectedItems);
     }
 }
 
@@ -1380,80 +1347,3 @@ function performMaintenanceCleanup() {
         console.log(`Removed ${result.removedCount} expired events from preferences`);
     }
 }
-
-// Debugging functions to help troubleshoot cookie storage issues
-function debugUserPreferences() {
-    console.group('User Preferences Debug');
-    
-    const accepted = getAcceptedItems();
-    const rejected = getRejectedItems();
-    
-    console.log('Accepted items count:', accepted.length);
-    console.log('Rejected items count:', rejected.length);
-    
-    if (accepted.length > 0) {
-        console.log('Accepted items:', accepted.map(item => ({
-            title: item.descriptionTitle,
-            subtitle: item.descriptionSubtitle,
-            place: item.oppPlaceTitle,
-            timestamp: item.timestamp
-        })));
-    }
-    
-    if (rejected.length > 0) {
-        console.log('Rejected items:', rejected.map(item => ({
-            title: item.descriptionTitle,
-            subtitle: item.descriptionSubtitle,
-            place: item.oppPlaceTitle,
-            timestamp: item.timestamp
-        })));
-    }
-    
-    // Check raw cookie data
-    const rawAccepted = getEssentialData('userEventPreferences_accepted');
-    const rawRejected = getEssentialData('userEventPreferences_rejected');
-    
-    console.log('Raw accepted cookie data length:', JSON.stringify(rawAccepted || []).length);
-    console.log('Raw rejected cookie data length:', JSON.stringify(rawRejected || []).length);
-    
-    // Check cookie size limits (browsers typically limit to 4KB per cookie)
-    const acceptedSize = JSON.stringify(rawAccepted || []).length;
-    const rejectedSize = JSON.stringify(rawRejected || []).length;
-    
-    if (acceptedSize > 3000) {
-        console.warn('Accepted items cookie approaching size limit:', acceptedSize, 'bytes');
-    }
-    
-    if (rejectedSize > 3000) {
-        console.warn('Rejected items cookie approaching size limit:', rejectedSize, 'bytes');
-    }
-    
-    console.groupEnd();
-}
-
-// Function to test cookie saving capability
-function testCookieSaving() {
-    console.group('Cookie Saving Test');
-    
-    const testData = { test: 'value', timestamp: new Date().toISOString() };
-    const testKey = 'test_cookie_saving';
-    
-    const saveResult = setEssentialData(testKey, testData);
-    console.log('Test save result:', saveResult);
-    
-    const retrievedData = getEssentialData(testKey);
-    console.log('Retrieved test data:', retrievedData);
-    
-    // Clean up test cookie
-    if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
-        window.cookieConsent.setCookie(testKey, '', { days: -1 });
-    } else {
-        document.cookie = `${testKey}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-    }
-    
-    console.groupEnd();
-}
-
-// Make debugging functions available globally for manual testing
-window.debugUserPreferences = debugUserPreferences;
-window.testCookieSaving = testCookieSaving;
