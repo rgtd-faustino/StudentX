@@ -812,22 +812,7 @@ body {
     position: relative;
 }
 
-.expand-event-details {
-    all: unset;
-    cursor: pointer;
-    position: absolute;
-    margin-top:-22%;
-    margin-left: 65%;
-}
 
-.expand-event-details img{
-    width:150%;
-    height: auto;
-}
-
-.expand-event-details:hover img {
-    filter: brightness(0.8); /* Darken the image */
-}
 
 
 .event-image{
@@ -1361,11 +1346,6 @@ body {
     padding: 4vw;
     border-radius: var(--card-radius);
     box-shadow: 0 1vw 2vw rgba(0,0,0,0.15);
-    transition: transform 0.2s ease;
-}
-
-.event-card:hover {
-    transform: scale(1.015);
 }
 
 .event-card.accepted {
@@ -1568,6 +1548,282 @@ body {
     color: var(--primary-color);
     text-decoration: none;
     font-size: 4vw;
+}
+
+/* Existing CSS remains the same... */
+.header h1 {
+    margin: 0;
+    font-size: 6vw;
+    color: var(--dark-blue);
+    text-align: center;
+}
+.header p {
+    margin-top: 2vw;
+    color: var(--blue);
+    font-size: 5vw;
+    text-align: center;
+}
+.stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 3vw;
+    margin: 4vw 0;
+    flex-wrap: wrap;
+}
+.stats {
+    flex-direction: row;
+    align-items: center;
+}
+.stat-item {
+    background: var(--light-blue);
+    padding: 3vw;
+    border-radius: var(--card-radius);
+    box-shadow: 0 0.5vw 4vw rgba(0,0,0,0.15);
+    text-align: center;
+    flex: 1;
+    min-width: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.stat-number {
+    font-size: 7vw;
+    color: var(--dark-blue);
+    font-weight: bold;
+}
+.stat-label {
+    font-size: 5vw;
+    color: var(--blue);
+}
+.section {
+    margin-bottom: 5vw;
+}
+.section-title {
+    color: var(--dark-blue);
+    font-size: 6vw;
+    margin-bottom: 5vw;
+    border-left: 1.5vw solid var(--blue);
+    padding-left: 4vw;
+}
+.events-grid {
+    display: grid;
+    gap: 5vw;
+}
+.event-card {
+    background: white;
+    border-left: 1.5vw solid var(--accent);
+    padding: 4vw;
+    border-radius: var(--card-radius);
+    box-shadow: 0 1vw 2vw rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
+    user-select: none;
+}
+.event-card.accepted {
+    border-color: var(--accepted);
+}
+.event-card.rejected {
+    border-color: var(--rejected);
+}
+.icon {
+    font-size: 7vw;
+    margin-bottom: 1vw;
+}
+.event-name {
+    font-weight: 600;
+    font-size: 5vw;
+    margin-bottom: 1vw;
+    color: var(--text);
+}
+.event-status {
+    font-size: 5vw;
+    margin-bottom: 1vw;
+    font-weight: 700;
+}
+.status-accepted {
+    color: var(--accepted);
+}
+.status-rejected {
+    color: var(--rejected);
+}
+.event-date {
+    font-size: 4.5vw;
+    color: #444;
+}
+.empty-state {
+    text-align: center;
+    padding: 4vw;
+    font-size: 5vw;
+    background: var(--light-blue);
+    border-radius: var(--card-radius);
+    color: var(--dark-blue);
+    box-shadow: 0 1vw 2vw rgba(0,0,0,0.15);
+}
+.empty-state p{
+    font-size: 4.5vw;
+}
+.container {
+    display: block;
+    padding: 3vw;
+}
+.events-grid {
+    grid-template-columns: 1fr;
+}
+
+/* New CSS for swipe functionality */
+.swipe-indicator-remove {
+    position: absolute;
+    top: 50%;
+    left: 5vw;
+    transform: translateY(-50%) scale(0.5);
+    background: rgba(255, 0, 0, 0.9);
+    color: white;
+    padding: 3vw 3vw;
+    border-radius: 5vw;
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+    font-size: 5vw;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow: 0 2vw 4vw rgba(255, 0, 0, 0.3);
+}
+
+
+
+
+/* Expand button positioning adjustment */
+.expand-event-details {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 3;
+    top: 15vw;
+    right: 8vw;
+    width: 10vw;
+    height: 10vw;
+    cursor: pointer;
+}
+
+.expand-event-details:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+.expand-event-details:hover img {
+    filter: brightness(0.8); /* Darken the image */
+}
+
+.expand-event-details img {
+    width: 10vw;
+    height: 10vw;
+    opacity: 0.7;
+}
+
+/* Animation classes for enhanced feedback */
+.event-card.swiping-remove {
+    transform-origin: center;
+    box-shadow: 0 4vw 8vw rgba(255, 0, 0, 0.4);
+}
+
+/* Responsive adjustments */
+.swipe-indicator-remove {
+    left: 3vw;
+    padding: 2vw 2.5vw;
+    font-size: 3.5vw;
+    gap: 1vw;
+}
+
+.swipe-indicator-remove i {
+    font-size: 4vw;
+}
+
+.swipe-indicator-remove span {
+    font-size: 3.5vw;
+}
+
+
+/* Visual feedback for different swipe states */
+.event-card.swipe-active {
+    transition: none;
+    z-index: 1;
+}
+
+.event-card.swipe-removing {
+    background: rgba(255, 240, 240, 0.9);
+    border-color: #ff4444;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .swipe-indicator-remove {
+        transition: opacity 0.1s ease, transform 0.1s ease;
+    }
+    
+    .event-card {
+        transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+    }
+}
+
+/* Instructions for users */
+.swipe-instructions {
+    background: rgba(0, 123, 255, 0.1);
+    border: 1px solid rgba(0, 123, 255, 0.3);
+    border-radius: var(--card-radius);
+    padding: 3vw;
+    margin: 4vw 0;
+    text-align: center;
+    color: var(--dark-blue);
+}
+
+.swipe-instructions h3 {
+    margin: 0 0 1vw 0;
+    font-size: 4.5vw;
+    color: var(--dark-blue);
+}
+
+.swipe-instructions p {
+    margin: 0;
+    font-size: 3.5vw;
+    color: var(--blue);
+}
+
+.swipe-instructions .swipe-icon {
+    font-size: 6vw;
+    color: var(--blue);
+    margin-bottom: 1vw;
+}
+
+/* Smooth transitions for card removal */
+.event-card.removing {
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+/* Add subtle hover effect for desktop users */
+@media (hover: hover) {
+    .event-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2vw 4vw rgba(0,0,0,0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+}
+
+/* Prevent text selection during swipe */
+.event-card.swiping-remove * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 }
 
