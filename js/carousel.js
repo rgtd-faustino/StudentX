@@ -375,7 +375,7 @@ function setupMobileCarousel() {
         return (date.getFullYear() * 10000) + ((date.getMonth() + 1) * 100) + date.getDate();
     }
     
-    const todayValue = getDateValue(currentDay);
+    const currentDayValue  = getDateValue(currentDay);
     
     // Check if there are any valid events for today (considering time)
     let hasCurrentDayEvent = false;
