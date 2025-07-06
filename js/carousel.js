@@ -1092,31 +1092,31 @@ function getRejectedItems() {
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
-    // Get the current year for date calculation
-    const currentYear = new Date().getFullYear();
+    // Use the stored original event data instead of querying DOM
+    const originalData = item._originalEventData || {};
     
     const itemData = {
-        id: item.id || `event_${Date.now()}`,
-        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: item.querySelector('img')?.src || '',
-        altText: item.querySelector('img')?.alt || '',
-        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
+        id: item.eventId || `event_${Date.now()}`,
+        descriptionTitle: originalData.descriptionTitle || '',
+        descriptionSubtitle: originalData.descriptionSubtitle || '',
+        oppPlaceTitle: originalData.oppPlaceTitle || '',
+        oppPlaceSubtitle: originalData.oppPlaceSubtitle || '',
+        moreInfoLink: originalData.moreInfoLink || '',
+        imageSrc: originalData.imageSrc || '',
+        altText: originalData.altText || '',
+        logoSrc: originalData.logoSrc || '',
+        logoAlt: originalData.logoAlt || '',
         
         // Enhanced date storage
         dateValue: item._dateValue || null,
         parsedDay: item._parsedDay || null,
         parsedMonth: item._parsedMonth || null,
-        parsedYear: item._parsedYear || currentYear,
+        parsedYear: item._parsedYear || new Date().getFullYear(),
         day: item.day || null,
         month: item.month || null,
+        startTime: item.startTime || null,
+        endTime: item.endTime || null,
         
-        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
-        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'accepted'
     };
@@ -1130,38 +1130,40 @@ function addAcceptedItem(item) {
     if (!isDuplicate) {
         acceptedItems.push(itemData);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
+        console.log('Added accepted item:', itemData.descriptionTitle); // Debug log
+    } else {
+        console.log('Duplicate accepted item not added:', itemData.descriptionTitle); // Debug log
     }
 }
 
-// Updated addRejectedItem function to ensure proper date storage
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
-    // Get the current year for date calculation
-    const currentYear = new Date().getFullYear();
+    // Use the stored original event data instead of querying DOM
+    const originalData = item._originalEventData || {};
     
     const itemData = {
-        id: item.id || `event_${Date.now()}`,
-        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: item.querySelector('img')?.src || '',
-        altText: item.querySelector('img')?.alt || '',
-        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
+        id: item.eventId || `event_${Date.now()}`,
+        descriptionTitle: originalData.descriptionTitle || '',
+        descriptionSubtitle: originalData.descriptionSubtitle || '',
+        oppPlaceTitle: originalData.oppPlaceTitle || '',
+        oppPlaceSubtitle: originalData.oppPlaceSubtitle || '',
+        moreInfoLink: originalData.moreInfoLink || '',
+        imageSrc: originalData.imageSrc || '',
+        altText: originalData.altText || '',
+        logoSrc: originalData.logoSrc || '',
+        logoAlt: originalData.logoAlt || '',
         
         // Enhanced date storage
         dateValue: item._dateValue || null,
         parsedDay: item._parsedDay || null,
         parsedMonth: item._parsedMonth || null,
-        parsedYear: item._parsedYear || currentYear,
+        parsedYear: item._parsedYear || new Date().getFullYear(),
         day: item.day || null,
         month: item.month || null,
+        startTime: item.startTime || null,
+        endTime: item.endTime || null,
         
-        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
-        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'rejected'
     };
@@ -1175,6 +1177,9 @@ function addRejectedItem(item) {
     if (!isDuplicate) {
         rejectedItems.push(itemData);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
+        console.log('Added rejected item:', itemData.descriptionTitle); // Debug log
+    } else {
+        console.log('Duplicate rejected item not added:', itemData.descriptionTitle); // Debug log
     }
 }
 
