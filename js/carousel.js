@@ -76,7 +76,16 @@ function hasEventTimePassed(item) {
 }
 
 function createEventId(item) {
-    return `${item.descriptionTitle || ''}_${item.descriptionSubtitle || ''}_${item.oppPlaceTitle || ''}_${item.day || ''}_${item.month || ''}_${item.startTime || ''}`;
+    const parts = [
+        item.descriptionTitle?.trim() || '',
+        item.descriptionSubtitle?.trim() || '',
+        item.oppPlaceTitle?.trim() || '',
+        item.day || '',
+        item.month || '',
+        item.startTime || ''
+    ];
+    
+    return parts.filter(part => part !== '').join('_').replace(/[^a-zA-Z0-9_]/g, '');
 }
 
 // Updated createCarouselItems function to handle desktop vs mobile differently
@@ -1099,7 +1108,7 @@ function getRejectedItems() {
     return getEssentialData('userEventPreferences_rejected') || [];
 }
 
-// Updated addAcceptedItem function to use the event data directly
+// Updated addAcceptedItem function
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
@@ -1109,46 +1118,50 @@ function addAcceptedItem(item) {
     // Use the stored original event data instead of extracting from DOM
     const originalData = item._originalEventData || {};
     
+    // Generate consistent event ID
+    const eventId = createEventId(originalData);
+    
     const itemData = {
-        id: item.eventId || `event_${Date.now()}`,
-        descriptionTitle: originalData.descriptionTitle || item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: originalData.descriptionSubtitle || item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: originalData.oppPlaceTitle || item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle || item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: originalData.moreInfoLink || item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: originalData.imageSrc || item.querySelector('img')?.src || '',
-        altText: originalData.altText || item.querySelector('img')?.alt || '',
-        logoSrc: originalData.logoSrc || item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: originalData.logoAlt || item.querySelector('.opp-place-container img')?.alt || '',
+        id: eventId,
+        descriptionTitle: originalData.descriptionTitle?.trim() || '',
+        descriptionSubtitle: originalData.descriptionSubtitle?.trim() || '',
+        oppPlaceTitle: originalData.oppPlaceTitle?.trim() || '',
+        oppPlaceSubtitle: originalData.oppPlaceSubtitle?.trim() || '',
+        moreInfoLink: originalData.moreInfoLink || '',
+        imageSrc: originalData.imageSrc || '',
+        altText: originalData.altText || '',
+        logoSrc: originalData.logoSrc || '',
+        logoAlt: originalData.logoAlt || '',
         
-        // Enhanced date storage
-        dateValue: item._dateValue || originalData._dateValue || null,
-        parsedDay: item._parsedDay || originalData._parsedDay || null,
-        parsedMonth: item._parsedMonth || originalData._parsedMonth || null,
-        parsedYear: item._parsedYear || originalData._parsedYear || currentYear,
-        day: item.day || originalData.day || null,
-        month: item.month || originalData.month || null,
+        // Store both original and parsed date values
+        dateValue: originalData._dateValue || item._dateValue || null,
+        parsedDay: originalData._parsedDay || item._parsedDay || null,
+        parsedMonth: originalData._parsedMonth || item._parsedMonth || null,
+        parsedYear: originalData._parsedYear || item._parsedYear || currentYear,
+        day: originalData.day || item.day || null,
+        month: originalData.month || item.month || null,
+        startTime: originalData.startTime || item.startTime || null,
+        endTime: originalData.endTime || item.endTime || null,
         
-        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
-        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'accepted'
     };
     
-    const isDuplicate = acceptedItems.some(existingItem => 
-        existingItem.descriptionTitle === itemData.descriptionTitle && 
-        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
-        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
-    );
+    console.log('Storing accepted item:', itemData);
+    
+    // Check for duplicates using the event ID
+    const isDuplicate = acceptedItems.some(existingItem => existingItem.id === itemData.id);
     
     if (!isDuplicate) {
         acceptedItems.push(itemData);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
-        console.log('Added accepted item:', itemData.descriptionTitle);
+        console.log('Successfully added accepted item:', itemData.descriptionTitle);
+    } else {
+        console.log('Duplicate accepted item not added:', itemData.descriptionTitle);
     }
 }
 
-// Updated addRejectedItem function to use the event data directly
+// Updated addRejectedItem function
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
@@ -1158,42 +1171,46 @@ function addRejectedItem(item) {
     // Use the stored original event data instead of extracting from DOM
     const originalData = item._originalEventData || {};
     
+    // Generate consistent event ID
+    const eventId = createEventId(originalData);
+    
     const itemData = {
-        id: item.eventId || `event_${Date.now()}`,
-        descriptionTitle: originalData.descriptionTitle || item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: originalData.descriptionSubtitle || item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: originalData.oppPlaceTitle || item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle || item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: originalData.moreInfoLink || item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: originalData.imageSrc || item.querySelector('img')?.src || '',
-        altText: originalData.altText || item.querySelector('img')?.alt || '',
-        logoSrc: originalData.logoSrc || item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: originalData.logoAlt || item.querySelector('.opp-place-container img')?.alt || '',
+        id: eventId,
+        descriptionTitle: originalData.descriptionTitle?.trim() || '',
+        descriptionSubtitle: originalData.descriptionSubtitle?.trim() || '',
+        oppPlaceTitle: originalData.oppPlaceTitle?.trim() || '',
+        oppPlaceSubtitle: originalData.oppPlaceSubtitle?.trim() || '',
+        moreInfoLink: originalData.moreInfoLink || '',
+        imageSrc: originalData.imageSrc || '',
+        altText: originalData.altText || '',
+        logoSrc: originalData.logoSrc || '',
+        logoAlt: originalData.logoAlt || '',
         
-        // Enhanced date storage
-        dateValue: item._dateValue || originalData._dateValue || null,
-        parsedDay: item._parsedDay || originalData._parsedDay || null,
-        parsedMonth: item._parsedMonth || originalData._parsedMonth || null,
-        parsedYear: item._parsedYear || originalData._parsedYear || currentYear,
-        day: item.day || originalData.day || null,
-        month: item.month || originalData.month || null,
+        // Store both original and parsed date values
+        dateValue: originalData._dateValue || item._dateValue || null,
+        parsedDay: originalData._parsedDay || item._parsedDay || null,
+        parsedMonth: originalData._parsedMonth || item._parsedMonth || null,
+        parsedYear: originalData._parsedYear || item._parsedYear || currentYear,
+        day: originalData.day || item.day || null,
+        month: originalData.month || item.month || null,
+        startTime: originalData.startTime || item.startTime || null,
+        endTime: originalData.endTime || item.endTime || null,
         
-        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
-        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'rejected'
     };
     
-    const isDuplicate = rejectedItems.some(existingItem => 
-        existingItem.descriptionTitle === itemData.descriptionTitle && 
-        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
-        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
-    );
+    console.log('Storing rejected item:', itemData);
+    
+    // Check for duplicates using the event ID
+    const isDuplicate = rejectedItems.some(existingItem => existingItem.id === itemData.id);
     
     if (!isDuplicate) {
         rejectedItems.push(itemData);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
-        console.log('Added rejected item:', itemData.descriptionTitle);
+        console.log('Successfully added rejected item:', itemData.descriptionTitle);
+    } else {
+        console.log('Duplicate rejected item not added:', itemData.descriptionTitle);
     }
 }
 
@@ -1272,20 +1289,74 @@ function hasUserInteractedWithItem(item) {
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    const hasAccepted = accepted.some(userItem => 
-        userItem.descriptionTitle === item.descriptionTitle && 
-        userItem.descriptionSubtitle === item.descriptionSubtitle &&
-        userItem.oppPlaceTitle === item.oppPlaceTitle
-    );
+    // Create a more robust comparison using multiple identifiers
+    const itemIdentifiers = {
+        descriptionTitle: item.descriptionTitle?.trim() || '',
+        descriptionSubtitle: item.descriptionSubtitle?.trim() || '',
+        oppPlaceTitle: item.oppPlaceTitle?.trim() || '',
+        day: item.day,
+        month: item.month,
+        startTime: item.startTime,
+        // Use the event ID as primary identifier if available
+        eventId: createEventId(item)
+    };
     
-    const hasRejected = rejected.some(userItem => 
-        userItem.descriptionTitle === item.descriptionTitle && 
-        userItem.descriptionSubtitle === item.descriptionSubtitle &&
-        userItem.oppPlaceTitle === item.oppPlaceTitle
-    );
+    console.log('Checking interaction for:', itemIdentifiers);
     
-    return hasAccepted || hasRejected;
+    const hasAccepted = accepted.some(userItem => {
+        // Primary check: use eventId if both items have it
+        if (userItem.id && itemIdentifiers.eventId) {
+            return userItem.id === itemIdentifiers.eventId;
+        }
+        
+        // Fallback: check core properties
+        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
+        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
+        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
+        
+        // Additional check: day and month if available
+        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
+        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
+        
+        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
+        
+        if (matches) {
+            console.log('Found accepted match:', userItem.descriptionTitle);
+        }
+        
+        return matches;
+    });
+    
+    const hasRejected = rejected.some(userItem => {
+        // Primary check: use eventId if both items have it
+        if (userItem.id && itemIdentifiers.eventId) {
+            return userItem.id === itemIdentifiers.eventId;
+        }
+        
+        // Fallback: check core properties
+        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
+        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
+        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
+        
+        // Additional check: day and month if available
+        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
+        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
+        
+        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
+        
+        if (matches) {
+            console.log('Found rejected match:', userItem.descriptionTitle);
+        }
+        
+        return matches;
+    });
+    
+    const result = hasAccepted || hasRejected;
+    console.log(`Item ${itemIdentifiers.descriptionTitle} interaction check: ${result}`);
+    
+    return result;
 }
+
 
 
 // Updated function to check if an event date has passed
