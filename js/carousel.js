@@ -1,5 +1,7 @@
 let allEventsData = [];
 
+
+// function starts the entire carousel
 function initializeCarousel() {
     const isMobile = window.innerWidth < 600;
     const itemGroup = document.querySelector('.item-group-mobile');
@@ -74,16 +76,7 @@ function hasEventTimePassed(item) {
 }
 
 function createEventId(item) {
-    const parts = [
-        item.descriptionTitle?.trim() || '',
-        item.descriptionSubtitle?.trim() || '',
-        item.oppPlaceTitle?.trim() || '',
-        item.day || '',
-        item.month || '',
-        item.startTime || ''
-    ];
-    
-    return parts.filter(part => part !== '').join('_').replace(/[^a-zA-Z0-9_]/g, '');
+    return `${item.descriptionTitle || ''}_${item.descriptionSubtitle || ''}_${item.oppPlaceTitle || ''}_${item.day || ''}_${item.month || ''}_${item.startTime || ''}`;
 }
 
 // Updated createCarouselItems function to handle desktop vs mobile differently
@@ -106,6 +99,9 @@ function createCarouselItems(data) {
         const today = new Date();
         const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
         
+        console.log('Today value:', todayValue);
+        console.log('Total events:', data.items.length);
+        
         // Filter out events that have already passed (including time-based filtering)
         const currentEvents = data.items.filter(item => {
             const isToday = item._dateValue === todayValue;
@@ -122,6 +118,8 @@ function createCarouselItems(data) {
             console.log(`Event: ${item.descriptionTitle}, HasInteracted: ${hasInteracted}`);
             return !hasInteracted;
         });
+        
+        console.log('Filtered items (after interaction filter):', filteredItems.length);
     } else {
         // Desktop logic remains the same
         const currentEvents = data.items.filter(item => {
@@ -146,6 +144,8 @@ function createCarouselItems(data) {
             uniqueItems.push(item);
         }
     });
+    
+    console.log(`Total events: ${data.items.length}, After time filter: ${isMobile ? 'Today only' : 'All upcoming'}, After interaction filter: ${filteredItems.length}, After duplicate removal: ${uniqueItems.length}`);
     
     uniqueItems.forEach(item => {
         const itemContainer = document.createElement('div');
@@ -520,9 +520,9 @@ function setupMobileCarousel() {
    
     // touch event variables
     let startX, moveX, startTime;
-    const minSwipeDistance = 50;
-    const horizontalThreshold = 10;
-    const verticalThreshold = 10;
+    const minSwipeDistance = 50; // minimum distance for a swipe to be registered
+    const horizontalThreshold = 10; // pixels of horizontal movement to determine horizontal swipe
+    const verticalThreshold = 10; // pixels of vertical movement to determine vertical swipe
    
     // add touch event listeners - change passive to false for touchmove to allow preventDefault
     carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -594,6 +594,7 @@ function setupMobileCarousel() {
         }
     }
     
+    // Update the updateSwipeAnimation function to handle no-more-events card properly
     function updateSwipeAnimation() {
         animationRequest = null;
         
@@ -780,6 +781,7 @@ function setupMobileCarousel() {
         }
     }
 
+    // Update the handleNoMoreEventsCardSwipe function to handle both directions
     function handleNoMoreEventsCardSwipe(isLeftSwipe) {
         // Both left and right swipes go to next day
         const nextDay = findNextDayWithEvents(currentDay);
@@ -904,6 +906,7 @@ function setupMobileCarousel() {
             
             itemContainer.appendChild(moreInfoBtn);
             
+            // Add swipe indicators
             const swipeIndicators = document.createElement('div');
             swipeIndicators.className = 'swipe-indicators';
             
@@ -951,6 +954,7 @@ function setupMobileCarousel() {
         rightIndicator = null;
     }
     
+    // Update the resetCardStyles function to preserve no-more-events card styling
     function resetCardStyles(item) {
         if (!item) return;
         
@@ -1012,6 +1016,7 @@ function setupMobileCarousel() {
     addSwipeInstructions();
 }
 
+// Function to add initial instructions overlay
 function addSwipeInstructions() {
     // Add instructions only to the first card
     const firstCard = document.querySelector('.item-container-mobile');
@@ -1049,87 +1054,43 @@ function addSwipeInstructions() {
 }
 
 function setEssentialData(key, value, days = 30) {
-    console.log('=== SETTING ESSENTIAL DATA ===');
-    console.log('Key:', key);
-    console.log('Value type:', typeof value);
-    console.log('Value length:', Array.isArray(value) ? value.length : 'not array');
-    console.log('Value content:', value);
-    
-    try {
-        // Use the existing cookie consent manager's setCookie method for essential cookies
-        if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
-            console.log('Using cookieConsent.setCookie method');
-            const jsonValue = JSON.stringify(value);
-            console.log('Stringified value length:', jsonValue.length);
-            window.cookieConsent.setCookie(key, jsonValue, {
-                days: days,
-                sameSite: 'Lax',
-                secure: true
-            });
-            console.log('Cookie set via cookieConsent.setCookie');
-        } else {
-            console.log('Using fallback cookie method');
-            // Fallback method if consent manager isn't available
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            const cookieValue = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
-            console.log('Setting cookie with value length:', cookieValue.length);
-            document.cookie = cookieValue;
-            console.log('Cookie set via document.cookie');
-        }
-        
-        // Immediate verification
-        setTimeout(() => {
-            const verification = getEssentialData(key);
-            console.log('Immediate verification for key', key, ':', verification ? verification.length : 'null');
-        }, 10);
-        
-    } catch (error) {
-        console.error('Error in setEssentialData:', error);
+    // Use the existing cookie consent manager's setCookie method for essential cookies
+    if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
+        window.cookieConsent.setCookie(key, JSON.stringify(value), {
+            days: days,
+            sameSite: 'Lax',
+            secure: true
+        });
+    } else {
+        // Fallback method if consent manager isn't available
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
     }
 }
 
 function getEssentialData(key) {
-    console.log('=== GETTING ESSENTIAL DATA ===');
-    console.log('Requested key:', key);
-    
-    try {
-        // Use the existing cookie consent manager's getCookie method
-        if (window.cookieConsent && typeof window.cookieConsent.getCookie === 'function') {
-            console.log('Using cookieConsent.getCookie method');
-            const value = window.cookieConsent.getCookie(key);
-            console.log('Raw value from cookieConsent:', value);
-            const parsed = value ? JSON.parse(value) : null;
-            console.log('Parsed value:', parsed ? (Array.isArray(parsed) ? `Array with ${parsed.length} items` : parsed) : 'null');
-            return parsed;
-        } else {
-            console.log('Using fallback cookie method');
-            // Fallback method
-            const nameEQ = key + "=";
-            const ca = document.cookie.split(';');
-            console.log('Total cookies found:', ca.length);
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) {
-                    const rawValue = c.substring(nameEQ.length, c.length);
-                    console.log('Found cookie, raw value length:', rawValue.length);
-                    const decoded = decodeURIComponent(rawValue);
-                    console.log('Decoded value length:', decoded.length);
-                    const parsed = JSON.parse(decoded);
-                    console.log('Parsed value:', parsed ? (Array.isArray(parsed) ? `Array with ${parsed.length} items` : parsed) : 'null');
-                    return parsed;
-                }
+    // Use the existing cookie consent manager's getCookie method
+    if (window.cookieConsent && typeof window.cookieConsent.getCookie === 'function') {
+        const value = window.cookieConsent.getCookie(key);
+        return value ? JSON.parse(value) : null;
+    } else {
+        // Fallback method
+        const nameEQ = key + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) {
+                return JSON.parse(decodeURIComponent(c.substring(nameEQ.length, c.length)));
             }
-            console.log('Cookie not found');
-            return null;
         }
-    } catch (error) {
-        console.error('Error in getEssentialData:', error);
         return null;
     }
 }
 
+
+// Updated functions to manage accepted/rejected items using essential cookies
 function getAcceptedItems() {
     return getEssentialData('userEventPreferences_accepted') || [];
 }
@@ -1138,168 +1099,106 @@ function getRejectedItems() {
     return getEssentialData('userEventPreferences_rejected') || [];
 }
 
+// Updated addAcceptedItem function to use the event data directly
 function addAcceptedItem(item) {
-    console.log('=== ADDING ACCEPTED ITEM ===');
-    console.log('Item DOM element:', item);
-    console.log('Item._originalEventData:', item._originalEventData);
-    console.log('Item properties:', {
-        _dateValue: item._dateValue,
-        day: item.day,
-        month: item.month,
-        startTime: item.startTime,
-        endTime: item.endTime
-    });
-    
     const acceptedItems = getAcceptedItems();
+    
+    // Get the current year for date calculation
     const currentYear = new Date().getFullYear();
+    
+    // Use the stored original event data instead of extracting from DOM
     const originalData = item._originalEventData || {};
     
-    // Log the original data to see what we're working with
-    console.log('Original data keys:', Object.keys(originalData));
-    console.log('Original data values:', originalData);
-    
-    const eventId = createEventId(originalData);
-    console.log('Generated event ID:', eventId);
-    
     const itemData = {
-        id: eventId,
-        descriptionTitle: originalData.descriptionTitle?.trim() || '',
-        descriptionSubtitle: originalData.descriptionSubtitle?.trim() || '',
-        oppPlaceTitle: originalData.oppPlaceTitle?.trim() || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle?.trim() || '',
-        moreInfoLink: originalData.moreInfoLink || '',
-        imageSrc: originalData.imageSrc || '',
-        altText: originalData.altText || '',
-        logoSrc: originalData.logoSrc || '',
-        logoAlt: originalData.logoAlt || '',
+        id: item.eventId || `event_${Date.now()}`,
+        descriptionTitle: originalData.descriptionTitle || item.querySelector('.description-title-mobile')?.textContent || '',
+        descriptionSubtitle: originalData.descriptionSubtitle || item.querySelector('.description-subtitle-mobile')?.textContent || '',
+        oppPlaceTitle: originalData.oppPlaceTitle || item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: originalData.oppPlaceSubtitle || item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: originalData.moreInfoLink || item.querySelector('.button-carousel-mobile')?.href || '',
+        imageSrc: originalData.imageSrc || item.querySelector('img')?.src || '',
+        altText: originalData.altText || item.querySelector('img')?.alt || '',
+        logoSrc: originalData.logoSrc || item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: originalData.logoAlt || item.querySelector('.opp-place-container img')?.alt || '',
         
-        // Store both original and parsed date values
-        dateValue: originalData._dateValue || item._dateValue || null,
-        parsedDay: originalData._parsedDay || item._parsedDay || null,
-        parsedMonth: originalData._parsedMonth || item._parsedMonth || null,
-        parsedYear: originalData._parsedYear || item._parsedYear || currentYear,
-        day: originalData.day || item.day || null,
-        month: originalData.month || item.month || null,
-        startTime: originalData.startTime || item.startTime || null,
-        endTime: originalData.endTime || item.endTime || null,
+        // Enhanced date storage
+        dateValue: item._dateValue || originalData._dateValue || null,
+        parsedDay: item._parsedDay || originalData._parsedDay || null,
+        parsedMonth: item._parsedMonth || originalData._parsedMonth || null,
+        parsedYear: item._parsedYear || originalData._parsedYear || currentYear,
+        day: item.day || originalData.day || null,
+        month: item.month || originalData.month || null,
         
+        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
+        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'accepted'
     };
     
-    console.log('Final itemData to store:', itemData);
-    console.log('Event ID for storage:', itemData.id);
-    
-    const isDuplicate = acceptedItems.some(existingItem => {
-        console.log('Comparing with existing item ID:', existingItem.id);
-        return existingItem.id === itemData.id;
-    });
-    
-    console.log('Is duplicate check result:', isDuplicate);
-    console.log('Current accepted items count before addition:', acceptedItems.length);
+    const isDuplicate = acceptedItems.some(existingItem => 
+        existingItem.descriptionTitle === itemData.descriptionTitle && 
+        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
+        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
+    );
     
     if (!isDuplicate) {
-        try {
-            acceptedItems.push(itemData);
-            console.log('About to call setEssentialData with:', acceptedItems.length, 'items');
-            setEssentialData('userEventPreferences_accepted', acceptedItems);
-            console.log('✅ Successfully added accepted item:', itemData.descriptionTitle);
-            console.log('Total accepted items now:', acceptedItems.length);
-            
-            // Immediate verification
-            const immediateCheck = getAcceptedItems();
-            console.log('Immediate cookie verification - items count:', immediateCheck.length);
-            if (immediateCheck.length > 0) {
-                console.log('Last item in cookie:', immediateCheck[immediateCheck.length - 1]);
-            }
-        } catch (error) {
-            console.error('❌ Error adding accepted item:', error);
-        }
-    } else {
-        console.log('❌ Duplicate accepted item not added:', itemData.descriptionTitle);
+        acceptedItems.push(itemData);
+        setEssentialData('userEventPreferences_accepted', acceptedItems);
+        console.log('Added accepted item:', itemData.descriptionTitle);
     }
-    
-    // Verify the cookie was set with additional delay
-    setTimeout(() => {
-        const verifyAccepted = getAcceptedItems();
-        console.log('Delayed verification - Total accepted items in cookie:', verifyAccepted.length);
-        if (verifyAccepted.length > 0) {
-            console.log('Delayed verification - Last added item:', verifyAccepted[verifyAccepted.length - 1]);
-        }
-        
-        // Also check the raw cookie
-        const rawCookie = document.cookie;
-        console.log('Raw cookie content includes userEventPreferences_accepted:', rawCookie.includes('userEventPreferences_accepted'));
-    }, 100);
 }
 
-// Enhanced logging version of addRejectedItem
+// Updated addRejectedItem function to use the event data directly
 function addRejectedItem(item) {
-    console.log('=== ADDING REJECTED ITEM ===');
-    console.log('Item DOM element:', item);
-    console.log('Item._originalEventData:', item._originalEventData);
-    
     const rejectedItems = getRejectedItems();
+    
+    // Get the current year for date calculation
     const currentYear = new Date().getFullYear();
+    
+    // Use the stored original event data instead of extracting from DOM
     const originalData = item._originalEventData || {};
     
-    console.log('Original data keys:', Object.keys(originalData));
-    console.log('Original data values:', originalData);
-    
-    const eventId = createEventId(originalData);
-    console.log('Generated event ID:', eventId);
-    
     const itemData = {
-        id: eventId,
-        descriptionTitle: originalData.descriptionTitle?.trim() || '',
-        descriptionSubtitle: originalData.descriptionSubtitle?.trim() || '',
-        oppPlaceTitle: originalData.oppPlaceTitle?.trim() || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle?.trim() || '',
-        moreInfoLink: originalData.moreInfoLink || '',
-        imageSrc: originalData.imageSrc || '',
-        altText: originalData.altText || '',
-        logoSrc: originalData.logoSrc || '',
-        logoAlt: originalData.logoAlt || '',
+        id: item.eventId || `event_${Date.now()}`,
+        descriptionTitle: originalData.descriptionTitle || item.querySelector('.description-title-mobile')?.textContent || '',
+        descriptionSubtitle: originalData.descriptionSubtitle || item.querySelector('.description-subtitle-mobile')?.textContent || '',
+        oppPlaceTitle: originalData.oppPlaceTitle || item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: originalData.oppPlaceSubtitle || item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: originalData.moreInfoLink || item.querySelector('.button-carousel-mobile')?.href || '',
+        imageSrc: originalData.imageSrc || item.querySelector('img')?.src || '',
+        altText: originalData.altText || item.querySelector('img')?.alt || '',
+        logoSrc: originalData.logoSrc || item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: originalData.logoAlt || item.querySelector('.opp-place-container img')?.alt || '',
         
-        // Store both original and parsed date values
-        dateValue: originalData._dateValue || item._dateValue || null,
-        parsedDay: originalData._parsedDay || item._parsedDay || null,
-        parsedMonth: originalData._parsedMonth || item._parsedMonth || null,
-        parsedYear: originalData._parsedYear || item._parsedYear || currentYear,
-        day: originalData.day || item.day || null,
-        month: originalData.month || item.month || null,
-        startTime: originalData.startTime || item.startTime || null,
-        endTime: originalData.endTime || item.endTime || null,
+        // Enhanced date storage
+        dateValue: item._dateValue || originalData._dateValue || null,
+        parsedDay: item._parsedDay || originalData._parsedDay || null,
+        parsedMonth: item._parsedMonth || originalData._parsedMonth || null,
+        parsedYear: item._parsedYear || originalData._parsedYear || currentYear,
+        day: item.day || originalData.day || null,
+        month: item.month || originalData.month || null,
         
+        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
+        borderColor: window.getComputedStyle(item).borderColor || '',
         timestamp: new Date().toISOString(),
         userAction: 'rejected'
     };
     
-    console.log('Final itemData to store:', itemData);
-    
-    const isDuplicate = rejectedItems.some(existingItem => {
-        console.log('Comparing with existing item ID:', existingItem.id);
-        return existingItem.id === itemData.id;
-    });
+    const isDuplicate = rejectedItems.some(existingItem => 
+        existingItem.descriptionTitle === itemData.descriptionTitle && 
+        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
+        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
+    );
     
     if (!isDuplicate) {
         rejectedItems.push(itemData);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
-        console.log('✅ Successfully added rejected item:', itemData.descriptionTitle);
-        console.log('Total rejected items now:', rejectedItems.length);
-    } else {
-        console.log('❌ Duplicate rejected item not added:', itemData.descriptionTitle);
+        console.log('Added rejected item:', itemData.descriptionTitle);
     }
-    
-    // Verify the cookie was set
-    setTimeout(() => {
-        const verifyRejected = getRejectedItems();
-        console.log('Verification - Total rejected items in cookie:', verifyRejected.length);
-        console.log('Verification - Last added item:', verifyRejected[verifyRejected.length - 1]);
-    }, 100);
 }
 
 
+// Function to clean up old preferences (optional - helps with storage management)
 function cleanupOldPreferences() {
     const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
     const cutoffTime = new Date(Date.now() - maxAge);
@@ -1325,6 +1224,7 @@ function cleanupOldPreferences() {
     }
 }
 
+// Function to get user preferences for analytics (if analytics cookies are accepted)
 function getUserPreferenceStats() {
     // Only return stats if analytics cookies are accepted
     if (window.cookieConsent && window.cookieConsent.hasConsent('analytics')) {
@@ -1344,108 +1244,51 @@ function getUserPreferenceStats() {
     return null;
 }
 
-function hasUserInteractedWithItem(item) {
-    console.log('=== CHECKING USER INTERACTION ===');
-    console.log('Item to check:', item);
+// Function to check if an event was previously interacted with
+function hasUserInteractedWithEvent(eventItem) {
+    const eventTitle = eventItem.querySelector('.description-title-mobile')?.textContent || '';
+    const eventSubtitle = eventItem.querySelector('.description-subtitle-mobile')?.textContent || '';
+    const eventPlace = eventItem.querySelector('.opp-place-title-mobile')?.textContent || '';
     
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    console.log('Current accepted items:', accepted.length);
-    console.log('Current rejected items:', rejected.length);
+    const hasAccepted = accepted.some(item => 
+        item.descriptionTitle === eventTitle && 
+        item.descriptionSubtitle === eventSubtitle &&
+        item.oppPlaceTitle === eventPlace
+    );
     
-    // Create a more robust comparison using multiple identifiers
-    const itemIdentifiers = {
-        descriptionTitle: item.descriptionTitle?.trim() || '',
-        descriptionSubtitle: item.descriptionSubtitle?.trim() || '',
-        oppPlaceTitle: item.oppPlaceTitle?.trim() || '',
-        day: item.day,
-        month: item.month,
-        startTime: item.startTime,
-        // Use the event ID as primary identifier if available
-        eventId: createEventId(item)
-    };
+    const hasRejected = rejected.some(item => 
+        item.descriptionTitle === eventTitle && 
+        item.descriptionSubtitle === eventSubtitle &&
+        item.oppPlaceTitle === eventPlace
+    );
     
-    console.log('Item identifiers:', itemIdentifiers);
+    return hasAccepted || hasRejected;
+}
+
+function hasUserInteractedWithItem(item) {
+    const accepted = getAcceptedItems();
+    const rejected = getRejectedItems();
     
-    const hasAccepted = accepted.some(userItem => {
-        console.log('Checking against accepted item:', {
-            id: userItem.id,
-            title: userItem.descriptionTitle,
-            subtitle: userItem.descriptionSubtitle,
-            place: userItem.oppPlaceTitle
-        });
-        
-        // Primary check: use eventId if both items have it
-        if (userItem.id && itemIdentifiers.eventId) {
-            const match = userItem.id === itemIdentifiers.eventId;
-            console.log(`ID match: ${match} (${userItem.id} === ${itemIdentifiers.eventId})`);
-            return match;
-        }
-        
-        // Fallback: check core properties
-        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
-        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
-        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
-        
-        console.log(`Property matches: title=${titleMatch}, subtitle=${subtitleMatch}, place=${placeMatch}`);
-        
-        // Additional check: day and month if available
-        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
-        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
-        
-        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
-        
-        if (matches) {
-            console.log('✅ Found accepted match:', userItem.descriptionTitle);
-        }
-        
-        return matches;
-    });
+    const hasAccepted = accepted.some(userItem => 
+        userItem.descriptionTitle === item.descriptionTitle && 
+        userItem.descriptionSubtitle === item.descriptionSubtitle &&
+        userItem.oppPlaceTitle === item.oppPlaceTitle
+    );
     
-    const hasRejected = rejected.some(userItem => {
-        console.log('Checking against rejected item:', {
-            id: userItem.id,
-            title: userItem.descriptionTitle,
-            subtitle: userItem.descriptionSubtitle,
-            place: userItem.oppPlaceTitle
-        });
-        
-        // Primary check: use eventId if both items have it
-        if (userItem.id && itemIdentifiers.eventId) {
-            const match = userItem.id === itemIdentifiers.eventId;
-            console.log(`ID match: ${match} (${userItem.id} === ${itemIdentifiers.eventId})`);
-            return match;
-        }
-        
-        // Fallback: check core properties
-        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
-        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
-        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
-        
-        console.log(`Property matches: title=${titleMatch}, subtitle=${subtitleMatch}, place=${placeMatch}`);
-        
-        // Additional check: day and month if available
-        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
-        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
-        
-        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
-        
-        if (matches) {
-            console.log('✅ Found rejected match:', userItem.descriptionTitle);
-        }
-        
-        return matches;
-    });
+    const hasRejected = rejected.some(userItem => 
+        userItem.descriptionTitle === item.descriptionTitle && 
+        userItem.descriptionSubtitle === item.descriptionSubtitle &&
+        userItem.oppPlaceTitle === item.oppPlaceTitle
+    );
     
-    const result = hasAccepted || hasRejected;
-    console.log(`Final interaction result for ${itemIdentifiers.descriptionTitle}: ${result}`);
-    
-    return result;
+    return hasAccepted || hasRejected;
 }
 
 
-
+// Updated function to check if an event date has passed
 function hasEventDatePassed(event) {
     const today = new Date();
     const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
@@ -1485,6 +1328,7 @@ function hasEventDatePassed(event) {
     return false;
 }
 
+// Updated function to filter out expired events from stored preferences
 function filterExpiredEvents() {
     const acceptedItems = getAcceptedItems();
     const rejectedItems = getRejectedItems();
@@ -1509,6 +1353,7 @@ function filterExpiredEvents() {
     };
 }
 
+
 document.addEventListener('DOMContentLoaded', function() {
     performMaintenanceCleanup();
     
@@ -1522,3 +1367,4 @@ function performMaintenanceCleanup() {
         console.log(`Removed ${result.removedCount} expired events from preferences`);
     }
 }
+
