@@ -99,37 +99,27 @@ function createCarouselItems(data) {
         const today = new Date();
         const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
         
-        console.log('Today value:', todayValue);
-        console.log('Total events:', data.items.length);
-        
         // Filter out events that have already passed (including time-based filtering)
         const currentEvents = data.items.filter(item => {
-            const isToday = item._dateValue === todayValue;
-            const hasNotPassed = !hasEventTimePassed(item);
-            console.log(`Event: ${item.descriptionTitle}, Date: ${item._dateValue}, IsToday: ${isToday}, HasNotPassed: ${hasNotPassed}`);
-            return isToday && hasNotPassed;
+            return item._dateValue === todayValue && !hasEventTimePassed(item);
         });
-        
-        console.log('Current events (today, not passed):', currentEvents.length);
 
         // Filter out events user has already interacted with
         filteredItems = currentEvents.filter(item => {
-            const hasInteracted = hasUserInteractedWithItem(item);
-            console.log(`Event: ${item.descriptionTitle}, HasInteracted: ${hasInteracted}`);
-            return !hasInteracted;
+            return !hasUserInteractedWithItem(item);
         });
-        
-        console.log('Filtered items (after interaction filter):', filteredItems.length);
     } else {
-        // Desktop logic remains the same
+        // Desktop: Get first 12 upcoming events (any day, starting from current time)
         const currentEvents = data.items.filter(item => {
             return !hasEventTimePassed(item);
         });
 
+        // Filter out events user has already interacted with
         const nonInteractedEvents = currentEvents.filter(item => {
             return !hasUserInteractedWithItem(item);
         });
 
+        // Take only the first 12 events for desktop
         filteredItems = nonInteractedEvents.slice(0, 12);
     }
 
@@ -1099,35 +1089,31 @@ function getRejectedItems() {
     return getEssentialData('userEventPreferences_rejected') || [];
 }
 
-// Updated addAcceptedItem function to use the event data directly
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
     // Get the current year for date calculation
     const currentYear = new Date().getFullYear();
     
-    // Use the stored original event data instead of extracting from DOM
-    const originalData = item._originalEventData || {};
-    
     const itemData = {
-        id: item.eventId || `event_${Date.now()}`,
-        descriptionTitle: originalData.descriptionTitle || item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: originalData.descriptionSubtitle || item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: originalData.oppPlaceTitle || item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle || item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: originalData.moreInfoLink || item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: originalData.imageSrc || item.querySelector('img')?.src || '',
-        altText: originalData.altText || item.querySelector('img')?.alt || '',
-        logoSrc: originalData.logoSrc || item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: originalData.logoAlt || item.querySelector('.opp-place-container img')?.alt || '',
+        id: item.id || `event_${Date.now()}`,
+        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
+        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
+        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
+        imageSrc: item.querySelector('img')?.src || '',
+        altText: item.querySelector('img')?.alt || '',
+        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
         
         // Enhanced date storage
-        dateValue: item._dateValue || originalData._dateValue || null,
-        parsedDay: item._parsedDay || originalData._parsedDay || null,
-        parsedMonth: item._parsedMonth || originalData._parsedMonth || null,
-        parsedYear: item._parsedYear || originalData._parsedYear || currentYear,
-        day: item.day || originalData.day || null,
-        month: item.month || originalData.month || null,
+        dateValue: item._dateValue || null,
+        parsedDay: item._parsedDay || null,
+        parsedMonth: item._parsedMonth || null,
+        parsedYear: item._parsedYear || currentYear,
+        day: item.day || null,
+        month: item.month || null,
         
         backgroundColor: window.getComputedStyle(item).backgroundColor || '',
         borderColor: window.getComputedStyle(item).borderColor || '',
@@ -1144,39 +1130,35 @@ function addAcceptedItem(item) {
     if (!isDuplicate) {
         acceptedItems.push(itemData);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
-        console.log('Added accepted item:', itemData.descriptionTitle);
     }
 }
 
-// Updated addRejectedItem function to use the event data directly
+// Updated addRejectedItem function to ensure proper date storage
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
     // Get the current year for date calculation
     const currentYear = new Date().getFullYear();
     
-    // Use the stored original event data instead of extracting from DOM
-    const originalData = item._originalEventData || {};
-    
     const itemData = {
-        id: item.eventId || `event_${Date.now()}`,
-        descriptionTitle: originalData.descriptionTitle || item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: originalData.descriptionSubtitle || item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: originalData.oppPlaceTitle || item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: originalData.oppPlaceSubtitle || item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: originalData.moreInfoLink || item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: originalData.imageSrc || item.querySelector('img')?.src || '',
-        altText: originalData.altText || item.querySelector('img')?.alt || '',
-        logoSrc: originalData.logoSrc || item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: originalData.logoAlt || item.querySelector('.opp-place-container img')?.alt || '',
+        id: item.id || `event_${Date.now()}`,
+        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
+        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
+        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
+        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
+        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
+        imageSrc: item.querySelector('img')?.src || '',
+        altText: item.querySelector('img')?.alt || '',
+        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
+        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
         
         // Enhanced date storage
-        dateValue: item._dateValue || originalData._dateValue || null,
-        parsedDay: item._parsedDay || originalData._parsedDay || null,
-        parsedMonth: item._parsedMonth || originalData._parsedMonth || null,
-        parsedYear: item._parsedYear || originalData._parsedYear || currentYear,
-        day: item.day || originalData.day || null,
-        month: item.month || originalData.month || null,
+        dateValue: item._dateValue || null,
+        parsedDay: item._parsedDay || null,
+        parsedMonth: item._parsedMonth || null,
+        parsedYear: item._parsedYear || currentYear,
+        day: item.day || null,
+        month: item.month || null,
         
         backgroundColor: window.getComputedStyle(item).backgroundColor || '',
         borderColor: window.getComputedStyle(item).borderColor || '',
@@ -1193,7 +1175,6 @@ function addRejectedItem(item) {
     if (!isDuplicate) {
         rejectedItems.push(itemData);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
-        console.log('Added rejected item:', itemData.descriptionTitle);
     }
 }
 
@@ -1353,7 +1334,6 @@ function filterExpiredEvents() {
     };
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
     performMaintenanceCleanup();
     
@@ -1367,4 +1347,3 @@ function performMaintenanceCleanup() {
         console.log(`Removed ${result.removedCount} expired events from preferences`);
     }
 }
-
