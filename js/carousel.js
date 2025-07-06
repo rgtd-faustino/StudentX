@@ -1049,37 +1049,83 @@ function addSwipeInstructions() {
 }
 
 function setEssentialData(key, value, days = 30) {
-    // Use the existing cookie consent manager's setCookie method for essential cookies
-    if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
-        window.cookieConsent.setCookie(key, JSON.stringify(value), {
-            days: days,
-            sameSite: 'Lax',
-            secure: true
-        });
-    } else {
-        // Fallback method if consent manager isn't available
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+    console.log('=== SETTING ESSENTIAL DATA ===');
+    console.log('Key:', key);
+    console.log('Value type:', typeof value);
+    console.log('Value length:', Array.isArray(value) ? value.length : 'not array');
+    console.log('Value content:', value);
+    
+    try {
+        // Use the existing cookie consent manager's setCookie method for essential cookies
+        if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
+            console.log('Using cookieConsent.setCookie method');
+            const jsonValue = JSON.stringify(value);
+            console.log('Stringified value length:', jsonValue.length);
+            window.cookieConsent.setCookie(key, jsonValue, {
+                days: days,
+                sameSite: 'Lax',
+                secure: true
+            });
+            console.log('Cookie set via cookieConsent.setCookie');
+        } else {
+            console.log('Using fallback cookie method');
+            // Fallback method if consent manager isn't available
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            const cookieValue = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+            console.log('Setting cookie with value length:', cookieValue.length);
+            document.cookie = cookieValue;
+            console.log('Cookie set via document.cookie');
+        }
+        
+        // Immediate verification
+        setTimeout(() => {
+            const verification = getEssentialData(key);
+            console.log('Immediate verification for key', key, ':', verification ? verification.length : 'null');
+        }, 10);
+        
+    } catch (error) {
+        console.error('Error in setEssentialData:', error);
     }
 }
 
 function getEssentialData(key) {
-    // Use the existing cookie consent manager's getCookie method
-    if (window.cookieConsent && typeof window.cookieConsent.getCookie === 'function') {
-        const value = window.cookieConsent.getCookie(key);
-        return value ? JSON.parse(value) : null;
-    } else {
-        // Fallback method
-        const nameEQ = key + "=";
-        const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) {
-                return JSON.parse(decodeURIComponent(c.substring(nameEQ.length, c.length)));
+    console.log('=== GETTING ESSENTIAL DATA ===');
+    console.log('Requested key:', key);
+    
+    try {
+        // Use the existing cookie consent manager's getCookie method
+        if (window.cookieConsent && typeof window.cookieConsent.getCookie === 'function') {
+            console.log('Using cookieConsent.getCookie method');
+            const value = window.cookieConsent.getCookie(key);
+            console.log('Raw value from cookieConsent:', value);
+            const parsed = value ? JSON.parse(value) : null;
+            console.log('Parsed value:', parsed ? (Array.isArray(parsed) ? `Array with ${parsed.length} items` : parsed) : 'null');
+            return parsed;
+        } else {
+            console.log('Using fallback cookie method');
+            // Fallback method
+            const nameEQ = key + "=";
+            const ca = document.cookie.split(';');
+            console.log('Total cookies found:', ca.length);
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) {
+                    const rawValue = c.substring(nameEQ.length, c.length);
+                    console.log('Found cookie, raw value length:', rawValue.length);
+                    const decoded = decodeURIComponent(rawValue);
+                    console.log('Decoded value length:', decoded.length);
+                    const parsed = JSON.parse(decoded);
+                    console.log('Parsed value:', parsed ? (Array.isArray(parsed) ? `Array with ${parsed.length} items` : parsed) : 'null');
+                    return parsed;
+                }
             }
+            console.log('Cookie not found');
+            return null;
         }
+    } catch (error) {
+        console.error('Error in getEssentialData:', error);
         return null;
     }
 }
@@ -1149,20 +1195,41 @@ function addAcceptedItem(item) {
         return existingItem.id === itemData.id;
     });
     
+    console.log('Is duplicate check result:', isDuplicate);
+    console.log('Current accepted items count before addition:', acceptedItems.length);
+    
     if (!isDuplicate) {
-        acceptedItems.push(itemData);
-        setEssentialData('userEventPreferences_accepted', acceptedItems);
-        console.log('✅ Successfully added accepted item:', itemData.descriptionTitle);
-        console.log('Total accepted items now:', acceptedItems.length);
+        try {
+            acceptedItems.push(itemData);
+            console.log('About to call setEssentialData with:', acceptedItems.length, 'items');
+            setEssentialData('userEventPreferences_accepted', acceptedItems);
+            console.log('✅ Successfully added accepted item:', itemData.descriptionTitle);
+            console.log('Total accepted items now:', acceptedItems.length);
+            
+            // Immediate verification
+            const immediateCheck = getAcceptedItems();
+            console.log('Immediate cookie verification - items count:', immediateCheck.length);
+            if (immediateCheck.length > 0) {
+                console.log('Last item in cookie:', immediateCheck[immediateCheck.length - 1]);
+            }
+        } catch (error) {
+            console.error('❌ Error adding accepted item:', error);
+        }
     } else {
         console.log('❌ Duplicate accepted item not added:', itemData.descriptionTitle);
     }
     
-    // Verify the cookie was set
+    // Verify the cookie was set with additional delay
     setTimeout(() => {
         const verifyAccepted = getAcceptedItems();
-        console.log('Verification - Total accepted items in cookie:', verifyAccepted.length);
-        console.log('Verification - Last added item:', verifyAccepted[verifyAccepted.length - 1]);
+        console.log('Delayed verification - Total accepted items in cookie:', verifyAccepted.length);
+        if (verifyAccepted.length > 0) {
+            console.log('Delayed verification - Last added item:', verifyAccepted[verifyAccepted.length - 1]);
+        }
+        
+        // Also check the raw cookie
+        const rawCookie = document.cookie;
+        console.log('Raw cookie content includes userEventPreferences_accepted:', rawCookie.includes('userEventPreferences_accepted'));
     }, 100);
 }
 
@@ -1377,77 +1444,7 @@ function hasUserInteractedWithItem(item) {
     return result;
 }
 
-function hasUserInteractedWithItem(item) {
-    const accepted = getAcceptedItems();
-    const rejected = getRejectedItems();
-    
-    // Create a more robust comparison using multiple identifiers
-    const itemIdentifiers = {
-        descriptionTitle: item.descriptionTitle?.trim() || '',
-        descriptionSubtitle: item.descriptionSubtitle?.trim() || '',
-        oppPlaceTitle: item.oppPlaceTitle?.trim() || '',
-        day: item.day,
-        month: item.month,
-        startTime: item.startTime,
-        // Use the event ID as primary identifier if available
-        eventId: createEventId(item)
-    };
-    
-    console.log('Checking interaction for:', itemIdentifiers);
-    
-    const hasAccepted = accepted.some(userItem => {
-        // Primary check: use eventId if both items have it
-        if (userItem.id && itemIdentifiers.eventId) {
-            return userItem.id === itemIdentifiers.eventId;
-        }
-        
-        // Fallback: check core properties
-        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
-        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
-        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
-        
-        // Additional check: day and month if available
-        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
-        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
-        
-        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
-        
-        if (matches) {
-            console.log('Found accepted match:', userItem.descriptionTitle);
-        }
-        
-        return matches;
-    });
-    
-    const hasRejected = rejected.some(userItem => {
-        // Primary check: use eventId if both items have it
-        if (userItem.id && itemIdentifiers.eventId) {
-            return userItem.id === itemIdentifiers.eventId;
-        }
-        
-        // Fallback: check core properties
-        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
-        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
-        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
-        
-        // Additional check: day and month if available
-        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
-        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
-        
-        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
-        
-        if (matches) {
-            console.log('Found rejected match:', userItem.descriptionTitle);
-        }
-        
-        return matches;
-    });
-    
-    const result = hasAccepted || hasRejected;
-    console.log(`Item ${itemIdentifiers.descriptionTitle} interaction check: ${result}`);
-    
-    return result;
-}
+
 
 function hasEventDatePassed(event) {
     const today = new Date();
