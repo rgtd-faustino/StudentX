@@ -114,7 +114,11 @@ function createCarouselItems(data) {
 
         // Filter out events user has already interacted with
         filteredItems = currentEvents.filter(item => {
-            return !hasUserInteractedWithItem(item);
+            const hasInteracted = hasUserInteractedWithItem(item);
+            if (hasInteracted) {
+                console.log(`Filtering out event ID ${item.id} - user has already interacted`);
+            }
+            return !hasInteracted;
         });
 
     } else {
@@ -125,7 +129,11 @@ function createCarouselItems(data) {
 
         // Filter out events user has already interacted with
         const nonInteractedEvents = currentEvents.filter(item => {
-            return !hasUserInteractedWithItem(item);
+            const hasInteracted = hasUserInteractedWithItem(item);
+            if (hasInteracted) {
+                console.log(`Filtering out event ID ${item.id} - user has already interacted`);
+            }
+            return !hasInteracted;
         });
 
         // Take only the first 12 events for desktop
@@ -1072,13 +1080,17 @@ function setEssentialData(key, value, days = 365) {
         expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
         document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
     }
+    
+    // Debug logging
+    console.log(`Stored ${key}:`, value);
 }
 
 function getEssentialData(key) {
+    let value = null;
+    
     // Use the existing cookie consent manager's getCookie method
     if (window.cookieConsent && typeof window.cookieConsent.getCookie === 'function') {
-        const value = window.cookieConsent.getCookie(key);
-        return value ? JSON.parse(value) : null;
+        value = window.cookieConsent.getCookie(key);
     } else {
         // Fallback method
         const nameEQ = key + "=";
@@ -1087,11 +1099,26 @@ function getEssentialData(key) {
             let c = ca[i];
             while (c.charAt(0) === ' ') c = c.substring(1, c.length);
             if (c.indexOf(nameEQ) === 0) {
-                return JSON.parse(decodeURIComponent(c.substring(nameEQ.length, c.length)));
+                value = decodeURIComponent(c.substring(nameEQ.length, c.length));
+                break;
             }
         }
-        return null;
     }
+    
+    // Parse the JSON if we have a value
+    if (value) {
+        try {
+            const parsed = JSON.parse(value);
+            console.log(`Retrieved ${key}:`, parsed);
+            return parsed;
+        } catch (e) {
+            console.error(`Error parsing ${key} from cookies:`, e);
+            return null;
+        }
+    }
+    
+    console.log(`No data found for ${key}`);
+    return null;
 }
 
 
@@ -1107,25 +1134,34 @@ function getRejectedItems() {
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
-    // Get the event ID from the original event data
-    const eventId = item._originalEventData?.id || item.id;
+    // Get the event ID from the original event data and ensure it's an integer
+    const eventId = parseInt(item._originalEventData?.id || item.id);
     
-    if (eventId && !acceptedItems.includes(eventId)) {
+    // Only proceed if we have a valid number (including 0)
+    if (!isNaN(eventId) && eventId !== undefined && eventId !== null && !acceptedItems.includes(eventId)) {
         acceptedItems.push(eventId);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
+        console.log(`Added event ID ${eventId} to accepted items. Total accepted:`, acceptedItems);
+    } else {
+        console.log(`Failed to add event ID ${eventId} to accepted items. Current accepted:`, acceptedItems);
     }
 }
+
 
 // Updated addRejectedItem function to store only event ID
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
-    // Get the event ID from the original event data
-    const eventId = item._originalEventData?.id || item.id;
+    // Get the event ID from the original event data and ensure it's an integer
+    const eventId = parseInt(item._originalEventData?.id || item.id);
     
-    if (eventId && !rejectedItems.includes(eventId)) {
+    // Only proceed if we have a valid number (including 0)
+    if (!isNaN(eventId) && eventId !== undefined && eventId !== null && !rejectedItems.includes(eventId)) {
         rejectedItems.push(eventId);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
+        console.log(`Added event ID ${eventId} to rejected items. Total rejected:`, rejectedItems);
+    } else {
+        console.log(`Failed to add event ID ${eventId} to rejected items. Current rejected:`, rejectedItems);
     }
 }
 
@@ -1159,14 +1195,29 @@ function hasUserInteractedWithEvent(eventItem) {
 }
 
 function hasUserInteractedWithItem(item) {
-    const eventId = item.id;
+    // Get the event ID and ensure it's an integer
+    const eventId = parseInt(item.id || item.eventId);
     
-    if (!eventId) return false;
+    // Return false only if eventId is NaN or undefined, but 0 is valid
+    if (isNaN(eventId) || eventId === undefined || eventId === null) return false;
     
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    return accepted.includes(eventId) || rejected.includes(eventId);
+    // Convert all stored IDs to integers for comparison and filter out invalid values
+    const acceptedIds = accepted.map(id => parseInt(id)).filter(id => !isNaN(id));
+    const rejectedIds = rejected.map(id => parseInt(id)).filter(id => !isNaN(id));
+    
+    const hasInteracted = acceptedIds.includes(eventId) || rejectedIds.includes(eventId);
+    
+    // Debug logging
+    console.log(`Checking interaction for event ID ${eventId}:`, {
+        accepted: acceptedIds,
+        rejected: rejectedIds,
+        hasInteracted: hasInteracted
+    });
+    
+    return hasInteracted;
 }
 
 
@@ -1178,7 +1229,7 @@ function hasEventDatePassed(event) {
     // For stored event IDs, we need to find the event in allEventsData
     if (typeof event === 'number' || (typeof event === 'string' && !isNaN(event))) {
         const eventId = parseInt(event);
-        const fullEvent = allEventsData.find(e => e.id === eventId);
+        const fullEvent = allEventsData.find(e => parseInt(e.id) === eventId);
         
         if (!fullEvent) {
             // If we can't find the event, assume it's expired
@@ -1250,9 +1301,9 @@ function filterExpiredEvents() {
     const acceptedItems = getAcceptedItems();
     const rejectedItems = getRejectedItems();
     
-    // Filter out expired events by checking each event ID
-    const activeAccepted = acceptedItems.filter(eventId => !hasEventDatePassed(eventId));
-    const activeRejected = rejectedItems.filter(eventId => !hasEventDatePassed(eventId));
+    // Filter out expired events by checking each event ID (convert to integers)
+    const activeAccepted = acceptedItems.filter(eventId => !hasEventDatePassed(parseInt(eventId)));
+    const activeRejected = rejectedItems.filter(eventId => !hasEventDatePassed(parseInt(eventId)));
     
     // Update cookies only if there were changes
     if (activeAccepted.length !== acceptedItems.length) {

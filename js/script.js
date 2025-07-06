@@ -180,6 +180,8 @@ document.addEventListener("DOMContentLoaded", function() {
         startMessageRotation('textContainerOpportunities', opportunitiesMessages, 'animated-text-opportunities');
     }
 
-    // now at the end we start the carousel
-    initializeCarousel();
+    // Initialize carousel (performMaintenanceCleanup is called automatically within carousel initialization)
+    if (typeof initializeCarousel === 'function') {
+        initializeCarousel();
+    }
 });
