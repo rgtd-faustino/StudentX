@@ -1,7 +1,10 @@
         
         
         
-        function getCookie(name) {
+        // Global variable to store all events data
+let allEventsData = [];
+
+function getCookie(name) {
             const nameEQ = encodeURIComponent(name) + "=";
             const ca = document.cookie.split(';');
             for (let i = 0; i < ca.length; i++) {
@@ -14,21 +17,39 @@
             return null;
         }
 
+        // Load events data from JSON
+        async function loadEventsData() {
+            try {
+                const response = await fetch('/json/events.json');
+                const data = await response.json();
+                allEventsData = data.items;
+                return allEventsData;
+            } catch (error) {
+                console.error('Error loading events data:', error);
+                return [];
+            }
+        }
+
+        // Function to find event by ID
+        function findEventById(eventId) {
+            return allEventsData.find(event => event.id === parseInt(eventId));
+        }
+
        function parseEventPreferences() {
         const acceptedCookie = getCookie('userEventPreferences_accepted');
         const rejectedCookie = getCookie('userEventPreferences_rejected');
         
-        let accepted = [];
-        let rejected = [];
+        let acceptedIds = [];
+        let rejectedIds = [];
         let hasData = false;
 
         try {
             if (acceptedCookie) {
-                accepted = JSON.parse(acceptedCookie);
+                acceptedIds = JSON.parse(acceptedCookie);
                 hasData = true;
             }
             if (rejectedCookie) {
-                rejected = JSON.parse(rejectedCookie);
+                rejectedIds = JSON.parse(rejectedCookie);
                 hasData = true;
             }
         } catch (e) {
@@ -44,46 +65,76 @@
             return { accepted: [], rejected: [], hasData: false };
         }
 
-        // Filter out expired events
+        // Convert IDs to full event objects and filter out expired events
         const today = new Date();
         const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
         
-        const activeAccepted = accepted.filter(event => {
-            if (event.dateValue && typeof event.dateValue === 'number') {
-                return event.dateValue >= todayValue;
-            }
-            if (event.parsedDay && event.parsedMonth && event.parsedYear) {
-                const eventDateValue = (event.parsedYear * 10000) + (event.parsedMonth * 100) + event.parsedDay;
-                return eventDateValue >= todayValue;
-            }
-            return true; // Keep events where we can't determine the date
-        });
+        const acceptedEvents = acceptedIds
+            .map(id => findEventById(id))
+            .filter(event => event && !hasEventDatePassed(event));
         
-        const activeRejected = rejected.filter(event => {
-            if (event.dateValue && typeof event.dateValue === 'number') {
-                return event.dateValue >= todayValue;
-            }
-            if (event.parsedDay && event.parsedMonth && event.parsedYear) {
-                const eventDateValue = (event.parsedYear * 10000) + (event.parsedMonth * 100) + event.parsedDay;
-                return eventDateValue >= todayValue;
-            }
-            return true; // Keep events where we can't determine the date
-        });
+        const rejectedEvents = rejectedIds
+            .map(id => findEventById(id))
+            .filter(event => event && !hasEventDatePassed(event));
 
         // Update cookies if expired events were removed
-        if (activeAccepted.length !== accepted.length) {
-            document.cookie = `userEventPreferences_accepted=${encodeURIComponent(JSON.stringify(activeAccepted))};path=/;max-age=${30 * 24 * 60 * 60}`;
+        const activeAcceptedIds = acceptedEvents.map(event => event.id);
+        const activeRejectedIds = rejectedEvents.map(event => event.id);
+        
+        if (activeAcceptedIds.length !== acceptedIds.length) {
+            document.cookie = `userEventPreferences_accepted=${encodeURIComponent(JSON.stringify(activeAcceptedIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
         }
         
-        if (activeRejected.length !== rejected.length) {
-            document.cookie = `userEventPreferences_rejected=${encodeURIComponent(JSON.stringify(activeRejected))};path=/;max-age=${30 * 24 * 60 * 60}`;
+        if (activeRejectedIds.length !== rejectedIds.length) {
+            document.cookie = `userEventPreferences_rejected=${encodeURIComponent(JSON.stringify(activeRejectedIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
         }
 
         return { 
-            accepted: activeAccepted, 
-            rejected: activeRejected, 
-            hasData: activeAccepted.length > 0 || activeRejected.length > 0 
+            accepted: acceptedEvents, 
+            rejected: rejectedEvents, 
+            hasData: acceptedEvents.length > 0 || rejectedEvents.length > 0 
         };
+    }
+
+    // Helper function to check if an event date has passed
+    function hasEventDatePassed(event) {
+        const today = new Date();
+        const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
+        
+        // Calculate event date value from day and month
+        if (event.day && event.month) {
+            const monthMap = {
+                'janeiro': 1, 'fevereiro': 2, 'março': 3, 'abril': 4,
+                'maio': 5, 'junho': 6, 'julho': 7, 'agosto': 8,
+                'setembro': 9, 'outubro': 10, 'novembro': 11, 'dezembro': 12
+            };
+            
+            const eventDay = parseInt(event.day, 10);
+            const eventMonth = typeof event.month === 'string' ? 
+                (monthMap[event.month.toLowerCase()] || 0) : parseInt(event.month, 10);
+            const eventYear = new Date().getFullYear();
+            
+            const eventDateValue = (eventYear * 10000) + (eventMonth * 100) + eventDay;
+            
+            if (eventDateValue < todayValue) {
+                return true;
+            }
+            
+            // If it's today, check the time
+            if (eventDateValue === todayValue && event.endTime) {
+                const now = new Date();
+                const endTimeParts = event.endTime.split(':');
+                const endHour = parseInt(endTimeParts[0], 10);
+                const endMinute = parseInt(endTimeParts[1], 10);
+                
+                const eventEndTime = new Date();
+                eventEndTime.setHours(endHour, endMinute, 0, 0);
+                
+                return now > eventEndTime;
+            }
+        }
+        
+        return false; // If we can't determine the date, assume it's still valid
     }
 
         function showNoCookiesWarning() {
@@ -99,19 +150,16 @@
             const statusClass = type === 'accepted' ? 'status-accepted' : 'status-rejected';
             const statusText = type === 'accepted' ? 'Aceite' : 'Rejeitado';
         
-            // Handle the correct event object structure from your carousel
-            const eventName = event.descriptionTitle || event.name || event.title || event.eventName || 'Nome não disponível';
-            const eventDate = event.date || event.eventDate || event.timestamp || null;
-        
+            // Use the new event structure
+            const eventName = event.descriptionTitle || 'Nome não disponível';
+            const eventSubtitle = event.descriptionSubtitle || '';
+            const eventPlace = event.oppPlaceTitle || '';
+            
             let dateDisplay = 'Data não disponível';
-            if (eventDate) {
-                try {
-                    const date = new Date(eventDate);
-                    if (!isNaN(date.getTime())) {
-                        dateDisplay = date.toLocaleDateString('pt-PT');
-                    }
-                } catch (e) {
-                    console.warn('Erro ao formatar data:', eventDate);
+            if (event.day && event.month) {
+                dateDisplay = `${event.day} de ${event.month}`;
+                if (event.startTime) {
+                    dateDisplay += ` às ${event.startTime}`;
                 }
             }
         
@@ -119,6 +167,8 @@
             let cardContent = `
                 <div class="icon ${type}">${icon}</div>
                 <div class="event-name">${eventName}</div>
+                <div class="event-subtitle">${eventSubtitle}</div>
+                <div class="event-place">${eventPlace}</div>
                 <div class="event-status ${statusClass}">${statusText}</div>
                 <div class="event-date">Data: ${dateDisplay}</div>
             `;
@@ -225,7 +275,10 @@
         }
 
         // Load preferences when page loads
-        document.addEventListener('DOMContentLoaded', loadEventPreferences);
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadEventsData(); // Load events data first
+            loadEventPreferences(); // Then load preferences
+        });
 
         // Optional: Refresh data periodically in case cookies are updated
         setInterval(loadEventPreferences, 30000); // Refresh every 30 seconds

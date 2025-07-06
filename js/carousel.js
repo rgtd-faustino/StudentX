@@ -76,7 +76,8 @@ function hasEventTimePassed(item) {
 }
 
 function createEventId(item) {
-    return `${item.descriptionTitle || ''}_${item.descriptionSubtitle || ''}_${item.oppPlaceTitle || ''}_${item.day || ''}_${item.month || ''}_${item.startTime || ''}`;
+    // Use the actual event ID from the JSON data
+    return item.id || `${item.descriptionTitle || ''}_${item.descriptionSubtitle || ''}_${item.oppPlaceTitle || ''}_${item.day || ''}_${item.month || ''}_${item.startTime || ''}`;
 }
 
 // Updated createCarouselItems function to handle desktop vs mobile differently
@@ -156,8 +157,9 @@ function createCarouselItems(data) {
         itemContainer.startTime = item.startTime;
         itemContainer.endTime = item.endTime;
         
-        // Store unique identifier
-        itemContainer.eventId = createEventId(item);
+        // Store the actual event ID
+        itemContainer.id = item.id;
+        itemContainer.eventId = item.id;
         
         // Rest of your existing code for creating the carousel item...
         const img = document.createElement('img');
@@ -831,7 +833,8 @@ function setupMobileCarousel() {
             itemContainer.month = item.month;
             itemContainer.startTime = item.startTime;
             itemContainer.endTime = item.endTime;
-            itemContainer.eventId = createEventId(item);
+            itemContainer.id = item.id;
+            itemContainer.eventId = item.id;
             
             // Initially hide all items except the first one
             itemContainer.style.display = index === 0 ? 'block' : 'none';
@@ -1092,118 +1095,28 @@ function getRejectedItems() {
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
-    // Get the current year for date calculation
-    const currentYear = new Date().getFullYear();
+    // Get the event ID from the original event data
+    const eventId = item._originalEventData?.id || item.id;
     
-    const itemData = {
-        id: item.id || `event_${Date.now()}`,
-        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: item.querySelector('img')?.src || '',
-        altText: item.querySelector('img')?.alt || '',
-        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
-        
-        // Enhanced date storage
-        dateValue: item._dateValue || null,
-        parsedDay: item._parsedDay || null,
-        parsedMonth: item._parsedMonth || null,
-        parsedYear: item._parsedYear || currentYear,
-        day: item.day || null,
-        month: item.month || null,
-        
-        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
-        borderColor: window.getComputedStyle(item).borderColor || '',
-        timestamp: new Date().toISOString(),
-        userAction: 'accepted'
-    };
-    
-    const isDuplicate = acceptedItems.some(existingItem => 
-        existingItem.descriptionTitle === itemData.descriptionTitle && 
-        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
-        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
-    );
-    
-    if (!isDuplicate) {
-        acceptedItems.push(itemData);
+    if (eventId && !acceptedItems.includes(eventId)) {
+        acceptedItems.push(eventId);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
     }
 }
 
-// Updated addRejectedItem function to ensure proper date storage
+// Updated addRejectedItem function to store only event ID
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     
-    // Get the current year for date calculation
-    const currentYear = new Date().getFullYear();
+    // Get the event ID from the original event data
+    const eventId = item._originalEventData?.id || item.id;
     
-    const itemData = {
-        id: item.id || `event_${Date.now()}`,
-        descriptionTitle: item.querySelector('.description-title-mobile')?.textContent || '',
-        descriptionSubtitle: item.querySelector('.description-subtitle-mobile')?.textContent || '',
-        oppPlaceTitle: item.querySelector('.opp-place-title-mobile')?.textContent || '',
-        oppPlaceSubtitle: item.querySelector('.opp-place-subtitle-mobile')?.textContent || '',
-        moreInfoLink: item.querySelector('.button-carousel-mobile')?.href || '',
-        imageSrc: item.querySelector('img')?.src || '',
-        altText: item.querySelector('img')?.alt || '',
-        logoSrc: item.querySelector('.opp-place-container img')?.src || '',
-        logoAlt: item.querySelector('.opp-place-container img')?.alt || '',
-        
-        // Enhanced date storage
-        dateValue: item._dateValue || null,
-        parsedDay: item._parsedDay || null,
-        parsedMonth: item._parsedMonth || null,
-        parsedYear: item._parsedYear || currentYear,
-        day: item.day || null,
-        month: item.month || null,
-        
-        backgroundColor: window.getComputedStyle(item).backgroundColor || '',
-        borderColor: window.getComputedStyle(item).borderColor || '',
-        timestamp: new Date().toISOString(),
-        userAction: 'rejected'
-    };
-    
-    const isDuplicate = rejectedItems.some(existingItem => 
-        existingItem.descriptionTitle === itemData.descriptionTitle && 
-        existingItem.descriptionSubtitle === itemData.descriptionSubtitle &&
-        existingItem.oppPlaceTitle === itemData.oppPlaceTitle
-    );
-    
-    if (!isDuplicate) {
-        rejectedItems.push(itemData);
+    if (eventId && !rejectedItems.includes(eventId)) {
+        rejectedItems.push(eventId);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
     }
 }
 
-
-// Function to clean up old preferences (optional - helps with storage management)
-function cleanupOldPreferences() {
-    const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
-    const cutoffTime = new Date(Date.now() - maxAge);
-    
-    // Clean accepted items
-    const acceptedItems = getAcceptedItems();
-    const filteredAccepted = acceptedItems.filter(item => {
-        const itemDate = new Date(item.timestamp);
-        return itemDate > cutoffTime;
-    });
-    if (filteredAccepted.length !== acceptedItems.length) {
-        setEssentialData('userEventPreferences_accepted', filteredAccepted);
-    }
-    
-    // Clean rejected items
-    const rejectedItems = getRejectedItems();
-    const filteredRejected = rejectedItems.filter(item => {
-        const itemDate = new Date(item.timestamp);
-        return itemDate > cutoffTime;
-    });
-    if (filteredRejected.length !== rejectedItems.length) {
-        setEssentialData('userEventPreferences_rejected', filteredRejected);
-    }
-}
 
 // Function to get user preferences for analytics (if analytics cookies are accepted)
 function getUserPreferenceStats() {
@@ -1215,11 +1128,7 @@ function getUserPreferenceStats() {
         return {
             totalAccepted: accepted.length,
             totalRejected: rejected.length,
-            preferenceRatio: accepted.length / (accepted.length + rejected.length) || 0,
-            lastActivity: Math.max(
-                ...accepted.map(item => new Date(item.timestamp).getTime()),
-                ...rejected.map(item => new Date(item.timestamp).getTime())
-            )
+            preferenceRatio: accepted.length / (accepted.length + rejected.length) || 0
         };
     }
     return null;
@@ -1227,50 +1136,52 @@ function getUserPreferenceStats() {
 
 // Function to check if an event was previously interacted with
 function hasUserInteractedWithEvent(eventItem) {
-    const eventTitle = eventItem.querySelector('.description-title-mobile')?.textContent || '';
-    const eventSubtitle = eventItem.querySelector('.description-subtitle-mobile')?.textContent || '';
-    const eventPlace = eventItem.querySelector('.opp-place-title-mobile')?.textContent || '';
+    const eventId = eventItem._originalEventData?.id || eventItem.id;
+    
+    if (!eventId) return false;
     
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    const hasAccepted = accepted.some(item => 
-        item.descriptionTitle === eventTitle && 
-        item.descriptionSubtitle === eventSubtitle &&
-        item.oppPlaceTitle === eventPlace
-    );
-    
-    const hasRejected = rejected.some(item => 
-        item.descriptionTitle === eventTitle && 
-        item.descriptionSubtitle === eventSubtitle &&
-        item.oppPlaceTitle === eventPlace
-    );
-    
-    return hasAccepted || hasRejected;
+    return accepted.includes(eventId) || rejected.includes(eventId);
 }
 
 function hasUserInteractedWithItem(item) {
+    const eventId = item.id;
+    
+    if (!eventId) return false;
+    
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    const hasAccepted = accepted.some(userItem => 
-        userItem.descriptionTitle === item.descriptionTitle && 
-        userItem.descriptionSubtitle === item.descriptionSubtitle &&
-        userItem.oppPlaceTitle === item.oppPlaceTitle
-    );
-    
-    const hasRejected = rejected.some(userItem => 
-        userItem.descriptionTitle === item.descriptionTitle && 
-        userItem.descriptionSubtitle === item.descriptionSubtitle &&
-        userItem.oppPlaceTitle === item.oppPlaceTitle
-    );
-    
-    return hasAccepted || hasRejected;
+    return accepted.includes(eventId) || rejected.includes(eventId);
 }
 
 
 // Updated function to check if an event date has passed
 function hasEventDatePassed(event) {
+    const today = new Date();
+    const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
+    
+    // For stored event IDs, we need to find the event in allEventsData
+    if (typeof event === 'number' || (typeof event === 'string' && !isNaN(event))) {
+        const eventId = parseInt(event);
+        const fullEvent = allEventsData.find(e => e.id === eventId);
+        
+        if (!fullEvent) {
+            // If we can't find the event, assume it's expired
+            return true;
+        }
+        
+        // Use the full event data for date checking
+        return hasEventDatePassedForFullEvent(fullEvent);
+    }
+    
+    // If it's already a full event object, use it directly
+    return hasEventDatePassedForFullEvent(event);
+}
+
+function hasEventDatePassedForFullEvent(event) {
     const today = new Date();
     const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
     
@@ -1287,6 +1198,19 @@ function hasEventDatePassed(event) {
         }
         
         // If it's a future date, it hasn't passed
+        return false;
+    }
+    
+    // Check if the event has _dateValue (calculated date value)
+    if (event._dateValue && typeof event._dateValue === 'number') {
+        if (event._dateValue < todayValue) {
+            return true;
+        }
+        
+        if (event._dateValue === todayValue) {
+            return hasEventTimePassed(event);
+        }
+        
         return false;
     }
     
@@ -1314,9 +1238,9 @@ function filterExpiredEvents() {
     const acceptedItems = getAcceptedItems();
     const rejectedItems = getRejectedItems();
     
-    // Filter out expired events
-    const activeAccepted = acceptedItems.filter(event => !hasEventDatePassed(event));
-    const activeRejected = rejectedItems.filter(event => !hasEventDatePassed(event));
+    // Filter out expired events by checking each event ID
+    const activeAccepted = acceptedItems.filter(eventId => !hasEventDatePassed(eventId));
+    const activeRejected = rejectedItems.filter(eventId => !hasEventDatePassed(eventId));
     
     // Update cookies only if there were changes
     if (activeAccepted.length !== acceptedItems.length) {
