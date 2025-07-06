@@ -1,7 +1,5 @@
 let allEventsData = [];
 
-
-// function starts the entire carousel
 function initializeCarousel() {
     const isMobile = window.innerWidth < 600;
     const itemGroup = document.querySelector('.item-group-mobile');
@@ -108,9 +106,6 @@ function createCarouselItems(data) {
         const today = new Date();
         const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
         
-        console.log('Today value:', todayValue);
-        console.log('Total events:', data.items.length);
-        
         // Filter out events that have already passed (including time-based filtering)
         const currentEvents = data.items.filter(item => {
             const isToday = item._dateValue === todayValue;
@@ -127,8 +122,6 @@ function createCarouselItems(data) {
             console.log(`Event: ${item.descriptionTitle}, HasInteracted: ${hasInteracted}`);
             return !hasInteracted;
         });
-        
-        console.log('Filtered items (after interaction filter):', filteredItems.length);
     } else {
         // Desktop logic remains the same
         const currentEvents = data.items.filter(item => {
@@ -153,8 +146,6 @@ function createCarouselItems(data) {
             uniqueItems.push(item);
         }
     });
-    
-    console.log(`Total events: ${data.items.length}, After time filter: ${isMobile ? 'Today only' : 'All upcoming'}, After interaction filter: ${filteredItems.length}, After duplicate removal: ${uniqueItems.length}`);
     
     uniqueItems.forEach(item => {
         const itemContainer = document.createElement('div');
@@ -529,9 +520,9 @@ function setupMobileCarousel() {
    
     // touch event variables
     let startX, moveX, startTime;
-    const minSwipeDistance = 50; // minimum distance for a swipe to be registered
-    const horizontalThreshold = 10; // pixels of horizontal movement to determine horizontal swipe
-    const verticalThreshold = 10; // pixels of vertical movement to determine vertical swipe
+    const minSwipeDistance = 50;
+    const horizontalThreshold = 10;
+    const verticalThreshold = 10;
    
     // add touch event listeners - change passive to false for touchmove to allow preventDefault
     carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -603,7 +594,6 @@ function setupMobileCarousel() {
         }
     }
     
-    // Update the updateSwipeAnimation function to handle no-more-events card properly
     function updateSwipeAnimation() {
         animationRequest = null;
         
@@ -790,7 +780,6 @@ function setupMobileCarousel() {
         }
     }
 
-    // Update the handleNoMoreEventsCardSwipe function to handle both directions
     function handleNoMoreEventsCardSwipe(isLeftSwipe) {
         // Both left and right swipes go to next day
         const nextDay = findNextDayWithEvents(currentDay);
@@ -915,7 +904,6 @@ function setupMobileCarousel() {
             
             itemContainer.appendChild(moreInfoBtn);
             
-            // Add swipe indicators
             const swipeIndicators = document.createElement('div');
             swipeIndicators.className = 'swipe-indicators';
             
@@ -963,7 +951,6 @@ function setupMobileCarousel() {
         rightIndicator = null;
     }
     
-    // Update the resetCardStyles function to preserve no-more-events card styling
     function resetCardStyles(item) {
         if (!item) return;
         
@@ -1025,7 +1012,6 @@ function setupMobileCarousel() {
     addSwipeInstructions();
 }
 
-// Function to add initial instructions overlay
 function addSwipeInstructions() {
     // Add instructions only to the first card
     const firstCard = document.querySelector('.item-container-mobile');
@@ -1098,8 +1084,6 @@ function getEssentialData(key) {
     }
 }
 
-
-// Updated functions to manage accepted/rejected items using essential cookies
 function getAcceptedItems() {
     return getEssentialData('userEventPreferences_accepted') || [];
 }
@@ -1108,18 +1092,28 @@ function getRejectedItems() {
     return getEssentialData('userEventPreferences_rejected') || [];
 }
 
-// Updated addAcceptedItem function
 function addAcceptedItem(item) {
+    console.log('=== ADDING ACCEPTED ITEM ===');
+    console.log('Item DOM element:', item);
+    console.log('Item._originalEventData:', item._originalEventData);
+    console.log('Item properties:', {
+        _dateValue: item._dateValue,
+        day: item.day,
+        month: item.month,
+        startTime: item.startTime,
+        endTime: item.endTime
+    });
+    
     const acceptedItems = getAcceptedItems();
-    
-    // Get the current year for date calculation
     const currentYear = new Date().getFullYear();
-    
-    // Use the stored original event data instead of extracting from DOM
     const originalData = item._originalEventData || {};
     
-    // Generate consistent event ID
+    // Log the original data to see what we're working with
+    console.log('Original data keys:', Object.keys(originalData));
+    console.log('Original data values:', originalData);
+    
     const eventId = createEventId(originalData);
+    console.log('Generated event ID:', eventId);
     
     const itemData = {
         id: eventId,
@@ -1147,32 +1141,46 @@ function addAcceptedItem(item) {
         userAction: 'accepted'
     };
     
-    console.log('Storing accepted item:', itemData);
+    console.log('Final itemData to store:', itemData);
+    console.log('Event ID for storage:', itemData.id);
     
-    // Check for duplicates using the event ID
-    const isDuplicate = acceptedItems.some(existingItem => existingItem.id === itemData.id);
+    const isDuplicate = acceptedItems.some(existingItem => {
+        console.log('Comparing with existing item ID:', existingItem.id);
+        return existingItem.id === itemData.id;
+    });
     
     if (!isDuplicate) {
         acceptedItems.push(itemData);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
-        console.log('Successfully added accepted item:', itemData.descriptionTitle);
+        console.log('✅ Successfully added accepted item:', itemData.descriptionTitle);
+        console.log('Total accepted items now:', acceptedItems.length);
     } else {
-        console.log('Duplicate accepted item not added:', itemData.descriptionTitle);
+        console.log('❌ Duplicate accepted item not added:', itemData.descriptionTitle);
     }
+    
+    // Verify the cookie was set
+    setTimeout(() => {
+        const verifyAccepted = getAcceptedItems();
+        console.log('Verification - Total accepted items in cookie:', verifyAccepted.length);
+        console.log('Verification - Last added item:', verifyAccepted[verifyAccepted.length - 1]);
+    }, 100);
 }
 
-// Updated addRejectedItem function
+// Enhanced logging version of addRejectedItem
 function addRejectedItem(item) {
+    console.log('=== ADDING REJECTED ITEM ===');
+    console.log('Item DOM element:', item);
+    console.log('Item._originalEventData:', item._originalEventData);
+    
     const rejectedItems = getRejectedItems();
-    
-    // Get the current year for date calculation
     const currentYear = new Date().getFullYear();
-    
-    // Use the stored original event data instead of extracting from DOM
     const originalData = item._originalEventData || {};
     
-    // Generate consistent event ID
+    console.log('Original data keys:', Object.keys(originalData));
+    console.log('Original data values:', originalData);
+    
     const eventId = createEventId(originalData);
+    console.log('Generated event ID:', eventId);
     
     const itemData = {
         id: eventId,
@@ -1200,22 +1208,31 @@ function addRejectedItem(item) {
         userAction: 'rejected'
     };
     
-    console.log('Storing rejected item:', itemData);
+    console.log('Final itemData to store:', itemData);
     
-    // Check for duplicates using the event ID
-    const isDuplicate = rejectedItems.some(existingItem => existingItem.id === itemData.id);
+    const isDuplicate = rejectedItems.some(existingItem => {
+        console.log('Comparing with existing item ID:', existingItem.id);
+        return existingItem.id === itemData.id;
+    });
     
     if (!isDuplicate) {
         rejectedItems.push(itemData);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
-        console.log('Successfully added rejected item:', itemData.descriptionTitle);
+        console.log('✅ Successfully added rejected item:', itemData.descriptionTitle);
+        console.log('Total rejected items now:', rejectedItems.length);
     } else {
-        console.log('Duplicate rejected item not added:', itemData.descriptionTitle);
+        console.log('❌ Duplicate rejected item not added:', itemData.descriptionTitle);
     }
+    
+    // Verify the cookie was set
+    setTimeout(() => {
+        const verifyRejected = getRejectedItems();
+        console.log('Verification - Total rejected items in cookie:', verifyRejected.length);
+        console.log('Verification - Last added item:', verifyRejected[verifyRejected.length - 1]);
+    }, 100);
 }
 
 
-// Function to clean up old preferences (optional - helps with storage management)
 function cleanupOldPreferences() {
     const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
     const cutoffTime = new Date(Date.now() - maxAge);
@@ -1241,7 +1258,6 @@ function cleanupOldPreferences() {
     }
 }
 
-// Function to get user preferences for analytics (if analytics cookies are accepted)
 function getUserPreferenceStats() {
     // Only return stats if analytics cookies are accepted
     if (window.cookieConsent && window.cookieConsent.hasConsent('analytics')) {
@@ -1261,28 +1277,104 @@ function getUserPreferenceStats() {
     return null;
 }
 
-// Function to check if an event was previously interacted with
-function hasUserInteractedWithEvent(eventItem) {
-    const eventTitle = eventItem.querySelector('.description-title-mobile')?.textContent || '';
-    const eventSubtitle = eventItem.querySelector('.description-subtitle-mobile')?.textContent || '';
-    const eventPlace = eventItem.querySelector('.opp-place-title-mobile')?.textContent || '';
+function hasUserInteractedWithItem(item) {
+    console.log('=== CHECKING USER INTERACTION ===');
+    console.log('Item to check:', item);
     
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    const hasAccepted = accepted.some(item => 
-        item.descriptionTitle === eventTitle && 
-        item.descriptionSubtitle === eventSubtitle &&
-        item.oppPlaceTitle === eventPlace
-    );
+    console.log('Current accepted items:', accepted.length);
+    console.log('Current rejected items:', rejected.length);
     
-    const hasRejected = rejected.some(item => 
-        item.descriptionTitle === eventTitle && 
-        item.descriptionSubtitle === eventSubtitle &&
-        item.oppPlaceTitle === eventPlace
-    );
+    // Create a more robust comparison using multiple identifiers
+    const itemIdentifiers = {
+        descriptionTitle: item.descriptionTitle?.trim() || '',
+        descriptionSubtitle: item.descriptionSubtitle?.trim() || '',
+        oppPlaceTitle: item.oppPlaceTitle?.trim() || '',
+        day: item.day,
+        month: item.month,
+        startTime: item.startTime,
+        // Use the event ID as primary identifier if available
+        eventId: createEventId(item)
+    };
     
-    return hasAccepted || hasRejected;
+    console.log('Item identifiers:', itemIdentifiers);
+    
+    const hasAccepted = accepted.some(userItem => {
+        console.log('Checking against accepted item:', {
+            id: userItem.id,
+            title: userItem.descriptionTitle,
+            subtitle: userItem.descriptionSubtitle,
+            place: userItem.oppPlaceTitle
+        });
+        
+        // Primary check: use eventId if both items have it
+        if (userItem.id && itemIdentifiers.eventId) {
+            const match = userItem.id === itemIdentifiers.eventId;
+            console.log(`ID match: ${match} (${userItem.id} === ${itemIdentifiers.eventId})`);
+            return match;
+        }
+        
+        // Fallback: check core properties
+        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
+        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
+        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
+        
+        console.log(`Property matches: title=${titleMatch}, subtitle=${subtitleMatch}, place=${placeMatch}`);
+        
+        // Additional check: day and month if available
+        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
+        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
+        
+        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
+        
+        if (matches) {
+            console.log('✅ Found accepted match:', userItem.descriptionTitle);
+        }
+        
+        return matches;
+    });
+    
+    const hasRejected = rejected.some(userItem => {
+        console.log('Checking against rejected item:', {
+            id: userItem.id,
+            title: userItem.descriptionTitle,
+            subtitle: userItem.descriptionSubtitle,
+            place: userItem.oppPlaceTitle
+        });
+        
+        // Primary check: use eventId if both items have it
+        if (userItem.id && itemIdentifiers.eventId) {
+            const match = userItem.id === itemIdentifiers.eventId;
+            console.log(`ID match: ${match} (${userItem.id} === ${itemIdentifiers.eventId})`);
+            return match;
+        }
+        
+        // Fallback: check core properties
+        const titleMatch = userItem.descriptionTitle?.trim() === itemIdentifiers.descriptionTitle;
+        const subtitleMatch = userItem.descriptionSubtitle?.trim() === itemIdentifiers.descriptionSubtitle;
+        const placeMatch = userItem.oppPlaceTitle?.trim() === itemIdentifiers.oppPlaceTitle;
+        
+        console.log(`Property matches: title=${titleMatch}, subtitle=${subtitleMatch}, place=${placeMatch}`);
+        
+        // Additional check: day and month if available
+        const dayMatch = !userItem.day || !itemIdentifiers.day || userItem.day === itemIdentifiers.day;
+        const monthMatch = !userItem.month || !itemIdentifiers.month || userItem.month === itemIdentifiers.month;
+        
+        const matches = titleMatch && subtitleMatch && placeMatch && dayMatch && monthMatch;
+        
+        if (matches) {
+            console.log('✅ Found rejected match:', userItem.descriptionTitle);
+        }
+        
+        return matches;
+    });
+    
+    const result = hasAccepted || hasRejected;
+    console.log(`Final interaction result for ${itemIdentifiers.descriptionTitle}: ${result}`);
+    
+    return result;
 }
 
 function hasUserInteractedWithItem(item) {
@@ -1357,9 +1449,6 @@ function hasUserInteractedWithItem(item) {
     return result;
 }
 
-
-
-// Updated function to check if an event date has passed
 function hasEventDatePassed(event) {
     const today = new Date();
     const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
@@ -1399,7 +1488,6 @@ function hasEventDatePassed(event) {
     return false;
 }
 
-// Updated function to filter out expired events from stored preferences
 function filterExpiredEvents() {
     const acceptedItems = getAcceptedItems();
     const rejectedItems = getRejectedItems();
@@ -1424,7 +1512,6 @@ function filterExpiredEvents() {
     };
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
     performMaintenanceCleanup();
     
@@ -1438,4 +1525,3 @@ function performMaintenanceCleanup() {
         console.log(`Removed ${result.removedCount} expired events from preferences`);
     }
 }
-
