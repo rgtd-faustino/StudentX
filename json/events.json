@@ -1,7 +1,7 @@
 {
     "items": [
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/25.png",
         "altText": "Image 4 mobile",
@@ -13,11 +13,11 @@
         "oppPlaceSubtitle": "Lisboa, PT",
         "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "startTime": "5:00",
-        "endTime": "6:0",
+        "endTime": "6:00",
         "colorOfEvent": "green",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/28.png",
         "altText": "Image 1 mobile",
@@ -33,7 +33,7 @@
         "colorOfEvent": "green",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/27.png",
         "altText": "Image 1 mobile",
@@ -49,7 +49,7 @@
         "colorOfEvent": "blue",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/26.png",
         "altText": "Image 1 mobile",
@@ -65,7 +65,7 @@
         "colorOfEvent": "green",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/1.jpg",
         "altText": "Image 3 mobile",
@@ -81,7 +81,7 @@
         "colorOfEvent": "green",
         "moreInfoText": "No dia 24 de julho, a Faculdade de Arquitetura da Universidade de Lisboa acolhe duas conversas que marcam os 60 anos do Dia Nacional do Estudante. Pela manhã, será explorada a memória das crises académicas, analisando o impacto desses momentos na vida estudantil ao longo das décadas. À tarde, o foco será nos desafios atuais e futuros dos estudantes do Ensino Superior, com uma reflexão sobre como melhorar as suas condições. Uma oportunidade única para refletir sobre o passado e o futuro da vida académica!"      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/2.jpg",
         "altText": "Image 1 mobile",
@@ -97,7 +97,7 @@
         "colorOfEvent": "green",
         "moreInfoText": "O próximo evento do APG PEOPLE HUB acontecerá em Lisboa no ISEG, a 3 de julho. Profissionais de várias áreas vão discutir os desafios atuais da gestão de pessoas em Portugal, uma excelente oportunidade para aprofundar o conhecimento e ampliar a rede de contactos. A participação é gratuita e a APG continua a ser uma plataforma essencial para quem atua no campo da gestão de recursos humanos, unindo profissionais de diferentes setores e regiões."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/3.jpg",
         "altText": "Image 2 mobile",
@@ -113,7 +113,7 @@
         "colorOfEvent": "blue",
         "moreInfoText": "No próximo dia 1 de julho, Lisboa recebe um evento que promete abrir reflexões fundamentais sobre o nosso relacionamento com o mundo digital. Especialistas em psicologia e educação reunir-se-ão para debater os limites entre o uso saudável e o abuso tecnológico no quotidiano de crianças e jovens. Desde videojogos como ferramentas educativas até às dependências online, esta conferência gratuita oferece um olhar multifacetado sobre questões que afetam famílias, escolas e a sociedade portuguesa em geral. O evento conta com testemunhos reais de pais, filhos e educadores, além de palestras de psicólogos clínicos e investigadores que partilharão orientações práticas para navegarmos este desafio contemporâneo."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/4.jpg",
         "altText": "Image 3 mobile",
@@ -130,7 +130,7 @@
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/5.jpg",
         "altText": "Image 1 mobile",
@@ -146,7 +146,7 @@
         "colorOfEvent": "blue",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/6.jpg",
         "altText": "Image 1 mobile",
@@ -162,7 +162,7 @@
         "colorOfEvent": "red",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
-        "day": 5,
+        "day": 6,
         "month": "julho",
         "imageSrc": "/events/7.jpg",
         "altText": "Image 1 mobile",
@@ -178,7 +178,7 @@
         "colorOfEvent": "green",
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 5,
+          "day": 6,
           "month": "julho",
           "imageSrc": "/events/8.jpg",
           "altText": "Image 3 mobile",
@@ -194,7 +194,7 @@
           "colorOfEvent": "blue",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 5,
+          "day": 6,
           "month": "julho",
           "imageSrc": "/events/25.png",
           "altText": "Image 1 mobile",
@@ -210,7 +210,7 @@
           "colorOfEvent": "blue",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 5,
+          "day": 6,
           "month": "julho",
           "imageSrc": "/events/26.png",
           "altText": "Image 2 mobile",
@@ -226,8 +226,8 @@
           "colorOfEvent": "red",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 1,
-          "month": "maio",
+          "day": 7,
+          "month": "julho",
           "imageSrc": "/events/28.png",
           "altText": "Image 3 mobile",
           "descriptionTitle": "Pitch Session",
@@ -243,8 +243,8 @@
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
 
         {
-          "day": 1,
-          "month": "maio",
+          "day": 7,
+          "month": "julho",
           "imageSrc": "/events/27.png",
           "altText": "Image 4 mobile",
           "descriptionTitle": "Currículo",
@@ -259,8 +259,8 @@
           "colorOfEvent": "green",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 1,
-          "month": "maio",
+          "day": 7,
+          "month": "julho",
           "imageSrc": "/events/27.png",
           "altText": "Image 1 mobile",
           "descriptionTitle": "Carreira",
@@ -275,8 +275,8 @@
           "colorOfEvent": "red",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 1,
-          "month": "maio",
+          "day": 7,
+          "month": "julho",
           "imageSrc": "/events/28.png",
           "altText": "Image 1 mobile",
           "descriptionTitle": "Networking",
@@ -291,8 +291,8 @@
           "colorOfEvent": "green",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
         {
-          "day": 1,
-          "month": "maio",
+          "day": 7,
+          "month": "julho",
           "imageSrc": "/events/28.png",
           "altText": "Image 1 mobile",
           "descriptionTitle": "Carreira",
@@ -307,8 +307,8 @@
           "colorOfEvent": "red",
           "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
           {
-            "day": 1,
-            "month": "maio",
+            "day": 7,
+            "month": "julho",
             "imageSrc": "/events/29.jpg",
             "altText": "Image 1 mobile",
             "descriptionTitle": "Tech Meetup",
@@ -323,8 +323,8 @@
             "colorOfEvent": "red",
             "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
             {
-              "day": 1,
-              "month": "maio",
+              "day": 7,
+              "month": "julho",
               "imageSrc": "/events/33.jpg",
               "altText": "Image 1 mobile",
               "descriptionTitle": "Job Insights",
@@ -339,8 +339,8 @@
               "colorOfEvent": "green",
               "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
               {
-                "day": 1,
-                "month": "maio",
+                "day": 7,
+                "month": "julho",
                 "imageSrc": "/events/32.jpg",
                 "altText": "Image 1 mobile",
                 "descriptionTitle": "Carreira",
@@ -355,8 +355,8 @@
                 "colorOfEvent": "blue",
                 "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
                 {
-                  "day": 1,
-                  "month": "maio",
+                  "day": 7,
+                  "month": "julho",
                   "imageSrc": "/events/34.jpg",
                   "altText": "Image 1 mobile",
                   "descriptionTitle": "Carreira",
@@ -371,8 +371,8 @@
                   "colorOfEvent": "blue",
                   "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
                   {
-                    "day": 1,
-                    "month": "maio",
+                    "day": 8,
+                    "month": "julho",
                     "imageSrc": "/events/35.jpg",
                     "altText": "Image 1 mobile",
                     "descriptionTitle": "Carreira",
@@ -387,8 +387,8 @@
                     "colorOfEvent": "green",
                     "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
                     {
-                      "day": 1,
-                      "month": "maio",
+                      "day": 8,
+                      "month": "julho",
                       "imageSrc": "/events/36.jpg",
                       "altText": "Image 1 mobile",
                       "descriptionTitle": "Lei da Paridade",
@@ -404,8 +404,8 @@
                       "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
                     
       {
-        "day": 1,
-        "month": "maio",
+        "day": 8,
+        "month": "julho",
         "imageSrc": "/events/26.png",
         "altText": "Image 1 mobile",
         "descriptionTitle": "Networking",

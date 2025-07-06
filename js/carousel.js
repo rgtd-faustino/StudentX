@@ -1,20 +1,21 @@
+let allEventsData = [];
+
 
 // function starts the entire carousel
 function initializeCarousel() {
-    // first, we take into account if the user is on a cellphone or not
     const isMobile = window.innerWidth < 600;
     const itemGroup = document.querySelector('.item-group-mobile');
     
-    if (!itemGroup) return; // if carousel elements don't exist we exit
+    if (!itemGroup) return;
     
-    // we go to the events.json and retrieve all of the items for the carousel (the events)
     fetch('/json/events.json')
         .then(response => response.json())
         .then(data => {
-            // for each response we create a card for the carousel
+            // Store all events globally for day navigation
+            allEventsData = data.items;
+            
             createCarouselItems(data);
             
-            // depending on the interface of the user we setup things differently
             if (isMobile) {
                 setupMobileCarousel();
             } else {
@@ -23,15 +24,12 @@ function initializeCarousel() {
         })
         .catch(error => {
             console.error('Error loading carousel data:', error);
-
-            // we try again using the informations we already have if the fetch doesn't work
             if (isMobile) {
                 setupMobileCarousel();
             } else {
                 setupDesktopCarousel();
             }
         });
-        
 }
 
 function hasEventTimePassed(item) {
@@ -81,7 +79,7 @@ function createEventId(item) {
     return `${item.descriptionTitle || ''}_${item.descriptionSubtitle || ''}_${item.oppPlaceTitle || ''}_${item.day || ''}_${item.month || ''}_${item.startTime || ''}`;
 }
 
-// this function creates the cards of the carousel
+// Updated createCarouselItems function to handle desktop vs mobile differently
 function createCarouselItems(data) {
     const container = document.getElementById('item-group-1-mobile');
     if (!container) return;
@@ -91,15 +89,39 @@ function createCarouselItems(data) {
     // Sort items by date first
     sortItemsByDate(data.items);
 
-    // Filter out events that have already passed (including time-based filtering)
-    const currentEvents = data.items.filter(item => {
-        return !hasEventTimePassed(item);
-    });
+    // Check if we're on mobile
+    const isMobile = window.innerWidth < 600;
+    
+    let filteredItems;
+    
+    if (isMobile) {
+        // Mobile: Filter for today's events only and check time
+        const today = new Date();
+        const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
+        
+        // Filter out events that have already passed (including time-based filtering)
+        const currentEvents = data.items.filter(item => {
+            return item._dateValue === todayValue && !hasEventTimePassed(item);
+        });
 
-    // Filter out events user has already interacted with
-    const filteredItems = currentEvents.filter(item => {
-        return !hasUserInteractedWithItem(item);
-    });
+        // Filter out events user has already interacted with
+        filteredItems = currentEvents.filter(item => {
+            return !hasUserInteractedWithItem(item);
+        });
+    } else {
+        // Desktop: Get first 12 upcoming events (any day, starting from current time)
+        const currentEvents = data.items.filter(item => {
+            return !hasEventTimePassed(item);
+        });
+
+        // Filter out events user has already interacted with
+        const nonInteractedEvents = currentEvents.filter(item => {
+            return !hasUserInteractedWithItem(item);
+        });
+
+        // Take only the first 12 events for desktop
+        filteredItems = nonInteractedEvents.slice(0, 12);
+    }
 
     // Remove duplicates based on unique identifier
     const uniqueItems = [];
@@ -113,7 +135,7 @@ function createCarouselItems(data) {
         }
     });
     
-    console.log(`Total events: ${data.items.length}, After time filter: ${currentEvents.length}, After interaction filter: ${filteredItems.length}, After duplicate removal: ${uniqueItems.length}`);
+    console.log(`Total events: ${data.items.length}, After time filter: ${isMobile ? 'Today only' : 'All upcoming'}, After interaction filter: ${filteredItems.length}, After duplicate removal: ${uniqueItems.length}`);
     
     uniqueItems.forEach(item => {
         const itemContainer = document.createElement('div');
@@ -229,7 +251,6 @@ function sortItemsByDate(items) {
     items.sort((a, b) => a._dateValue - b._dateValue);
 }
 
-// Setup functions for desktop and mobile carousel
 function setupDesktopCarousel() {
     const itemGroup = document.querySelector('.item-group-mobile');
     const dotsPC = document.querySelectorAll('.dot-pc');
@@ -242,12 +263,18 @@ function setupDesktopCarousel() {
     
     let currentIndexPC = 0;
     const itemsPerViewPC = 4;
-    let totalItems;
-
-    if(document.querySelectorAll('.item-container-mobile').length <= 12){
-       totalItems = document.querySelectorAll('.item-container-mobile').length;
-    } else {
-        totalItems = 12;
+    
+    // Get the actual number of items in the carousel
+    const actualItemCount = document.querySelectorAll('.item-container-mobile').length;
+    
+    // For desktop, we want to show exactly what we have (up to 12 items)
+    const totalItems = Math.min(actualItemCount, 12);
+    
+    // If we have fewer than 4 items, adjust the display
+    if (totalItems <= itemsPerViewPC) {
+        // If we have 4 or fewer items, show them all and hide navigation
+        if (arrowsAndDots) arrowsAndDots.style.display = 'none';
+        return;
     }
     
     function updateTransformPC() {
@@ -330,8 +357,15 @@ function setupMobileCarousel() {
     let isHorizontalSwipe = false;
     let initialTouchY = 0;
     let isTouchActive = false;
-    const today = new Date();
-    const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
+    let currentDay = new Date();
+    let noMoreEventsCard = null;
+    
+    // Helper function to get date value in YYYYMMDD format
+    function getDateValue(date) {
+        return (date.getFullYear() * 10000) + ((date.getMonth() + 1) * 100) + date.getDate();
+    }
+    
+    const todayValue = getDateValue(currentDay);
     
     // Check if there are any valid events for today (considering time)
     let hasTodayEvent = false;
@@ -360,28 +394,107 @@ function setupMobileCarousel() {
         item.appendChild(swipeIndicators);
     });
 
-    if (!hasTodayEvent) {
+    function createNoMoreEventsCard() {
         const itemContainer = document.querySelector('.item-group-mobile');
-        let nextDayImg = itemContainer.querySelector('img[src="images/nextDay.png"]');
+        
+        // Remove existing card if it exists
+        const existingCard = itemContainer.querySelector('.no-more-events-card');
+        if (existingCard) existingCard.remove();
+        
+        // Create new card
+        const noMoreCard = document.createElement('div');
+        noMoreCard.className = 'no-more-events-card item-container-mobile';
+        noMoreCard.style.display = 'none';
 
-        if (!nextDayImg) {
-            nextDayImg = document.createElement('img');
-            nextDayImg.src = 'images/nextDay.png';
-            nextDayImg.alt = 'Não há mais eventos para o dia!';
-            nextDayImg.id = 'nextDay';
-            nextDayImg.style.display = 'block';
+        // Image container
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'no-more-events-image-container';
 
-            const style = document.createElement('style');
-            style.textContent = `
-                #nextDay {
-                    pointer-events: none;
-                }
-            `;
-            document.head.appendChild(style);
+        const img = document.createElement('img');
+        img.src = 'images/nextDay.png';
+        img.alt = 'Não há mais eventos para o dia!';
+        img.id = 'nextDay';
+        img.className = 'no-more-events-image';
+        
+        imageContainer.appendChild(img);
+        noMoreCard.appendChild(imageContainer);
+        
+        // Description
+        const description = document.createElement('div');
+        description.className = 'description-mobile';
 
-            itemContainer.appendChild(nextDayImg);
+        const descriptionTitle = document.createElement('p');
+        descriptionTitle.className = 'description-title-mobile';
+        descriptionTitle.textContent = 'Não há mais eventos hoje';
+        
+        const descriptionSubtitle = document.createElement('p');
+        descriptionSubtitle.className = 'description-subtitle-mobile';
+        descriptionSubtitle.textContent = 'Deslize para ver o próximo dia';
+        
+        description.appendChild(descriptionTitle);
+        description.appendChild(descriptionSubtitle);
+        noMoreCard.appendChild(description);
+        
+        // Carousel line
+        const carouselLine = document.createElement('div');
+        carouselLine.className = 'carousel-line';
+        noMoreCard.appendChild(carouselLine);
+        
+        // Placeholder section
+        const placeholderSection = document.createElement('div');
+        placeholderSection.className = 'next-day-section';
+
+        const placeholderText = document.createElement('p');
+        placeholderText.textContent = '← Próximo dia →';
+        placeholderText.className = 'next-day-text';
+        
+        placeholderSection.appendChild(placeholderText);
+        noMoreCard.appendChild(placeholderSection);
+        
+        itemContainer.appendChild(noMoreCard);
+        return noMoreCard;
+    }
+
+
+    // Function to find events for a specific day
+    function getEventsForDay(dateValue) {
+        if (!allEventsData || !Array.isArray(allEventsData)) {
+            console.warn('No events data available');
+            return [];
         }
         
+        return allEventsData.filter(item => {
+            // Ensure the item has the proper date value calculated
+            if (!item._dateValue) {
+                sortItemsByDate([item]); // This will calculate _dateValue
+            }
+            
+            return item._dateValue === dateValue && 
+                !hasEventTimePassed(item) && 
+                !hasUserInteractedWithItem(item);
+        });
+    }
+
+    // Function to find next day with events
+    function findNextDayWithEvents(startDate) {
+        const maxDaysToCheck = 30;
+        let checkDate = new Date(startDate);
+        
+        for (let i = 0; i < maxDaysToCheck; i++) {
+            checkDate.setDate(checkDate.getDate() + 1);
+            const dateValue = getDateValue(checkDate);
+            const events = getEventsForDay(dateValue);
+            
+            if (events.length > 0) {
+                return { date: new Date(checkDate), events: events };
+            }
+        }
+        return null;
+    }
+    // Initialize the carousel
+    if (!hasTodayEvent) {
+        noMoreEventsCard = createNoMoreEventsCard();
+        noMoreEventsCard.style.display = 'block';
     } else {
         // Find the first valid event for today and show it
         for (let i = 0; i < carouselItems.length; i++) {
@@ -430,7 +543,7 @@ function setupMobileCarousel() {
         isHorizontalSwipe = null; // reset direction detection
         
         // get the current visible item and prepare it for animation
-        currentItem = carouselItems[currentIndex];
+        currentItem = document.querySelector('.item-container-mobile[style*="display: block"], .no-more-events-card[style*="display: block"]');
         if (currentItem) {
             leftIndicator = currentItem.querySelector('.left-indicator');
             rightIndicator = currentItem.querySelector('.right-indicator');
@@ -471,6 +584,7 @@ function setupMobileCarousel() {
         }
     }
     
+    // Update the updateSwipeAnimation function to handle no-more-events card properly
     function updateSwipeAnimation() {
         animationRequest = null;
         
@@ -482,8 +596,10 @@ function setupMobileCarousel() {
         // Add rotation for a more natural feel
         const rotation = currentDiff / 20; // Adjust divisor for more/less rotation
         
+        const isNoMoreEventsCard = currentItem.classList.contains('no-more-events-card');
+        
         if (currentDiff < 0) {
-            // Swiping left (reject)
+            // Swiping left
             if (leftIndicator) {
                 leftIndicator.style.opacity = opacity;
                 leftIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
@@ -492,11 +608,17 @@ function setupMobileCarousel() {
                 rightIndicator.style.opacity = 0;
             }
             
-            // Add a red tint to the card when swiping left
-            currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
-            currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.9})`;
+            // Enhanced blue colors for no-more-events card (both directions)
+            if (isNoMoreEventsCard) {
+                currentItem.classList.add('swiping-left');
+                currentItem.classList.remove('swiping-right');
+                currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 1.5}px rgba(33, 150, 243, ${opacity * 0.8})`;
+            } else {
+                currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(255, 0, 0, ${opacity * 0.5})`;
+                currentItem.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.9})`;
+            }
         } else if (currentDiff > 0) {
-            // Swiping right (accept)
+            // Swiping right
             if (rightIndicator) {
                 rightIndicator.style.opacity = opacity;
                 rightIndicator.style.transform = `scale(${0.5 + opacity * 0.5})`;
@@ -505,9 +627,15 @@ function setupMobileCarousel() {
                 leftIndicator.style.opacity = 0;
             }
             
-            // Add a green tint to the card when swiping right
-            currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
-            currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.9})`;
+            // Enhanced blue colors for no-more-events card (both directions)
+            if (isNoMoreEventsCard) {
+                currentItem.classList.add('swiping-right');
+                currentItem.classList.remove('swiping-left');
+                currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 1.5}px rgba(33, 150, 243, ${opacity * 0.8})`;
+            } else {
+                currentItem.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 2}px rgba(0, 255, 0, ${opacity * 0.5})`;
+                currentItem.style.backgroundColor = `rgba(240, 255, 240, ${opacity * 0.9})`;
+            }
         }
         
         currentItem.style.transform = `translateX(${currentDiff}px) rotate(${rotation}deg)`;
@@ -547,6 +675,7 @@ function setupMobileCarousel() {
                 
                 // Calculate direction
                 const isLeftSwipe = diff < 0;
+                const isNoMoreEventsCard = item.classList.contains('no-more-events-card');
                 
                 // First set up transition for first half of animation
                 item.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.3s ease-out';
@@ -561,17 +690,27 @@ function setupMobileCarousel() {
                     leftInd.style.transform = 'scale(1)';
                     if (rightInd) rightInd.style.opacity = 0;
                     
-                    // Add red tint at maximum intensity
-                    item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
-                    item.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
+                    // Different colors for no-more-events card
+                    if (isNoMoreEventsCard) {
+                        item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 123, 255, 0.5)`;
+                        item.style.backgroundColor = 'rgba(240, 248, 255, 0.9)';
+                    } else {
+                        item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(255, 0, 0, 0.5)`;
+                        item.style.backgroundColor = 'rgba(255, 240, 240, 0.9)';
+                    }
                 } else if (!isLeftSwipe && rightInd) {
                     rightInd.style.opacity = 1;
                     rightInd.style.transform = 'scale(1)';
                     if (leftInd) leftInd.style.opacity = 0;
                     
-                    // Add green tint at maximum intensity
-                    item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
-                    item.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
+                    // Different colors for no-more-events card
+                    if (isNoMoreEventsCard) {
+                        item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(40, 167, 69, 0.5)`;
+                        item.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
+                    } else {
+                        item.style.boxShadow = `0 0 ${Math.abs(halfwayPosition) / 2}px rgba(0, 255, 0, 0.5)`;
+                        item.style.backgroundColor = 'rgba(240, 255, 240, 0.9)';
+                    }
                 }
                 
                 // Show vibration feedback
@@ -583,21 +722,25 @@ function setupMobileCarousel() {
                 setTimeout(() => {
                     // Check again if the item is still valid
                     if (item) {
-                        // Store the item in cookies based on swipe direction
-                        if (isLeftSwipe) {
-                            addRejectedItem(item);
-                        } else {
-                            addAcceptedItem(item);
-                        }
-                        
                         item.style.transition = 'transform 0.3s ease-out';
                         item.style.transform = isLeftSwipe ? 
                             `translateX(-150%) rotate(-10deg)` : 
                             `translateX(150%) rotate(10deg)`;
                         
-                        // Show the next item after animation completes
+                        // Handle different actions based on card type and swipe direction
                         setTimeout(() => {
-                            showNextItem();
+                            if (isNoMoreEventsCard) {
+                                handleNoMoreEventsCardSwipe(isLeftSwipe);
+                            } else {
+                                // Regular event card - store in cookies
+                                if (isLeftSwipe) {
+                                    addRejectedItem(item);
+                                } else {
+                                    addAcceptedItem(item);
+                                }
+                                showNextItem();
+                            }
+                            
                             resetCardStyles(item);
                             // Unlock swipes after the full animation sequence is complete
                             isSwipeLocked = false;
@@ -627,6 +770,166 @@ function setupMobileCarousel() {
             }, 300);
         }
     }
+
+    // Update the handleNoMoreEventsCardSwipe function to handle both directions
+    function handleNoMoreEventsCardSwipe(isLeftSwipe) {
+        // Both left and right swipes go to next day
+        const nextDay = findNextDayWithEvents(currentDay);
+        
+        if (nextDay) {
+            console.log(`Moving to next day: ${nextDay.date.toDateString()}, Events found: ${nextDay.events.length}`);
+            
+            // Update current day
+            currentDay = nextDay.date;
+            
+            // Hide the no-more-events card
+            if (noMoreEventsCard) {
+                noMoreEventsCard.style.display = 'none';
+            }
+            
+            // Hide all currently visible carousel items
+            const carouselItems = document.querySelectorAll('.item-container-mobile');
+            carouselItems.forEach(item => {
+                if (!item.classList.contains('no-more-events-card')) {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Create new carousel items for the next day's events
+            createNewDayCarouselItems(nextDay.events);
+            
+        } else {
+            console.log('No more days with events found');
+            // No more days with events - stay on current card
+            if (noMoreEventsCard) {
+                noMoreEventsCard.style.display = 'block';
+                resetCardStyles(noMoreEventsCard);
+            }
+        }
+    }
+
+    function createNewDayCarouselItems(events) {
+        const container = document.getElementById('item-group-1-mobile');
+        if (!container) return;
+        
+        // Remove existing event items (keep no-more-events card)
+        const existingItems = container.querySelectorAll('.item-container-mobile:not(.no-more-events-card)');
+        existingItems.forEach(item => item.remove());
+        
+        // Create new items for the day's events
+        events.forEach((item, index) => {
+            const itemContainer = document.createElement('div');
+            itemContainer.className = 'item-container-mobile';
+            
+            // Store the original event data
+            itemContainer._originalEventData = { ...item };
+            itemContainer._dateValue = item._dateValue;
+            itemContainer._parsedDay = item._parsedDay;
+            itemContainer._parsedMonth = item._parsedMonth;
+            itemContainer._parsedYear = item._parsedYear;
+            itemContainer.day = item.day;
+            itemContainer.month = item.month;
+            itemContainer.startTime = item.startTime;
+            itemContainer.endTime = item.endTime;
+            itemContainer.eventId = createEventId(item);
+            
+            // Initially hide all items except the first one
+            itemContainer.style.display = index === 0 ? 'block' : 'none';
+            
+            // Create the carousel item content
+            const img = document.createElement('img');
+            img.src = item.imageSrc;
+            img.alt = item.altText;
+            itemContainer.appendChild(img);
+            
+            const description = document.createElement('div');
+            description.className = 'description-mobile';
+            
+            const descriptionTitle = document.createElement('p');
+            descriptionTitle.className = 'description-title-mobile';
+            descriptionTitle.textContent = item.descriptionTitle;
+            
+            const descriptionSubtitle = document.createElement('p');
+            descriptionSubtitle.className = 'description-subtitle-mobile';
+            descriptionSubtitle.textContent = item.descriptionSubtitle;
+            
+            description.appendChild(descriptionTitle);
+            description.appendChild(descriptionSubtitle);
+            itemContainer.appendChild(description);
+            
+            const carouselLine = document.createElement('div');
+            carouselLine.className = 'carousel-line';
+            itemContainer.appendChild(carouselLine);
+            
+            const oppPlace = document.createElement('div');
+            oppPlace.className = 'opp-place-mobile';
+            
+            const oppPlaceContainer = document.createElement('div');
+            oppPlaceContainer.className = 'opp-place-container';
+            
+            const logoImg = document.createElement('img');
+            logoImg.src = item.logoSrc;
+            logoImg.alt = item.logoAlt;
+            
+            const oppPlaceTexts = document.createElement('div');
+            oppPlaceTexts.className = 'opp-place-texts';
+            
+            const oppPlaceTitle = document.createElement('p');
+            oppPlaceTitle.className = 'opp-place-title-mobile';
+            oppPlaceTitle.textContent = item.oppPlaceTitle;
+            
+            const oppPlaceSubtitle = document.createElement('p');
+            oppPlaceSubtitle.className = 'opp-place-subtitle-mobile';
+            oppPlaceSubtitle.textContent = item.oppPlaceSubtitle;
+            
+            oppPlaceTexts.appendChild(oppPlaceTitle);
+            oppPlaceTexts.appendChild(oppPlaceSubtitle);
+            oppPlaceContainer.appendChild(logoImg);
+            oppPlaceContainer.appendChild(oppPlaceTexts);
+            oppPlace.appendChild(oppPlaceContainer);
+            itemContainer.appendChild(oppPlace);
+            
+            const moreInfoBtn = document.createElement('a');
+            moreInfoBtn.href = item.moreInfoLink;
+            moreInfoBtn.className = 'button-carousel-mobile';
+            moreInfoBtn.textContent = 'Mais Informações';
+            
+            itemContainer.appendChild(moreInfoBtn);
+            
+            // Add swipe indicators
+            const swipeIndicators = document.createElement('div');
+            swipeIndicators.className = 'swipe-indicators';
+            
+            const leftInd = document.createElement('div');
+            leftInd.className = 'swipe-indicator left-indicator';
+            leftInd.innerHTML = '<i class="fa fa-times"></i><span>Reject</span>';
+            
+            const rightInd = document.createElement('div');
+            rightInd.className = 'swipe-indicator right-indicator';
+            rightInd.innerHTML = '<i class="fa fa-check"></i><span>Accept</span>';
+            
+            swipeIndicators.appendChild(leftInd);
+            swipeIndicators.appendChild(rightInd);
+            itemContainer.appendChild(swipeIndicators);
+            
+            // Insert before the no-more-events card
+            if (noMoreEventsCard && noMoreEventsCard.parentNode) {
+                container.insertBefore(itemContainer, noMoreEventsCard);
+            } else {
+                container.appendChild(itemContainer);
+            }
+        });
+        
+        // Reset current index to show the first event of the new day
+        currentIndex = 0;
+        
+        // Ensure the first event is properly displayed
+        const firstEvent = container.querySelector('.item-container-mobile:not(.no-more-events-card)');
+        if (firstEvent) {
+            firstEvent.style.display = 'block';
+            resetCardStyles(firstEvent);
+        }
+    }
     
     function resetTouchState() {
         // Reset all touch-related variables
@@ -641,12 +944,21 @@ function setupMobileCarousel() {
         rightIndicator = null;
     }
     
+    // Update the resetCardStyles function to preserve no-more-events card styling
     function resetCardStyles(item) {
         if (!item) return;
         
         item.style.transform = 'translateX(0) rotate(0deg)';
         item.style.boxShadow = 'none';
-        item.style.backgroundColor = '';
+        
+        // Only reset background color for regular cards, not no-more-events card
+        if (!item.classList.contains('no-more-events-card')) {
+            item.style.backgroundColor = '';
+        } else {
+            // For no-more-events card, remove the swiping classes but keep the base styling
+            item.classList.remove('swiping-left', 'swiping-right');
+            // Don't reset backgroundColor - let the CSS handle the default styling
+        }
         
         // Reset indicators
         const leftInd = item.querySelector('.left-indicator');
@@ -656,9 +968,8 @@ function setupMobileCarousel() {
     }
 
     function showNextItem() {
-        // Get today's date in YYYYMMDD format
-        const today = new Date();
-        const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
+        const currentDayValue = getDateValue(currentDay);
+        const carouselItems = document.querySelectorAll('.item-container-mobile:not(.no-more-events-card)');
         
         // Hide current item
         if (carouselItems[currentIndex]) {
@@ -668,54 +979,32 @@ function setupMobileCarousel() {
         // Move to next index
         currentIndex++;
         
-        // Look for the next valid item for today, starting from currentIndex
-        let nextTodayItemIndex = -1;
+        // Look for the next valid item for current day
+        let nextItemIndex = -1;
         for (let i = currentIndex; i < carouselItems.length; i++) {
             const item = carouselItems[i];
-            if (item._dateValue === todayValue && !hasEventTimePassed(item._originalEventData)) {
-                nextTodayItemIndex = i;
+            if (item._dateValue === currentDayValue && !hasEventTimePassed(item._originalEventData)) {
+                nextItemIndex = i;
                 break;
             }
         }
         
-        if (nextTodayItemIndex !== -1) {
-            // Found a valid item for today - update currentIndex and show it
-            currentIndex = nextTodayItemIndex;
+        if (nextItemIndex !== -1) {
+            currentIndex = nextItemIndex;
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
         } else {
-            // No more valid items for today - show "no more events" message
-            const itemContainer = document.querySelector('.item-group-mobile');
-            let nextDayImg = itemContainer.querySelector('img[src="images/nextDay.png"]');
-            
-            if (!nextDayImg) {
-                // Create the image only if it doesn't already exist
-                nextDayImg = document.createElement('img');
-                nextDayImg.src = 'images/nextDay.png';
-                nextDayImg.alt = 'Não há mais eventos para o dia!';
-                nextDayImg.id = 'nextDay';
-                nextDayImg.style.display = 'none'; // Initially hidden
-                
-                const style = document.createElement('style');
-                style.textContent = `
-                    #nextDay {
-                        pointer-events: none;
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                // Append the image to the item container
-                itemContainer.appendChild(nextDayImg);
+            // No more valid items for current day - show "no more events" card
+            if (!noMoreEventsCard) {
+                noMoreEventsCard = createNoMoreEventsCard();
             }
-            
-            // Show the "no more events" image
-            nextDayImg.style.display = 'block';
+            noMoreEventsCard.style.display = 'block';
+            resetCardStyles(noMoreEventsCard);
         }
     }
 
     addSwipeInstructions();
 }
-
 
 // Function to add initial instructions overlay
 function addSwipeInstructions() {

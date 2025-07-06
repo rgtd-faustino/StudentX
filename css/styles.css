@@ -3706,6 +3706,86 @@ input[type="checkbox"] {
 }
 
 
+.no-more-events-card {
+    position: relative;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 0.6vw solid rgb(0, 144, 255);
+}
+
+/* Image container */
+.no-more-events-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2vw;
+    margin-bottom: 3vw;
+}
+
+.no-more-events-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+/* Description styling */
+.description-mobile {
+    text-align: center;
+    padding: 2vw 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: -1.5vw;
+}
+
+.description-title-mobile {
+    margin: 0 0 1vw 0;
+    font-weight: bold;
+    font-size: 4vw;
+    color: #333;
+}
+
+.description-subtitle-mobile {
+    margin: 0;
+    font-size: 3.5vw;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Placeholder section */
+.next-day-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 123, 255, 0.14);
+    border: 2px solid rgba(0, 123, 255, 0.3);
+    border-radius: 2vw;
+    margin: 2vw 0 0 0;
+    padding: 2vw;
+}
+
+.next-day-text {
+    margin: 0;
+    font-size: 3vw;
+    color: rgb(0, 123, 255);
+    font-weight: 600;
+}
+
+/* Swipe effects */
+.no-more-events-card.swiping-left,
+.no-more-events-card.swiping-right {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.6) !important;
+}
+
+.no-more-events-card.swiping-left .next-day-section,
+.no-more-events-card.swiping-right .next-day-section {
+    background: rgba(33, 150, 243, 0.25) !important;
+    border: 2px solid rgba(33, 150, 243, 0.6) !important;
+}
 
 
 
