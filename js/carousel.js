@@ -352,7 +352,47 @@ function setupMobileCarousel() {
    
     // we grab all of the items we added
     const carouselItems = document.querySelectorAll('.item-container-mobile');
-    if (!carouselItems.length) return;
+    
+    // IMPORTANT: Check if there are no carousel items in DOM
+    // This means createCarouselItems didn't create any items due to filtering
+    if (!carouselItems.length) {
+        console.log('No carousel items found in DOM - checking if we should show no-more-events card');
+        
+        // Check if there should be events for today but they were all filtered out
+        if (allEventsData && Array.isArray(allEventsData)) {
+            const currentDay = getCurrentDay();
+            const currentDayValue = getDateValue(currentDay);
+            
+            const todayEvents = allEventsData.filter(item => {
+                if (!item._dateValue) {
+                    sortItemsByDate([item]);
+                }
+                return item._dateValue === currentDayValue && !hasEventTimePassed(item);
+            });
+            
+            console.log(`Found ${todayEvents.length} total events for today before interaction filtering`);
+            
+            // If there are events for today but they're all filtered out by user interactions,
+            // or if there are simply no events for today, show the no-more-events card
+            if (todayEvents.length > 0) {
+                console.log('Events exist for today but all have been interacted with - showing no-more-events card');
+            } else {
+                console.log('No events exist for today - showing no-more-events card');
+            }
+            
+            // Create and show the no-more-events card immediately
+            noMoreEventsCard = createNoMoreEventsCard();
+            noMoreEventsCard.style.display = 'block';
+            
+            // Add swipe functionality to the no-more-events card
+            setupNoMoreEventsCardSwipe();
+            
+            // Add appropriate instructions for the no-more-events card
+            addSwipeInstructions();
+            
+            return; // Exit early since there are no event cards to process
+        }
+    }
    
     // reset any previous styles
     itemGroup.style.transform = 'none';
@@ -377,12 +417,28 @@ function setupMobileCarousel() {
     
     const currentDayValue  = getDateValue(currentDay);
     
-    // Check if there are any valid events for today (considering time)
+    // Check if there are any valid events for today (considering time AND user interactions)
     let hasCurrentDayEvent = false;
+    
+    // First, check the actual events data for today, filtering out interactions and expired events
+    if (allEventsData && Array.isArray(allEventsData)) {
+        const todayEvents = allEventsData.filter(item => {
+            // Ensure the item has the proper date value calculated
+            if (!item._dateValue) {
+                sortItemsByDate([item]); // This will calculate _dateValue
+            }
+            
+            return item._dateValue === currentDayValue && 
+                   !hasEventTimePassed(item) && 
+                   !hasUserInteractedWithItem(item);
+        });
+        
+        hasCurrentDayEvent = todayEvents.length > 0;
+        console.log(`Current day ${currentDay.toDateString()}: Found ${todayEvents.length} available events`);
+    }
+    
+    // Hide all carousel items initially
     carouselItems.forEach((item) => {
-        if (item._dateValue === currentDayValue && !hasEventTimePassed(item._originalEventData)) {
-            hasCurrentDayEvent = true;
-        }
         item.style.display = 'none';
         
         // add swipe indicator containers to each item
@@ -504,16 +560,28 @@ function setupMobileCarousel() {
 
     // Initialize the carousel
     if (!hasCurrentDayEvent) {
+        // No events available for today - show the "no more events" card immediately
         noMoreEventsCard = createNoMoreEventsCard();
         noMoreEventsCard.style.display = 'block';
+        console.log('No events available for today, showing no-more-events card');
     } else {
         // Find the first valid event for current day and show it
+        let foundValidEvent = false;
         for (let i = 0; i < carouselItems.length; i++) {
             const item = carouselItems[i];
             if (item._dateValue === currentDayValue && !hasEventTimePassed(item._originalEventData)) {
                 item.style.display = 'block';
+                foundValidEvent = true;
+                console.log(`Showing first valid event: ${item._originalEventData?.descriptionTitle || 'Unknown event'}`);
                 break;
             }
+        }
+        
+        // Fallback: if somehow we didn't find a valid event in DOM but hasCurrentDayEvent was true
+        if (!foundValidEvent) {
+            console.warn('hasCurrentDayEvent was true but no valid DOM event found, showing no-more-events card');
+            noMoreEventsCard = createNoMoreEventsCard();
+            noMoreEventsCard.style.display = 'block';
         }
     }
 
@@ -995,11 +1063,13 @@ function setupMobileCarousel() {
         // Move to next index
         currentIndex++;
         
-        // Look for the next valid item for current day
+        // Look for the next valid item for current day that hasn't been interacted with
         let nextItemIndex = -1;
         for (let i = currentIndex; i < carouselItems.length; i++) {
             const item = carouselItems[i];
-            if (item._dateValue === currentDayValue && !hasEventTimePassed(item._originalEventData)) {
+            if (item._dateValue === currentDayValue && 
+                !hasEventTimePassed(item._originalEventData) && 
+                !hasUserInteractedWithItem(item._originalEventData)) {
                 nextItemIndex = i;
                 break;
             }
@@ -1009,8 +1079,10 @@ function setupMobileCarousel() {
             currentIndex = nextItemIndex;
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
+            console.log(`Showing next event: ${carouselItems[currentIndex]._originalEventData?.descriptionTitle || 'Unknown event'}`);
         } else {
             // No more valid items for current day - show "no more events" card
+            console.log('No more events available for today, showing no-more-events card');
             if (!noMoreEventsCard) {
                 noMoreEventsCard = createNoMoreEventsCard();
             }
@@ -1022,39 +1094,43 @@ function setupMobileCarousel() {
 
 // Function to add initial instructions overlay
 function addSwipeInstructions() {
-    // Add instructions only to the first card
-    const firstCard = document.querySelector('.item-container-mobile');
-    if (!firstCard) return;
+    // Try to add instructions to the first card, but handle case where there are no event cards
+    const firstCard = document.querySelector('.item-container-mobile:not(.no-more-events-card)');
+    const noMoreEventsCard = document.querySelector('.no-more-events-card');
     
-    const instructions = document.createElement('div');
-    instructions.className = 'swipe-instructions';
-    instructions.innerHTML = `
-        <h3>Dá Swipe para escolher</h3>
-        <p class="instruction-right">
-            <i class="fa fa-check instruction-icon"></i>
-            Dá Swipe para a DIREITA para ACEITAR
-        </p>
-        <p class="instruction-left">
-            <i class="fa fa-times instruction-icon"></i>
-            Dá Swipe para a ESQUERDA para RECUSAR
-        </p>
-        <button id="got-it-btn">Entendido!</button>
-    `;
-    
-    firstCard.appendChild(instructions);
-    
-    // Add event listener to dismiss instructions
-    setTimeout(() => {
-        const gotItBtn = document.getElementById('got-it-btn');
-        if (gotItBtn) {
-            gotItBtn.addEventListener('click', () => {
-                instructions.style.opacity = '0';
-                setTimeout(() => {
-                    instructions.remove();
-                }, 500);
-            });
-        }
-    }, 0);
+    // If there are event cards, add instructions to the first one
+    if (firstCard) {
+        const instructions = document.createElement('div');
+        instructions.className = 'swipe-instructions';
+        instructions.innerHTML = `
+            <h3>Dá Swipe para escolher</h3>
+            <p class="instruction-right">
+                <i class="fa fa-check instruction-icon"></i>
+                Dá Swipe para a DIREITA para ACEITAR
+            </p>
+            <p class="instruction-left">
+                <i class="fa fa-times instruction-icon"></i>
+                Dá Swipe para a ESQUERDA para RECUSAR
+            </p>
+            <button id="got-it-btn">Entendido!</button>
+        `;
+        
+        firstCard.appendChild(instructions);
+        
+        // Add event listener to dismiss instructions
+        setTimeout(() => {
+            const gotItBtn = document.getElementById('got-it-btn');
+            if (gotItBtn) {
+                gotItBtn.addEventListener('click', () => {
+                    instructions.style.opacity = '0';
+                    setTimeout(() => {
+                        instructions.remove();
+                    }, 500);
+                });
+            }
+        }, 0);
+    } 
+
 }
 
 function setEssentialData(key, value, days = 365) {
@@ -1302,4 +1378,240 @@ function getCurrentDay() {
 
 function setCurrentDay(date) {
     setEssentialData('userCurrentDay', date.toISOString());
+}
+
+// Function to refresh carousel items after an event is removed from preferences
+function refreshCarouselItems() {
+    if (allEventsData.length === 0) {
+        console.warn('No events data available for refresh');
+        return;
+    }
+    
+    console.log('Refreshing carousel items after event removal...');
+    
+    // Re-create carousel items with updated filters
+    createCarouselItems({ items: allEventsData });
+    
+    // Re-setup carousel functionality
+    const isMobile = window.innerWidth < 600;
+    if (isMobile) {
+        setupMobileCarousel();
+    } else {
+        setupDesktopCarousel();
+    }
+    
+    console.log('Carousel items refreshed after event removal');
+}
+
+// Make refreshCarouselItems available globally
+window.refreshCarouselItems = refreshCarouselItems;
+
+// Listen for events being removed from preferences
+window.addEventListener('eventRemovedFromPreferences', function(event) {
+    const eventId = event.detail.eventId;
+    console.log(`Received notification that event ${eventId} was removed from preferences`);
+    
+    // Refresh the carousel to show the event again
+    refreshCarouselItems();
+});
+
+// Function to set up swipe functionality when only no-more-events card exists
+function setupNoMoreEventsCardSwipe() {
+    const carouselContainer = document.querySelector('.carousel-container-mobile');
+    const noMoreEventsCard = document.querySelector('.no-more-events-card');
+    
+    if (!carouselContainer || !noMoreEventsCard) return;
+    
+    let isSwipeLocked = false;
+    let startX, moveX, startTime;
+    let currentDiff = 0;
+    let isHorizontalSwipe = false;
+    let initialTouchY = 0;
+    let isTouchActive = false;
+    let animationRequest = null;
+    
+    const minSwipeDistance = 50;
+    const horizontalThreshold = 10;
+    const verticalThreshold = 10;
+    
+    // Add touch event listeners specifically for the no-more-events card
+    carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+    carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+    carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+    
+    function handleTouchStart(e) {
+        if (isSwipeLocked) return;
+        
+        if (animationRequest) {
+            cancelAnimationFrame(animationRequest);
+            animationRequest = null;
+        }
+        
+        isTouchActive = true;
+        startX = e.touches[0].clientX;
+        initialTouchY = e.touches[0].clientY;
+        startTime = new Date().getTime();
+        isHorizontalSwipe = null;
+        
+        noMoreEventsCard.style.transition = 'none';
+    }
+    
+    function handleTouchMove(e) {
+        if (!startX || !isTouchActive) return;
+        
+        moveX = e.touches[0].clientX;
+        const moveY = e.touches[0].clientY;
+        const diffX = moveX - startX;
+        const diffY = moveY - initialTouchY;
+        
+        if (isHorizontalSwipe === null) {
+            if (Math.abs(diffX) > horizontalThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+                isHorizontalSwipe = true;
+            } else if (Math.abs(diffY) > verticalThreshold && Math.abs(diffY) > Math.abs(diffX)) {
+                isHorizontalSwipe = false;
+            }
+        }
+        
+        if (isHorizontalSwipe === true) {
+            e.preventDefault();
+            currentDiff = diffX;
+            
+            if (!animationRequest) {
+                animationRequest = requestAnimationFrame(updateSwipeAnimation);
+            }
+        }
+    }
+    
+    function updateSwipeAnimation() {
+        animationRequest = null;
+        
+        if (!isTouchActive || currentDiff === undefined) return;
+        
+        const opacity = Math.min(Math.abs(currentDiff) / 150, 1);
+        const rotation = currentDiff / 20;
+        
+        noMoreEventsCard.style.transform = `translateX(${currentDiff}px) rotate(${rotation}deg)`;
+        noMoreEventsCard.style.boxShadow = `0 0 ${Math.abs(currentDiff) / 1.5}px rgba(33, 150, 243, ${opacity * 0.8})`;
+        
+        if (moveX !== null && isHorizontalSwipe === true && isTouchActive) {
+            animationRequest = requestAnimationFrame(updateSwipeAnimation);
+        }
+    }
+    
+    function handleTouchEnd(e) {
+        if (!isTouchActive) return;
+        
+        const diff = moveX !== null ? moveX - startX : 0;
+        const swipeTime = startTime ? new Date().getTime() - startTime : 0;
+        
+        if (animationRequest) {
+            cancelAnimationFrame(animationRequest);
+            animationRequest = null;
+        }
+        
+        resetTouchState();
+        
+        if (isHorizontalSwipe === true && (Math.abs(diff) > minSwipeDistance || (Math.abs(diff) > 20 && swipeTime < 300))) {
+            isSwipeLocked = true;
+            
+            // Animate the swipe
+            noMoreEventsCard.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out';
+            const halfwayPosition = diff < 0 ? -75 : 75;
+            noMoreEventsCard.style.transform = `translateX(${halfwayPosition}px) rotate(${diff < 0 ? -5 : 5}deg)`;
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+            
+            setTimeout(() => {
+                noMoreEventsCard.style.transition = 'transform 0.3s ease-out';
+                noMoreEventsCard.style.transform = diff < 0 ? 
+                    `translateX(-150%) rotate(-10deg)` : 
+                    `translateX(150%) rotate(10deg)`;
+                
+                setTimeout(() => {
+                    handleNoMoreEventsCardSwipeStandalone();
+                    resetCardStyles();
+                    isSwipeLocked = false;
+                }, 300);
+            }, 400);
+        } else {
+            isSwipeLocked = true;
+            noMoreEventsCard.style.transition = 'transform 0.3s ease-out, box-shadow 0.3s ease-out';
+            resetCardStyles();
+            setTimeout(() => {
+                isSwipeLocked = false;
+            }, 300);
+        }
+    }
+    
+    function resetTouchState() {
+        isTouchActive = false;
+        startX = null;
+        moveX = null;
+        initialTouchY = null;
+        currentDiff = 0;
+        isHorizontalSwipe = null;
+    }
+    
+    function resetCardStyles() {
+        noMoreEventsCard.style.transform = 'translateX(0) rotate(0deg)';
+        noMoreEventsCard.style.boxShadow = 'none';
+    }
+    
+    function handleNoMoreEventsCardSwipeStandalone() {
+        const currentDay = getCurrentDay();
+        const nextDay = findNextDayWithEvents(currentDay);
+        
+        if (nextDay) {
+            console.log(`Moving to next day: ${nextDay.date.toDateString()}, Events found: ${nextDay.events.length}`);
+            
+            // Update current day
+            setCurrentDay(nextDay.date);
+            
+            // Refresh the entire carousel with the new day
+            refreshCarouselItems();
+        } else {
+            console.log('No more days with events found');
+            noMoreEventsCard.style.display = 'block';
+            resetCardStyles();
+        }
+    }
+    
+    // Helper function that mirrors the one in setupMobileCarousel
+    function findNextDayWithEvents(startDate) {
+        const maxDaysToCheck = 30;
+        let checkDate = new Date(startDate);
+        
+        function getDateValue(date) {
+            return (date.getFullYear() * 10000) + ((date.getMonth() + 1) * 100) + date.getDate();
+        }
+        
+        function getEventsForDay(dateValue) {
+            if (!allEventsData || !Array.isArray(allEventsData)) {
+                return [];
+            }
+            
+            return allEventsData.filter(item => {
+                if (!item._dateValue) {
+                    sortItemsByDate([item]);
+                }
+                
+                return item._dateValue === dateValue && 
+                    !hasEventTimePassed(item) && 
+                    !hasUserInteractedWithItem(item);
+            });
+        }
+        
+        for (let i = 0; i < maxDaysToCheck; i++) {
+            checkDate.setDate(checkDate.getDate() + 1);
+            const dateValue = getDateValue(checkDate);
+            const events = getEventsForDay(dateValue);
+            
+            if (events.length > 0) {
+                return { date: new Date(checkDate), events: events };
+            }
+        }
+        return null;
+    }
 }
