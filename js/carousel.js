@@ -29,7 +29,6 @@ function initializeCarousel() {
             }
         })
         .catch(error => {
-            console.error('Error loading carousel data:', error);
             if (isMobile) {
                 setupMobileCarousel();
             } else {

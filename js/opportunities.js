@@ -1,5 +1,11 @@
 // Global variable to store all events data
 let allEventsData = [];
+let eventsDataLoaded = false;
+
+// Safety function to check if events data is ready
+function isEventsDataReady() {
+    return eventsDataLoaded && allEventsData && allEventsData.length > 0;
+}
 
 function getCookie(name) {
     const nameEQ = encodeURIComponent(name) + "=";
@@ -20,9 +26,13 @@ async function loadEventsData() {
         const response = await fetch('/json/events.json');
         const data = await response.json();
         allEventsData = data.items;
+        eventsDataLoaded = true;
+        console.log(`Successfully loaded ${allEventsData.length} events`);
         return allEventsData;
     } catch (error) {
         console.error('Error loading events data:', error);
+        eventsDataLoaded = false;
+        allEventsData = [];
         return [];
     }
 }
@@ -62,98 +72,126 @@ function removeEventFromCookies(eventId, type) {
 
 // Enhanced function to check if an event date has passed
 function hasEventDatePassed(event) {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    
-    // Handle different date formats and ensure we have valid date information
-    if (!event.day || !event.month) {
-        console.warn('Event missing date information:', event);
-        return false; // If we can't determine the date, keep the event
-    }
-    
-    // Enhanced month mapping with more variations
-    const monthMap = {
-        'janeiro': 1, 'jan': 1,
-        'fevereiro': 2, 'fev': 2,
-        'março': 3, 'mar': 3,
-        'abril': 4, 'abr': 4,
-        'maio': 5, 'mai': 5,
-        'junho': 6, 'jun': 6,
-        'julho': 7, 'jul': 7,
-        'agosto': 8, 'ago': 8,
-        'setembro': 9, 'set': 9,
-        'outubro': 10, 'out': 10,
-        'novembro': 11, 'nov': 11,
-        'dezembro': 12, 'dez': 12
-    };
-    
-    // Parse day and month
-    const eventDay = parseInt(event.day, 10);
-    if (isNaN(eventDay) || eventDay < 1 || eventDay > 31) {
-        console.warn('Invalid day for event:', event);
-        return false;
-    }
-    
-    let eventMonth;
-    if (typeof event.month === 'string') {
-        eventMonth = monthMap[event.month.toLowerCase().trim()];
-        if (!eventMonth) {
-            console.warn('Unrecognized month format for event:', event);
-            return false;
+    try {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        
+        // Handle different date formats and ensure we have valid date information
+        if (!event.day || !event.month) {
+            console.warn('Event missing date information:', event);
+            return false; // If we can't determine the date, keep the event (conservative approach)
         }
-    } else {
-        eventMonth = parseInt(event.month, 10);
-        if (isNaN(eventMonth) || eventMonth < 1 || eventMonth > 12) {
-            console.warn('Invalid month for event:', event);
-            return false;
+        
+        // Enhanced month mapping with more variations
+        const monthMap = {
+            'janeiro': 1, 'jan': 1,
+            'fevereiro': 2, 'fev': 2,
+            'março': 3, 'mar': 3,
+            'abril': 4, 'abr': 4,
+            'maio': 5, 'mai': 5,
+            'junho': 6, 'jun': 6,
+            'julho': 7, 'jul': 7,
+            'agosto': 8, 'ago': 8,
+            'setembro': 9, 'set': 9,
+            'outubro': 10, 'out': 10,
+            'novembro': 11, 'nov': 11,
+            'dezembro': 12, 'dez': 12
+        };
+        
+        // Parse day and month
+        const eventDay = parseInt(event.day, 10);
+        if (isNaN(eventDay) || eventDay < 1 || eventDay > 31) {
+            console.warn('Invalid day for event:', event);
+            return false; // Conservative: keep event if date is invalid
         }
-    }
-    
-    // Use event year if available, otherwise use current year
-    const eventYear = event.year ? parseInt(event.year, 10) : currentYear;
-    
-    // Create event date
-    const eventDate = new Date(eventYear, eventMonth - 1, eventDay);
-    
-    // If event has end time, use it for same-day comparison
-    if (event.endTime) {
-        const timeParts = event.endTime.split(':');
-        if (timeParts.length >= 2) {
-            const endHour = parseInt(timeParts[0], 10);
-            const endMinute = parseInt(timeParts[1], 10);
-            
-            if (!isNaN(endHour) && !isNaN(endMinute)) {
-                eventDate.setHours(endHour, endMinute, 0, 0);
-                return now > eventDate;
+        
+        let eventMonth;
+        if (typeof event.month === 'string') {
+            eventMonth = monthMap[event.month.toLowerCase().trim()];
+            if (!eventMonth) {
+                console.warn('Unrecognized month format for event:', event);
+                return false; // Conservative: keep event if month is unrecognized
+            }
+        } else {
+            eventMonth = parseInt(event.month, 10);
+            if (isNaN(eventMonth) || eventMonth < 1 || eventMonth > 12) {
+                console.warn('Invalid month for event:', event);
+                return false; // Conservative: keep event if month is invalid
             }
         }
+        
+        // Use event year if available, otherwise use current year
+        const eventYear = event.year ? parseInt(event.year, 10) : currentYear;
+        
+        // Create event date
+        const eventDate = new Date(eventYear, eventMonth - 1, eventDay);
+        
+        // Validate the created date
+        if (isNaN(eventDate.getTime())) {
+            console.warn('Invalid date created for event:', event);
+            return false; // Conservative: keep event if date creation failed
+        }
+        
+        // If event has end time, use it for same-day comparison
+        if (event.endTime) {
+            const timeParts = event.endTime.split(':');
+            if (timeParts.length >= 2) {
+                const endHour = parseInt(timeParts[0], 10);
+                const endMinute = parseInt(timeParts[1], 10);
+                
+                if (!isNaN(endHour) && !isNaN(endMinute) && endHour >= 0 && endHour <= 23 && endMinute >= 0 && endMinute <= 59) {
+                    eventDate.setHours(endHour, endMinute, 0, 0);
+                    return now > eventDate;
+                }
+            }
+        }
+        
+        // For events without end time, consider them expired at end of day
+        eventDate.setHours(23, 59, 59, 999);
+        const result = now > eventDate;
+        
+        // Log for debugging (remove in production)
+        if (result) {
+            console.log(`Event ${event.id} (${event.descriptionTitle || 'No title'}) marked as expired: ${eventDate.toLocaleDateString()} vs current ${now.toLocaleDateString()}`);
+        }
+        
+        return result;
+    } catch (error) {
+        console.error('Error checking if event date has passed:', error, event);
+        return false; // Conservative: keep event if there's any error
     }
-    
-    // For events without end time, consider them expired at end of day
-    eventDate.setHours(23, 59, 59, 999);
-    return now > eventDate;
 }
 
 // Function to clean up expired events from cookies
 function cleanupExpiredEvents() {
-    const acceptedCookie = getCookie('userEventPreferences_accepted');
-    const rejectedCookie = getCookie('userEventPreferences_rejected');
+    // Don't run cleanup if events data is not loaded yet
+    if (!isEventsDataReady()) {
+        console.log('Skipping cleanup: events data not ready yet');
+        return false;
+    }
+    
+    const acceptedIds = getEssentialData('userEventPreferences_accepted');
+    const rejectedIds = getEssentialData('userEventPreferences_rejected');
     
     let needsUpdate = false;
     
     // Clean up accepted events
-    if (acceptedCookie) {
+    if (acceptedIds && Array.isArray(acceptedIds)) {
         try {
-            const acceptedIds = JSON.parse(acceptedCookie);
             const activeAcceptedIds = acceptedIds.filter(id => {
                 const event = findEventById(id);
-                return event && !hasEventDatePassed(event);
+                // Only remove if event is found AND has passed (don't remove unknown events)
+                if (!event) {
+                    console.warn(`Event with ID ${id} not found in events data - keeping in cookies`);
+                    return true; // Keep unknown events to avoid data loss
+                }
+                return !hasEventDatePassed(event);
             });
             
             if (activeAcceptedIds.length !== acceptedIds.length) {
-                document.cookie = `userEventPreferences_accepted=${encodeURIComponent(JSON.stringify(activeAcceptedIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
+                setEssentialData('userEventPreferences_accepted', activeAcceptedIds);
                 needsUpdate = true;
-                console.log(`Removed ${acceptedIds.length - activeAcceptedIds.length} expired accepted events`);
+                console.log(`Cleaned up accepted events: removed ${acceptedIds.length - activeAcceptedIds.length} expired events`);
             }
         } catch (e) {
             console.error('Error cleaning up accepted events:', e);
@@ -161,18 +199,22 @@ function cleanupExpiredEvents() {
     }
     
     // Clean up rejected events
-    if (rejectedCookie) {
+    if (rejectedIds && Array.isArray(rejectedIds)) {
         try {
-            const rejectedIds = JSON.parse(rejectedCookie);
             const activeRejectedIds = rejectedIds.filter(id => {
                 const event = findEventById(id);
-                return event && !hasEventDatePassed(event);
+                // Only remove if event is found AND has passed (don't remove unknown events)
+                if (!event) {
+                    console.warn(`Event with ID ${id} not found in events data - keeping in cookies`);
+                    return true; // Keep unknown events to avoid data loss
+                }
+                return !hasEventDatePassed(event);
             });
             
             if (activeRejectedIds.length !== rejectedIds.length) {
-                document.cookie = `userEventPreferences_rejected=${encodeURIComponent(JSON.stringify(activeRejectedIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
+                setEssentialData('userEventPreferences_rejected', activeRejectedIds);
                 needsUpdate = true;
-                console.log(`Removed ${rejectedIds.length - activeRejectedIds.length} expired rejected events`);
+                console.log(`Cleaned up rejected events: removed ${rejectedIds.length - activeRejectedIds.length} expired events`);
             }
         } catch (e) {
             console.error('Error cleaning up rejected events:', e);
@@ -183,25 +225,25 @@ function cleanupExpiredEvents() {
 }
 
 function parseEventPreferences() {
-    const acceptedCookie = getCookie('userEventPreferences_accepted');
-    const rejectedCookie = getCookie('userEventPreferences_rejected');
+    const acceptedIds = getEssentialData('userEventPreferences_accepted');
+    const rejectedIds = getEssentialData('userEventPreferences_rejected');
     
-    let acceptedIds = [];
-    let rejectedIds = [];
+    let acceptedArray = [];
+    let rejectedArray = [];
     let hasData = false;
 
     try {
-        if (acceptedCookie) {
-            acceptedIds = JSON.parse(acceptedCookie);
+        if (acceptedIds && Array.isArray(acceptedIds)) {
+            acceptedArray = acceptedIds;
             hasData = true;
         }
-        if (rejectedCookie) {
-            rejectedIds = JSON.parse(rejectedCookie);
+        if (rejectedIds && Array.isArray(rejectedIds)) {
+            rejectedArray = rejectedIds;
             hasData = true;
         }
     } catch (e) {
         console.error('Erro ao processar preferências dos cookies:', e);
-        if (acceptedCookie || rejectedCookie) {
+        if (acceptedIds || rejectedIds) {
             showNoCookiesWarning();
         }
         return { accepted: [], rejected: [], hasData: false };
@@ -213,38 +255,54 @@ function parseEventPreferences() {
     }
 
     // Convert IDs to full event objects and filter out expired events
-    const acceptedEvents = acceptedIds
+    const acceptedEvents = acceptedArray
         .map(id => findEventById(id))
         .filter(event => {
             if (!event) {
-                console.warn(`Event with ID ${id} not found in events data`);
-                return false;
+                console.warn(`Event with ID ${id} not found in events data - keeping in preferences`);
+                return false; // Don't display unknown events, but don't remove from cookies here
             }
             return !hasEventDatePassed(event);
         });
     
-    const rejectedEvents = rejectedIds
+    const rejectedEvents = rejectedArray
         .map(id => findEventById(id))
         .filter(event => {
             if (!event) {
-                console.warn(`Event with ID ${id} not found in events data`);
-                return false;
+                console.warn(`Event with ID ${id} not found in events data - keeping in preferences`);
+                return false; // Don't display unknown events, but don't remove from cookies here
             }
             return !hasEventDatePassed(event);
         });
 
-    // Update cookies if expired events were removed
-    const activeAcceptedIds = acceptedEvents.map(event => event.id);
-    const activeRejectedIds = rejectedEvents.map(event => event.id);
+    // Only update cookies for expired events, not missing events (to avoid data loss)
+    const activeAcceptedIds = acceptedArray.filter(id => {
+        const event = findEventById(id);
+        if (!event) return true; // Keep unknown events in cookies
+        return !hasEventDatePassed(event);
+    });
     
-    if (activeAcceptedIds.length !== acceptedIds.length) {
-        document.cookie = `userEventPreferences_accepted=${encodeURIComponent(JSON.stringify(activeAcceptedIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
-        console.log(`Updated accepted events cookie: removed ${acceptedIds.length - activeAcceptedIds.length} expired events`);
+    const activeRejectedIds = rejectedArray.filter(id => {
+        const event = findEventById(id);
+        if (!event) return true; // Keep unknown events in cookies
+        return !hasEventDatePassed(event);
+    });
+    
+    // Only update cookies if we actually removed expired events (not missing events)
+    if (activeAcceptedIds.length !== acceptedArray.length) {
+        const removedCount = acceptedArray.length - activeAcceptedIds.length;
+        if (removedCount > 0) {
+            setEssentialData('userEventPreferences_accepted', activeAcceptedIds);
+            console.log(`Updated accepted events cookie: removed ${removedCount} expired events`);
+        }
     }
     
-    if (activeRejectedIds.length !== rejectedIds.length) {
-        document.cookie = `userEventPreferences_rejected=${encodeURIComponent(JSON.stringify(activeRejectedIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
-        console.log(`Updated rejected events cookie: removed ${rejectedIds.length - activeRejectedIds.length} expired events`);
+    if (activeRejectedIds.length !== rejectedArray.length) {
+        const removedCount = rejectedArray.length - activeRejectedIds.length;
+        if (removedCount > 0) {
+            setEssentialData('userEventPreferences_rejected', activeRejectedIds);
+            console.log(`Updated rejected events cookie: removed ${removedCount} expired events`);
+        }
     }
 
     return { 
@@ -561,7 +619,7 @@ function loadEventPreferences() {
     updateStats(preferences.accepted, preferences.rejected);
     
     // Check if all events have been removed
-    if (preferences.accepted.length === 0 && preferences.rejected.length === 0 && (getCookie('userEventPreferences_accepted') || getCookie('userEventPreferences_rejected'))) {
+    if (preferences.accepted.length === 0 && preferences.rejected.length === 0 && (getEssentialData('userEventPreferences_accepted') || getEssentialData('userEventPreferences_rejected'))) {
         showNoCookiesWarning();
     }
     
@@ -664,27 +722,63 @@ function getEssentialData(key) {
 
 // Load preferences when page loads
 document.addEventListener('DOMContentLoaded', async function() {
-    await loadEventsData(); // Load events data first
-    
-    // Clean up any expired events immediately
-    const wasUpdated = cleanupExpiredEvents();
-    
-    // Load and display preferences
-    loadEventPreferences();
-    
-    if (wasUpdated) {
-        console.log('Expired events were cleaned up on page load');
+    try {
+        // Load events data first and ensure it's successful
+        await loadEventsData();
+        
+        // Verify events data is loaded
+        if (!isEventsDataReady()) {
+            console.warn('No events data loaded - deferring cleanup');
+            // Try to load preferences without cleanup first
+            loadEventPreferences();
+            return;
+        }
+        
+        console.log(`Loaded ${allEventsData.length} events from JSON`);
+        
+        // Clean up any expired events, but only if we have events data
+        const wasUpdated = cleanupExpiredEvents();
+        
+        // Load and display preferences
+        loadEventPreferences();
+        
+        if (wasUpdated) {
+            console.log('Expired events were cleaned up on page load');
+        }
+    } catch (error) {
+        console.error('Error during initialization:', error);
+        // Still try to load preferences even if events data failed
+        loadEventPreferences();
     }
 });
 
-// Enhanced periodic cleanup - check more frequently and clean up expired events
-setInterval(() => {
-    cleanupExpiredEvents();
-    loadEventPreferences();
-}, 30000); // Refresh every 30 seconds
+// Enhanced periodic cleanup - check less frequently to avoid conflicts
+let cleanupInterval;
+let lastCleanupTime = 0;
+const CLEANUP_COOLDOWN = 60000; // 1 minute cooldown between cleanups
 
-// Additional cleanup on window focus (when user returns to tab)
+function scheduleCleanup() {
+    const now = Date.now();
+    if (now - lastCleanupTime < CLEANUP_COOLDOWN) {
+        console.log('Cleanup skipped - too soon since last cleanup');
+        return;
+    }
+    
+    lastCleanupTime = now;
+    if (isEventsDataReady()) {
+        const wasUpdated = cleanupExpiredEvents();
+        if (wasUpdated) {
+            loadEventPreferences();
+        }
+    } else {
+        console.log('Cleanup skipped - events data not ready');
+    }
+}
+
+// Less aggressive cleanup - every 5 minutes instead of 30 seconds
+cleanupInterval = setInterval(scheduleCleanup, 300000); // 5 minutes
+
+// Additional cleanup on window focus (but with cooldown)
 window.addEventListener('focus', () => {
-    cleanupExpiredEvents();
-    loadEventPreferences();
+    setTimeout(scheduleCleanup, 1000); // Delay to ensure page is fully loaded
 });
