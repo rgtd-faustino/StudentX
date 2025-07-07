@@ -35,15 +35,19 @@ function findEventById(eventId) {
 // Function to remove event from cookies
 function removeEventFromCookies(eventId, type) {
     const cookieName = type === 'accepted' ? 'userEventPreferences_accepted' : 'userEventPreferences_rejected';
-    const currentCookie = getCookie(cookieName);
     
-    if (currentCookie) {
+    // Use the same cookie system as the carousel for consistency
+    let eventIds = getEssentialData(cookieName) || [];
+    
+    if (eventIds.length > 0) {
         try {
-            let eventIds = JSON.parse(currentCookie);
-            eventIds = eventIds.filter(id => id !== parseInt(eventId));
+            // Filter out the removed event ID
+            eventIds = eventIds.filter(id => parseInt(id) !== parseInt(eventId));
             
-            // Update the cookie with the filtered array
-            document.cookie = `${cookieName}=${encodeURIComponent(JSON.stringify(eventIds))};path=/;max-age=${30 * 24 * 60 * 60}`;
+            // Update the cookie using the same system as carousel
+            setEssentialData(cookieName, eventIds);
+            
+            console.log(`Removed event ${eventId} from ${type} preferences. Remaining:`, eventIds);
             
             // Notify the carousel that an event was removed so it can appear again
             notifyCarouselEventRemoved(parseInt(eventId));
@@ -618,6 +622,44 @@ function notifyCarouselEventRemoved(eventId) {
     }
     
     console.log(`Notified carousel that event ${eventId} was removed from preferences`);
+}
+
+// Essential data cookie management functions (matching carousel.js system)
+function setEssentialData(key, value, days = 365) {
+    // Use the existing cookie consent manager's setCookie method for essential cookies
+    // Default to 365 days (1 year) for essential functionality like event preferences
+    if (window.cookieConsent && typeof window.cookieConsent.setCookie === 'function') {
+        window.cookieConsent.setCookie(key, JSON.stringify(value), {
+            days: days,
+            sameSite: 'Lax',
+            secure: true
+        });
+    } else {
+        // Fallback method if consent manager isn't available
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${key}=${encodeURIComponent(JSON.stringify(value))};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+    }
+}
+
+function getEssentialData(key) {
+    // Use the existing cookie consent manager's getCookie method
+    if (window.cookieConsent && typeof window.cookieConsent.getCookie === 'function') {
+        const value = window.cookieConsent.getCookie(key);
+        return value ? JSON.parse(value) : null;
+    } else {
+        // Fallback method
+        const nameEQ = key + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) {
+                return JSON.parse(decodeURIComponent(c.substring(nameEQ.length, c.length)));
+            }
+        }
+        return null;
+    }
 }
 
 // Load preferences when page loads
