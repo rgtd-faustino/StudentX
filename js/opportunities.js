@@ -60,7 +60,7 @@ function removeEventFromCookies(eventId, type) {
             console.log(`Removed event ${eventId} from ${type} preferences. Remaining:`, eventIds);
             
             // Notify the carousel that an event was removed so it can appear again
-            notifyCarouselEventRemoved(parseInt(eventId));
+            window.refreshCarouselAfterEventRemoval();
             
             // Reload the preferences to update the display
             loadEventPreferences();
@@ -657,29 +657,6 @@ function loadEventPreferences() {
         rejected: preferences.rejected,
         hasData: preferences.hasData
     });
-}
-
-// Function to notify carousel that an event was removed and should appear again
-function notifyCarouselEventRemoved(eventId) {
-    // Dispatch a custom event that the carousel can listen to
-    const event = new CustomEvent('eventRemovedFromPreferences', {
-        detail: {
-            eventId: eventId,
-            timestamp: Date.now()
-        }
-    });
-    
-    window.dispatchEvent(event);
-    
-    // Also try to directly call carousel refresh if the function exists
-    if (typeof window.refreshCarouselItems === 'function') {
-        window.refreshCarouselItems();
-    } else if (typeof initializeCarousel === 'function') {
-        // Fallback: re-initialize the carousel
-        initializeCarousel();
-    }
-    
-    console.log(`Notified carousel that event ${eventId} was removed from preferences`);
 }
 
 // Essential data cookie management functions (matching carousel.js system)

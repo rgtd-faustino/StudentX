@@ -1201,47 +1201,8 @@ function setCurrentDay(date) {
     setEssentialData('userCurrentDay', date.toISOString());
 }
 
-function refreshCarouselItems() {
-    if (carouselEventsData.length === 0) {
-        console.warn('No events data available for refresh');
-        return;
-    }
-    
-    console.log('Refreshing carousel items after event removal...');
-    
-    createCarouselItems({ items: carouselEventsData });
-    
-    const isMobile = window.innerWidth < 600;
-    if (isMobile) {
-        setupMobileCarousel();
-    } else {
-        setupDesktopCarousel();
-    }
-    
-    console.log('Carousel items refreshed after event removal');
-}
 
-window.refreshCarouselItems = refreshCarouselItems;
 
-function findMostRecentDayWithEvents() {
-    if (!carouselEventsData || !Array.isArray(carouselEventsData) || carouselEventsData.length === 0) return null;
-    const today = new Date();
-    const daySet = new Set();
-    carouselEventsData.forEach(item => {
-        if (!item._dateValue) sortItemsByDate([item]);
-        if (!hasEventTimePassed(item) && !hasUserInteractedWithItem(item)) {
-            daySet.add(item._dateValue);
-        }
-    });
-    const sortedDays = Array.from(daySet).sort((a, b) => b - a);
-    const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
-    for (const dayValue of sortedDays) {
-        if (dayValue <= todayValue) {
-            return dayValue;
-        }
-    }
-    return null;
-}
 
 function findEarliestDayWithEvents() {
     if (!carouselEventsData || !Array.isArray(carouselEventsData) || carouselEventsData.length === 0) return null;
@@ -1281,8 +1242,22 @@ function findEarliestDayWithEvents() {
     return sortedDays[0];
 }
 
-function refreshCarouselAfterEventRemoval() {
-    if (!carouselEventsData || carouselEventsData.length === 0) return;
+async function refreshCarouselAfterEventRemoval() {
+    console.log(carouselEventsData.length +" length of the carousel events data in refresh function");
+
+    // If no events are loaded, fetch them
+    if (carouselEventsData.length === 0) {
+        try {
+            const response = await fetch('/json/events.json');
+            const data = await response.json();
+            carouselEventsData = data.items || [];
+            console.log('Fetched events in refreshCarouselAfterEventRemoval:', carouselEventsData.length);
+        } catch (error) {
+            console.error('Failed to fetch events:', error);
+            // Optionally, show an error message or fallback UI here
+            return;
+        }
+    }
     
     console.log('Starting carousel refresh after event removal...');
     
@@ -1324,11 +1299,7 @@ function refreshCarouselAfterEventRemoval() {
     }
 }
 
-// Make sure the event listener is properly set up
-window.addEventListener('eventRemovedFromPreferences', function(event) {
-    console.log('Event removal detected, refreshing carousel...');
-    refreshCarouselAfterEventRemoval();
-});
+window.refreshCarouselAfterEventRemoval = refreshCarouselAfterEventRemoval;
 
 // Also add a debug function to manually test
 window.debugCarouselRefresh = function() {
