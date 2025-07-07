@@ -1,10 +1,10 @@
 // Global variable to store all events data
-let allEventsData = [];
+let opportunitiesEventsData = [];
 let eventsDataLoaded = false;
 
 // Safety function to check if events data is ready
 function isEventsDataReady() {
-    return eventsDataLoaded && allEventsData && allEventsData.length > 0;
+    return eventsDataLoaded && opportunitiesEventsData && opportunitiesEventsData.length > 0;
 }
 
 function getCookie(name) {
@@ -25,21 +25,21 @@ async function loadEventsData() {
     try {
         const response = await fetch('/json/events.json');
         const data = await response.json();
-        allEventsData = data.items;
+        opportunitiesEventsData = data.items;
         eventsDataLoaded = true;
-        console.log(`Successfully loaded ${allEventsData.length} events`);
-        return allEventsData;
+        console.log(`Successfully loaded ${opportunitiesEventsData.length} events`);
+        return opportunitiesEventsData;
     } catch (error) {
         console.error('Error loading events data:', error);
         eventsDataLoaded = false;
-        allEventsData = [];
+        opportunitiesEventsData = [];
         return [];
     }
 }
 
 // Function to find event by ID
 function findEventById(eventId) {
-    return allEventsData.find(event => event.id === parseInt(eventId));
+    return opportunitiesEventsData.find(event => event.id === parseInt(eventId));
 }
 
 // Function to remove event from cookies
@@ -734,7 +734,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
         
-        console.log(`Loaded ${allEventsData.length} events from JSON`);
+        console.log(`Loaded ${opportunitiesEventsData.length} events from JSON`);
         
         // Clean up any expired events, but only if we have events data
         const wasUpdated = cleanupExpiredEvents();
