@@ -752,33 +752,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-// Enhanced periodic cleanup - check less frequently to avoid conflicts
-let cleanupInterval;
-let lastCleanupTime = 0;
-const CLEANUP_COOLDOWN = 60000; // 1 minute cooldown between cleanups
-
-function scheduleCleanup() {
-    const now = Date.now();
-    if (now - lastCleanupTime < CLEANUP_COOLDOWN) {
-        console.log('Cleanup skipped - too soon since last cleanup');
-        return;
-    }
-    
-    lastCleanupTime = now;
-    if (isEventsDataReady()) {
-        const wasUpdated = cleanupExpiredEvents();
-        if (wasUpdated) {
-            loadEventPreferences();
-        }
-    } else {
-        console.log('Cleanup skipped - events data not ready');
-    }
-}
-
-// Less aggressive cleanup - every 5 minutes instead of 30 seconds
-cleanupInterval = setInterval(scheduleCleanup, 300000); // 5 minutes
-
-// Additional cleanup on window focus (but with cooldown)
-window.addEventListener('focus', () => {
-    setTimeout(scheduleCleanup, 1000); // Delay to ensure page is fully loaded
-});
+// Cleanup is handled automatically:
+// - On page load (DOMContentLoaded)
+// - When parsing preferences (parseEventPreferences)
+// - When displaying events (loadEventPreferences)
+// No additional cleanup needed - events are filtered in real-time
