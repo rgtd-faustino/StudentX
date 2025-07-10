@@ -580,13 +580,6 @@
         return eventDate;
     }
 
-    // Helper function to check if event is in the future
-    function isFutureEvent(event) {
-        const now = new Date();
-        const eventDateTime = getEventDateTime(event);
-        return eventDateTime >= now;
-    }
-
     function createICSFile() {
         const timestamp = formatDateForICS(new Date());
         
@@ -623,14 +616,35 @@
             'END:VTIMEZONE'
         ].join('\r\n') + '\r\n';
 
-        // Filter and sort future events
-        const futureEvents = events
-            .filter(isFutureEvent)
-            .sort((a, b) => {
-                const dateA = getEventDateTime(a);
-                const dateB = getEventDateTime(b);
-                return dateA - dateB;
+        let futureEvents = [];
+
+        // tecnicamente isto devia estar no script do carrossel porque só vais descarregar os eventos que o utilizador der swipe accept nele
+        // no entanto como o código do ICS está aqui eu aproveitei e continuei aqui
+        if(window.innerWidth <= 600){
+            const acceptedIds = getEssentialData('userEventPreferences_accepted');
+            
+            if (acceptedIds && Array.isArray(acceptedIds)   ) {
+                futureEvents = acceptedIds
+                    .map(id => findEventById(id)) // isto faz um array novo do mesmo array para novos elementos
+                    .filter(event => event !== null) // remove resultados que sejam null
+                    .filter(event => isFutureEvent(event)) // remove todos os eventos passados
+                    .sort((a, b) => {
+                        const dateA = getEventDateTime(a);
+                        const dateB = getEventDateTime(b);
+                        return dateA - dateB;
+                });
+            }
+
+        } else{
+            futureEvents = events
+                .filter(event => isFutureEvent(event))
+                .sort((a, b) => {
+                    const dateA = getEventDateTime(a);
+                    const dateB = getEventDateTime(b);
+                    return dateA - dateB;
             });
+        }
+
 
         futureEvents.forEach(event => {
             const eventStart = getEventDateTime(event);
@@ -703,8 +717,6 @@
                 type: 'text/calendar;charset=utf-8' 
             });
             
-            // Generate filename with current date
-            const today = new Date();
             const filename = `Calendário StudentX.ics`;
             
             // Create download link

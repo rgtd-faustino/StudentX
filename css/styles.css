@@ -2821,7 +2821,7 @@ input[type="checkbox"] {
     margin-bottom: 6vw;
     margin-top: 6vw;
     padding: 0 10vw; /* Add padding to prevent title from overlapping buttons */
-    display:none;
+    /*display:none;*/
 
 }
 
@@ -2832,6 +2832,7 @@ input[type="checkbox"] {
     font-weight: 300;
     text-align: center;
     width: 100%;
+    display:none;
 }
 
 .prevWeek, .nextWeek {
@@ -2845,6 +2846,7 @@ input[type="checkbox"] {
     font-style: normal;
     font-weight: 200;
     background-color: unset;
+    display:none;
 }
 
 .prevWeek {
@@ -2868,7 +2870,24 @@ input[type="checkbox"] {
     flex-direction: column;
 }
 .downloadButton {
-    display:none;
+    /*display:none;*/
+    padding: 2vw 10vw;
+    position: relative;
+    left:unset;
+    top:unset;
+    display: flex;
+    justify-content: center;
+    margin-top: -5vw;
+    border: none;
+    border-radius: 2vw;
+    background-color: #108CEC; /* Base color */
+    color: white; /* Text color */
+    cursor: pointer;
+    box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    font-size: 4vw;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+    white-space: nowrap; /* Prevent text wrapping */
+
 }
 .day-buttons {
     display: flex;
