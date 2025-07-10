@@ -3,6 +3,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 0,
         "imageSrc": "/events/25.png",
         "altText": "Image 4 mobile",
@@ -20,6 +21,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 1,
         "imageSrc": "/events/28.png",
         "altText": "Image 1 mobile",
@@ -37,6 +39,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 2,
         "imageSrc": "/events/27.png",
         "altText": "Image 1 mobile",
@@ -54,6 +57,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 3,
         "imageSrc": "/events/26.png",
         "altText": "Image 1 mobile",
@@ -71,6 +75,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 4,
         "imageSrc": "/events/1.jpg",
         "altText": "Image 3 mobile",
@@ -88,6 +93,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 5,
         "imageSrc": "/events/2.jpg",
         "altText": "Image 1 mobile",
@@ -105,6 +111,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 6,
         "imageSrc": "/events/3.jpg",
         "altText": "Image 2 mobile",
@@ -122,6 +129,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 7,
         "imageSrc": "/events/4.jpg",
         "altText": "Image 3 mobile",
@@ -140,6 +148,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 8,
         "imageSrc": "/events/5.jpg",
         "altText": "Image 1 mobile",
@@ -157,6 +166,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 9,
         "imageSrc": "/events/6.jpg",
         "altText": "Image 1 mobile",
@@ -174,6 +184,7 @@
       {
         "day": 6,
         "month": "julho",
+        "year": 2025,
         "id": 10,
         "imageSrc": "/events/7.jpg",
         "altText": "Image 1 mobile",
@@ -191,6 +202,7 @@
         {
           "day": 6,
           "month": "julho",
+          "year": 2025,
           "id": 11,
           "imageSrc": "/events/8.jpg",
           "altText": "Image 3 mobile",
@@ -208,6 +220,7 @@
         {
           "day": 6,
           "month": "julho",
+          "year": 2025,
           "id": 12,
           "imageSrc": "/events/25.png",
           "altText": "Image 1 mobile",
@@ -225,6 +238,7 @@
         {
           "day": 6,
           "month": "julho",
+          "year": 2025,
           "id": 13,
           "imageSrc": "/events/26.png",
           "altText": "Image 2 mobile",
@@ -242,6 +256,7 @@
         {
           "day": 7,
           "month": "julho",
+          "year": 2025,
           "id": 14,
           "imageSrc": "/events/28.png",
           "altText": "Image 3 mobile",
@@ -260,6 +275,7 @@
         {
           "day": 7,
           "month": "julho",
+          "year": 2025,
           "id": 15,
           "imageSrc": "/events/27.png",
           "altText": "Image 4 mobile",
@@ -277,6 +293,7 @@
         {
           "day": 7,
           "month": "julho",
+          "year": 2025,
           "id": 16,
           "imageSrc": "/events/27.png",
           "altText": "Image 1 mobile",
@@ -294,6 +311,7 @@
         {
           "day": 7,
           "month": "julho",
+          "year": 2025,
           "id": 17,
           "imageSrc": "/events/28.png",
           "altText": "Image 1 mobile",
@@ -311,6 +329,7 @@
         {
           "day": 7,
           "month": "julho",
+          "year": 2025,
           "id": 17,
           "imageSrc": "/events/28.png",
           "altText": "Image 1 mobile",
@@ -328,6 +347,7 @@
           {
             "day": 7,
             "month": "julho",
+            "year": 2025,
             "id": 18,
             "imageSrc": "/events/29.jpg",
             "altText": "Image 1 mobile",
@@ -345,6 +365,7 @@
             {
               "day": 7,
               "month": "julho",
+              "year": 2025,
               "id": 19,
               "imageSrc": "/events/33.jpg",
               "altText": "Image 1 mobile",
@@ -362,6 +383,7 @@
               {
                 "day": 7,
                 "month": "julho",
+                "year": 2025,
                 "id": 20,
                 "imageSrc": "/events/32.jpg",
                 "altText": "Image 1 mobile",
@@ -379,6 +401,7 @@
                 {
                   "day": 7,
                   "month": "julho",
+                  "year": 2025,
                   "id": 21,
                   "imageSrc": "/events/34.jpg",
                   "altText": "Image 1 mobile",
@@ -396,6 +419,7 @@
                   {
                     "day": 8,
                     "month": "julho",
+                    "year": 2025,
                     "id": 22,
                     "imageSrc": "/events/35.jpg",
                     "altText": "Image 1 mobile",
@@ -413,6 +437,7 @@
                     {
                       "day": 8,
                       "month": "julho",
+                      "year": 2025,
                       "id": 23,
                       "imageSrc": "/events/36.jpg",
                       "altText": "Image 1 mobile",
@@ -431,6 +456,7 @@
       {
         "day": 8,
         "month": "julho",
+        "year": 2026,
         "id": 24,
         "imageSrc": "/events/26.png",
         "altText": "Image 1 mobile",

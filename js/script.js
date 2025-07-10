@@ -1,26 +1,26 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Hamburger menu functionality
+    // simbolo do hamburguer
     var hamburger = document.querySelector(".hamburger");
     const menuContent = document.querySelector('.menu-content');
 
-    // Toggle the navigation menu when hamburger is clicked
+    // adicionamos um event listener para quando seja clicado abrimos a barra de navegação
     hamburger.addEventListener("click", function(e) {
-        e.stopPropagation(); // Prevent click from bubbling to document
-                menuContent.classList.toggle('active');
+        e.stopPropagation(); // normalmente usado para menus, impede que o clique se proague para o resto do documento
+        menuContent.classList.toggle('active');
         hamburger.classList.toggle('open');
         menuContent.classList.toggle('show');
     });
 
-    // if we click outside of the navigation bar it closes
+    // se clicarmos fora da barra de navegação ela fecha
     document.addEventListener("click", function(event) {
         if (!menuContent.contains(event.target) && !hamburger.contains(event.target)) {
             closeMenu();
         }
     });
 
-    // if we click on the links of the nav bar it also closes
+    // também desliga se clicarmos num dos links
     const navLinks = menuContent.querySelectorAll('a');
-    navLinks.forEach(link => {
+    navLinks.forEach(link => { // para cada link metemos um event listener que fecha a nav bar
         link.addEventListener('click', () => {
             closeMenu();
         });
@@ -32,20 +32,21 @@ document.addEventListener("DOMContentLoaded", function() {
         menuContent.classList.remove('show');
     }
 
-    // FAQ functionality
+    // FAQ perguntas
     var questions = document.querySelectorAll(".faq-question");
     
+    // para cada pergunta metemos um event listener e quando clicadas mostramos a resposta
     questions.forEach(function(question) {
         question.addEventListener("click", function() {
-            // after the question, the next element is the response itself
-            var answer = this.nextElementSibling;
+            var answer = this.nextElementSibling; // isto apanha o próximo element irmão que será a resposta
 
-            // if the question is already showing then we'll close it, if it's not already showing then it'll be now
+            // se a pergunta já estiver a ser mostrada, fechamo-la, senão abrimo-la
             if (answer.classList.contains("show")) {
                 answer.classList.remove("show");
                 this.classList.remove("active");
 
             } else {
+                // quando abrimos uma pergunta fechamos todas as outras
                 document.querySelectorAll(".faq-answer.show").forEach(function(item) {
                     item.classList.remove("show");
                     item.previousElementSibling.classList.remove("active");
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // to show the video on the homepage we'll open the modal space and add ads 
+    // para mostrarmos o vídeo da página inicial abrimos o modal video e começamos o vídeo
     if (document.getElementById('videoModal')) {
         window.openModal = function() {
             const modal = document.getElementById('videoModal');
@@ -66,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.style.display = 'block';
             video.play();
             
-            // we show the ads on both the sides of the screen
+            // mostramos um anúncio na esquerda e outro na direita
             /*const leftAd = document.getElementById('leftAd');
             const rightAd = document.getElementById('rightAd');
             
@@ -78,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }*/
         }
         
-        // to close the modal we simply display it as none, stop and reset the video and hide the ads
+        // ao fechar o modal video escondemos o mesmo, paramos o video e metemo-lo no início
         window.closeModal = function() {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('modalVideo');
@@ -87,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
             video.pause();
             video.currentTime = 0;
             
+            // escondemos os anúncios
             /*const leftAd = document.getElementById('leftAd');
             const rightAd = document.getElementById('rightAd');
             
@@ -100,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }*/
         }
         
-        // if we click outside the modal we close it
+        // para fechar o modal basta clicar fora dele
         window.onclick = function(event) {
             const modal = document.getElementById('videoModal');
             if (event.target == modal) {
@@ -109,17 +111,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // this function serves the purpose of showing rotating texts with either the slogan or the opportunities messages
-    function startMessageRotation(containerId, messages, animationClass) {
+    // esta função roda os textos do slogan ou das oportunidades
+    function startMessageRotation(containerId, messages, animationClass) { // html container, mensagens, css class
         let currentIndex = 0;
-        const container = document.getElementById(containerId);
+        const container = document.getElementById(containerId); // container onde vamos mostrar as mensagens
         
         if (!container) return;
     
         function showNextMessage() {
             const currentElement = container.querySelector(`.${animationClass}`);
             
-            // we remove previous message with fade-out animation during 1 second
+            // removemos a mensagem anterior com um fade out de 1 segundo
             if (currentElement) {
                 currentElement.classList.add('fade-out');
                 setTimeout(() => {
@@ -127,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }, 1000);
             }
     
-            // after hiding the preivous one we'll show the next message
+            // e depois mostramos a próxima mensagem criando uma div e adicionando-a ao container
             const newElement = document.createElement('div');
             newElement.className = animationClass;
             newElement.innerHTML = messages[currentIndex];
@@ -137,17 +139,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 newElement.classList.add('active');
             }, 100);
     
-            // update the index, at the end it resets
+            // atualizamos o index para ir para a próxima mensagem na lista e usamos o mod para resetar de volta ao início
             currentIndex = (currentIndex + 1) % messages.length;
         }
     
         showNextMessage();
     
-        // shows a message each 2 seconds
+        // mostra uma mensagem nova a cada 2 segundos
         setInterval(showNextMessage, 2000);
     }
     
-    // slogans and opportunities
+    // slogans e oportunidaddes
     const sloganMessages = [
         "<span class='x-highlight'>X</span>-CEED YOUR LIMITS",
         "<span class='x-highlight'>X</span>-PLORE NEW OPPORTUNITIES",
@@ -171,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "Associações e federações de estudantes"
     ];
 
-    // call the functions on them
+    // chamamos as funções para ambas as mensagens
     if (document.getElementById('textContainerSlogan')) {
         startMessageRotation('textContainerSlogan', sloganMessages, 'animated-text-slogan');
     }
@@ -180,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
         startMessageRotation('textContainerOpportunities', opportunitiesMessages, 'animated-text-opportunities');
     }
 
-    // Initialize carousel (performMaintenanceCleanup is called automatically within carousel initialization)
+    // inicializamos o carrossel que depois vai verificar se é para telemóvel ou computador
     if (typeof initializeCarousel === 'function') {
         initializeCarousel();
     }

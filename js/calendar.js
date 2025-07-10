@@ -2,13 +2,16 @@
     const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     let events = [];
-    let selectedDay = new Date().getDate();
-    let currentDate = new Date();
+    let selectedDay = new Date(); // exemplo: Wed Jul 09 2025 15:30:00 GMT+0100
+    let currentDate = new Date(); // exemplo: Wed Jul 09 2025 15:30:00 GMT+0100
+    // retorna o ano, mês, e o primeiro dia de cada semana (domingo)
+    // ex: .getDate() retorna 9 e .getDay() retorna 3 (quarta feira pq domingo == 0).
+    // não sabemos que dia semana é o dia 9, então precisamos de saber o dia atual e o seu indíce, para chegarmos ao domingo vamos ao dia atual e subtraímos esse valor
     let currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
     const mediaQuery = window.matchMedia('(max-width: 600px)');
 
 
-    
+    // para inicializar o calendário metemos os dias da semana, as horas, os eventos, o dia mês e ano, e a quantidade de eventos no dia atual
     function init() {
         renderWeekButtons();
         renderHours();
@@ -19,52 +22,48 @@
         const actionButtonsContainer = document.createElement('div');
         actionButtonsContainer.id = 'calendarActions';
         
+        // adicionamos um botão para fazer download de todos os eventos presentes no calendário
         const downloadButton = document.createElement('button');
         downloadButton.textContent = 'Transferir Calendário';
         downloadButton.className = 'downloadButton';
         downloadButton.onclick = downloadCalendar;
-        downloadButton.title = 'Clique para transferir o calendário e poder importá-lo onde quiser.';
+        downloadButton.title = 'Clique para transferir o calendário e poder importá-lo onde quiser.'; // se ficarmos tempo extra com o rato em cima apareste isto
         
         actionButtonsContainer.appendChild(downloadButton);
         
         document.querySelector('.download-calendar').appendChild(actionButtonsContainer);
     }
 
-    // Update the renderWeekButtons function to ensure consistent structure
     function renderWeekButtons() {
         const dayButtonsContainer = document.getElementById('dayButtons');
         dayButtonsContainer.innerHTML = '';
         const today = new Date();
 
+        // para cada dia numa semana metemos o dia atual a somar com o número índice do dia da semana e metemos o nome do dia da semana
         for (let i = 0; i < 7; i++) {
+            // exemplo de new date e set dade: Sund Jul 06 2025
             const day = new Date(currentWeekStart);
             day.setDate(currentWeekStart.getDate() + i);
             const button = document.createElement('button');
             
-            // Use semantic HTML structure with clear class names
+            // não esquecer que o get day retorna o índice do dia da semana e não o dia em si do mês
+            // metemos a classe para o day-number porque depois iremos usá-la para sabermos o dia novo para usar os eventos dele
             button.innerHTML = `<span class="day-number">${day.getDate()}</span><br><span class="day-name">${diasDaSemana[day.getDay()]}</span>`;
-
             
             button.classList.add('day-button');
             
-            if (day.getMonth() !== currentDate.getMonth()) {
-                button.classList.add('other-month');
-            }
-            
-            // Check if this day is today
-            if (day.getDate() === today.getDate() &&
-                day.getMonth() === today.getMonth() &&
-                day.getFullYear() === today.getFullYear()) {
+            // se o dia no loop for o dia atual então será o dia "ativo" do calendário, ou seja, é o dia que vai estar highlighted
+            if (day.getDate() === today.getDate() && day.getMonth() === today.getMonth() && day.getFullYear() === today.getFullYear()) {
                 button.classList.add('active');
-                selectedDay = day.getDate();
+                // passa a ser o dia selecionado e mostramos os eventos desse mesmo dia na função render events, temos de usar é depois getDate()
+                selectedDay = day;
             }
             
             button.onclick = () => {
-                // Remove 'active' class from all buttons
+                // quando clicamos num botão removemos o highlight dos outros dias e metemos no botão clicado
                 document.querySelectorAll('.day-button').forEach(btn => btn.classList.remove('active'));
-                // Add 'active' class to the clicked button
                 button.classList.add('active');
-                selectDay(day.getDate());
+                selectDay(day); // atualizamos o selected day para a nova data (depois metemos o dia exato na função)
             };
             
             dayButtonsContainer.appendChild(button);
@@ -83,15 +82,16 @@
         }
     }
     
-
-
+    // para apanharmos os eventos usamos um fetch para o ficheiro json e apanhamos as informações relevantes (não precisamos do id do evento)
     function fetchEvents() {
         fetch('/json/events.json')
             .then(response => response.json())
             .then(data => {
-                events = data.items.map(event => ({
+                events = data.items.map(event => ({ // atualizamos a variável que contém todos os eventos
                     day: event.day,
                     month: event.month,
+                    year: event.year,
+                    id: event.id,
                     startTime: event.startTime,
                     endTime: event.endTime,
                     descriptionTitle: event.descriptionTitle,
@@ -106,8 +106,8 @@
                     colorOfEvent: event.colorOfEvent,
                     moreInfoText: event.moreInfoText
                 }));
-                renderEvents();
-                updateOpportunityTitle(); // Add this line
+                renderEvents(); // agora que temos os eventos mostramo-los
+                updateOpportunityTitle(); // atualizamos o título na página html para conter o número de eventos disponíveis hoje
             })
             .catch(error => {
                 console.error('Erro ao carregar eventos:', error);
@@ -118,9 +118,9 @@
     function selectDay(day) {
         selectedDay = day;
         document.querySelectorAll('.day-button').forEach(button => {
-            // Get just the day number from the button's content
+            // apanhamos o day number na span do button e passamos para int para mostrarmos os eventos desse dia após atualizar a variável selectedDay
             const dayNumber = parseInt(button.querySelector('.day-number').textContent);
-            button.classList.toggle('active', dayNumber === day);
+            button.classList.toggle('active', dayNumber === day.getDate());
         });
         renderEvents();
     }
@@ -129,17 +129,21 @@
         const eventsContainer = document.getElementById('events');
         eventsContainer.innerHTML = '';
     
+        // apanhamos o texto palavra do mês do primeiro dia da semana
         const currentMonth = meses[currentWeekStart.getMonth()].toLowerCase();
         
+        // filtramos todos os eventos para que tenham apenas o dia selecionado pelo utilizador e que tenham o mesmo mês
         const dayEvents = events.filter(event =>
-            event.day === selectedDay &&
-            event.month.toLowerCase() === currentMonth
+            event.day === selectedDay.getDate() &&
+            event.month === currentMonth &&
+            event.year === selectedDay.getFullYear()
         );
     
+        // agora apanhamso os tempos de início e fim de cada eventos para calcular a duração dos mesmos para os ordenarmos
         const sortedEvents = dayEvents.sort((a, b) => {
             const timeA = convertTimeToMinutes(a.startTime);
             const timeB = convertTimeToMinutes(b.startTime);
-            return timeA - timeB;
+            return timeA - timeB; // o evento que for o primeiro no dia
         });
     
         const columns = [];
@@ -149,10 +153,12 @@
         modalContainer.style.display = 'none';
         document.body.appendChild(modalContainer);
     
+        // agora para todos os eventos já ordenados vamos metê-los em cada coluna e preencher o espaço do evento desde que começou até que acabou
         sortedEvents.forEach((event) => {
             const eventStart = convertTimeToMinutes(event.startTime);
             const eventEnd = convertTimeToMinutes(event.endTime);
             
+            // para cada evento vamos adicionado às colunas, se a coluna já estiver ocupada avançamos para a próxima
             let columnIndex = 0;
             while (isTimeSlotOccupied(columns, columnIndex, eventStart, eventEnd)) {
                 columnIndex++;
@@ -161,6 +167,7 @@
             if (!columns[columnIndex]) {
                 columns[columnIndex] = [];
             }
+            // push mete o intervalo de tempo do evento no fim do array para ficar ordenado de acordo com a lista que já foi ordenada
             columns[columnIndex].push({ start: eventStart, end: eventEnd });
     
             const eventDiv = document.createElement('div');
@@ -182,13 +189,16 @@
             eventsContainer.appendChild(eventDiv);
         });
     
+        // se existirem eventos no dia selecionado pelo utilizador damos scroll para o primeiro para haver sempre algo a mostrar no calendário
         if (sortedEvents.length > 0) {
             scrollToFirstEvent(sortedEvents[0]);
         } else {
+            // senão vamos para o ínicio do dia
             document.querySelector('.calendar-container').scrollTo(0, 0);
         }
     }
     
+    // para eventos mais pequenos onde não conseguimos mostrar todas as informações fazemos um botão que deixe o utilizador expandi-lo
     function createExpandButton(event) {
         const expandButton = document.createElement('button');
         expandButton.classList.add('expand-event-details');
@@ -196,10 +206,11 @@
         img.src = '/images/plus.png';
         img.alt = 'Expand event details';
         expandButton.appendChild(img);
-        expandButton.onclick = () => showExpandedView(event);
+        expandButton.onclick = () => showExpandedView(event); // função que expande o evento
         return expandButton;
     }
     
+    // mostra o calendário para telmóvel e computador, mas como só já mostramos no computador só nos importa este
     function desktopView(event, eventDiv, condensedView, style) {
         const eventHeight = parseInt(style.height);
         
@@ -209,7 +220,6 @@
             condensedView.style.flexDirection = 'column';
             condensedView.style.height = '100%';
             
-            // Create the base content container
             const baseContentDiv = document.createElement('div');
             baseContentDiv.innerHTML = `
                 <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
@@ -219,11 +229,15 @@
             `;
             condensedView.appendChild(baseContentDiv);
     
+            // se o evento for muito grande adicionamos um pequeno resumo sobre o evento
             if (eventHeight >= 30 && event.moreInfoText) {
                 addTextContainer(event, condensedView, baseContentDiv);
-            } else {
-                addFooterContent(event, condensedView);
+
+            } else { // senão só adicionamos o resto das informações normalmente /porque o resumo encontra-se no meio das informações evento)
+                const footerDiv = createFooterContent(event);
+                condensedView.appendChild(footerDiv);
             }
+
         } else {
             eventDiv.appendChild(createExpandButton(event));
             const eventImage = document.createElement('img');
@@ -234,7 +248,7 @@
         }
     }
 
-    
+    // quando o evento é demasiado grande e preenche muito espaço fazio no calendário decidimos preenchê-lo com um pequeno texto resumo sobre o evento
     function addTextContainer(event, condensedView, baseContentDiv) {
         const textContainer = document.createElement('div');
         textContainer.style.cssText = `
@@ -292,13 +306,10 @@
         `;
         return footerDiv;
     }
-    
-    function addFooterContent(event, condensedView) {
-        const footerDiv = createFooterContent(event);
-        condensedView.appendChild(footerDiv);
-    }
+
     
     function handleTextOverflow(textWrapper, textElement, baseContentDiv, footerDiv, condensedView, textContainer) {
+        // usamos request animation frame para esperar que a página carregue inteiramente antes da mudarmos
         requestAnimationFrame(() => {
             const containerHeight = condensedView.offsetHeight;
             const baseContentHeight = baseContentDiv.offsetHeight;
@@ -319,25 +330,27 @@
             }
         });
     }
-    // Helper function to convert time string to minutes since midnight
+
+    // apanhamos individualmente o número das horas e minutos e passamos tudo para minutos
     function convertTimeToMinutes(timeString) {
         const [hours, minutes] = timeString.split(':').map(Number);
         return hours * 60 + minutes;
     }
     
-    // Helper function to check if a time slot is occupied in a column
+    // checka se a coluna está ocupada desde o ínicio até ao fim de um determinado evento
     function isTimeSlotOccupied(columns, columnIndex, eventStart, eventEnd) {
-        if (!columns[columnIndex]) {
+        if (!columns[columnIndex]) { // se não tiver nada é porque está vazia
             return false;
         }
         
+        // se tiver alguma coisa pode ser que não tenha no tempo específico do evento parâmetro
+        // função some retorna true quando encontrar um elemento que cumpra uma condição e falso otherwise
         return columns[columnIndex].some(slot => {
-            // Check if there's any overlap
+            // então vemos se há overlap
             return !(eventEnd <= slot.start || eventStart >= slot.end);
         });
     }
     
-
     function showExpandedView(event) {
         const modalContainer = document.getElementById('eventModal');
         modalContainer.innerHTML = `
@@ -375,18 +388,17 @@
         const endHour = parseInt(event.endTime.split(':')[0]);
         const endMinute = parseInt(event.endTime.split(':')[1]);
 
-        // Determine the hour height based on screen width
+        // dependendo se era telemóvel ou computador o evento teria tamanhos diferentes baseado nas horas
         const hourHeight = window.innerWidth <= 600
             ? 16.2 
             : 13.1;  
 
-        // Correct minute conversion based on the current hour height
         const minuteHeight = hourHeight / 60;
 
-        // Calculate the top position with 6-hour offset
+        // começamos no ínicio das horas que estabelecemos (começa a partir das 6:00)
         const top = ((startHour - 6) * hourHeight) + (startMinute * minuteHeight);
 
-        // Calculate the height of the event (no offset needed for duration)
+        // e agora calculamos o tamanho do evento
         const endTop = ((endHour - 6) * hourHeight) + (endMinute * minuteHeight);
         const height = endTop - top;
 
@@ -396,27 +408,24 @@
         };
     }
 
-
+    // para darmos scroll até ao primeiro exemplo apanhamos o intervalo de tempo do primeiro evento (como a lista é ordenada é o mais recente)
     function scrollToFirstEvent(firstEvent) {
         const startHour = parseInt(firstEvent.startTime.split(':')[0]);
         const startMinute = parseInt(firstEvent.startTime.split(':')[1]);
         
-        // Use the same hourHeight calculation as getEventStyle for consistency
+        // quando o calendário estava disponível para o telemóvel tinhamos de ter em conta o tamanho de cada hora no html
         const hourHeight = window.innerWidth < 600 
             ? 16.2 
             : 13.1;     
         
         const minuteHeight = hourHeight / 60;
         
-        // Calculate position in vw units
         const scrollPosition = ((startHour - 6) * hourHeight) + (startMinute * minuteHeight);
         
         const scrollContainer = document.querySelector('.calendar-container');
-        
 
-        let offset = window.innerWidth <= 600 ? 5 : 2;
+        let offset = window.innerWidth <= 600 ? 5 : 2; // dependendo se era telemóvel ou não
         
-        // Convert the final scroll position from vw to pixels for scrollTop
         const scrollPositionInPixels = (scrollPosition - offset) * (window.innerWidth / 100);
         scrollContainer.scrollTop = Math.max(0, scrollPositionInPixels);
     }
@@ -437,15 +446,13 @@
             return `${meses[date.getMonth()]} ${date.getFullYear()}`;
         };
     
-        let dateRangeText = `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+        let dateRangeText;
     
-        if (weekStart.getMonth() !== weekEnd.getMonth()) {
-            dateRangeText = `${formatDate(weekStart)} ${meses[weekStart.getMonth()]} - ${formatDate(weekEnd)} ${meses[weekEnd.getMonth()]}`;
-        }
-    
+        // se o ano for diferente temos do atualizar
         if (weekStart.getFullYear() !== weekEnd.getFullYear()) {
-            dateRangeText = `${formatDate(weekStart)} ${meses[weekStart.getMonth()]} ${weekStart.getFullYear()} - ${formatDate(weekEnd)} ${meses[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`;
+            dateRangeText = `${formatDate(weekStart)} - ${formatDate(weekEnd)} ${formatMonthYear(weekEnd)}`;
         } else {
+            // mostramos sempre o mês e ano da última semana
             dateRangeText = `${formatDate(weekStart)} - ${formatDate(weekEnd)} ${formatMonthYear(weekEnd)}`;
         }
     
@@ -461,8 +468,6 @@
         currentWeekStart.setDate(currentWeekStart.getDate() - 7);
         updateCalendar();
     }
-
-
     
     function updateCalendar() {
         renderWeekButtons();
@@ -470,30 +475,34 @@
         renderEvents();
         console.debug(currentDate.getFullYear());
     }
+
+    // função que atualiza o número de eventos hoje no título do calendário
+    function updateOpportunityTitle() {
+        const opportunityTitles = document.querySelectorAll('.opportunityTitle');
+        const eventCount = countTodayEvents();
+        const pluralSuffix = eventCount === 1 ? '' : 's'; // evento ou eventos, se é plural ou não dependendo da quantidade dos mesmos
+        const content = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
     
+        opportunityTitles.forEach(title => {
+            title.innerHTML = content;
+        });
+    }
+    
+
     function countTodayEvents() {
         const today = new Date();
         const todayDay = today.getDate();
-        const todayMonth = meses[today.getMonth()].toLowerCase();
+        const todayMonth = meses[today.getMonth()].toLowerCase(); // lower case porque no JSON está tudo em lower case
     
+        // apanhamos apenas os eventos que sejam de hoje e que combinem também com o mês de hoje e ano
         const todayEvents = events.filter(event => 
-            event.day === todayDay && 
-            event.month.toLowerCase() === todayMonth
+            event.day === todayDay && event.month === todayMonth && event.year === today.getFullYear()
         );
     
         return todayEvents.length;
     }
 
-    function updateOpportunityTitle() {
-        const opportunityTitles = document.querySelectorAll('.opportunityTitle'); // Select all elements with the class
-        const eventCount = countTodayEvents();
-        const pluralSuffix = eventCount === 1 ? '' : 's';
-        const content = `<strong>Hoje</strong> tens <strong>${eventCount} Oportunidade${pluralSuffix}</strong>`;
-    
-        opportunityTitles.forEach(title => {
-            title.innerHTML = content; // Update each element
-        });
-    }
+
 
 
 
@@ -541,32 +550,14 @@
             .replace(/\.\d{3}/, '');
     }
 
-    // Generate unique identifier for events
-    function generateUID() {
-        return 'event-' + Math.random().toString(36).substr(2, 9) + 
-            '-' + Date.now() + '@studentx.com';
-    }
-
-    // Create timestamp for calendar creation
-    function getCurrentTimestamp() {
-        return formatDateForICS(new Date());
-    }
-
-    // Helper function to get event datetime
     function getEventDateTime(event) {
         const monthIndex = meses.findIndex(m => 
             m.toLowerCase() === event.month.toLowerCase()
         );
         
-        let eventYear = currentDate.getFullYear();
-        const currentMonth = currentDate.getMonth();
-        if (monthIndex < currentMonth) {
-            eventYear++; // Event is in next year
-        }
-        
         const [startHour, startMinute] = event.startTime.split(':');
         const eventDate = new Date(
-            eventYear,
+            event.year,
             monthIndex,
             event.day,
             parseInt(startHour),
@@ -584,7 +575,7 @@
     }
 
     function createICSFile() {
-        const timestamp = getCurrentTimestamp();
+        const timestamp = formatDateForICS(new Date());
         let icsContent = [
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
@@ -623,7 +614,7 @@
                 'Mais informações: ' + event.moreInfoLink
             ].filter(Boolean).join('\n'));
 
-            const uid = generateUID();
+            const uid = event.id; // usamos o id que já temos do evento
 
             const eventBlock = [
                 'BEGIN:VEVENT',
@@ -686,7 +677,7 @@
             }, 100);
         } catch (error) {
             console.error('Error generating calendar file:', error);
-            alert('Ocorreu um erro ao gerar o calendário. Por favor, tente novamente.');
+            alert('Ocorreu um erro ao gerar o calendário. Por favor, dê refresh ao website e tente novamente.');
         }
     }
     
