@@ -521,26 +521,26 @@
     function escapeICSText(text) {
         if (!text) return '';
         return text
-            .replace(/[,;\\]/g, '\\$&')
-            .replace(/\n/g, '\\n')  // Convert actual line breaks to ICS format
-            .replace(/\r/g, '')
-            .split('').join('');
+            .replace(/\\/g, '\\\\')    // Escape backslashes first
+            .replace(/;/g, '\\;')      // Escape semicolons
+            .replace(/,/g, '\\,')      // Escape commas
+            .replace(/\r?\n/g, '\\n')  // Convert line breaks to ICS format
+            .replace(/\r/g, '');       // Remove carriage returns
     }
 
     // Helper function to format text for description
     function formatDescriptionText(text) {
         if (!text) return '';
         
-        // First, convert literal "\n" strings to actual line breaks
-        // Replace single \n with double \n for more spacing
-        let formattedText = text.replace(/\\n/g, '\n\n');
+        // Convert literal "\n" strings to actual line breaks
+        let formattedText = text.replace(/\\n/g, '\n');
         
-        // Then format the paragraphs
+        // Clean up the text
         return formattedText
-            .split('\n')  // Split into lines
-            .map(line => line.trim())  // Trim each line
-            .filter(line => line)  // Remove empty lines
-            .join('\n\n');  // Join with double line breaks
+            .split('\n')
+            .map(line => line.trim())
+            .filter(line => line)
+            .join('\n\n');
     }
 
     // Helper function to format date-time for ICS
@@ -548,6 +548,17 @@
         return date.toISOString()
             .replace(/[-:]/g, '')
             .replace(/\.\d{3}/, '');
+    }
+
+    function formatLocalDateForICS(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hour = String(date.getHours()).padStart(2, '0');
+        const minute = String(date.getMinutes()).padStart(2, '0');
+        const second = String(date.getSeconds()).padStart(2, '0');
+        
+        return `${year}${month}${day}T${hour}${minute}${second}`;
     }
 
     function getEventDateTime(event) {
@@ -576,6 +587,8 @@
 
     function createICSFile() {
         const timestamp = formatDateForICS(new Date());
+        
+        // Fixed VCALENDAR header without DTSTAMP
         let icsContent = [
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
@@ -584,8 +597,28 @@
             'METHOD:PUBLISH',
             'X-WR-CALNAME:StudentX Calendar',
             'X-WR-TIMEZONE:Europe/Lisbon',
-            'X-WR-CALDESC:Calendário de Eventos StudentX',
-            `DTSTAMP:${timestamp}`
+            'X-WR-CALDESC:Calendário de Eventos StudentX'
+        ].join('\r\n') + '\r\n';
+
+        // Add timezone definition for better compatibility
+        icsContent += [
+            'BEGIN:VTIMEZONE',
+            'TZID:Europe/Lisbon',
+            'BEGIN:STANDARD',
+            'DTSTART:20071028T020000',
+            'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU',
+            'TZNAME:WET',
+            'TZOFFSETFROM:+0100',
+            'TZOFFSETTO:+0000',
+            'END:STANDARD',
+            'BEGIN:DAYLIGHT',
+            'DTSTART:20070325T010000',
+            'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU',
+            'TZNAME:WEST',
+            'TZOFFSETFROM:+0000',
+            'TZOFFSETTO:+0100',
+            'END:DAYLIGHT',
+            'END:VTIMEZONE'
         ].join('\r\n') + '\r\n';
 
         // Filter and sort future events
@@ -604,38 +637,43 @@
             const [endHour, endMinute] = event.endTime.split(':');
             eventEnd.setHours(parseInt(endHour), parseInt(endMinute));
 
-            // First format the description with proper line breaks
-            let description = formatDescriptionText([
-                event.descriptionSubtitle,
+            // Format description with proper structure
+            let descriptionParts = [
+                event.descriptionSubtitle || '',
                 '',
-                'Local: ' + event.oppPlaceSubtitle,
-                event.moreInfoText ? 'Informação Adicional: ' + event.moreInfoText : '',
-                '',
-                'Mais informações: ' + event.moreInfoLink
-            ].filter(Boolean).join('\n'));
+                `Local: ${event.oppPlaceSubtitle || ''}`,
+            ];
 
-            const uid = event.id; // usamos o id que já temos do evento
+            if (event.moreInfoText) {
+                descriptionParts.push('', `Informação Adicional: ${event.moreInfoText}`);
+            }
+
+            descriptionParts.push('', `Mais informações: ${event.moreInfoLink || ''}`);
+
+            const description = formatDescriptionText(descriptionParts.filter(Boolean).join('\n'));
+
+            // Generate unique UID if not available
+            const uid = event.id || `event-${event.day}-${event.month}-${event.year}-${event.startTime.replace(':', '')}-${Date.now()}`;
+
+            // Use local timezone format
+            const eventStartLocal = formatLocalDateForICS(eventStart);
+            const eventEndLocal = formatLocalDateForICS(eventEnd);
 
             const eventBlock = [
                 'BEGIN:VEVENT',
-                `UID:${uid}`,
+                `UID:${uid}@studentx.pt`,
                 `DTSTAMP:${timestamp}`,
-                `DTSTART:${formatDateForICS(eventStart)}`,
-                `DTEND:${formatDateForICS(eventEnd)}`,
-                `SUMMARY:${escapeICSText(event.descriptionTitle)}`,
+                `DTSTART;TZID=Europe/Lisbon:${eventStartLocal}`,
+                `DTEND;TZID=Europe/Lisbon:${eventEndLocal}`,
+                `SUMMARY:${escapeICSText(event.descriptionTitle || '')}`,
                 `DESCRIPTION:${escapeICSText(description)}`,
-                `LOCATION:${escapeICSText(event.oppPlaceTitle)}`,
+                `LOCATION:${escapeICSText(event.oppPlaceTitle || '')}`,
                 'CATEGORIES:StudentX',
-                `URL:${escapeICSText(event.moreInfoLink)}`,
-                `STATUS:CONFIRMED`,
-                `SEQUENCE:0`,
+                `URL:${escapeICSText(event.moreInfoLink || '')}`,
+                'STATUS:CONFIRMED',
+                'SEQUENCE:0',
                 `CREATED:${timestamp}`,
                 `LAST-MODIFIED:${timestamp}`,
-                // Add color support for multiple calendar clients
-                `X-APPLE-CALENDAR-COLOR:${event.colorOfEvent}`,
-                `COLOR:${event.colorOfEvent}`,  // Generic color property
-                `X-MICROSOFT-CDO-BUSYSTATUS:BUSY`,  // For Outlook
-                `X-GOOGLE-CALENDAR-COLOR:${event.colorOfEvent}`,  // For Google Calendar
                 'TRANSP:OPAQUE',
                 'END:VEVENT'
             ].join('\r\n') + '\r\n';
@@ -648,33 +686,43 @@
     }
 
     // Download function with error handling
-    function downloadCalendar() {
+   function downloadCalendar() {
         try {
             const icsContent = createICSFile();
             
+            // Check if there are any events to export
             if (!icsContent.includes('BEGIN:VEVENT')) {
                 alert('Não existem eventos futuros para exportar.');
                 return;
             }
             
+            // Create blob with proper MIME type
             const blob = new Blob([icsContent], { 
-                type: 'text/calendar;charset=utf-8;method=PUBLISH' 
+                type: 'text/calendar;charset=utf-8' 
             });
             
+            // Generate filename with current date
             const today = new Date();
-            const filename = `calendario-studentx-${today.getFullYear()}${(today.getMonth()+1).toString().padStart(2, '0')}.ics`;
+            const filename = `Calendário StudentX.ics`;
             
+            // Create download link
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = filename;
             link.style.display = 'none';
+            
+            // Trigger download
             document.body.appendChild(link);
             link.click();
             
+            // Clean up
             setTimeout(() => {
                 URL.revokeObjectURL(link.href);
                 document.body.removeChild(link);
             }, 100);
+            
+            console.log('Calendar downloaded successfully');
+            
         } catch (error) {
             console.error('Error generating calendar file:', error);
             alert('Ocorreu um erro ao gerar o calendário. Por favor, dê refresh ao website e tente novamente.');
