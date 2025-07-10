@@ -461,18 +461,20 @@
     
     function nextWeek() {
         currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-        updateCalendar();
+        updateCalendar(false);
     }
     
     function prevWeek() {
         currentWeekStart.setDate(currentWeekStart.getDate() - 7);
-        updateCalendar();
+        updateCalendar(false);
     }
     
-    function updateCalendar() {
+    // apenas damos render dos eventos quando o utilizador clicar num botão de dia da semana
+    function updateCalendar(renderEvents) {
         renderWeekButtons();
         updateMonthYear();
-        renderEvents();
+        if(renderEvents)
+            renderEvents();
         console.debug(currentDate.getFullYear());
     }
 
