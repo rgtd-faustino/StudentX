@@ -348,7 +348,7 @@ function setupMobileCarousel() {
         imageContainer.className = 'no-more-events-image-container';
 
         const img = document.createElement('img');
-        img.src = 'images/nextDay.png';
+        img.src = 'images/nextDay.webp';
         img.alt = 'Não há mais eventos para o dia!';
         img.id = 'nextDay';
         img.className = 'no-more-events-image';

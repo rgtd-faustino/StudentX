@@ -261,7 +261,7 @@ function createEventCard(event, type) {
     const expandButton = document.createElement('button');
     expandButton.classList.add('expand-event-details');
     const img = document.createElement('img');
-    img.src = '/images/plus.png';
+    img.src = '/images/plus.webp';
     img.alt = 'Expand event details';
     expandButton.appendChild(img);
     expandButton.onclick = () => showExpandedView(event);
