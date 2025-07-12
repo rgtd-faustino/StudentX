@@ -1,5 +1,6 @@
 let carouselEventsData = [];
 const isMobile = window.innerWidth < 600;
+let areInstructionsShowing = false;
 
 function initializeCarousel() {
     const itemGroup = document.querySelector('.item-group-mobile');
@@ -463,7 +464,7 @@ function setupMobileCarousel() {
     });
    
     function handleTouchStart(e) {
-        if (isSwipeLocked) return;
+        if (isSwipeLocked || areInstructionsShowing) return; // Added areInstructionsShowing check
         
         if (animationRequest) {
             cancelAnimationFrame(animationRequest);
@@ -485,7 +486,7 @@ function setupMobileCarousel() {
     }
    
     function handleTouchMove(e) {
-        if (!startX || !isTouchActive || !currentItem) return;
+        if (!startX || !isTouchActive || !currentItem || areInstructionsShowing) return; // Added areInstructionsShowing check
         
         moveX = e.touches[0].clientX;
         const moveY = e.touches[0].clientY;
@@ -564,7 +565,7 @@ function setupMobileCarousel() {
     }
     
     function handleTouchEnd(e) {
-        if (!isTouchActive) return;
+        if (!isTouchActive || areInstructionsShowing) return; // Added areInstructionsShowing check
         
         const item = currentItem;
         const leftInd = leftIndicator;
@@ -665,6 +666,7 @@ function setupMobileCarousel() {
             }, 300);
         }
     }
+
 
     function handleNoMoreEventsCardSwipe() {
         const nextDay = findNextDayWithEvents(currentDay);
@@ -889,18 +891,19 @@ function setupMobileCarousel() {
 
 function addSwipeInstructions() {
     const firstCard = document.querySelector('.item-container-mobile:not(.no-more-events-card)');
-    const noMoreEventsCard = document.querySelector('.no-more-events-card');
     
     if (firstCard) {
+        areInstructionsShowing = true; // Set flag to disable swiping
+        
         const instructions = document.createElement('div');
         instructions.className = 'swipe-instructions';
         instructions.innerHTML = `
             <h3>Dá Swipe para escolher</h3>
-            <p class="instruction-right">
+            <p class="instruction-right" style="font-size:4.2vw;">
                 <i class="fa fa-check instruction-icon"></i>
                 Dá Swipe para a DIREITA para ACEITAR
             </p>
-            <p class="instruction-left">
+            <p class="instruction-left" style="font-size:4.2vw;">
                 <i class="fa fa-times instruction-icon"></i>
                 Dá Swipe para a ESQUERDA para RECUSAR
             </p>
@@ -913,6 +916,7 @@ function addSwipeInstructions() {
             const gotItBtn = document.getElementById('got-it-btn');
             if (gotItBtn) {
                 gotItBtn.addEventListener('click', () => {
+                    areInstructionsShowing = false; // Enable swiping when button is clicked
                     instructions.style.opacity = '0';
                     setTimeout(() => {
                         instructions.remove();
@@ -920,8 +924,7 @@ function addSwipeInstructions() {
                 });
             }
         }, 0);
-    } 
-
+    }
 }
 
 function setEssentialData(key, value, days = 365) {
