@@ -64,26 +64,9 @@ function removeEventFromCookies(eventId, type) {
 
 function isFutureEvent(event) {
     const now = new Date();
-    const eventDateTime = getEventDateTime(event);
-    return eventDateTime >= now;
-}
-
-function getEventDateTime(event) {
-    const startTime = event.startTime;
-    const year = event.year;
-    const month = event.month;
-    const day = event.day;
-    
-    const [startHour, startMinute] = startTime.split(':');
-    const eventDate = new Date(
-        year,
-        month - 1,
-        day,
-        parseInt(startHour),
-        parseInt(startMinute)
-    );
-    
-    return eventDate;
+    const [endHour, endMinute] = event.endTime.split(':').map(Number);
+    const eventEnd = new Date(event.year, event.month - 1, event.day, endHour, endMinute);
+    return eventEnd >= now;
 }
 
 // Function to clean up expired events from cookies

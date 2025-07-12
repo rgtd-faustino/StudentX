@@ -973,7 +973,7 @@ function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     const eventId = item.id;
     
-    if (!isNaN(eventId) && !acceptedItems.includes(eventId)) {
+    if (!acceptedItems.includes(eventId)) {
         acceptedItems.push(eventId);
         setEssentialData('userEventPreferences_accepted', acceptedItems);
     }
@@ -984,7 +984,7 @@ function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
     const eventId = item.id;
     
-    if (!isNaN(eventId) && !rejectedItems.includes(eventId)) {
+    if (!rejectedItems.includes(eventId)) {
         rejectedItems.push(eventId);
         setEssentialData('userEventPreferences_rejected', rejectedItems);
     }
