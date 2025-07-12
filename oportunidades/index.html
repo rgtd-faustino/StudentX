@@ -151,11 +151,22 @@
                 
                 oppCountElement.textContent = data.items.length;
             }
+
+            
+        function isFutureEvent(event) {
+            const now = new Date();
+            const [endHour, endMinute] = event.endTime.split(':').map(Number);
+            const eventEnd = new Date(event.year, event.month - 1, event.day, endHour, endMinute);
+            return eventEnd >= now;
+        }
            
-            fetch('/json/events.json')
-                .then(response => response.json())
-                .then(data => createEventGrid(data))
-                .catch(error => console.error('Error loading event data:', error));
+        fetch('/json/events.json')
+            .then(response => response.json())
+            .then(data => {
+                const futureItems = data.items.filter(isFutureEvent);
+                createEventGrid({ items: futureItems });
+            })
+            .catch(error => console.error('Error loading event data:', error));
         });
     </script>
 
