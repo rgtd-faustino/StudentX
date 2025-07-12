@@ -1906,7 +1906,9 @@ input[type="checkbox"] {
     }
 
 
-
+    #calendario-title{
+        display: none;
+    }
 
 
 

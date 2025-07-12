@@ -594,6 +594,9 @@ input[type="checkbox"] {
         
     }
 
+    #calendario-title{
+        display: none;
+    }
 
     #opportunities-item-pc{
         display: none;

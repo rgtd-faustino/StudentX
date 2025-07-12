@@ -74,6 +74,7 @@ p {
     width: 90%;
 }
 
+
 nav {
     position: absolute;
     top: 1.5vw;
@@ -140,36 +141,6 @@ nav {
     font-size: 1.1vw;
 }
 
-#opportunities-item-mobile{
-    display: none;
-}
-
-
-.opportunityTitleMobile{
-    font-size: 2.5vw;
-    margin-left:5vw;
-    position:relative;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 200;
-    margin-bottom:4vw;
-    text-align: left;
-    display:none;
-}
-
-
-.opportunityTitlePC{
-    font-size: 2.5vw;
-    margin-left:5vw;
-    position:relative;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 200;
-    margin-bottom:4vw;
-    text-align: left;
-}
-
-
 .contact-button:hover {
     background-color: #0056b3;
 }
@@ -219,6 +190,12 @@ nav {
     box-shadow: 0 0 1vw rgba(0, 0, 0, 0.4); /* Added box shadow */
 
   }
+
+
+
+
+
+
 
 
 
@@ -509,7 +486,9 @@ input[type="checkbox"] {
         display: block;
     }
 
-
+    #calendario-title{
+        display: none;
+    }
 
     body{
         margin: 0;
@@ -743,14 +722,6 @@ input[type="checkbox"] {
         margin: 0; /* Remove auto margin */
         white-space: nowrap;
 
-    }
-
-    
-    #opportunities-item-pc{
-        display: none;
-    }
-    #opportunities-item-mobile{
-        display: block;
     }
 
 

@@ -901,7 +901,6 @@ document.addEventListener('DOMContentLoaded', () => {
 window.cookieConsent = cookieConsent;
 window.showCookieBanner = function() {
     cookieConsent.showBanner();
-    cookieConsent.expandBanner();
     return false;
 };
 

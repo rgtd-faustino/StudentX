@@ -192,6 +192,9 @@ nav {
 
 
 
+
+
+
   .footer-image-container {
     position: relative;
 }
@@ -458,9 +461,7 @@ input[type="checkbox"] {
     text-align: center;
     margin-top: 1vw;
 }
-#opportunities-item-mobile{
-    display: none;
-}
+
 
 
 .opportunityTitleMobile{
@@ -485,15 +486,6 @@ input[type="checkbox"] {
     font-weight: 200;
     margin-bottom:4vw;
     text-align: left;
-}
-
-
-    
-#opportunities-item-pc{
-    display: none;
-}
-#opportunities-item-mobile{
-    display: block;
 }
 
 
@@ -579,7 +571,9 @@ display:none;
     }
 
 
-
+    #calendario-title{
+        display: none;
+    }
 
     .container {
         width: 85%;
