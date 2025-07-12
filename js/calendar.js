@@ -1,5 +1,4 @@
-
-    const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     let events = [];
     let selectedDay = new Date(); // exemplo: Wed Jul 09 2025 15:30:00 GMT+0100
@@ -336,8 +335,28 @@
 
     function isFutureEvent(event) {
         const now = new Date();
-        const eventDateTime = getEventDateTime(event);
-        return eventDateTime >= now;
+        const [endHour, endMinute] = event.endTime.split(':').map(Number);
+        const eventEnd = new Date(event.year, event.month - 1, event.day, endHour, endMinute);
+        return eventEnd >= now;
+    }
+
+    
+    function getEventDateTime(event) {
+        const startTime = event.startTime;
+        const year = event.year;
+        const month = event.month;
+        const day = event.day;
+        
+        const [startHour, startMinute] = startTime.split(':');
+        const eventDate = new Date(
+            year,
+            month - 1,
+            day,
+            parseInt(startHour),
+            parseInt(startMinute)
+        );
+        
+        return eventDate;
     }
     
     // checka se a coluna está ocupada desde o ínicio até ao fim de um determinado evento
@@ -545,23 +564,6 @@
         return `${year}${month}${day}T${hour}${minute}${second}`;
     }
 
-    function getEventDateTime(event) {
-        const startTime = event.startTime;
-        const year = event.year;
-        const month = event.month;
-        const day = event.day;
-        
-        const [startHour, startMinute] = startTime.split(':');
-        const eventDate = new Date(
-            year,
-            month - 1,
-            day,
-            parseInt(startHour),
-            parseInt(startMinute)
-        );
-        
-        return eventDate;
-    }
 
     function createICSFile() {
         const timestamp = formatDateForICS(new Date());
@@ -609,7 +611,7 @@
             if (acceptedIds && Array.isArray(acceptedIds)   ) {
                 futureEvents = acceptedIds
                     .map(id => findEventById(id)) // isto faz um array novo do mesmo array para novos elementos
-                    .filter(event => event !== null) // remove resultados que sejam null
+                    .filter(event => event !== null) // removes results that are null
                     .filter(event => isFutureEvent(event)) // remove todos os eventos passados
                     .sort((a, b) => {
                         const dateA = getEventDateTime(a);
