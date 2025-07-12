@@ -1,8 +1,7 @@
 let carouselEventsData = [];
-
+const isMobile = window.innerWidth < 600;
 
 function initializeCarousel() {
-    const isMobile = window.innerWidth < 600;
     const itemGroup = document.querySelector('.item-group-mobile');
     
     if (!itemGroup) return;
@@ -39,7 +38,6 @@ function createCarouselItems(data) {
     if (!container) return;
     
     container.innerHTML = '';
-    const isMobile = window.innerWidth < 600;
     let filteredItems;
     
     sortItemsByDate(data.items);
@@ -276,8 +274,6 @@ function setupMobileCarousel() {
             noMoreEventsCard = createNoMoreEventsCard();
             noMoreEventsCard.style.display = 'block';
             
-            setupNoMoreEventsCardSwipe();
-            
             addSwipeInstructions();
             
             return;
@@ -303,7 +299,6 @@ function setupMobileCarousel() {
     }
     
     const currentDayValue  = getDateValue(currentDay);
-    
     let hasCurrentDayEvent = false;
     
     if (carouselEventsData && Array.isArray(carouselEventsData)) {
@@ -451,7 +446,6 @@ function setupMobileCarousel() {
     addSwipeInstructions();
 
     let currentIndex = 0;
-   
     let startX, moveX, startTime;
     const minSwipeDistance = 50;
     const horizontalThreshold = 10;
@@ -522,9 +516,7 @@ function setupMobileCarousel() {
         if (!currentItem || currentDiff === undefined || !isTouchActive) return;
         
         let opacity = Math.min(Math.abs(currentDiff) / 150, 1);
-        
         const rotation = currentDiff / 20;
-        
         const isNoMoreEventsCard = currentItem.classList.contains('no-more-events-card');
         
         if (currentDiff < 0) {
@@ -975,7 +967,6 @@ function getRejectedItems() {
 
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
-    
     const eventId = item.id;
     
     if (!isNaN(eventId) && !acceptedItems.includes(eventId)) {
@@ -1163,7 +1154,6 @@ async function refreshCarouselAfterEventRemoval() {
         // Force recreation of carousel items
         createCarouselItems({ items: carouselEventsData });
         
-        const isMobile = window.innerWidth < 600;
         if (isMobile) {
             setupMobileCarousel();
         } else {
@@ -1175,7 +1165,6 @@ async function refreshCarouselAfterEventRemoval() {
         setCurrentDay(today);
         console.log('No events available, showing empty carousel');
         createCarouselItems({ items: carouselEventsData });
-        const isMobile = window.innerWidth < 600;
         if (isMobile) {
             setupMobileCarousel();
         } else {
