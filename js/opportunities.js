@@ -39,7 +39,7 @@ async function loadEventsData() {
 
 // Function to find event by ID
 function findEventById(eventId) {
-    return opportunitiesEventsData.find(event => event.id === parseInt(eventId));
+    return opportunitiesEventsData.find(event => event.id === eventId);
 }
 
 // Function to remove event from cookies
@@ -76,13 +76,6 @@ function hasEventDatePassed(event) {
         const now = new Date();
         const currentYear = now.getFullYear();
         
-        // Handle different date formats and ensure we have valid date information
-        if (!event.day || !event.month) {
-            console.warn('Event missing date information:', event);
-            return false; // If we can't determine the date, keep the event (conservative approach)
-        }
-        
-        // Enhanced month mapping with more variations
         const monthMap = {
             'janeiro': 1, 'jan': 1,
             'fevereiro': 2, 'fev': 2,
@@ -98,51 +91,22 @@ function hasEventDatePassed(event) {
             'dezembro': 12, 'dez': 12
         };
         
-        // Parse day and month
-        const eventDay = parseInt(event.day, 10);
-        if (isNaN(eventDay) || eventDay < 1 || eventDay > 31) {
-            console.warn('Invalid day for event:', event);
-            return false; // Conservative: keep event if date is invalid
-        }
+        const eventDay = event.day;
+        const eventMonth = event.month;
+        const eventYear = event.year;
         
-        let eventMonth;
-        if (typeof event.month === 'string') {
-            eventMonth = monthMap[event.month.toLowerCase().trim()];
-            if (!eventMonth) {
-                console.warn('Unrecognized month format for event:', event);
-                return false; // Conservative: keep event if month is unrecognized
-            }
-        } else {
-            eventMonth = parseInt(event.month, 10);
-            if (isNaN(eventMonth) || eventMonth < 1 || eventMonth > 12) {
-                console.warn('Invalid month for event:', event);
-                return false; // Conservative: keep event if month is invalid
-            }
-        }
-        
-        // Use event year if available, otherwise use current year
-        const eventYear = event.year ? parseInt(event.year, 10) : currentYear;
-        
-        // Create event date
         const eventDate = new Date(eventYear, eventMonth - 1, eventDay);
         
-        // Validate the created date
-        if (isNaN(eventDate.getTime())) {
-            console.warn('Invalid date created for event:', event);
-            return false; // Conservative: keep event if date creation failed
-        }
         
         // If event has end time, use it for same-day comparison
         if (event.endTime) {
             const timeParts = event.endTime.split(':');
+
             if (timeParts.length >= 2) {
                 const endHour = parseInt(timeParts[0], 10);
                 const endMinute = parseInt(timeParts[1], 10);
-                
-                if (!isNaN(endHour) && !isNaN(endMinute) && endHour >= 0 && endHour <= 23 && endMinute >= 0 && endMinute <= 59) {
-                    eventDate.setHours(endHour, endMinute, 0, 0);
-                    return now > eventDate;
-                }
+                eventDate.setHours(endHour, endMinute, 0, 0);
+                return now > eventDate;
             }
         }
         

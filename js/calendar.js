@@ -129,13 +129,10 @@
         const eventsContainer = document.getElementById('events');
         eventsContainer.innerHTML = '';
     
-        // apanhamos o texto palavra do mês do primeiro dia da semana
-        const currentMonth = meses[currentWeekStart.getMonth()].toLowerCase();
-        
         // filtramos todos os eventos para que tenham apenas o dia selecionado pelo utilizador e que tenham o mesmo mês
         const dayEvents = events.filter(event =>
             event.day === selectedDay.getDate() &&
-            event.month === currentMonth &&
+            event.month === (selectedDay.getMonth() + 1) && // nós estamos a contar os meses a partir do índice 1 então temos de somar um valor para ser igual
             event.year === selectedDay.getFullYear()
         );
     
@@ -336,6 +333,12 @@
         const [hours, minutes] = timeString.split(':').map(Number);
         return hours * 60 + minutes;
     }
+
+    function isFutureEvent(event) {
+        const now = new Date();
+        const eventDateTime = getEventDateTime(event);
+        return eventDateTime >= now;
+    }
     
     // checka se a coluna está ocupada desde o ínicio até ao fim de um determinado evento
     function isTimeSlotOccupied(columns, columnIndex, eventStart, eventEnd) {
@@ -430,8 +433,6 @@
         scrollContainer.scrollTop = Math.max(0, scrollPositionInPixels);
     }
     
-    
-    
     function updateMonthYear() {
         const monthYearElement = document.getElementById('monthYear');
         const weekStart = new Date(currentWeekStart);
@@ -490,11 +491,10 @@
         });
     }
     
-
     function countTodayEvents() {
         const today = new Date();
         const todayDay = today.getDate();
-        const todayMonth = meses[today.getMonth()].toLowerCase(); // lower case porque no JSON está tudo em lower case
+        const todayMonth = today.getMonth() + 1; // mais um valor porque contamos os meses a partir do índice 1 no JSON mas o objeto Date começa no 0
     
         // apanhamos apenas os eventos que sejam de hoje e que combinem também com o mês de hoje e ano
         const todayEvents = events.filter(event => 
@@ -504,22 +504,6 @@
         return todayEvents.length;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Helper function to escape special characters in ICS text fields
     function escapeICSText(text) {
         if (!text) return '';
         return text
@@ -530,7 +514,6 @@
             .replace(/\r/g, '');       // Remove carriage returns
     }
 
-    // Helper function to format text for description
     function formatDescriptionText(text) {
         if (!text) return '';
         
@@ -545,7 +528,6 @@
             .join('\n\n');
     }
 
-    // Helper function to format date-time for ICS
     function formatDateForICS(date) {
         return date.toISOString()
             .replace(/[-:]/g, '')
@@ -564,15 +546,22 @@
     }
 
     function getEventDateTime(event) {
-        const monthIndex = meses.findIndex(m => 
-            m.toLowerCase() === event.month.toLowerCase()
-        );
+        // Handle both DOM elements and data objects
+        const startTime = event.startTime || event.dataset?.startTime;
+        const year = event.year || parseInt(event.dataset?.year);
+        const month = event.month || parseInt(event.dataset?.month);
+        const day = event.day || parseInt(event.dataset?.day);
         
-        const [startHour, startMinute] = event.startTime.split(':');
+        if (!startTime || !year || !month || !day) {
+            console.warn('Missing required event properties:', { startTime, year, month, day, event });
+            return null;
+        }
+        
+        const [startHour, startMinute] = startTime.split(':');
         const eventDate = new Date(
-            event.year,
-            monthIndex,
-            event.day,
+            year,
+            month - 1,
+            day,
             parseInt(startHour),
             parseInt(startMinute)
         );
@@ -744,6 +733,3 @@
     }
     
     init();
-
-
-      

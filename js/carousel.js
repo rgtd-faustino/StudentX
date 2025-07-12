@@ -14,8 +14,6 @@ function initializeCarousel() {
             
             performMaintenanceCleanup();
             
-            setInterval(performMaintenanceCleanup, 60 * 60 * 1000);
-            
             createCarouselItems(data);
             
             if (isMobile) {
@@ -25,72 +23,33 @@ function initializeCarousel() {
             }
         })
         .catch(error => {
+            console.warn("erro " + error);
             if (isMobile) {
                 setupMobileCarousel();
             } else {
                 setupDesktopCarousel();
             }
         });
-
 }
 
-function hasEventTimePassed(item) {
-    const now = new Date();
-    const today = new Date();
-    const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
-    
-    if (item._dateValue !== todayValue) {
-        return item._dateValue < todayValue;
-    }
-    
-    if (item.endTime) {
-        const endTimeParts = item.endTime.split(':');
-        const endHour = parseInt(endTimeParts[0], 10);
-        const endMinute = parseInt(endTimeParts[1], 10);
-        
-        const eventEndTime = new Date();
-        eventEndTime.setHours(endHour, endMinute, 0, 0);
-        
-        return now > eventEndTime;
-    }
-    
-    if (item.startTime) {
-        const startTimeParts = item.startTime.split(':');
-        const startHour = parseInt(startTimeParts[0], 10);
-        const startMinute = parseInt(startTimeParts[1], 10);
-        
-        const eventStartTime = new Date();
-        eventStartTime.setHours(startHour, startMinute, 0, 0);
-        
-        const eventEndTime = new Date(eventStartTime.getTime() + (2 * 60 * 60 * 1000));
-        return now > eventEndTime;
-    }
-    
-    return false;
-}
 
-function createEventId(item) {
-    return item.id || `${item.descriptionTitle || ''}_${item.descriptionSubtitle || ''}_${item.oppPlaceTitle || ''}_${item.day || ''}_${item.month || ''}_${item.startTime || ''}`;
-}
 
 function createCarouselItems(data) {
     const container = document.getElementById('item-group-1-mobile');
     if (!container) return;
     
     container.innerHTML = '';
+    const isMobile = window.innerWidth < 600;
+    let filteredItems;
     
     sortItemsByDate(data.items);
 
-    const isMobile = window.innerWidth < 600;
-    
-    let filteredItems;
-    
     if (isMobile) {
         const currentDay = getCurrentDay();
         const currentDayValue = (currentDay.getFullYear() * 10000) + ((currentDay.getMonth() + 1) * 100) + currentDay.getDate();
         
         const currentEvents = data.items.filter(item => {
-            return item._dateValue === currentDayValue && !hasEventTimePassed(item);
+            return item.dateValue === currentDayValue && isFutureEvent(item);
         });
 
         filteredItems = currentEvents.filter(item => {
@@ -99,7 +58,7 @@ function createCarouselItems(data) {
 
     } else {
         const currentEvents = data.items.filter(item => {
-            return !hasEventTimePassed(item);
+            return isFutureEvent(item);
         });
 
         const nonInteractedEvents = currentEvents.filter(item => {
@@ -113,34 +72,35 @@ function createCarouselItems(data) {
     const seenIds = new Set();
     
     filteredItems.forEach(item => {
-        const eventId = createEventId(item);
+        const eventId = item.id;
         if (!seenIds.has(eventId)) {
             seenIds.add(eventId);
             uniqueItems.push(item);
         }
     });
     
-    console.log(`Total events: ${data.items.length}, After time filter: ${isMobile ? 'Today only' : 'All upcoming'}, After interaction filter: ${filteredItems.length}, After duplicate removal: ${uniqueItems.length}`);
-    
     uniqueItems.forEach(item => {
         const itemContainer = document.createElement('div');
         itemContainer.className = 'item-container-mobile';
-        
-        itemContainer._originalEventData = { ...item };
-        
-        itemContainer._dateValue = item._dateValue;
-        itemContainer._parsedDay = item._parsedDay;
-        itemContainer._parsedMonth = item._parsedMonth;
-        itemContainer._parsedYear = item._parsedYear;
-        
-        itemContainer.day = item.day;
-        itemContainer.month = item.month;
-        itemContainer.startTime = item.startTime;
-        itemContainer.endTime = item.endTime;
-        
+
         itemContainer.id = item.id;
-        itemContainer.eventId = item.id;
-        
+        itemContainer.dateValue = item.dateValue;
+        itemContainer.startTime = item.startTime;
+        itemContainer.year = item.year;
+        itemContainer.month = item.month;
+        itemContainer.day = item.day;
+        itemContainer.imageSrc = item.imageSrc;
+        itemContainer.altText = item.altText;
+        itemContainer.descriptionTitle = item.descriptionTitle;
+        itemContainer.descriptionSubtitle = item.descriptionSubtitle;
+        itemContainer.logoSrc = item.logoSrc;
+        itemContainer.logoAlt = item.logoAlt;
+        itemContainer.oppPlaceTitle = item.oppPlaceTitle;
+        itemContainer.oppPlaceSubtitle = item.oppPlaceSubtitle;
+        itemContainer.moreInfoLink = item.moreInfoLink;
+        itemContainer.endTime = item.endTime;
+        itemContainer.colorOfEvent = item.colorOfEvent;
+
         const img = document.createElement('img');
         img.src = item.imageSrc;
         img.alt = item.altText;
@@ -205,30 +165,11 @@ function createCarouselItems(data) {
 }
 
 function sortItemsByDate(items) {
-    const monthMap = {
-        'janeiro': 1,
-        'fevereiro': 2,
-        'março': 3,
-        'abril': 4,
-        'maio': 5, 
-        'junho': 6,
-        'julho': 7,
-        'agosto': 8,
-        'setembro': 9,
-        'outubro': 10,
-        'novembro': 11,
-        'dezembro': 12
-    };
-    
     items.forEach(item => {
-        item._parsedDay = parseInt(item.day, 10);
-        item._parsedMonth = typeof item.month === 'string' ? (monthMap[item.month.toLowerCase()] || 0) : parseInt(item.month, 10);
-        item._parsedYear = new Date().getFullYear();
-        
-        item._dateValue = (item._parsedYear * 10000) + (item._parsedMonth * 100) + item._parsedDay;
+        item.dateValue = (item.year * 10000) + (item.month * 100) + item.day;
     });
     
-    items.sort((a, b) => a._dateValue - b._dateValue);
+    items.sort((a, b) => a.dateValue - b.dateValue);
 }
 
 function setupDesktopCarousel() {
@@ -318,10 +259,10 @@ function setupMobileCarousel() {
             const currentDayValue = getDateValue(currentDay);
             
             const todayEvents = carouselEventsData.filter(item => {
-                if (!item._dateValue) {
+                if (!item.dateValue) {
                     sortItemsByDate([item]);
                 }
-                return item._dateValue === currentDayValue && !hasEventTimePassed(item);
+                return item.dateValue === currentDayValue && isFutureEvent(item);
             });
             
             console.log(`Found ${todayEvents.length} total events for today before interaction filtering`);
@@ -367,13 +308,11 @@ function setupMobileCarousel() {
     
     if (carouselEventsData && Array.isArray(carouselEventsData)) {
         const todayEvents = carouselEventsData.filter(item => {
-            if (!item._dateValue) {
+            if (!item.dateValue) {
                 sortItemsByDate([item]);
             }
             
-            return item._dateValue === currentDayValue && 
-                   !hasEventTimePassed(item) && 
-                   !hasUserInteractedWithItem(item);
+            return item.dateValue === currentDayValue && isFutureEvent(item) && !hasUserInteractedWithItem(item);
         });
         
         hasCurrentDayEvent = todayEvents.length > 0;
@@ -460,15 +399,13 @@ function setupMobileCarousel() {
             console.warn('No events data available');
             return [];
         }
-        
+
         return carouselEventsData.filter(item => {
-            if (!item._dateValue) {
+            if (!item.dateValue) {
                 sortItemsByDate([item]);
             }
-            
-            return item._dateValue === dateValue && 
-                !hasEventTimePassed(item) && 
-                !hasUserInteractedWithItem(item);
+
+            return item.dateValue === dateValue && isFutureEvent(item) && !hasUserInteractedWithItem(item);
         });
     }
 
@@ -492,20 +429,20 @@ function setupMobileCarousel() {
         noMoreEventsCard = createNoMoreEventsCard();
         noMoreEventsCard.style.display = 'block';
         console.log('No events available for today, showing no-more-events card');
+
     } else {
         let foundValidEvent = false;
         for (let i = 0; i < carouselItems.length; i++) {
             const item = carouselItems[i];
-            if (item._dateValue === currentDayValue && !hasEventTimePassed(item._originalEventData)) {
+            if (item.dateValue === currentDayValue && isFutureEvent(item)) {
                 item.style.display = 'block';
                 foundValidEvent = true;
-                console.log(`Showing first valid event: ${item._originalEventData?.descriptionTitle || 'Unknown event'}`);
                 break;
             }
         }
         
         if (!foundValidEvent) {
-            console.warn('hasCurrentDayEvent was true but no valid DOM event found, showing no-more-events card');
+            console.warn('hasCurrentDayEvent was true but no valid DOM item found, showing no-more-events card');
             noMoreEventsCard = createNoMoreEventsCard();
             noMoreEventsCard.style.display = 'block';
         }
@@ -701,7 +638,7 @@ function setupMobileCarousel() {
                         
                         setTimeout(() => {
                             if (isNoMoreEventsCard) {
-                                handleNoMoreEventsCardSwipe(isLeftSwipe);
+                                handleNoMoreEventsCardSwipe();
                             } else {
                                 if (isLeftSwipe) {
                                     addRejectedItem(item);
@@ -736,7 +673,7 @@ function setupMobileCarousel() {
         }
     }
 
-    function handleNoMoreEventsCardSwipe(isLeftSwipe) {
+    function handleNoMoreEventsCardSwipe() {
         const nextDay = findNextDayWithEvents(currentDay);
         
         if (nextDay) {
@@ -778,17 +715,23 @@ function setupMobileCarousel() {
             const itemContainer = document.createElement('div');
             itemContainer.className = 'item-container-mobile';
             
-            itemContainer._originalEventData = { ...item };
-            itemContainer._dateValue = item._dateValue;
-            itemContainer._parsedDay = item._parsedDay;
-            itemContainer._parsedMonth = item._parsedMonth;
-            itemContainer._parsedYear = item._parsedYear;
-            itemContainer.day = item.day;
-            itemContainer.month = item.month;
-            itemContainer.startTime = item.startTime;
-            itemContainer.endTime = item.endTime;
             itemContainer.id = item.id;
-            itemContainer.eventId = item.id;
+            itemContainer.dateValue = item.dateValue;
+            itemContainer.startTime = item.startTime;
+            itemContainer.year = item.year;
+            itemContainer.month = item.month;
+            itemContainer.day = item.day;
+            itemContainer.endTime = item.endTime;
+            itemContainer.imageSrc = item.imageSrc;
+            itemContainer.altText = item.altText;
+            itemContainer.descriptionTitle = item.descriptionTitle;
+            itemContainer.descriptionSubtitle = item.descriptionSubtitle;
+            itemContainer.logoSrc = item.logoSrc;
+            itemContainer.logoAlt = item.logoAlt;
+            itemContainer.oppPlaceTitle = item.oppPlaceTitle;
+            itemContainer.oppPlaceSubtitle = item.oppPlaceSubtitle;
+            itemContainer.moreInfoLink = item.moreInfoLink;
+            itemContainer.colorOfEvent = item.colorOfEvent;
             
             itemContainer.style.display = index === 0 ? 'block' : 'none';
             
@@ -925,9 +868,10 @@ function setupMobileCarousel() {
         let nextItemIndex = -1;
         for (let i = currentIndex; i < carouselItems.length; i++) {
             const item = carouselItems[i];
-            if (item._dateValue === currentDayValue && 
-                !hasEventTimePassed(item._originalEventData) && 
-                !hasUserInteractedWithItem(item._originalEventData)) {
+            const itemDateValue = item.dateValue || parseInt(item.dataset?.dateValue);
+            const itemId = item.id;
+            
+            if (itemDateValue === currentDayValue && isFutureEvent(item) && !hasUserInteractedWithItem(item)) {
                 nextItemIndex = i;
                 break;
             }
@@ -937,7 +881,8 @@ function setupMobileCarousel() {
             currentIndex = nextItemIndex;
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
-            console.log(`Showing next event: ${carouselItems[currentIndex]._originalEventData?.descriptionTitle || 'Unknown event'}`);
+            console.log(`Showing next item: ${carouselItems[currentIndex].descriptionTitle || 'Unknown item'}`);
+
         } else {
             console.log('No more events available for today, showing no-more-events card');
             if (!noMoreEventsCard) {
@@ -1031,7 +976,7 @@ function getRejectedItems() {
 function addAcceptedItem(item) {
     const acceptedItems = getAcceptedItems();
     
-    const eventId = parseInt(item._originalEventData?.id || item.id);
+    const eventId = item.id;
     
     if (!isNaN(eventId) && !acceptedItems.includes(eventId)) {
         acceptedItems.push(eventId);
@@ -1042,8 +987,7 @@ function addAcceptedItem(item) {
 
 function addRejectedItem(item) {
     const rejectedItems = getRejectedItems();
-    
-    const eventId = parseInt(item._originalEventData?.id || item.id);
+    const eventId = item.id;
     
     if (!isNaN(eventId) && !rejectedItems.includes(eventId)) {
         rejectedItems.push(eventId);
@@ -1067,7 +1011,7 @@ function getUserPreferenceStats() {
 }
 
 function hasUserInteractedWithEvent(eventItem) {
-    const eventId = eventItem._originalEventData?.id || eventItem.id;
+    const eventId = eventItem.id;
     
     if (!eventId) return false;
     
@@ -1078,89 +1022,30 @@ function hasUserInteractedWithEvent(eventItem) {
 }
 
 function hasUserInteractedWithItem(item) {
-    const eventId = parseInt(item.id || item.eventId);
+    let eventId = item.id;
     
-    if (isNaN(eventId)) return false;
+    if (isNaN(eventId)) {
+        console.warn('Could not determine event ID for interaction check', item);
+        return false;
+    }
     
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    const acceptedIds = accepted.map(id => parseInt(id));
-    const rejectedIds = rejected.map(id => parseInt(id));
+    const acceptedIds = accepted.map(id => id);
+    const rejectedIds = rejected.map(id => id);
     
     return acceptedIds.includes(eventId) || rejectedIds.includes(eventId);
 }
 
 
-function hasEventDatePassed(event) {
-    const today = new Date();
-    const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
-    
-    if (typeof event === 'number' || (typeof event === 'string' && !isNaN(event))) {
-        const eventId = parseInt(event);
-        const fullEvent = carouselEventsData.find(e => parseInt(e.id) === eventId);
-        
-        if (!fullEvent) {
-            return true;
-        }
-        
-        return hasEventDatePassedForFullEvent(fullEvent);
-    }
-    
-    return hasEventDatePassedForFullEvent(event);
-}
-
-function hasEventDatePassedForFullEvent(event) {
-    const today = new Date();
-    const todayValue = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate();
-    
-    if (event.dateValue && typeof event.dateValue === 'number') {
-        if (event.dateValue < todayValue) {
-            return true;
-        }
-        
-        if (event.dateValue === todayValue) {
-            return hasEventTimePassed(event);
-        }
-        
-        return false;
-    }
-    
-    if (event._dateValue && typeof event._dateValue === 'number') {
-        if (event._dateValue < todayValue) {
-            return true;
-        }
-        
-        if (event._dateValue === todayValue) {
-            return hasEventTimePassed(event);
-        }
-        
-        return false;
-    }
-    
-    if (event.parsedDay && event.parsedMonth && event.parsedYear) {
-        const eventDateValue = (event.parsedYear * 10000) + (event.parsedMonth * 100) + event.parsedDay;
-        
-        if (eventDateValue < todayValue) {
-            return true;
-        }
-        
-        if (eventDateValue === todayValue) {
-            return hasEventTimePassed(event);
-        }
-        
-        return false;
-    }
-    
-    return false;
-}
 
 function filterExpiredEvents() {
     const acceptedItems = getAcceptedItems();
     const rejectedItems = getRejectedItems();
     
-    const activeAccepted = acceptedItems.filter(eventId => !hasEventDatePassed(parseInt(eventId)));
-    const activeRejected = rejectedItems.filter(eventId => !hasEventDatePassed(parseInt(eventId)));
+    const activeAccepted = acceptedItems.filter(eventId => isFutureEvent(carouselEventsData.find(item => item.id === eventId)));
+    const activeRejected = rejectedItems.filter(eventId => isFutureEvent(carouselEventsData.find(item => item.id === eventId)));
     
     if (activeAccepted.length !== acceptedItems.length) {
         setEssentialData('userEventPreferences_accepted', activeAccepted);
@@ -1213,15 +1098,15 @@ function findEarliestDayWithEvents() {
     const daySet = new Set();
     
     carouselEventsData.forEach(item => {
-        if (!item._dateValue) {
+        if (!item.dateValue) {
             sortItemsByDate([item]);
         }
         
         // Include events from today onwards that haven't passed and haven't been interacted with
-        if (!hasEventTimePassed(item) && !hasUserInteractedWithItem(item)) {
+        if (isFutureEvent(item) && !hasUserInteractedWithItem(item)) {
             // Only include events from today onwards
-            if (item._dateValue >= todayValue) {
-                daySet.add(item._dateValue);
+            if (item.dateValue >= todayValue) {
+                daySet.add(item.dateValue);
             }
         }
     });
@@ -1259,7 +1144,7 @@ async function refreshCarouselAfterEventRemoval() {
         }
     }
     
-    console.log('Starting carousel refresh after event removal...');
+    console.log('Starting carousel refresh after item removal...');
     
     // Always find the earliest day with events from today onwards
     const earliestDayValue = findEarliestDayWithEvents();
