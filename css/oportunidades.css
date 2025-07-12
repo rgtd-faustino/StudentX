@@ -719,7 +719,6 @@ input[type="checkbox"] {
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
     margin: 0;
     background: var(--bg);
     color: var(--text);
