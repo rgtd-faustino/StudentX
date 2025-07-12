@@ -248,6 +248,8 @@ function setupMobileCarousel() {
     if (arrowsAndDots) arrowsAndDots.style.display = 'none';
    
     const carouselItems = document.querySelectorAll('.item-container-mobile');
+    let noMoreEventsCard = null;
+
     
     if (!carouselItems.length) {
         console.log('No carousel items found in DOM - checking if we should show no-more-events card');
@@ -292,7 +294,6 @@ function setupMobileCarousel() {
     let initialTouchY = 0;
     let isTouchActive = false;
     let currentDay = getCurrentDay();
-    let noMoreEventsCard = null;
     
     function getDateValue(date) {
         return (date.getFullYear() * 10000) + ((date.getMonth() + 1) * 100) + date.getDate();
