@@ -39,30 +39,22 @@ async function loadEventsData() {
 
 // Function to find event by ID
 function findEventById(eventId) {
-    return opportunitiesEventsData.find(event => event.id === eventId);
+    // Always compare as integer
+    return opportunitiesEventsData.find(event => parseInt(event.id) === parseInt(eventId));
 }
 
 // Function to remove event from cookies
 function removeEventFromCookies(eventId, type) {
     const cookieName = type === 'accepted' ? 'userEventPreferences_accepted' : 'userEventPreferences_rejected';
-    
-    // Use the same cookie system as the carousel for consistency
     let eventIds = getEssentialData(cookieName) || [];
-    
+    // Convert all IDs to integers for consistency
+    eventIds = eventIds.map(id => parseInt(id));
     if (eventIds.length > 0) {
         try {
-            // Filter out the removed event ID
-            eventIds = eventIds.filter(id => parseInt(id) !== parseInt(eventId));
-            
-            // Update the cookie using the same system as carousel
+            eventIds = eventIds.filter(id => id !== parseInt(eventId));
             setEssentialData(cookieName, eventIds);
-            
             console.log(`Removed event ${eventId} from ${type} preferences. Remaining:`, eventIds);
-            
-            // Notify the carousel that an event was removed so it can appear again
             window.refreshCarouselAfterEventRemoval();
-            
-            // Reload the preferences to update the display
             loadEventPreferences();
         } catch (e) {
             console.error('Error removing event from cookies:', e);
@@ -70,60 +62,28 @@ function removeEventFromCookies(eventId, type) {
     }
 }
 
-// Enhanced function to check if an event date has passed
-function hasEventDatePassed(event) {
-    try {
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        
-        const monthMap = {
-            'janeiro': 1, 'jan': 1,
-            'fevereiro': 2, 'fev': 2,
-            'março': 3, 'mar': 3,
-            'abril': 4, 'abr': 4,
-            'maio': 5, 'mai': 5,
-            'junho': 6, 'jun': 6,
-            'julho': 7, 'jul': 7,
-            'agosto': 8, 'ago': 8,
-            'setembro': 9, 'set': 9,
-            'outubro': 10, 'out': 10,
-            'novembro': 11, 'nov': 11,
-            'dezembro': 12, 'dez': 12
-        };
-        
-        const eventDay = event.day;
-        const eventMonth = event.month;
-        const eventYear = event.year;
-        
-        const eventDate = new Date(eventYear, eventMonth - 1, eventDay);
-        
-        
-        // If event has end time, use it for same-day comparison
-        if (event.endTime) {
-            const timeParts = event.endTime.split(':');
+function isFutureEvent(event) {
+    const now = new Date();
+    const eventDateTime = getEventDateTime(event);
+    return eventDateTime >= now;
+}
 
-            if (timeParts.length >= 2) {
-                const endHour = parseInt(timeParts[0], 10);
-                const endMinute = parseInt(timeParts[1], 10);
-                eventDate.setHours(endHour, endMinute, 0, 0);
-                return now > eventDate;
-            }
-        }
-        
-        // For events without end time, consider them expired at end of day
-        eventDate.setHours(23, 59, 59, 999);
-        const result = now > eventDate;
-        
-        // Log for debugging (remove in production)
-        if (result) {
-            console.log(`Event ${event.id} (${event.descriptionTitle || 'No title'}) marked as expired: ${eventDate.toLocaleDateString()} vs current ${now.toLocaleDateString()}`);
-        }
-        
-        return result;
-    } catch (error) {
-        console.error('Error checking if event date has passed:', error, event);
-        return false; // Conservative: keep event if there's any error
-    }
+function getEventDateTime(event) {
+    const startTime = event.startTime;
+    const year = event.year;
+    const month = event.month;
+    const day = event.day;
+    
+    const [startHour, startMinute] = startTime.split(':');
+    const eventDate = new Date(
+        year,
+        month - 1,
+        day,
+        parseInt(startHour),
+        parseInt(startMinute)
+    );
+    
+    return eventDate;
 }
 
 // Function to clean up expired events from cookies
@@ -136,73 +96,65 @@ function cleanupExpiredEvents() {
     
     const acceptedIds = getEssentialData('userEventPreferences_accepted');
     const rejectedIds = getEssentialData('userEventPreferences_rejected');
-    
+    // Convert all IDs to integers for consistency
+    const acceptedIdsInt = acceptedIds ? acceptedIds.map(id => parseInt(id)) : [];
+    const rejectedIdsInt = rejectedIds ? rejectedIds.map(id => parseInt(id)) : [];
     let needsUpdate = false;
-    
     // Clean up accepted events
-    if (acceptedIds && Array.isArray(acceptedIds)) {
+    if (acceptedIdsInt && Array.isArray(acceptedIdsInt)) {
         try {
-            const activeAcceptedIds = acceptedIds.filter(id => {
+            const activeAcceptedIds = acceptedIdsInt.filter(id => {
                 const event = findEventById(id);
-                // Only remove if event is found AND has passed (don't remove unknown events)
                 if (!event) {
                     console.warn(`Event with ID ${id} not found in events data - keeping in cookies`);
-                    return true; // Keep unknown events to avoid data loss
+                    return true;
                 }
-                return !hasEventDatePassed(event);
+                return isFutureEvent(event);
             });
-            
-            if (activeAcceptedIds.length !== acceptedIds.length) {
+            if (activeAcceptedIds.length !== acceptedIdsInt.length) {
                 setEssentialData('userEventPreferences_accepted', activeAcceptedIds);
                 needsUpdate = true;
-                console.log(`Cleaned up accepted events: removed ${acceptedIds.length - activeAcceptedIds.length} expired events`);
+                console.log(`Cleaned up accepted events: removed ${acceptedIdsInt.length - activeAcceptedIds.length} expired events`);
             }
         } catch (e) {
             console.error('Error cleaning up accepted events:', e);
         }
     }
-    
     // Clean up rejected events
-    if (rejectedIds && Array.isArray(rejectedIds)) {
+    if (rejectedIdsInt && Array.isArray(rejectedIdsInt)) {
         try {
-            const activeRejectedIds = rejectedIds.filter(id => {
+            const activeRejectedIds = rejectedIdsInt.filter(id => {
                 const event = findEventById(id);
-                // Only remove if event is found AND has passed (don't remove unknown events)
                 if (!event) {
                     console.warn(`Event with ID ${id} not found in events data - keeping in cookies`);
-                    return true; // Keep unknown events to avoid data loss
+                    return true;
                 }
-                return !hasEventDatePassed(event);
+                return isFutureEvent(event);
             });
-            
-            if (activeRejectedIds.length !== rejectedIds.length) {
+            if (activeRejectedIds.length !== rejectedIdsInt.length) {
                 setEssentialData('userEventPreferences_rejected', activeRejectedIds);
                 needsUpdate = true;
-                console.log(`Cleaned up rejected events: removed ${rejectedIds.length - activeRejectedIds.length} expired events`);
+                console.log(`Cleaned up rejected events: removed ${rejectedIdsInt.length - activeRejectedIds.length} expired events`);
             }
         } catch (e) {
             console.error('Error cleaning up rejected events:', e);
         }
     }
-    
     return needsUpdate;
 }
 
 function parseEventPreferences() {
     const acceptedIds = getEssentialData('userEventPreferences_accepted');
     const rejectedIds = getEssentialData('userEventPreferences_rejected');
-    
-    let acceptedArray = [];
-    let rejectedArray = [];
+    // Convert all IDs to integers for consistency
+    let acceptedArray = acceptedIds ? acceptedIds.map(id => parseInt(id)) : [];
+    let rejectedArray = rejectedIds ? rejectedIds.map(id => parseInt(id)) : [];
     let hasData = false;
-
     try {
-        if (acceptedIds && Array.isArray(acceptedIds)) {
-            acceptedArray = acceptedIds;
+        if (acceptedArray && Array.isArray(acceptedArray) && acceptedArray.length > 0) {
             hasData = true;
         }
-        if (rejectedIds && Array.isArray(rejectedIds)) {
-            rejectedArray = rejectedIds;
+        if (rejectedArray && Array.isArray(rejectedArray) && rejectedArray.length > 0) {
             hasData = true;
         }
     } catch (e) {
@@ -212,12 +164,10 @@ function parseEventPreferences() {
         }
         return { accepted: [], rejected: [], hasData: false };
     }
-
     if (!hasData) {
         showNoCookiesWarning();
         return { accepted: [], rejected: [], hasData: false };
     }
-
     // Convert IDs to full event objects and filter out expired events
     const acceptedEvents = acceptedArray
         .map(id => findEventById(id))
@@ -226,9 +176,8 @@ function parseEventPreferences() {
                 console.warn(`Event with ID ${id} not found in events data - keeping in preferences`);
                 return false; // Don't display unknown events, but don't remove from cookies here
             }
-            return !hasEventDatePassed(event);
+            return isFutureEvent(event);
         });
-    
     const rejectedEvents = rejectedArray
         .map(id => findEventById(id))
         .filter(event => {
@@ -236,23 +185,19 @@ function parseEventPreferences() {
                 console.warn(`Event with ID ${id} not found in events data - keeping in preferences`);
                 return false; // Don't display unknown events, but don't remove from cookies here
             }
-            return !hasEventDatePassed(event);
+            return isFutureEvent(event);
         });
-
     // Only update cookies for expired events, not missing events (to avoid data loss)
     const activeAcceptedIds = acceptedArray.filter(id => {
         const event = findEventById(id);
         if (!event) return true; // Keep unknown events in cookies
-        return !hasEventDatePassed(event);
+        return isFutureEvent(event);
     });
-    
     const activeRejectedIds = rejectedArray.filter(id => {
         const event = findEventById(id);
         if (!event) return true; // Keep unknown events in cookies
-        return !hasEventDatePassed(event);
+        return isFutureEvent(event);
     });
-    
-    // Only update cookies if we actually removed expired events (not missing events)
     if (activeAcceptedIds.length !== acceptedArray.length) {
         const removedCount = acceptedArray.length - activeAcceptedIds.length;
         if (removedCount > 0) {
@@ -260,7 +205,6 @@ function parseEventPreferences() {
             console.log(`Updated accepted events cookie: removed ${removedCount} expired events`);
         }
     }
-    
     if (activeRejectedIds.length !== rejectedArray.length) {
         const removedCount = rejectedArray.length - activeRejectedIds.length;
         if (removedCount > 0) {
@@ -268,7 +212,6 @@ function parseEventPreferences() {
             console.log(`Updated rejected events cookie: removed ${removedCount} expired events`);
         }
     }
-
     return { 
         accepted: acceptedEvents, 
         rejected: rejectedEvents, 

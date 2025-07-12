@@ -546,16 +546,10 @@
     }
 
     function getEventDateTime(event) {
-        // Handle both DOM elements and data objects
-        const startTime = event.startTime || event.dataset?.startTime;
-        const year = event.year || parseInt(event.dataset?.year);
-        const month = event.month || parseInt(event.dataset?.month);
-        const day = event.day || parseInt(event.dataset?.day);
-        
-        if (!startTime || !year || !month || !day) {
-            console.warn('Missing required event properties:', { startTime, year, month, day, event });
-            return null;
-        }
+        const startTime = event.startTime;
+        const year = event.year;
+        const month = event.month;
+        const day = event.day;
         
         const [startHour, startMinute] = startTime.split(':');
         const eventDate = new Date(

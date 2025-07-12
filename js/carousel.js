@@ -868,7 +868,7 @@ function setupMobileCarousel() {
         let nextItemIndex = -1;
         for (let i = currentIndex; i < carouselItems.length; i++) {
             const item = carouselItems[i];
-            const itemDateValue = item.dateValue || parseInt(item.dataset?.dateValue);
+            const itemDateValue = item.dateValue;
             const itemId = item.id;
             
             if (itemDateValue === currentDayValue && isFutureEvent(item) && !hasUserInteractedWithItem(item)) {
