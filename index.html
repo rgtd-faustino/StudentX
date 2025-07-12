@@ -221,7 +221,7 @@
         
         <div class="slogan-buttons">
             <div class="start-button">
-                <a href="#oportunidadesCarrossel">Começar Agora &nbsp; <img id="ArrowStartButton" src="/images/ArrowStartButton.png" alt="Arrow For Starting Now"></a>
+                <a href="#opportunityTitlePC">Começar Agora &nbsp; <img id="ArrowStartButton" src="/images/ArrowStartButton.png" alt="Arrow For Starting Now"></a>
             </div>
             <div class="watch-button">
                 <button onclick="openModal()"><img id="ArrowWatchButton" src="/images/ArrowWatchButton.png" alt="Arrow For Watching Video"> Ver Vídeo</button>
@@ -681,6 +681,18 @@
     <script defer src="/js/cookie-banner.js?v=2"></script>
     <script defer src="/js/script.js?v=2"></script>
     
+    <script>
+    function updateStartButtonHref() {
+        var startButton = document.querySelector('.start-button a');
+        if (window.innerWidth < 600) {
+            startButton.setAttribute('href', '#oportunidadesCarrossel');
+        } else {
+            startButton.setAttribute('href', '#opportunityTitlePC');
+        }
+    }
+    window.addEventListener('DOMContentLoaded', updateStartButtonHref);
+    window.addEventListener('resize', updateStartButtonHref);
+</script>
 
 
 
