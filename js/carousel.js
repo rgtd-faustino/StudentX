@@ -406,7 +406,7 @@ function setupMobileCarousel() {
     }
 
     function findNextDayWithEvents(startDate) {
-        const maxDaysToCheck = 30;
+        const maxDaysToCheck = 31;
         let checkDate = new Date(startDate);
         
         for (let i = 0; i < maxDaysToCheck; i++) {
