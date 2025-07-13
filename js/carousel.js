@@ -277,8 +277,6 @@ function setupMobileCarousel() {
             noMoreEventsCard = createNoMoreEventsCard();
             noMoreEventsCard.style.display = 'block';
             
-            addSwipeInstructions();
-            
             return;
         }
     }
@@ -1005,18 +1003,12 @@ function getUserPreferenceStats() {
     return null;
 }
 
-function hasUserInteractedWithEvent(eventItem) {
-    const eventId = eventItem.id;
-    
-    if (!eventId) return false;
-    
-    const accepted = getAcceptedItems();
-    const rejected = getRejectedItems();
-    
-    return accepted.includes(eventId) || rejected.includes(eventId);
-}
-
 function hasUserInteractedWithItem(item) {
+    if (!item) {
+        console.warn('Invalid item provided to hasUserInteractedWithItem', item);
+        return false;
+    }
+    
     let eventId = item.id;
     
     if (isNaN(eventId)) {
@@ -1027,10 +1019,12 @@ function hasUserInteractedWithItem(item) {
     const accepted = getAcceptedItems();
     const rejected = getRejectedItems();
     
-    const acceptedIds = accepted.map(id => id);
-    const rejectedIds = rejected.map(id => id);
+    // Convert both eventId and stored IDs to strings for consistent comparison
+    const eventIdStr = String(eventId);
+    const acceptedIds = accepted.map(id => String(id));
+    const rejectedIds = rejected.map(id => String(id));
     
-    return acceptedIds.includes(eventId) || rejectedIds.includes(eventId);
+    return acceptedIds.includes(eventIdStr) || rejectedIds.includes(eventIdStr);
 }
 
 
@@ -1039,8 +1033,17 @@ function filterExpiredEvents() {
     const acceptedItems = getAcceptedItems();
     const rejectedItems = getRejectedItems();
     
-    const activeAccepted = acceptedItems.filter(eventId => isFutureEvent(carouselEventsData.find(item => item.id === eventId)));
-    const activeRejected = rejectedItems.filter(eventId => isFutureEvent(carouselEventsData.find(item => item.id === eventId)));
+    const activeAccepted = acceptedItems.filter(eventId => {
+        // Convert both to strings for consistent comparison
+        const event = carouselEventsData.find(item => String(item.id) === String(eventId));
+        return event && isFutureEvent(event);
+    });
+    
+    const activeRejected = rejectedItems.filter(eventId => {
+        // Convert both to strings for consistent comparison
+        const event = carouselEventsData.find(item => String(item.id) === String(eventId));
+        return event && isFutureEvent(event);
+    });
     
     if (activeAccepted.length !== acceptedItems.length) {
         setEssentialData('userEventPreferences_accepted', activeAccepted);
@@ -1066,6 +1069,8 @@ function performMaintenanceCleanup() {
     const result = filterExpiredEvents();
     if (result.removedCount > 0) {
         console.log(`Removed ${result.removedCount} expired events from preferences`);
+    } else {
+        console.log('No expired events found to remove');
     }
 }
 

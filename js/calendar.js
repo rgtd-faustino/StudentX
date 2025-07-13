@@ -523,6 +523,27 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
         return todayEvents.length;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function escapeICSText(text) {
         if (!text) return '';
         return text
