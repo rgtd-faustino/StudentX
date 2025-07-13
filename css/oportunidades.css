@@ -720,8 +720,6 @@ input[type="checkbox"] {
 
 body {
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
 }
 
 .container {
@@ -865,13 +863,15 @@ body {
     text-align: center;
     font-weight: 500;
     font-size: 6vw;
-    margin:0vw;
+    margin-top:1.5vw;
+    margin-bottom:1vw;
 }
 
 .description-subtitle-calendar-expanded  {
     font-size: 4vw;
     color: grey;
     margin-top: 0vh;
+    margin-bottom: 4.5vw;
     text-align: center;
 
 }
@@ -891,7 +891,7 @@ body {
 .logo-and-place-info-expanded {
     display: flex;
     align-items: center;
-    margin-top: 4%;
+    margin-top: 5%;
     margin-bottom: 4%;
 }
 
