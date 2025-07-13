@@ -96,7 +96,7 @@ h2 {
 
 #stars {
     height: auto;
-    width:9%;
+    width:8%;
 }
 
 #logos{
@@ -129,7 +129,7 @@ h2 {
     color: #08192B;
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.3vw;
+    font-size: 1.1vw;
     font-style: normal;
     font-weight: 500;
 }
@@ -458,7 +458,7 @@ nav {
     color: rgba(0, 0, 24, 0.50);
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.4vw;
+    font-size: 1.3vw;
     font-style: normal;
     font-weight: 400;
     line-height: 2.2vw;
@@ -473,10 +473,9 @@ nav {
 .highlight {
     color: #108CEC;
     font-family: 'Poppins', sans-serif;
-    font-size: 30px;
+    font-size: 2vw;
     font-style: normal;
     font-weight: 700;
-    line-height: 50px;
 }
 
 .containerOpportunities {
@@ -492,7 +491,7 @@ nav {
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 2vw;
+    font-size: 1.7vw;
     color: black;
     opacity: 0;
     transform: translateY(3vw);
@@ -526,7 +525,7 @@ nav {
 }
 
 #titleP3 {
-    font-size: 2.5vw; /* Reduce font size */
+    font-size: 2vw; /* Reduce font size */
     line-height: 1.1; /* Adjust line height */
     margin-top: 5%; /* Increase top margin to create space */
     text-align: center; /* Center text on small screens */
@@ -739,11 +738,13 @@ nav {
 .description-title-mobile  {
     text-align: center;
     font-weight: 600;
-    font-size: 1.3vw;
+    font-size: 1.1vw;
+    margin-top:1.5vw;
+    margin-bottom:1.2vw;
 }
 
 .opp-place-title-mobile{
-    font-weight: bold;
+    font-weight: 600;
     font-size: 1vw;
 }
 
@@ -853,7 +854,7 @@ nav {
 
 
 .opportunityTitlePC{
-    font-size: 2.5vw;
+    font-size: 2.2vw;
     margin-left:5vw;
     position:relative;
     font-family: 'Inter', sans-serif;
@@ -950,7 +951,7 @@ nav {
 }
 
 .day-name {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 .day-number {
@@ -965,7 +966,7 @@ nav {
     background-color: rgba(102, 102, 102, 0.05); /* Base color */
     color: black; /* Text color */
     cursor: pointer;
-    box-shadow: 0 0.5vw 0.7vw rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0vw 0.5vw 0.7vw rgba(0, 0, 0, 0.15); /* Subtle shadow */
     font-size: 1vw;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
 }
@@ -1100,8 +1101,9 @@ nav {
 .description-title-calendar-expanded  {
     text-align: center;
     font-weight: 600;
-    font-size: 1.3vw;
-    margin-top:-0.2vw;
+    font-size: 1.2vw;
+    margin-top:0.2vw;
+    margin-bottom:1.2vw;
 }
 
 .description-subtitle-calendar-expanded  {
@@ -1184,8 +1186,9 @@ nav {
 .description-title-calendar  {
     text-align: center;
     font-weight: 600;
-    font-size: 1.1vw;
+    font-size: 1vw;
     margin-top:0vw;
+    margin-bottom:1.2vw;
 }
 
 .description-subtitle-calendar  {
@@ -1272,6 +1275,8 @@ nav {
 .caption-text {
     flex: 1;
     min-width: 0;
+    font-size: 1vw;
+    color: rgba(0, 0, 24, 0.70);
 }
 
 
@@ -1287,7 +1292,7 @@ nav {
 }
 
 #studentx-ajuda-title{
-    font-size: 2.5vw;
+    font-size: 2.2vw;
     position:relative;
     color: #08192B;
     text-align: center; 
@@ -1339,7 +1344,7 @@ nav {
 }
 
 #questoes-frequentes-title{
-    font-size: 2.5vw;
+    font-size: 2.2vw;
     position:relative;
     color: #08192B;
     text-align: center; 
@@ -1495,7 +1500,7 @@ nav {
 #titulo-aboutus {
     color: #000;
     font-family: 'Poppins', sans-serif;
-    font-size: 3vw;
+    font-size: 2.5vw;
     font-style: normal;
     font-weight: 700;
     margin-bottom: -11%;
