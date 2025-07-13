@@ -2886,7 +2886,8 @@ input[type="checkbox"] {
     color: white; /* Text color */
     cursor: pointer;
     box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    font-size: 4vw;
+    font-size: 4.5vw;
+    font-family: 'Poppins', sans-serif;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
     white-space: nowrap; /* Prevent text wrapping */
 
