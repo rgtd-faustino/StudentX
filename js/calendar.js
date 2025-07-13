@@ -668,7 +668,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
                 `DTEND;TZID=Europe/Lisbon:${eventEndLocal}`,
                 `SUMMARY:${escapeICSText(event.descriptionTitle || '')}`,
                 `DESCRIPTION:${escapeICSText(description)}`,
-                `LOCATION:${escapeICSText(event.oppPlaceTitle || '')}`,
+                `LOCATION:${escapeICSText(`${event.oppPlaceTitle}, ${event.oppPlaceSubtitle}` || '')}`,
                 'CATEGORIES:StudentX',
                 `URL:${escapeICSText(event.moreInfoLink || '')}`,
                 'STATUS:CONFIRMED',
