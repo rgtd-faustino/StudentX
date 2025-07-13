@@ -624,6 +624,10 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
 
         let futureEvents = [];
 
+        function findEventById(eventId) {
+            return events.find(event => parseInt(event.id) === parseInt(eventId));
+        }
+
         // tecnicamente isto devia estar no script do carrossel porque só vais descarregar os eventos que o utilizador der swipe accept nele
         // no entanto como o código do ICS está aqui eu aproveitei e continuei aqui
         if(window.innerWidth <= 600){
