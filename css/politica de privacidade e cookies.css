@@ -20,27 +20,7 @@ body {
     box-shadow: 0 0 1vw rgba(0, 0, 0, 0.2);
 }
 
-h1 {
-    text-align: center;
-    color: #222;
-}
-h2 {
-    color: #333;
-    margin-top: 1vw;
-}
 
-h3 {
-    color: #444;
-}
-
-h4 {
-    color: #555;
-}
-
-p {
-    color: #333;
-    text-align: justify;
-}
 
 .hamburger {
     display: block;
@@ -192,7 +172,72 @@ nav {
   }
 
 
-
+        h1 {
+            color: #2c3e50;
+            border-bottom: 0.2vw solid #3498db;
+            padding-bottom: 1vw;
+            text-align: center;
+            color: #222;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 1vw;
+            border-left: 0.3vw solid #3498db;
+            padding-left: 0.8vw;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 1vw;
+        }
+        h4 {
+            color: #34495e;
+            margin-top: 1vw;
+        }
+        p {
+            text-align: justify;
+        }
+        ul {
+            margin: 1vw 0;
+            padding-left: 1vw;
+        }
+        li {
+            margin-bottom: 0.5vw;
+        }
+        .highlight {
+            background-color: #e8f4f8;
+            padding: 0.8vw;
+            border-left: 0.3vw solid #3498db;
+        }
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1vw 0;
+        }
+        .cookie-table th, .cookie-table td {
+            border: 0.15vw solid #ddd;
+            padding: 0.6vw;
+            text-align: left;
+        }
+        .cookie-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .essential { background-color: #e8f5e8; }
+        .analytics { background-color: #d1ecf1; }
+        .marketing { background-color: #f8d7da; }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .update-date {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 2vw;
+        }
 
 
 
