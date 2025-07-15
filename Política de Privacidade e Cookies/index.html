@@ -195,7 +195,7 @@
             a considerar a ativação desta funcionalidade no futuro.
         </div>
 
-        <h3>3.3 Tabela Resumo de Cookies</h3>
+        <h3 id="cookie-table-title">3.3 Tabela Resumo de Cookies</h3>
         <table class="cookie-table">
             <thead>
                 <tr>
@@ -280,7 +280,20 @@
             </tbody>
         </table>
 
-        <h3>3.4 Gestão de Cookies</h3>
+        <h3 id="gestao-cookies-heading">3.4 Gestão de Cookies</h3>
+        <script>
+            function updateHeadingText() {
+                const heading = document.getElementById('gestao-cookies-heading');
+                if (window.innerWidth <= 600) {
+                    heading.textContent = '3.3 Gestão de Cookies';
+                } else {
+                    heading.textContent = '3.4 Gestão de Cookies';
+                }
+            }
+            updateHeadingText();
+            window.addEventListener('resize', updateHeadingText);
+        </script>
+
         <p>Pode gerir as suas preferências de cookies a qualquer momento através do banner de consentimento que 
             aparece na sua primeira visita ou através da opção "Gerir Cookies" disponível no footer do nosso website.</p>
         
