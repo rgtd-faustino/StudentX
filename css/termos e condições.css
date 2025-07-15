@@ -51,14 +51,14 @@ p {
     cursor: pointer;
 }
 
-        a {
-            color: #3498db;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+a {
+    color: #108cec;
+    text-decoration: none;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: underline;
+}
 
 .hamburger-line1,
 .hamburger-line2,

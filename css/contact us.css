@@ -84,6 +84,9 @@ nav {
     line-height: normal;
 }
 
+.nav-items li a:hover{
+    color: rgb(245, 245, 245);
+}
 
 /* Style for the right-side navigation */
 .right-side-nav {

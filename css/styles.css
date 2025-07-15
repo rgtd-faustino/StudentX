@@ -1399,6 +1399,15 @@ nav {
     margin-bottom:5vw;
 }
 
+.faq a{
+    color: #108cec;
+    text-decoration: none;
+}
+
+.faq a:hover{
+    text-decoration: underline;
+}
+
 .faq-item {
     border-bottom: 1px solid #ddd;
     padding: 0.5vw 0;
