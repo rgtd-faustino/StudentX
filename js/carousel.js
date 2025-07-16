@@ -249,9 +249,8 @@ function setupMobileCarousel() {
     if (arrowsAndDots) arrowsAndDots.style.display = 'none';
    
     const carouselItems = document.querySelectorAll('.item-container-mobile');
-    let noMoreEventsCard = null;
+    let noMoreEventsCard = null;  
 
-    
     if (!carouselItems.length) {
         console.log('No carousel items found in DOM - checking if we should show no-more-events card');
         
@@ -276,8 +275,6 @@ function setupMobileCarousel() {
             
             noMoreEventsCard = createNoMoreEventsCard();
             noMoreEventsCard.style.display = 'block';
-            
-            return;
         }
     }
    
@@ -297,7 +294,7 @@ function setupMobileCarousel() {
     function getDateValue(date) {
         return (date.getFullYear() * 10000) + ((date.getMonth() + 1) * 100) + date.getDate();
     }
-    
+
     const currentDayValue  = getDateValue(currentDay);
     let hasCurrentDayEvent = false;
     
@@ -424,6 +421,7 @@ function setupMobileCarousel() {
         noMoreEventsCard = createNoMoreEventsCard();
         noMoreEventsCard.style.display = 'block';
         console.log('No events available for today, showing no-more-events card');
+        addSwipeInstructions(true);
 
     } else {
         let foundValidEvent = false;
@@ -432,6 +430,7 @@ function setupMobileCarousel() {
             if (item.dateValue === currentDayValue && isFutureEvent(item)) {
                 item.style.display = 'block';
                 foundValidEvent = true;
+                addSwipeInstructions(false);
                 break;
             }
         }
@@ -440,10 +439,10 @@ function setupMobileCarousel() {
             console.warn('hasCurrentDayEvent was true but no valid DOM item found, showing no-more-events card');
             noMoreEventsCard = createNoMoreEventsCard();
             noMoreEventsCard.style.display = 'block';
+            addSwipeInstructions(true);
         }
     }
 
-    addSwipeInstructions();
 
     let currentIndex = 0;
     let startX, moveX, startTime;
@@ -887,27 +886,42 @@ function setupMobileCarousel() {
     }
 }
 
-function addSwipeInstructions() {
-    const firstCard = document.querySelector('.item-container-mobile:not(.no-more-events-card)');
+function addSwipeInstructions(isNoEventsCard) {
+    const firstCard = document.querySelector('.item-container-mobile');
     
     if (firstCard) {
-        areInstructionsShowing = true; // Set flag to disable swiping
-        
         const instructions = document.createElement('div');
-        instructions.className = 'swipe-instructions';
-        instructions.innerHTML = `
-            <h3>Dá Swipe para escolher</h3>
-            <p class="instruction-right" style="font-size:4.2vw;">
-                <i class="fa fa-check instruction-icon"></i>
-                Dá Swipe para a DIREITA para ACEITAR
-            </p>
-            <p class="instruction-left" style="font-size:4.2vw;">
-                <i class="fa fa-times instruction-icon"></i>
-                Dá Swipe para a ESQUERDA para RECUSAR
-            </p>
-            <button id="got-it-btn">Entendido!</button>
-        `;
+
+        if(isNoEventsCard){
+            instructions.className = 'swipe-instructions';
+            instructions.innerHTML = `
+                <h3>Dá Swipe para navegar</h3>
+                <p class="instruction-navigation" style="font-size:4.2vw;">
+                    <i class="fa fa-arrow-left instruction-icon"></i>
+                    <i class="fa fa-arrow-right instruction-icon"></i>
+                    Deslize para ESQUERDA ou DIREITA para ver o próximo dia
+                </p>
+                <button id="got-it-btn">Entendido!</button>
+            `;
+            
+        } else{
+            instructions.className = 'swipe-instructions';
+            instructions.innerHTML = `
+                <h3>Dá Swipe para escolher</h3>
+                <p class="instruction-right" style="font-size:4.2vw;">
+                    <i class="fa fa-check instruction-icon"></i>
+                    Dá Swipe para a DIREITA para ACEITAR
+                </p>
+                <p class="instruction-left" style="font-size:4.2vw;">
+                    <i class="fa fa-times instruction-icon"></i>
+                    Dá Swipe para a ESQUERDA para RECUSAR
+                </p>
+                <button id="got-it-btn">Entendido!</button>
+            `;
+        }
         
+        areInstructionsShowing = true; // Set flag to disable swiping
+
         firstCard.appendChild(instructions);
         
         setTimeout(() => {

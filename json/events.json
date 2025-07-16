@@ -417,7 +417,7 @@
                   "colorOfEvent": "blue",
                   "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
                   {
-                    "day": 15,
+                    "day": 18,
                     "month": 7,
                     "year": 2025,
                     "id": 22,
@@ -431,7 +431,7 @@
                     "oppPlaceSubtitle": "Lisboa, PT",
                     "moreInfoLink": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                     "startTime": "12:00",
-                    "endTime": "14:00",
+                    "endTime": "23:00",
                     "colorOfEvent": "green",
                     "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
                     {
