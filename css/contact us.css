@@ -301,29 +301,52 @@ nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .message-box-container {
     position: absolute;
-    width:100%;
+    width: 40vw; /* Set width to 30% of the viewport width */
+    top: 15%; /* Slightly reduce the top margin to make space */
+    right: 3%;
 }
 
 
 /* Styles for the right-side white box */
 .message-box {
-    position: fixed;
-    top: 15%; /* Slightly reduce the top margin to make space */
-    right: 5%;
-
     background-color: white;
-    padding: 1vw;
     z-index: 1;
     box-sizing: border-box;
-    border-radius: 4vw 4vw 0px 0px;
+    border-radius: 2vw 2vw 0px 0px;
     box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), 
                 5px 0px 10px rgba(0, 0, 0, 0.05), 
                 -5px 0px 10px rgba(0, 0, 0, 0.05);
 
-    width: 40vw; /* Set width to 30% of the viewport width */
-    height: 70vh; /* Set height to 40% of the viewport height */
+     width: 100%;
+     height: 70vh;
+     position: relative;
+     overflow: hidden;
 }
 
 /* Title styles */
@@ -344,6 +367,36 @@ nav {
     font-family: 'Inter', sans-serif;
 }
 
+/* Form Sections */
+.form-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.5vw;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: auto;
+}
+.form-section.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.form-section h3 {
+    font-size: 1.6vw;
+    font-weight: 700;
+    color: #156CF7;
+    margin-bottom: 8px;
+}
+.form-section h1 {
+    font-size: 1vw;
+    font-weight: 400;
+    color: #5D5D5D;
+    margin-bottom: 1vw;
+}
+
 /* Other styles remain the same... */
 .message-box form {
     display: flex;
@@ -359,17 +412,45 @@ nav {
 
 .message-box input[type="text"],
 .message-box input[type="email"],
+.message-box input[type="date"],
+.message-box input[type="time"],
 .message-box textarea {
     padding: 0.4vw 1vw; /* Reduced padding to save space */
     margin-bottom: 0.8vw; /* Reduced margin to save space */
     border: 0.15vw solid #D5D8E2;
-    border-radius: 10px;
+    border-radius: 0.6vw;
     font-size: 0.8vw;
     width: 100%;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
 
+
+.message-box input[type="text"]:focus,
+.message-box input[type="email"]:focus,
+.message-box input[type="date"]:focus,
+.message-box input[type="time"]:focus,
+.message-box textarea:focus {
+    outline: none;
+    border-color: #156CF7;
+    box-shadow: 0 0 0 3px rgba(21, 108, 247, 0.1);
+}
+
+
+.message-box input[type="text"]::placeholder,
+.message-box input[type="email"]::placeholder,
+.message-box textarea::placeholder {
+    font-size: 0.75vw;
+}
+
+.message-box input[type="file"] {
+     position: absolute;
+     opacity: 0;
+     width: 100%;
+     height: 100%;
+     cursor: pointer;
+ }
+ 
 .message-box textarea {
     min-height: 7vw; /* Reduced height to save space */
     resize: none; /* Prevents resizing */
@@ -378,11 +459,11 @@ nav {
 .message-box input[type="submit"] {
     display: flex;
     width: 9vw;
-    padding: 0.5vw 2vw;
+    padding: 0.5vw 1vw;
     justify-content: center;
     align-items: center;
-    border-radius: 12px;
-    border: 1px solid #156CF7;
+    border-radius: 0.7vw;
+    border: 0.1vw solid #156CF7;
     background-color: white;
     color: #156CF7;
     font-family: 'Inter', sans-serif;
@@ -397,9 +478,15 @@ nav {
     color: white;
 }
 
-.name-container {
+.name-container,
+.datetime-container {
     display: flex;
     gap: 10%;
+}
+
+.name-container > div,
+.datetime-container > div {
+    flex: 1;
 }
 
 .name-container input[type="text"] {
@@ -407,11 +494,9 @@ nav {
     margin-top: 0.1vw;
 }
 
-.message-box input[type="text"]::placeholder,
-.message-box input[type="email"]::placeholder,
-.message-box textarea::placeholder {
-    font-size: 0.7vw;
-}
+
+
+
 
 .message-box .title {
     font-family: 'Inter', sans-serif;
@@ -433,6 +518,247 @@ nav {
     margin-bottom: 2vw;
 
 }
+
+
+
+.form-section select {
+    background-color: white;
+    border: 0.15vw solid #D5D8E2;
+    cursor: pointer;
+    padding: 0.4vw 1vw;
+    margin-bottom: 0.8vw;
+    font-size: 0.8vw;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-section select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-section select:hover {
+    border-color: #c6d0da;
+}
+
+.form-section select option {
+    font-size: 0.9vw;
+}
+
+.form-section select option:first-child {
+    color: #6c757d;
+    font-style: italic;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Dark Overlay */
+.overlay {
+    border-radius: 2vw 2vw 0px 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(6, 26, 60, 0.9), rgba(16, 110, 186, 0.85));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+}
+.overlay-content {
+    text-align: center;
+    color: white;
+}
+.overlay-title {
+    font-size: 2vw !important; 
+    font-weight: 700; 
+    margin-bottom: 1vw !important;
+    background: linear-gradient(45deg, #fff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+}
+.overlay-subtitle {
+    font-size: 1.1vw !important; 
+    font-weight: 400;
+    margin-bottom: 5vw !important;
+    opacity: 0.9;
+}
+.overlay-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vw;
+}
+.overlay-btn {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    padding: 1.2vw 4vw;
+    background: rgba(255, 255, 255, 0.1);
+    border: 0.2vw solid rgba(255, 255, 255, 0.2);
+    border-radius: 1vw;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.overlay-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-0.1vw);
+}
+
+
+
+
+.btn-icon {
+    font-size: 2rem;
+    width: 3vw;
+    height: 3vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1vw;
+}
+.btn-text {
+    flex: 1;
+    text-align: left;
+}
+.btn-title {
+    display: block;
+    font-size: 1vw;
+    font-weight: 600;
+    margin-bottom: 0.4vw;
+}
+.btn-desc {
+    display: block;
+    font-size: 0.85vw;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+.back-btn {
+    position: absolute;
+    top: 1vw;
+    left: 1.5vw;
+    background: none;
+    border: none;
+    font-size: 1.5vw;
+    cursor: pointer;
+    color: #156CF7;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    padding:0.5vw;
+}
+.back-btn:hover {
+    background: rgba(21, 108, 247, 0.1);
+}
+.file-input-container {
+    position: relative;
+    margin-bottom:1vw;
+    margin-top:0.5vw;
+}
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vw 5vw;
+    border: 0.15vw dashed #c4c8ce;
+    border-radius: 0.7vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6B7280;
+    font-size: 1vw;
+}
+.file-input-label:hover {
+    border-color: #156CF7;
+    background: rgba(21, 108, 247, 0.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .event-info {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #0ea5e9;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .event-info h4 {
+            color: #0369a1;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            font-size: 0.9rem;
+            color: #0c4a6e;
+        }
+
+        .event-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-detail strong {
+            font-weight: 600;
+            min-width: 60px;
+        }
+
+        .color-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #22c55e;
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -595,6 +921,18 @@ input[type="checkbox"] {
         font-size: 18px; /* Slightly smaller font size for better readability on small screens */
 
         
+    }
+
+    #contact{
+        margin-top: 12%;
+        margin-left: 10%;
+        margin: 0;
+        left: 22%;
+        top: 15%;
+        pointer-events: none;
+        z-index: 1;
+        position: relative;
+        width:55%;
     }
 
     #calendario-title{
@@ -777,7 +1115,7 @@ input[type="checkbox"] {
         border: none;
         text-decoration: none;
         cursor: pointer;
-        font-size: 3.2vw;
+        font-size: 3.4vw !important;
         white-space: nowrap;
         color: #FFF;
         font-family: 'Poppins', sans-serif;
@@ -876,7 +1214,7 @@ input[type="checkbox"] {
     }
 
     .social-media-text {
-        font-size: 3.5vw; /* Adjust font size for mobile */
+        font-size: 4vw; /* Adjust font size for mobile */
     }
 
     .profile-name{
@@ -902,6 +1240,240 @@ input[type="checkbox"] {
 
 
 
+            .message-box-container {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 95%;
+                height: 100%;
+                z-index: 1000;
+                margin: 0 auto;
+
+            }
+
+            .message-box {
+                border-radius: 5vw;
+                box-shadow: none;
+            }
+
+            /* Overlay Responsive */
+            .overlay {
+                border-radius: 0;
+                padding: 5vw;
+            }
+
+            .overlay-title {
+                font-size: 6vw !important;
+                margin-bottom: 0vw !important;
+            }
+
+            .overlay-subtitle {
+                font-size: 5vw !important;
+                margin-bottom: 20vw !important;
+                margin-top: 3vw !important;
+            }
+
+            .overlay-buttons {
+                gap: 5vw;
+                width: 100%;
+            }
+
+            .overlay-btn {
+                padding: 3vw 5vw;
+                gap: 4vw;
+                border-radius: 4vw;
+                border-width: 0.8vw;
+            }
+
+            .btn-icon {
+                width: 15vw;
+                height: 15vw;
+                font-size: 10vw;
+                border-radius: 3vw;
+            }
+
+            .btn-title {
+                font-size: 4vw;
+                margin-bottom: 2vw;
+            }
+
+            .btn-desc {
+                font-size: 4vw;
+            }
+
+            /* Form Section Responsive */
+            .form-section {
+                padding: 5vw;
+                padding-top: 15vw; /* Space for back button */
+            }
+
+            .form-section h3 {
+                font-size: 6vw;
+                margin-bottom: 0vw;
+            }
+
+            .form-section h1 {
+                font-size: 4.5vw;
+                margin-bottom: 5vw;
+                margin-top: 2vw;
+            }
+
+            /* Back Button Responsive */
+            .back-btn {
+                top: 2vw;
+                left: 40%;
+                font-size: 10vw;
+                padding: 5vw;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Form Elements Responsive */
+            .message-box label {
+                font-size: 4.5vw;
+                margin-bottom: 1vw;
+                font-weight: 500;
+            }
+
+            .message-box input[type="text"],
+            .message-box input[type="email"],
+            .message-box input[type="date"],
+            .message-box input[type="time"],
+            .message-box textarea,
+            .form-section select {
+                font-size: 4.5vw;
+                padding: 2.5vw 4vw;
+                margin-bottom: 4vw;
+                border-radius: 2vw;
+                border-width: 0.7vw;
+            }
+
+            .message-box input[type="text"]::placeholder,
+            .message-box input[type="email"]::placeholder,
+            .message-box textarea::placeholder {
+                font-size: 4.5vw;
+            }
+
+            .message-box textarea {
+                min-height: 35vw;
+            }
+
+            /* Layout Containers Responsive */
+            .name-container,
+            .datetime-container {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .datetime-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2vw;
+            }
+
+            .datetime-container > div:first-child {
+                grid-column: 1 / -1; /* Date takes full width */
+            }
+
+            /* Submit Button Responsive */
+            .message-box input[type="submit"] {
+                width: 100%;
+                padding: 2vw 2vw;
+                font-size: 4.5vw;
+                border-radius: 2vw;
+                margin-top: 1vw;
+                align-self: stretch;
+            }
+
+            /* File Input Responsive */
+            .file-input-label {
+                padding: 5vw 10vw;
+                font-size: 16px;
+                border-radius: 8px;
+                text-align: center;
+            }
+
+            .file-input-container {
+                margin-bottom: 5vw;
+                margin-top: 2vw;
+            }
+
+            /* Select Dropdown Responsive */
+            .form-section select {
+                background-color: white;
+                border: 0.15vw solid #D5D8E2;
+                cursor: pointer;
+                padding: 3vw 4vw;
+                margin-bottom: 2vw;
+                font-size: 4.5vw;
+                width: 100%;
+                box-sizing: border-box;
+                font-family: 'Inter', sans-serif;
+            }
+
+            .form-section select option {
+                font-size: 4.5vw;
+            }
+
+            /* Focus States for Mobile */
+            .message-box input[type="text"]:focus,
+            .message-box input[type="email"]:focus,
+            .message-box input[type="date"]:focus,
+            .message-box input[type="time"]:focus,
+            .message-box textarea:focus,
+            .form-section select:focus {
+                box-shadow: 0 0 0 3px rgba(21, 108, 247, 0.1);
+                border-color: #156CF7;
+            }
+
+            /* Remove hover states on mobile */
+            .overlay-btn:hover {
+                transform: none;
+            }
+
+            .back-btn:hover {
+                background: rgba(21, 108, 247, 0.1);
+            }
+
+            .file-input-label {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 5vw 5vw;
+                border: 0.7vw dashed #c4c8ce;
+                border-radius: 1vw;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: #6B7280;
+                font-size: 1vw;
+            }
+            .file-input-label:hover {
+                border-color: #156CF7;
+                background: rgba(21, 108, 247, 0.05);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
 
 
 
@@ -928,178 +1500,6 @@ input[type="checkbox"] {
 
 
 
-
-    /* Contact section hidden */
-    #contact{
-        margin-top: unset;
-        margin-left: unset;
-        pointer-events: none;
-        position: fixed;
-        z-index: 0;
-        position: relative;
-        width:90%;
-        margin-bottom:-13vw;
-        margin-left:5vw;
-    }
-
-    .message-box-container {
-        position: relative;
-        width:100%;
-    }
-    
-    
-    /* Styles for the right-side white box */
-    .message-box {
-        position: relative;
-
-    
-        background-color: white;
-        padding: 1vw;
-        z-index: 1;
-        box-sizing: border-box;
-        border-radius: 4vw 4vw 4vw 4vw;
-        box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), 
-                    5px 0px 10px rgba(0, 0, 0, 0.05), 
-                    -5px 0px 10px rgba(0, 0, 0, 0.05);
-    
-        width: 90%; /* Set width to 30% of the viewport width */
-        height: unset; /* Set height to 40% of the viewport height */
-        margin: 0 auto;
-        margin-right:0vw;
-        margin-top:6vw;
-        }
-    
-    /* Title styles */
-    .message-box h2 {
-        font-size: 2vw; /* Large title */
-        font-weight: 700; /* Bold */
-        margin-bottom: 1vw; /* Space below the title */
-        color: #156CF7; /* Blue color */
-        font-family: 'Inter', sans-serif;
-        text-decoration: underline; /* Underline the title */
-        text-decoration-color: #108CEC; /* Blue underline */
-        text-decoration-thickness: 0.15em; /* Thicker underline */
-        text-underline-offset: 0.5em; /* Offset the underline */
-    }
-
-    
-
-    
-    /* Subtitle styles */
-    .message-box h3 {
-        font-size: 1vw; /* Smaller subtitle */
-        font-weight: 400; /* Normal weight */
-        margin-bottom: 1vw; /* Space below the subtitle */
-        color: #333; /* Dark gray color */
-        font-family: 'Inter', sans-serif;
-        width:80%;
-        margin: 0 auto;
-        margin-top:5%;
-    }
-    
-    /* Other styles remain the same... */
-    .message-box form {
-        display: flex;
-        flex-direction: column;
-        margin-left:5vw;
-        margin-right: 5vw;
-
-    }
-    
-    .message-box label {
-        margin-top: 3vw;
-        margin-bottom: 1vw;
-        font-family: 'Inter', sans-serif;
-        font-size: 4vw;
-        font-weight: 400;
-    }
-    
-    .message-box input[type="text"],
-    .message-box input[type="email"],
-    .message-box textarea {
-        padding: 2vw 2vw; /* Reduced padding to save space */
-        margin-bottom: 0.8vw; /* Reduced margin to save space */
-        border: 0.4vw solid #D5D8E2;
-        border-radius: 10px;
-        font-size: 5vw;
-        width: 100%;
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    .message-box textarea {
-        min-height: 40vw; /* Reduced height to save space */
-        resize: none; /* Prevents resizing */
-    }
-    
-    .message-box input[type="submit"] {
-        display: flex;
-        width: 50%;
-        padding: 1vw 1vw;
-        justify-content: center;
-        align-items: center;
-        border-radius: 12px;
-        border: 1px solid #156CF7;
-        background-color: white;
-        color: #156CF7;
-        font-family: 'Inter', sans-serif;
-        font-size: 4vw;
-        font-weight: 600;
-        align-self: flex-end;
-        cursor: pointer;
-        margin-top:4vw;
-        margin-bottom: 4vw;
-    }
-    
-    .message-box input[type="submit"]:hover {
-        background-color: #108CEC;
-        color: white;
-    }
-    
-    .name-container {
-        display: flex;
-        gap: 10%;
-    }
-    
-    .name-container input[type="text"] {
-        flex: 1;
-        margin-top: 0.3vw;
-    }
-    
-    .message-box input[type="text"]::placeholder,
-    .message-box input[type="email"]::placeholder,
-    .message-box textarea::placeholder {
-        font-size: 4vw;
-    }
-
-    .message-box input[type="text"],
-    .message-box input[type="email"],
-    .message-box textarea {
-        font-size: 4vw; /* Adjust the font size as needed */
-    }
-    
-    .message-box .title {
-        font-family: 'Inter', sans-serif;
-        color: #000;
-        font-size: 6vw;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-    }
-    
-    .message-box .subtitle {
-        text-align: center; /* Center the subtitle */
-        font-family: 'Inter', sans-serif;
-        font-size: 4vw;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        color: #5D5D5D;
-        margin-bottom: 8vw;
-    
-    }
-
-        
     .cookie-banner {
         all:unset;
         position: fixed;

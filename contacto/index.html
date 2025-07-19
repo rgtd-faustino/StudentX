@@ -24,6 +24,7 @@
     
         <!-- Preload de recursos críticos -->
         <link rel="preload" href="/js/script.js" as="script">
+        <link rel="preload" href="/js/contactus.js" as="script">
         <link rel="preload" href="/js/cookie-banner.js" as="script">
     
         <!-- Favicons -->
@@ -109,35 +110,143 @@
     </div>
 
     <div class="message-box-container">
-
         <div class="message-box">
-            <h3 class="title">Diz-nos o que pensas</h3>
-            <h1 class="subtitle">Queremos ouvir as tuas ideias, sugestões ou dúvidas</h1>
-
-            <form action="https://formspree.io/f/mldrzvyz" method="post">
-                <div class="name-container">
-                    <div>
-                        <label for="name">Primeiro Nome:</label>
-                        <input type="text" id="name" name="name" placeholder="Nome" required>
-                    </div>
-                    <div>
-                        <label for="apelido">Último Nome:</label>
-                        <input type="text" id="apelido" name="apelido" placeholder="Último nome" required>
+            <!-- Dark Overlay with Buttons -->
+            <div class="overlay" id="overlay">
+                <div class="overlay-content">
+                    <h2 class="overlay-title">Como podemos ajudar?</h2>
+                    <p class="overlay-subtitle">Escolhe uma das opções abaixo</p>
+                    <div class="overlay-buttons">
+                        <button class="overlay-btn message-btn" onclick="showForm('message')">
+                            <div class="btn-icon">📧</div>
+                            <div class="btn-text">
+                                <span class="btn-title">Enviar Mensagem</span>
+                                <span class="btn-desc">Partilha as tuas ideias connosco</span>
+                            </div>
+                        </button>
+                        <button class="overlay-btn event-btn" onclick="showForm('event')">
+                            <div class="btn-icon">📅</div>
+                            <div class="btn-text">
+                                <span class="btn-title">Submeter Evento</span>
+                                <span class="btn-desc">Adiciona o teu evento à comunidade</span>
+                            </div>
+                        </button>
                     </div>
                 </div>
-                <label for="assunto">Assunto:</label>
-                <input type="text" id="assunto" name="assunto" placeholder="Assunto" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Email" required>
-                <label for="message">Mensagem:</label>
-                <textarea id="message" name="message" placeholder="Escreve aqui a tua mensagem..." required></textarea>
-                <input type="submit" value="Enviar">
-            </form>
+            </div>
+
+            <!-- Message Form -->
+            <div class="form-section" id="message-form">
+                <button class="back-btn" onclick="hideForm()">←</button>
+                <h3>Enviar Mensagem</h3>
+                <h1>Partilha as tuas ideias connosco</h1>
+
+                <form action="https://formspree.io/f/mldrzvyz" method="post">
+                    <div class="name-container">
+                        <div>
+                            <label for="name">Primeiro Nome:</label>
+                            <input type="text" id="name" name="name" placeholder="Nome" required>
+                        </div>
+                        <div>
+                            <label for="apelido">Último Nome:</label>
+                            <input type="text" id="apelido" name="apelido" placeholder="Último nome" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="assunto">Assunto:</label>
+                        <input type="text" id="assunto" name="assunto" placeholder="Assunto" required>
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div>
+                        <label for="message">Mensagem:</label>
+                        <textarea id="message" name="message" placeholder="Escreve aqui a tua mensagem..." required></textarea>
+                    </div>
+                    <input type="submit" value="Enviar">
+                </form>
+            </div>
+
+            <!-- Event Form -->
+            <div class="form-section" id="event-form">
+                <button class="back-btn" onclick="hideForm()">←</button>
+                <h3>Submeter Evento</h3>
+                <h1>Partilha o teu evento com a comunidade Student X</h1>
+                <form action="https://formspree.io/f/mldrzvyz" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="form_type" value="event">
+                   
+                    <div class="name-container">
+                        <div>
+                            <label for="event-name">Primeiro Nome:</label>
+                            <input type="text" id="event-name" name="name" placeholder="Nome" required>
+                        </div>
+                        <div>
+                            <label for="event-apelido">Último Nome:</label>
+                            <input type="text" id="event-apelido" name="apelido" placeholder="Último nome" required>
+                        </div>
+                    </div>
+                   
+                    <div>
+                        <label for="event-email">Email:</label>
+                        <input type="email" id="event-email" name="email" placeholder="Email" required>
+                    </div>
+                   
+                    <div>
+                        <label for="event-title">Nome do Evento:</label>
+                        <input type="text" id="event-title" name="event_title" placeholder="Nome do evento" required>
+                    </div>
+
+                    <div>
+                        <label for="event-category">Categoria de Evento:</label>
+                        <select id="event-category" name="event_category" required>
+                            <option value="">Seleciona uma categoria</option>
+                            <option value="Desenvolvimento Curricular">Desenvolvimento Curricular</option>
+                            <option value="Desenvolvimento Pessoal">Desenvolvimento Pessoal</option>
+                            <option value="Desenvolvimento Profissional">Desenvolvimento Profissional</option>
+                        </select>
+                    </div>
+                   
+                    <div class="datetime-container">
+                        <div>
+                            <label for="event-date">Data:</label>
+                            <input type="date" id="event-date" name="event_date" required>
+                        </div>
+                        <div>
+                            <label for="event-start-time">Hora de Início:</label>
+                            <input type="time" id="event-start-time" name="event_start_time" required>
+                        </div>
+                        <div>
+                            <label for="event-end-time">Hora de Fim:</label>
+                            <input type="time" id="event-end-time" name="event_end_time" required>
+                        </div>
+                    </div>
+                   
+                    <div>
+                        <label for="event-location">Local:</label>
+                        <input type="text" id="event-location" name="event_location" placeholder="Local do evento" required>
+                    </div>
+                   
+                    <div>
+                        <label for="event-description">Descrição do Evento:</label>
+                        <textarea id="event-description" name="event_description" placeholder="Descreve o teu evento..." required></textarea>
+                    </div>
+                   
+                    <div>
+                        <label for="event-image">Imagem do Evento:</label>
+                        <div class="file-input-container">
+                            <label for="event-image" class="file-input-label" id="file-label">
+                                Clica para selecionar uma imagem
+                                <input type="file" id="event-image" name="event_image" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                   
+                    <input type="submit" value="Submeter Evento">
+                </form>
+            </div>
         </div>
     </div>
-    
-
-
 
     <footer class="footer">
         <div class="social-media-container">
@@ -223,6 +332,7 @@
 
 
     <script defer src="/js/script.js"></script>
+    <script defer src="/js/contactus.js"></script>
     <script defer src="/js/cookie-banner.js"></script>
 
 </body>
