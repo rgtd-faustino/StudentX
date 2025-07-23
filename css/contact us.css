@@ -1539,7 +1539,7 @@ input[type="checkbox"] {
 
             /* Overlay Responsive */
             .overlay {
-                border-radius: 0;
+                border-radius: 5vw;
                 padding: 5vw;
             }
 
