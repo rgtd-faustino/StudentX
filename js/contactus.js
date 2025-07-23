@@ -356,12 +356,36 @@
         // Function to upload image to Firebase Storage
         async function uploadImage(file, path) {
             try {
+                // Validate file
+                if (!file || file.size === 0) {
+                    throw new Error('Arquivo inválido ou vazio');
+                }
+
+                // Check if file is actually an image
+                if (!file.type.startsWith('image/')) {
+                    throw new Error('Arquivo deve ser uma imagem');
+                }
+
                 const storageRef = storage.ref().child(path);
-                const snapshot = await storageRef.put(file);
+                
+                // Upload with metadata
+                const metadata = {
+                    contentType: file.type,
+                    customMetadata: {
+                        'uploadedAt': new Date().toISOString()
+                    }
+                };
+
+                const snapshot = await storageRef.put(file, metadata);
                 const downloadURL = await snapshot.ref.getDownloadURL();
                 return downloadURL;
             } catch (error) {
-                console.error('Erro ao fazer upload da imagem:', error);
+                console.error('Erro detalhado no upload da imagem:', error);
+                console.error('File info:', {
+                    name: file?.name,
+                    size: file?.size,
+                    type: file?.type
+                });
                 throw error;
             }
         }
@@ -379,7 +403,6 @@
                     status: 'nova'
                 });
                 
-                console.log('Mensagem enviada com ID: ', docRef.id);
                 return true;
             } catch (error) {
                 console.error('Erro ao enviar mensagem: ', error);
@@ -393,23 +416,29 @@
                 let imagemEventoURL = '';
                 let logotipoOrganizacaoURL = '';
 
+                // Get file inputs directly from DOM (more reliable)
+                const eventImageInput = document.getElementById('event-image');
+                const eventImage2Input = document.getElementById('event-image2');
+
                 // Upload event image if provided
-                const eventImageFile = formData.get('event_image');
-                if (eventImageFile && eventImageFile.size > 0) {
+                if (eventImageInput && eventImageInput.files && eventImageInput.files[0]) {
+                    const eventImageFile = eventImageInput.files[0];
                     const timestamp = Date.now();
                     const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
                     imagemEventoURL = await uploadImage(eventImageFile, imagePath);
                 }
 
                 // Upload organization logo if provided
-                const eventImage2File = formData.get('event_image2');
-                if (eventImage2File && eventImage2File.size > 0) {
+                if (eventImage2Input && eventImage2Input.files && eventImage2Input.files[0]) {
+                    const eventImage2File = eventImage2Input.files[0];
+                    
                     const timestamp = Date.now();
                     const logoPath = `eventos/logos/${timestamp}_${eventImage2File.name}`;
                     logotipoOrganizacaoURL = await uploadImage(eventImage2File, logoPath);
                 }
 
-                const docRef = await db.collection('eventos').add({
+                // Create the document data
+                const eventData = {
                     nome: formData.get('name'),
                     apelido: formData.get('apelido'),
                     email: formData.get('email'),
@@ -427,9 +456,9 @@
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     status: 'pendente',
                     aprovado: false
-                });
-                
-                console.log('Evento submetido com ID: ', docRef.id);
+                };
+
+                const docRef = await db.collection('eventos').add(eventData);
                 return true;
             } catch (error) {
                 console.error('Erro ao submeter evento: ', error);
