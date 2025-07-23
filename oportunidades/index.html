@@ -119,57 +119,6 @@
 
     <div id="events-grid" class="grid-container"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const gridContainer = document.getElementById('events-grid');
-
-            function createEventGrid(data) {
-                const container = document.getElementById('events-grid');
-                const oppCountElement = document.getElementById('opp-count');
-                
-                data.items.forEach(item => {
-                    const gridItem = document.createElement('div');
-                    gridItem.className = 'grid-item';
-                    gridItem.innerHTML = `
-                        <img src="${item.imageSrc}" alt="${item.altText}">
-                        <div class="description">
-                            <p class="description-title">${item.descriptionTitle}</p>
-                            <p class="description-subtitle">${item.descriptionSubtitle}</p>
-                        </div>
-                        <div class="carousel-line"></div>
-                        <div class="opp-place">
-                            <img src="${item.logoSrc}" alt="${item.logoAlt}">
-                            <div>
-                                <p class="opp-place-title">${item.oppPlaceTitle}</p>
-                                <p class="opp-place-subtitle">${item.oppPlaceSubtitle}</p>
-                            </div>
-                        </div>
-                        <a href="${item.moreInfoLink}" class="button-more-info">Mais Informações</a>
-                    `;
-                    container.appendChild(gridItem);
-                });
-                
-                oppCountElement.textContent = data.items.length;
-            }
-
-            
-        function isFutureEvent(event) {
-            const now = new Date();
-            const [endHour, endMinute] = event.endTime.split(':').map(Number);
-            const eventEnd = new Date(event.year, event.month - 1, event.day, endHour, endMinute);
-            return eventEnd >= now;
-        }
-           
-        fetch('/json/events.json')
-            .then(response => response.json())
-            .then(data => {
-                const futureItems = data.items.filter(isFutureEvent);
-                createEventGrid({ items: futureItems });
-            })
-            .catch(error => console.error('Error loading event data:', error));
-        });
-    </script>
-
     <div class="container">
         <div class="header">
             <h1>Preferências de Eventos</h1>

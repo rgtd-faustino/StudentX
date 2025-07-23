@@ -614,14 +614,13 @@ nav {
     z-index: 3;
     gap: 5%;
     height: 100%;
-    width:100%;
+    width: 100%;
 }
 
 .item-container-mobile {
     flex: 0 0 20%;
     box-sizing: border-box;
     padding: 0.7%;
-    border: 0.1vw solid rgba(52, 52, 52, 0.25);
     border-radius: 1vw;
     transition: transform 0.3s ease-in-out;
     height: 100%;
@@ -633,6 +632,7 @@ nav {
     max-height: 16vw; /* Maximum height of 300 pixels */
     width: 100%; /* Optional: Makes the element responsive */
     height: auto; 
+    border-radius: 0.8vw;
 }
 
 .item-container-mobile:first-child {
@@ -738,22 +738,25 @@ nav {
 .description-title-mobile  {
     text-align: center;
     font-weight: 600;
-    font-size: 1.1vw;
+    font-size: 1vw;
     margin-top:1.5vw;
     margin-bottom:1.2vw;
 }
 
-.opp-place-title-mobile{
-    font-weight: 600;
-    font-size: 1vw;
-}
-
 .description-subtitle-mobile  {
-    font-size: 0.9vw;
+    font-size: 0.8vw;
     color: grey;
     margin-top: -2.3vh;
+    
 
 }
+
+.opp-place-title-mobile{
+    font-weight: 600;
+    font-size: 0.9vw;
+}
+
+
 
 .opp-place-subtitle-mobile{
     font-size: 0.8vw;
@@ -1023,7 +1026,33 @@ nav {
     display: flex;
 }
 
+/* Text container styles */
+.text-container {
+    max-width: 13vw;
+    margin: 0.9vw auto;
+    border: 0.2vw solid rgb(173, 173, 173);
+    border-radius: 1vw;
+    padding: 0.6vw;
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+}
 
+.text-wrapper {
+    position: relative;
+    max-height: calc(100% - 0vw);
+    overflow: hidden;
+}
+
+.text-element {
+    margin: 0;
+    color: grey;
+    font-family: Poppins, sans-serif;
+    font-size: 0.9vw;
+    line-height: 1.4;
+    text-align: center;
+    word-wrap: break-word;
+}
 
 /* Event Modal Container */
 .event-modal {
@@ -1095,6 +1124,7 @@ nav {
 .event-image-expanded{
     width:100%;
     height:100%;
+    border-radius: 0.6vw;
 }
 
 
@@ -1146,6 +1176,7 @@ nav {
     width: 3vw;
     height: auto;
     margin-right: 1vw;
+    border-radius: 0.8vw;
 }
 
 .place-info-expanded {
@@ -1177,10 +1208,13 @@ nav {
 .event-image{
     width:100%;
     height:100%;
+    border-radius: 0.6vw;
+
 }
 
 .event-image-full{
     width:100%;
+    border-radius: 0.6vw;
 }
 
 .description-title-calendar  {
@@ -1231,6 +1265,7 @@ nav {
     width: 2.7vw;
     height: auto;
     margin-right: 1vw;
+    border-radius: 0.8vw;
 }
 
 .place-info {
@@ -2557,7 +2592,6 @@ input[type="checkbox"] {
         flex: 0 0 100%;
         box-sizing: border-box;
         padding: 3vw;
-        border: 0.6vw solid rgba(52, 52, 52, 0.25);
         border-radius: 3vw;
         transition: transform 0.3s ease-in-out;
     }
@@ -2634,6 +2668,7 @@ input[type="checkbox"] {
         margin-top: 0vh;
         color: grey;
         margin-top: -2.3vh;
+        white-space: normal;
     }
     
     .opp-place-mobile {
@@ -2834,7 +2869,7 @@ input[type="checkbox"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 6vw;
+    margin-bottom: 5vw;
     margin-top: 6vw;
     padding: 0 10vw; /* Add padding to prevent title from overlapping buttons */
     /*display:none;*/
@@ -3191,16 +3226,39 @@ input[type="checkbox"] {
 
 
 .caption-container {
-    padding: 2vh;
-    font-size: 3.5vw;
-    display:none;
-
+    padding: 2vw;
+    margin: 0 auto;
+    max-width: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
-
 .caption-list {
-    gap: 2vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    align-items: flex-start;
 }
-
+.caption-item {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+}
+.color-indicator {
+    width: 6vw;
+    height: 6vw;
+    flex-shrink: 0;
+}
+.color-red { background-color: red; }
+.color-blue { background-color: blue; }
+.color-green { background-color: green; }
+.caption-text {
+    flex: 1;
+    min-width: 0;
+    font-size: 4vw;
+    color: rgba(0, 0, 24, 0.70);
+}
 
 
 
@@ -3748,7 +3806,7 @@ input[type="checkbox"] {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 0.6vw solid rgb(0, 144, 255);
+    border: 0.8vw solid rgb(0, 144, 255);
 }
 
 /* Image container */

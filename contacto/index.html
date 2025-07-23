@@ -109,141 +109,192 @@
         </div>
     </div>
 
-    <div class="message-box-container">
-        <div class="message-box">
-            <!-- Dark Overlay with Buttons -->
-            <div class="overlay" id="overlay">
-                <div class="overlay-content">
-                    <h2 class="overlay-title">Como podemos ajudar?</h2>
-                    <p class="overlay-subtitle">Escolhe uma das opções abaixo</p>
-                    <div class="overlay-buttons">
-                        <button class="overlay-btn message-btn" onclick="showForm('message')">
-                            <div class="btn-icon">📧</div>
-                            <div class="btn-text">
-                                <span class="btn-title">Enviar Mensagem</span>
-                                <span class="btn-desc">Partilha as tuas ideias connosco</span>
-                            </div>
-                        </button>
-                        <button class="overlay-btn event-btn" onclick="showForm('event')">
-                            <div class="btn-icon">📅</div>
-                            <div class="btn-text">
-                                <span class="btn-title">Submeter Evento</span>
-                                <span class="btn-desc">Adiciona o teu evento à comunidade</span>
-                            </div>
-                        </button>
+    <div class="main-container">
+        <!-- Event Preview Section -->
+        <div class="preview-container" id="preview-container">
+            <div class="preview-wrapper">
+                <h2 class="preview-title">Pré-visualização do Evento</h2>
+                <div class="item-container-mobile" id="event-preview">
+                    <div class="placeholder-image" id="preview-image">📷</div>
+                    
+                    <div class="description-mobile">
+                        <p class="description-title-mobile" id="preview-title">Nome do Evento</p>
+                        <p class="description-subtitle-mobile" id="preview-description">Descrição do evento...</p>
                     </div>
+                    
+                    <div class="carousel-line" id="preview-line"></div>
+                    
+                    <div class="opp-place-mobile">
+                        <div class="opp-place-container">
+                            <div class="placeholder-image2" id="preview-image2">📷</div>
+                            <div class="opp-place-texts">
+                                <p class="opp-place-title-mobile">Student X</p>
+                                <p class="opp-place-subtitle-mobile" id="preview-location">Local do evento</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="button-carousel-mobile">Mais Informações</a>
                 </div>
             </div>
+        </div>
 
-            <!-- Message Form -->
-            <div class="form-section" id="message-form">
-                <button class="back-btn" onclick="hideForm()">←</button>
-                <h3>Enviar Mensagem</h3>
-                <h1>Partilha as tuas ideias connosco</h1>
+        <!-- Form Section -->
+        <div class="message-box-container">
+            <div class="message-box">
+                <!-- Dark Overlay with Buttons -->
+                <div class="overlay" id="overlay">
+                    <div class="overlay-content">
+                        <h2 class="overlay-title">Como podemos ajudar?</h2>
+                        <p class="overlay-subtitle">Escolhe uma das opções abaixo</p>
+                        <div class="overlay-buttons">
+                            <button class="overlay-btn message-btn" onclick="showForm('message')">
+                                <div class="btn-icon">📧</div>
+                                <div class="btn-text">
+                                    <span class="btn-title">Enviar Mensagem</span>
+                                    <span class="btn-desc">Partilha as tuas ideias connosco</span>
+                                </div>
+                            </button>
+                            <button class="overlay-btn event-btn" onclick="showForm('event')">
+                                <div class="btn-icon">📅</div>
+                                <div class="btn-text">
+                                    <span class="btn-title">Submeter Evento</span>
+                                    <span class="btn-desc">Adiciona o teu evento à comunidade</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                <form action="https://formspree.io/f/mldrzvyz" method="post">
-                    <div class="name-container">
-                        <div>
-                            <label for="name">Primeiro Nome:</label>
-                            <input type="text" id="name" name="name" placeholder="Nome" required>
-                        </div>
-                        <div>
-                            <label for="apelido">Último Nome:</label>
-                            <input type="text" id="apelido" name="apelido" placeholder="Último nome" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="assunto">Assunto:</label>
-                        <input type="text" id="assunto" name="assunto" placeholder="Assunto" required>
-                    </div>
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                    </div>
-                    <div>
-                        <label for="message">Mensagem:</label>
-                        <textarea id="message" name="message" placeholder="Escreve aqui a tua mensagem..." required></textarea>
-                    </div>
-                    <input type="submit" value="Enviar">
-                </form>
-            </div>
+                <!-- Message Form -->
+                <div class="form-section" id="message-form">
+                    <button class="back-btn" onclick="hideForm()">←</button>
+                    <h3>Enviar Mensagem</h3>
+                    <h1>Partilha as tuas ideias connosco</h1>
 
-            <!-- Event Form -->
-            <div class="form-section" id="event-form">
-                <button class="back-btn" onclick="hideForm()">←</button>
-                <h3>Submeter Evento</h3>
-                <h1>Partilha o teu evento com a comunidade Student X</h1>
-                <form action="https://formspree.io/f/mldrzvyz" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="form_type" value="event">
-                   
-                    <div class="name-container">
-                        <div>
-                            <label for="event-name">Primeiro Nome:</label>
-                            <input type="text" id="event-name" name="name" placeholder="Nome" required>
+                    <form action="https://formspree.io/f/mldrzvyz" method="post">
+                        <div class="name-container">
+                            <div>
+                                <label for="name">Primeiro Nome:</label>
+                                <input type="text" id="name" name="name" placeholder="Nome" required>
+                            </div>
+                            <div>
+                                <label for="apelido">Último Nome:</label>
+                                <input type="text" id="apelido" name="apelido" placeholder="Último nome" required>
+                            </div>
                         </div>
                         <div>
-                            <label for="event-apelido">Último Nome:</label>
-                            <input type="text" id="event-apelido" name="apelido" placeholder="Último nome" required>
+                            <label for="assunto">Assunto:</label>
+                            <input type="text" id="assunto" name="assunto" placeholder="Assunto" required>
                         </div>
-                    </div>
-                   
-                    <div>
-                        <label for="event-email">Email:</label>
-                        <input type="email" id="event-email" name="email" placeholder="Email" required>
-                    </div>
-                   
-                    <div>
-                        <label for="event-title">Nome do Evento:</label>
-                        <input type="text" id="event-title" name="event_title" placeholder="Nome do evento" required>
-                    </div>
+                        <div>
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div>
+                            <label for="message">Mensagem:</label>
+                            <textarea id="message" name="message" placeholder="Escreve aqui a tua mensagem..." required></textarea>
+                        </div>
+                        <input type="submit" value="Enviar">
+                    </form>
+                </div>
 
-                    <div>
-                        <label for="event-category">Categoria de Evento:</label>
-                        <select id="event-category" name="event_category" required>
-                            <option value="">Seleciona uma categoria</option>
-                            <option value="Desenvolvimento Curricular">Desenvolvimento Curricular</option>
-                            <option value="Desenvolvimento Pessoal">Desenvolvimento Pessoal</option>
-                            <option value="Desenvolvimento Profissional">Desenvolvimento Profissional</option>
-                        </select>
-                    </div>
-                   
-                    <div class="datetime-container">
+                <!-- Event Form -->
+                <div class="form-section" id="event-form">
+                    <button class="back-btn" onclick="hideForm()">←</button>
+                    <h3>Submeter Evento</h3>
+                    <h1>Partilha o teu evento com a comunidade Student X</h1>
+                    <form action="https://formspree.io/f/mldrzvyz" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="form_type" value="event">
+                       
+                        <div class="name-container">
+                            <div>
+                                <label for="event-name">Primeiro Nome:</label>
+                                <input type="text" id="event-name" name="name" placeholder="Nome" required>
+                            </div>
+                            <div>
+                                <label for="event-apelido">Último Nome:</label>
+                                <input type="text" id="event-apelido" name="apelido" placeholder="Último nome" required>
+                            </div>
+                        </div>
+                       
                         <div>
-                            <label for="event-date">Data:</label>
-                            <input type="date" id="event-date" name="event_date" required>
+                            <label for="event-email">Email:</label>
+                            <input type="email" id="event-email" name="email" placeholder="Email" required>
                         </div>
+                       
                         <div>
-                            <label for="event-start-time">Hora de Início:</label>
-                            <input type="time" id="event-start-time" name="event_start_time" required>
+                            <label for="event-title">Nome do Evento:</label>
+                            <input type="text" id="event-title" name="event_title" placeholder="Nome do evento" required>
                         </div>
+
                         <div>
-                            <label for="event-end-time">Hora de Fim:</label>
-                            <input type="time" id="event-end-time" name="event_end_time" required>
+                            <label for="event-category">Categoria de Evento:</label>
+                            <select id="event-category" name="event_category" required>
+                                <option value="">Seleciona uma categoria</option>
+                                <option value="Desenvolvimento Curricular">Desenvolvimento Curricular</option>
+                                <option value="Desenvolvimento Pessoal">Desenvolvimento Pessoal</option>
+                                <option value="Desenvolvimento Profissional">Desenvolvimento Profissional</option>
+                            </select>
                         </div>
-                    </div>
-                   
-                    <div>
-                        <label for="event-location">Local:</label>
-                        <input type="text" id="event-location" name="event_location" placeholder="Local do evento" required>
-                    </div>
-                   
-                    <div>
-                        <label for="event-description">Descrição do Evento:</label>
-                        <textarea id="event-description" name="event_description" placeholder="Descreve o teu evento..." required></textarea>
-                    </div>
-                   
-                    <div>
-                        <label for="event-image">Imagem do Evento:</label>
-                        <div class="file-input-container">
-                            <label for="event-image" class="file-input-label" id="file-label">
-                                Clica para selecionar uma imagem
-                                <input type="file" id="event-image" name="event_image" accept="image/*">
-                            </label>
+                       
+                        <div class="datetime-container">
+                            <div>
+                                <label for="event-date">Data:</label>
+                                <input type="date" id="event-date" name="event_date" required>
+                            </div>
+                            <div>
+                                <label for="event-start-time">Hora de Início:</label>
+                                <input type="time" id="event-start-time" name="event_start_time" required>
+                            </div>
+                            <div>
+                                <label for="event-end-time">Hora de Fim:</label>
+                                <input type="time" id="event-end-time" name="event_end_time" required>
+                            </div>
                         </div>
-                    </div>
-                   
-                    <input type="submit" value="Submeter Evento">
-                </form>
+                       
+                        <div>
+                            <label for="event-location">Nome da Empresa / Organização:</label>
+                            <input type="text" id="event-location" name="event_location" placeholder="Organização / Empresa" required>
+                        </div>
+
+                        <div>
+                            <label for="event-location2">Local do Evento:</label>
+                            <input type="text" id="event-location2" name="event_location" placeholder="Local do evento" required>
+                        </div>
+
+                        <div>
+                            <label for="event-description">Descrição do Evento:</label>
+                            <textarea id="event-description" name="event_description" placeholder="Descreve o teu evento..." required></textarea>
+                        </div>
+                       
+                        <div>
+                            <div class="file-input-container">
+                                <label for="event-image">Imagem do Evento:</label>
+                                <label for="event-image" class="file-input-label" id="file-label">
+                                    📷 Clica para selecionar a imagem principal do evento (thumbnail)
+                                    <input type="file" id="event-image" name="event_image" accept="image/*">
+                                </label>
+                            </div>
+
+                            <div class="file-input-container">
+                                <label for="event-image2">Logotipo da Organização:</label>
+                                <label for="event-image2" class="file-input-label" id="file-label2">
+                                    📷 Clica para selecionar o logotipo da empresa
+                                    <input type="file" id="event-image2" name="event_image2" accept="image/*">
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="event-link">Link do Evento:</label>
+                            <input type="url" id="event-link" name="event_link" placeholder="https://exemplo.com/evento" pattern="https://.*">
+                        </div>
+                       
+                       
+                        <input type="submit" value="Submeter Evento">
+                    </form>
+                </div>
             </div>
         </div>
     </div>

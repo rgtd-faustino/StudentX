@@ -9,9 +9,16 @@ body {
 
 :root {
     --primary-color: #108CEC;
+    --blue: #6c8dae;
+    --light-blue: #e6eff7;
+    --dark-blue: #3a4e68;
+    --bg: #f5f9fc;
+    --accent: #c0d4e8;
+    --text: #1e2a38;
+    --accepted: #6c8dae;
+    --rejected: #6c8dae;
+    --card-radius: 4vw;
 }
-
-
 
 
 nav {
@@ -261,19 +268,18 @@ nav {
 }
 
 .grid-item {
-    border: 0.13vw solid rgba(52, 52, 52, 0.25);
     border-radius: 1vw;
     padding: 0.7vw;
     display: flex;
     flex-direction: column;
     width: 80%;
-    height: 85%;
+    height: 80%;
 }
 
 .grid-item img {
     width: 100%;
     height: 70%;
-    border-radius: 1vw;
+    border-radius: 0.8vw;
 }
 
 .grid-item a:hover {
@@ -287,14 +293,14 @@ nav {
 .description-title {
     text-align: center;
     font-weight: 600;
-    font-size: 1.05vw;
+    font-size: 1vw;
     margin-top:1.5vw;
     margin-bottom:1.2vw;
 
 }
 
 .description-subtitle{
-    font-size: 0.9vw;
+    font-size: 0.8vw;
     color: grey;
     margin-top: -2.3vh;
     text-align: center;
@@ -336,7 +342,7 @@ nav {
 
 
 .opp-place-title {
-    margin-top: 0.8vw;
+    margin-top: 0.9vw;
     margin-bottom: 0vh;
     font-weight: 600;
 }
@@ -708,17 +714,7 @@ input[type="checkbox"] {
 
 
 
-:root {
-    --blue: #6c8dae;
-    --light-blue: #e6eff7;
-    --dark-blue: #3a4e68;
-    --bg: #f5f9fc;
-    --accent: #c0d4e8;
-    --text: #1e2a38;
-    --accepted: #91cfa2;
-    --rejected: #e08e8e;
-    --card-radius: 12px;
-}
+
 
 body {
     margin: 0;
@@ -1343,10 +1339,14 @@ body {
 
 .event-card {
     background: white;
-    border-left: 1.5vw solid var(--accent);
+    border-left: 2vw solid var(--accent);
     padding: 4vw;
     border-radius: var(--card-radius);
-    box-shadow: 0 1vw 2vw rgba(0,0,0,0.15);
+    box-shadow: 0 1vw 3vw rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
+    user-select: none;
 }
 
 .event-card.accepted {
@@ -1551,127 +1551,6 @@ body {
     font-size: 4vw;
 }
 
-/* Existing CSS remains the same... */
-.header h1 {
-    margin: 0;
-    font-size: 6vw;
-    color: var(--dark-blue);
-    text-align: center;
-}
-.header p {
-    margin-top: 2vw;
-    color: var(--blue);
-    font-size: 5vw;
-    text-align: center;
-}
-.stats {
-    display: flex;
-    justify-content: space-around;
-    gap: 3vw;
-    margin: 4vw 0;
-    flex-wrap: wrap;
-}
-.stats {
-    flex-direction: row;
-    align-items: center;
-}
-.stat-item {
-    background: var(--light-blue);
-    padding: 3vw;
-    border-radius: var(--card-radius);
-    box-shadow: 0 0.5vw 4vw rgba(0,0,0,0.15);
-    text-align: center;
-    flex: 1;
-    min-width: 1vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.stat-number {
-    font-size: 7vw;
-    color: var(--dark-blue);
-    font-weight: bold;
-}
-.stat-label {
-    font-size: 5vw;
-    color: var(--blue);
-}
-.section {
-    margin-bottom: 5vw;
-}
-.section-title {
-    color: var(--dark-blue);
-    font-size: 6vw;
-    margin-bottom: 5vw;
-    border-left: 1.5vw solid var(--blue);
-    padding-left: 4vw;
-}
-.events-grid {
-    display: grid;
-    gap: 5vw;
-}
-.event-card {
-    background: white;
-    border-left: 1.5vw solid var(--accent);
-    padding: 4vw;
-    border-radius: var(--card-radius);
-    box-shadow: 0 1vw 2vw rgba(0,0,0,0.15);
-    position: relative;
-    overflow: hidden;
-    touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
-    user-select: none;
-}
-.event-card.accepted {
-    border-color: var(--accepted);
-}
-.event-card.rejected {
-    border-color: var(--rejected);
-}
-.icon {
-    font-size: 7vw;
-    margin-bottom: 1vw;
-}
-.event-name {
-    font-weight: 600;
-    font-size: 5vw;
-    margin-bottom: 1vw;
-    color: var(--text);
-}
-.event-status {
-    font-size: 5vw;
-    margin-bottom: 1vw;
-    font-weight: 700;
-}
-.status-accepted {
-    color: var(--accepted);
-}
-.status-rejected {
-    color: var(--rejected);
-}
-.event-date {
-    font-size: 4.5vw;
-    color: #444;
-}
-.empty-state {
-    text-align: center;
-    padding: 4vw;
-    font-size: 5vw;
-    background: var(--light-blue);
-    border-radius: var(--card-radius);
-    color: var(--dark-blue);
-    box-shadow: 0 1vw 2vw rgba(0,0,0,0.15);
-}
-.empty-state p{
-    font-size: 4.5vw;
-}
-.container {
-    display: block;
-    padding: 3vw;
-}
-.events-grid {
-    grid-template-columns: 1fr;
-}
-
 /* New CSS for swipe functionality */
 .swipe-indicator-remove {
     position: absolute;
@@ -1709,7 +1588,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 3;
-    top: 15vw;
+    top: 16.3vw;
     right: 8vw;
     width: 10vw;
     height: 10vw;
@@ -1726,8 +1605,8 @@ body {
 }
 
 .expand-event-details img {
-    width: 10vw;
-    height: 10vw;
+    width: 12vw;
+    height: 12vw;
     opacity: 0.7;
 }
 

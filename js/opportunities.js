@@ -212,6 +212,12 @@ function showNoCookiesWarning() {
 function createEventCard(event, type) {
     const card = document.createElement('div');
     card.className = `event-card ${type}`;
+    card.style.boxShadow = `
+    inset 0 0.8vw 0 0 ${event.colorOfEvent}, 
+    inset -0.8vw 0 0 0 ${event.colorOfEvent}, 
+    inset 0 -0.8vw 0 0 ${event.colorOfEvent}, 
+    0 1vw 3vw rgba(0,0,0,0.3)
+    `;
     card.dataset.eventId = event.id;
     card.dataset.eventType = type;
 
@@ -224,9 +230,9 @@ function createEventCard(event, type) {
     
     let dateDisplay = 'Data não disponível';
     if (event.day && event.month) {
-        dateDisplay = `${event.day} de ${event.month}`;
+        dateDisplay = `${event.day}/${event.month}/${event.year}`;
         if (event.startTime) {
-            dateDisplay += ` às ${event.startTime}`;
+            dateDisplay += ` às ${event.startTime} - ${event.endTime}`;
         }
     }
 
@@ -347,7 +353,20 @@ function setupSwipeToRemove(card) {
         
         // Update card appearance
         card.style.transform = `translateX(${currentDiff}px) rotate(${rotation}deg)`;
-        card.style.boxShadow = `0 0 ${currentDiff / 2}px rgba(255, 0, 0, ${opacity * 0.6})`;
+        
+        // Get the event to maintain the original colored border shadow
+        const event = findEventById(card.dataset.eventId);
+        if (event) {
+            // Combine the original colored border shadow with the red glow effect
+            card.style.boxShadow = `
+                inset 0 0.8vw 0 0 ${event.colorOfEvent}, 
+                inset -0.8vw 0 0 0 ${event.colorOfEvent}, 
+                inset 0 -0.8vw 0 0 ${event.colorOfEvent}, 
+                0 1vw 3vw rgba(0,0,0,0.3),
+                0 0 ${currentDiff / 2}px rgba(255, 0, 0, ${opacity * 0.6})
+            `;
+        }
+        
         card.style.backgroundColor = `rgba(255, 240, 240, ${opacity * 0.8})`;
         
         // Continue animation if still swiping
@@ -440,8 +459,23 @@ function setupSwipeToRemove(card) {
     }
 
     function resetCardStyles() {
+        const event = findEventById(card.dataset.eventId);
+        
         card.style.transform = 'translateX(0) rotate(0deg)';
-        card.style.boxShadow = '';
+        
+        // Restore the original colored box shadow instead of clearing it
+        if (event) {
+            card.style.boxShadow = `
+                inset 0 0.8vw 0 0 ${event.colorOfEvent}, 
+                inset -0.8vw 0 0 0 ${event.colorOfEvent}, 
+                inset 0 -0.8vw 0 0 ${event.colorOfEvent}, 
+                0 1vw 3vw rgba(0,0,0,0.3)
+            `;
+        } else {
+            // Fallback if event is not found - clear the box shadow
+            card.style.boxShadow = '';
+        }
+        
         card.style.backgroundColor = '';
         
         if (swipeIndicator) {
@@ -453,6 +487,7 @@ function setupSwipeToRemove(card) {
 
 function showExpandedView(event) {
     const modalContainer = document.getElementById('eventModal');
+    
     modalContainer.innerHTML = `
     <div class="modal-content">
         <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-expanded">
@@ -624,3 +659,54 @@ document.addEventListener('DOMContentLoaded', async function() {
 // - When parsing preferences (parseEventPreferences)
 // - When displaying events (loadEventPreferences)
 // No additional cleanup needed - events are filtered in real-time
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    function createEventGrid(data) {
+        const container = document.getElementById('events-grid');
+        const oppCountElement = document.getElementById('opp-count');
+        
+        data.items.forEach(item => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+
+            const color = item.colorOfEvent; // fallback to black if undefined
+            gridItem.style.setProperty('border', `0.2vw solid ${color}`, 'important');
+
+            gridItem.innerHTML = `
+                <img src="${item.imageSrc}" alt="${item.altText}">
+                <div class="description">
+                    <p class="description-title">${item.descriptionTitle}</p>
+                    <p class="description-subtitle">${item.descriptionSubtitle}</p>
+                </div>
+                <div class="carousel-line"></div>
+                <div class="opp-place">
+                    <img src="${item.logoSrc}" alt="${item.logoAlt}">
+                    <div>
+                        <p class="opp-place-title">${item.oppPlaceTitle}</p>
+                        <p class="opp-place-subtitle">${item.oppPlaceSubtitle}</p>
+                    </div>
+                </div>
+                <a href="${item.moreInfoLink}" class="button-more-info">Mais Informações</a>
+            `;
+            container.appendChild(gridItem);
+        });
+        
+        oppCountElement.textContent = data.items.length;
+    }
+    
+    function isFutureEvent(event) {
+        const now = new Date();
+        const [endHour, endMinute] = event.endTime.split(':').map(Number);
+        const eventEnd = new Date(event.year, event.month - 1, event.day, endHour, endMinute);
+        return eventEnd >= now;
+    }
+   
+    fetch('/json/events.json')
+        .then(response => response.json())
+                .then(data => {
+                    const futureItems = data.items.filter(isFutureEvent);
+                    createEventGrid({ items: futureItems });
+                })
+                .catch(error => console.error('Error loading event data:', error));
+});

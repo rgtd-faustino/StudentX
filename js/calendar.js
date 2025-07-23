@@ -244,37 +244,16 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
         }
     }
 
-    // quando o evento é demasiado grande e preenche muito espaço fazio no calendário decidimos preenchê-lo com um pequeno texto resumo sobre o evento
+    // quando o evento é demasiado grande e preenche muito espaço vazio no calendário decidimos preenchê-lo com um pequeno texto resumo sobre o evento
     function addTextContainer(event, condensedView, baseContentDiv) {
         const textContainer = document.createElement('div');
-        textContainer.style.cssText = `
-            max-width: 13vw;
-            margin: 0.9vw auto;
-            border: 0.2vw solid rgb(173, 173, 173);
-            border-radius: 1vw;
-            padding: 0.6vw;
-            flex-grow: 1;
-            position: relative;
-            overflow: hidden;
-        `;
+        textContainer.className = 'text-container';
     
         const textWrapper = document.createElement('div');
-        textWrapper.style.cssText = `
-            position: relative;
-            max-height: calc(100% - 0vw);
-            overflow: hidden;
-        `;
+        textWrapper.className = 'text-wrapper';
     
         const textElement = document.createElement('p');
-        textElement.style.cssText = `
-            margin: 0;
-            color: grey;
-            font-family: Poppins, sans-serif;
-            font-size: 0.9vw;
-            line-height: 1.4;
-            text-align: center;
-            word-wrap: break-word;
-        `;
+        textElement.className = 'text-element';
         textElement.textContent = event.moreInfoText;
     
         textWrapper.appendChild(textElement);

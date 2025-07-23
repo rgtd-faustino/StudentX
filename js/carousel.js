@@ -100,6 +100,14 @@ function createCarouselItems(data) {
         itemContainer.endTime = item.endTime;
         itemContainer.colorOfEvent = item.colorOfEvent;
 
+        if(isMobile){
+            itemContainer.style.border = `0.8vw solid ${item.colorOfEvent}`;
+            
+        } else{
+            itemContainer.style.border = `0.2vw solid ${item.colorOfEvent}`;
+
+        }
+
         const img = document.createElement('img');
         img.src = item.imageSrc;
         img.alt = item.altText;
@@ -724,6 +732,14 @@ function setupMobileCarousel() {
             itemContainer.oppPlaceSubtitle = item.oppPlaceSubtitle;
             itemContainer.moreInfoLink = item.moreInfoLink;
             itemContainer.colorOfEvent = item.colorOfEvent;
+
+            if(isMobile){
+                itemContainer.style.border = `0.8vw solid ${item.colorOfEvent}`;
+                
+            } else{
+                itemContainer.style.border = `0.2vw solid ${item.colorOfEvent}`;
+
+            }
             
             itemContainer.style.display = index === 0 ? 'block' : 'none';
             
