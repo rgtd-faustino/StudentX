@@ -437,14 +437,6 @@
             }
         }
 
-        // ========== UTILITY FUNCTIONS ==========
-        
-        function convertTimeToMinutes(timeString) {
-            if (!timeString) return 0;
-            const [hours, minutes] = timeString.split(':').map(Number);
-            return hours * 60 + minutes;
-        }
-
         // ========== FORM SUBMISSION HANDLERS ==========
         
         function showLoading() {
@@ -496,24 +488,10 @@
                 eventForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     
-                    // Validate time inputs
-                    const formData = new FormData(e.target);
-                    const startTime = formData.get('event_start_time');
-                    const endTime = formData.get('event_end_time');
-                    
-                    if (startTime && endTime) {
-                        const startMinutes = convertTimeToMinutes(startTime);
-                        const endMinutes = convertTimeToMinutes(endTime);
-                        
-                        if (startMinutes >= endMinutes) {
-                            showErrorMessage('A hora de início deve ser anterior à hora de fim do evento.');
-                            return;
-                        }
-                    }
-                    
                     showLoading();
                     
                     try {
+                        const formData = new FormData(e.target);
                         const success = await submitEvent(formData);
                         
                         if (success) {
