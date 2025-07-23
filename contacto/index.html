@@ -104,8 +104,16 @@
             <h2 class="contactUsTitle">Contacta-nos</h2>
             <div class="contactContainerText">
                 <p class="contactUsText">Cada mensagem que recebemos é uma oportunidade para melhorar.
-                    Não hesites em entrar em contacto connosco para partilhares as tuas ideias ou esclareceres as tuas dúvidas.</p>
+                    Não hesites em entrar em contacto connosco para partilhares as tuas ideias, esclareceres as tuas dúvidas ou 
+                    submeter eventos.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <p>A enviar...</p>
         </div>
     </div>
 
@@ -172,7 +180,7 @@
                     <h3>Enviar Mensagem</h3>
                     <h1>Partilha as tuas ideias connosco</h1>
 
-                    <form action="https://formspree.io/f/mldrzvyz" method="post">
+                    <form id="message-form-element">
                         <div class="name-container">
                             <div>
                                 <label for="name">Primeiro Nome:</label>
@@ -204,9 +212,7 @@
                     <button class="back-btn" onclick="hideForm()">←</button>
                     <h3>Submeter Evento</h3>
                     <h1>Partilha o teu evento com a comunidade Student X</h1>
-                    <form action="https://formspree.io/f/mldrzvyz" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="form_type" value="event">
-                       
+                    <form id="event-form-element">
                         <div class="name-container">
                             <div>
                                 <label for="event-name">Primeiro Nome:</label>
@@ -385,6 +391,11 @@
     <script defer src="/js/script.js"></script>
     <script defer src="/js/contactus.js"></script>
     <script defer src="/js/cookie-banner.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
 </body>
 </html>

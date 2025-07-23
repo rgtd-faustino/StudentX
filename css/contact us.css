@@ -566,7 +566,52 @@ nav {
 
 
 
-
+.loading-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.7); 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+    backdrop-filter: blur(5px);
+}
+.loading-spinner { 
+    background: white; 
+    padding: 30px 40px; 
+    border-radius: 15px; 
+    text-align: center; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease-in-out;
+}
+.loading-spinner p {
+    margin: 20px 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+.loading-spinner::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 15px auto;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
 
 
 /* Dark Overlay */
