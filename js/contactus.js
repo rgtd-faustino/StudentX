@@ -422,26 +422,30 @@ async function submitEventFromFormData(formData) {
         let imagemEventoURL = '';
         let logotipoOrganizacaoURL = '';
 
-        // Get files directly from FormData
+        // Debug: Log all FormData entries
+        console.log('=== All FormData entries ===');
+        for (let [key, value] of formData.entries()) {
+            if (value instanceof File) {
+                console.log(`${key}:`, {
+                    name: value.name,
+                    size: value.size,
+                    type: value.type,
+                    lastModified: value.lastModified
+                });
+            } else {
+                console.log(`${key}: ${value}`);
+            }
+        }
+
+        // Get files from FormData - these should be the correct field names
         const eventImageFile = formData.get('event_image');
         const logoImageFile = formData.get('event_image2');
 
-        console.log('Event image from FormData:', eventImageFile);
-        console.log('Event image details:', {
-            name: eventImageFile?.name,
-            size: eventImageFile?.size,
-            type: eventImageFile?.type
-        });
+        console.log('Event image file:', eventImageFile);
+        console.log('Logo image file:', logoImageFile);
 
-        console.log('Logo image from FormData:', logoImageFile);
-        console.log('Logo image details:', {
-            name: logoImageFile?.name,
-            size: logoImageFile?.size,
-            type: logoImageFile?.type
-        });
-
-        // Upload event image if provided
-        if (eventImageFile && eventImageFile.size > 0 && eventImageFile.name !== '') {
+        // Check if eventImageFile is a valid file
+        if (eventImageFile && eventImageFile instanceof File && eventImageFile.size > 0) {
             console.log('Processing event image:', eventImageFile.name);
             
             const timestamp = Date.now();
@@ -452,13 +456,19 @@ async function submitEventFromFormData(formData) {
                 console.log('Event image uploaded successfully:', imagemEventoURL);
             } catch (error) {
                 console.error('Failed to upload event image:', error);
+                // Don't throw here, continue with submission
             }
         } else {
-            console.log('No valid event image file in FormData');
+            console.log('No valid event image file. File details:', {
+                file: eventImageFile,
+                isFile: eventImageFile instanceof File,
+                size: eventImageFile?.size,
+                name: eventImageFile?.name
+            });
         }
 
-        // Upload organization logo if provided
-        if (logoImageFile && logoImageFile.size > 0 && logoImageFile.name !== '') {
+        // Check if logoImageFile is a valid file
+        if (logoImageFile && logoImageFile instanceof File && logoImageFile.size > 0) {
             console.log('Processing logo image:', logoImageFile.name);
             
             const timestamp = Date.now();
@@ -469,9 +479,15 @@ async function submitEventFromFormData(formData) {
                 console.log('Logo image uploaded successfully:', logotipoOrganizacaoURL);
             } catch (error) {
                 console.error('Failed to upload logo image:', error);
+                // Don't throw here, continue with submission
             }
         } else {
-            console.log('No valid logo image file in FormData');
+            console.log('No valid logo image file. File details:', {
+                file: logoImageFile,
+                isFile: logoImageFile instanceof File,
+                size: logoImageFile?.size,
+                name: logoImageFile?.name
+            });
         }
 
         // Create the document data
@@ -524,38 +540,101 @@ function showErrorMessage(message) {
     alert(message);
 }
 
-// ========== EVENT LISTENERS (SINGLE, CLEAN VERSION) ==========
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Message form submission
-    const messageForm = document.getElementById('message-form-element');
-    if (messageForm) {
-        messageForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            showLoading();
+async function submitEventAlternative(formElement) {
+    try {
+        console.log('Starting event submission using direct form access...');
+        
+        let imagemEventoURL = '';
+        let logotipoOrganizacaoURL = '';
+
+        // Get files directly from the form elements
+        const eventImageInput = document.getElementById('event-image');
+        const logoImageInput = document.getElementById('event-image2');
+
+        console.log('Event image input element:', eventImageInput);
+        console.log('Logo image input element:', logoImageInput);
+
+        // Check event image
+        if (eventImageInput && eventImageInput.files && eventImageInput.files.length > 0) {
+            const eventImageFile = eventImageInput.files[0];
+            console.log('Event image file found:', {
+                name: eventImageFile.name,
+                size: eventImageFile.size,
+                type: eventImageFile.type
+            });
+
+            const timestamp = Date.now();
+            const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
             
             try {
-                const formData = new FormData(e.target);
-                const success = await submitMessage(formData);
-                
-                if (success) {
-                    showSuccessMessage('Mensagem enviada com sucesso!');
-                    e.target.reset();
-                    hideForm();
-                }
+                imagemEventoURL = await uploadImage(eventImageFile, imagePath);
+                console.log('Event image uploaded successfully:', imagemEventoURL);
             } catch (error) {
-                console.error('Message submission error:', error);
-                showErrorMessage('Erro ao enviar mensagem. Tenta novamente.');
-            } finally {
-                hideLoading();
+                console.error('Failed to upload event image:', error);
             }
-        });
-    } else {
-        console.log('Message form not found - this is normal if you only have the event form.');
-    }
+        } else {
+            console.log('No event image selected');
+        }
 
-    // Event form submission - FIXED VERSION
+        // Check logo image
+        if (logoImageInput && logoImageInput.files && logoImageInput.files.length > 0) {
+            const logoImageFile = logoImageInput.files[0];
+            console.log('Logo image file found:', {
+                name: logoImageFile.name,
+                size: logoImageFile.size,
+                type: logoImageFile.type
+            });
+
+            const timestamp = Date.now();
+            const logoPath = `eventos/logos/${timestamp}_${logoImageFile.name}`;
+            
+            try {
+                logotipoOrganizacaoURL = await uploadImage(logoImageFile, logoPath);
+                console.log('Logo image uploaded successfully:', logotipoOrganizacaoURL);
+            } catch (error) {
+                console.error('Failed to upload logo image:', error);
+            }
+        } else {
+            console.log('No logo image selected');
+        }
+
+        // Get other form data
+        const formData = new FormData(formElement);
+        
+        // Create the document data
+        const eventData = {
+            nome: formData.get('name'),
+            apelido: formData.get('apelido'),
+            email: formData.get('email'),
+            nomeEvento: formData.get('event_title'),
+            categoria: formData.get('event_category'),
+            dataEvento: formData.get('event_date'),
+            horaInicio: formData.get('event_start_time'),
+            horaFim: formData.get('event_end_time'),
+            organizacao: formData.get('event_location'),
+            localEvento: formData.get('event_location2'),
+            descricao: formData.get('event_description'),
+            linkEvento: formData.get('event_link') || '',
+            imagemEvento: imagemEventoURL,
+            logotipoOrganizacao: logotipoOrganizacaoURL,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pendente',
+            aprovado: false
+        };
+
+        console.log('Final event data before saving:', eventData);
+
+        const docRef = await db.collection('eventos').add(eventData);
+        console.log('Event saved successfully with ID:', docRef.id);
+        return true;
+    } catch (error) {
+        console.error('Erro ao submeter evento: ', error);
+        throw error;
+    }
+}
+
+// ========== EVENT LISTENERS (SINGLE, CLEAN VERSION) ==========
+document.addEventListener('DOMContentLoaded', function() {
     const eventForm = document.getElementById('event-form-element');
     if (eventForm) {
         console.log('Event form found, attaching listener...');
@@ -567,24 +646,8 @@ document.addEventListener('DOMContentLoaded', function() {
             showLoading();
             
             try {
-                const formData = new FormData(e.target);
-                
-                // Log all FormData entries for debugging
-                console.log('=== FormData Contents ===');
-                for (let [key, value] of formData.entries()) {
-                    if (value instanceof File) {
-                        console.log(`${key}:`, {
-                            name: value.name,
-                            size: value.size,
-                            type: value.type
-                        });
-                    } else {
-                        console.log(`${key}: ${value}`);
-                    }
-                }
-                
-                // Use the correct function name
-                const success = await submitEventFromFormData(formData);
+                // Try the alternative approach first
+                const success = await submitEventAlternative(e.target);
                 
                 if (success) {
                     showSuccessMessage('Evento submetido com sucesso!');
@@ -598,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
                     }
                     if (fileLabel2) {
-                        fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
+                        fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo da empresa';
                     }
                 }
             } catch (error) {
