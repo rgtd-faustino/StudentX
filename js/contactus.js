@@ -413,28 +413,56 @@
         // Function to submit event
         async function submitEvent(formData) {
             try {
+                console.log('Starting event submission...');
+                
                 let imagemEventoURL = '';
                 let logotipoOrganizacaoURL = '';
 
-                // Get file inputs directly from DOM (more reliable)
+                // Get file inputs directly from DOM
                 const eventImageInput = document.getElementById('event-image');
                 const eventImage2Input = document.getElementById('event-image2');
 
+                console.log('Event image input:', eventImageInput);
+                console.log('Event image files:', eventImageInput?.files);
+                console.log('Logo image input:', eventImage2Input);
+                console.log('Logo image files:', eventImage2Input?.files);
+
                 // Upload event image if provided
-                if (eventImageInput && eventImageInput.files && eventImageInput.files[0]) {
+                if (eventImageInput?.files?.[0]) {
                     const eventImageFile = eventImageInput.files[0];
+                    console.log('Processing event image:', eventImageFile.name);
+                    
                     const timestamp = Date.now();
                     const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
-                    imagemEventoURL = await uploadImage(eventImageFile, imagePath);
+                    
+                    try {
+                        imagemEventoURL = await uploadImage(eventImageFile, imagePath);
+                        console.log('Event image uploaded successfully:', imagemEventoURL);
+                    } catch (error) {
+                        console.error('Failed to upload event image:', error);
+                        // Don't throw here - continue with submission without image
+                    }
+                } else {
+                    console.log('No event image file selected');
                 }
 
                 // Upload organization logo if provided
-                if (eventImage2Input && eventImage2Input.files && eventImage2Input.files[0]) {
+                if (eventImage2Input?.files?.[0]) {
                     const eventImage2File = eventImage2Input.files[0];
+                    console.log('Processing logo image:', eventImage2File.name);
                     
                     const timestamp = Date.now();
                     const logoPath = `eventos/logos/${timestamp}_${eventImage2File.name}`;
-                    logotipoOrganizacaoURL = await uploadImage(eventImage2File, logoPath);
+                    
+                    try {
+                        logotipoOrganizacaoURL = await uploadImage(eventImage2File, logoPath);
+                        console.log('Logo image uploaded successfully:', logotipoOrganizacaoURL);
+                    } catch (error) {
+                        console.error('Failed to upload logo image:', error);
+                        // Don't throw here - continue with submission without logo
+                    }
+                } else {
+                    console.log('No logo image file selected');
                 }
 
                 // Create the document data
@@ -458,7 +486,10 @@
                     aprovado: false
                 };
 
+                console.log('Final event data before saving:', eventData);
+
                 const docRef = await db.collection('eventos').add(eventData);
+                console.log('Event saved successfully with ID:', docRef.id);
                 return true;
             } catch (error) {
                 console.error('Erro ao submeter evento: ', error);
