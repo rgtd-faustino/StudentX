@@ -542,65 +542,87 @@ function showErrorMessage(message) {
 
 async function submitEventAlternative(formElement) {
     try {
-        console.log('Starting event submission using direct form access...');
+        console.log('Starting event submission using FormData...');
         
         let imagemEventoURL = '';
         let logotipoOrganizacaoURL = '';
 
-        // Get files directly from the form elements
-        const eventImageInput = document.getElementById('event-image');
-        const logoImageInput = document.getElementById('event-image2');
+        // Get FormData from the form
+        const formData = new FormData(formElement);
+        
+        // Debug: Log all form data
+        console.log('=== All Form Data ===');
+        for (let [key, value] of formData.entries()) {
+            if (value instanceof File) {
+                console.log(`${key}:`, {
+                    name: value.name,
+                    size: value.size,
+                    type: value.type
+                });
+            } else {
+                console.log(`${key}: ${value}`);
+            }
+        }
 
-        console.log('Event image input element:', eventImageInput);
-        console.log('Logo image input element:', logoImageInput);
+        // Get files from FormData - these names match your HTML
+        const eventImageFile = formData.get('event_image');
+        const logoImageFile = formData.get('event_image2');
+
+        console.log('Event image file from FormData:', eventImageFile);
+        console.log('Logo image file from FormData:', logoImageFile);
 
         // Check event image
-        if (eventImageInput && eventImageInput.files && eventImageInput.files.length > 0) {
-            const eventImageFile = eventImageInput.files[0];
-            console.log('Event image file found:', {
+        if (eventImageFile && eventImageFile instanceof File && eventImageFile.size > 0) {
+            console.log('Processing event image:', {
                 name: eventImageFile.name,
                 size: eventImageFile.size,
                 type: eventImageFile.type
             });
 
+            // Create unique filename to avoid conflicts
             const timestamp = Date.now();
-            const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
+            const randomId = Math.random().toString(36).substring(2, 15);
+            const cleanFileName = eventImageFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
+            const imagePath = `eventos/imagens/${timestamp}_${randomId}_${cleanFileName}`;
             
             try {
                 imagemEventoURL = await uploadImage(eventImageFile, imagePath);
                 console.log('Event image uploaded successfully:', imagemEventoURL);
             } catch (error) {
                 console.error('Failed to upload event image:', error);
+                // Don't throw here, continue with submission
+                console.log('Continuing without event image...');
             }
         } else {
-            console.log('No event image selected');
+            console.log('No valid event image file selected');
         }
 
         // Check logo image
-        if (logoImageInput && logoImageInput.files && logoImageInput.files.length > 0) {
-            const logoImageFile = logoImageInput.files[0];
-            console.log('Logo image file found:', {
+        if (logoImageFile && logoImageFile instanceof File && logoImageFile.size > 0) {
+            console.log('Processing logo image:', {
                 name: logoImageFile.name,
                 size: logoImageFile.size,
                 type: logoImageFile.type
             });
 
+            // Create unique filename to avoid conflicts
             const timestamp = Date.now();
-            const logoPath = `eventos/logos/${timestamp}_${logoImageFile.name}`;
+            const randomId = Math.random().toString(36).substring(2, 15);
+            const cleanFileName = logoImageFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
+            const logoPath = `eventos/logos/${timestamp}_${randomId}_${cleanFileName}`;
             
             try {
                 logotipoOrganizacaoURL = await uploadImage(logoImageFile, logoPath);
                 console.log('Logo image uploaded successfully:', logotipoOrganizacaoURL);
             } catch (error) {
                 console.error('Failed to upload logo image:', error);
+                // Don't throw here, continue with submission
+                console.log('Continuing without logo image...');
             }
         } else {
-            console.log('No logo image selected');
+            console.log('No valid logo image file selected');
         }
 
-        // Get other form data
-        const formData = new FormData(formElement);
-        
         // Create the document data
         const eventData = {
             nome: formData.get('name'),
