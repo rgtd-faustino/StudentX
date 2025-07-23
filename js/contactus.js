@@ -249,16 +249,6 @@ function setupEventPreview() {
                 <p class="description-subtitle-calendar-expanded">${event.descriptionSubtitle}</p>
                 <div class="carousel-line-calendar-expanded"></div>
             
-                ${event.moreInfoText ? `
-                <div class="text-container">
-                    <div class="text-wrapper">
-                        <p class="text-element">
-                            ${event.moreInfoText || 'Descrição do evento não fornecida.'}
-                        </p>
-                    </div>
-                </div>
-                ` : ''}
-            
                 <div class="logo-and-place-info-expanded">
                     <div class="event-logo-container">${event.logoSrc === '📷' ? event.logoSrc : `<img src="${event.logoSrc}" alt="${event.logoAlt}" />`}</div>
                     <div class="place-info-expanded">
