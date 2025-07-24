@@ -562,7 +562,64 @@ nav {
     font-style: normal;
     font-weight: 500;
     white-space: nowrap; /* Prevent text from wrapping */
+    position: relative;
+}
 
+.info-icon {
+    display: inline-block;
+    margin-left: 0.5vw;
+    width: 1.8vw;
+    height: 1.8vw;
+    border-radius: 50%;
+    background-color: #108CEC;
+    color: white;
+    text-align: center;
+    line-height: 1.8vw;
+    font-size: 1.4vw;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.info-icon:hover {
+    background-color: #0d7bd4;
+}
+
+.info-tooltip {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 1vw 1vw;
+    border-radius: 0.6vw;
+    box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    text-align: left;
+    font-size: 0.8vw;
+    font-weight: normal;
+    line-height: 1.4;
+    white-space: normal;
+    margin-top: 0.6vw;
+}
+
+.info-tooltip::before {
+    content: '';
+    position: absolute;
+    top: -0.4vw;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 1vw solid transparent;
+    border-right: 1vw solid transparent;
+    border-bottom: 1vw solid #333;
+}
+
+.info-tooltip p {
+    margin: 0;
+    color: white;
+    text-align: justify;
 }
 
 .highlightP3 {

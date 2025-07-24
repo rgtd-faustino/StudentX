@@ -284,7 +284,14 @@
 
 
     <div class="title-container" id="oportunidadesCarrossel">
-        <h2 id="subtitle">OPORTUNIDADES EM DESTAQUE</h2>
+        <h2 id="subtitle">
+            OPORTUNIDADES EM DESTAQUE
+            <span class="info-icon" onclick="toggleInfoTooltip()">?</span>
+            <div class="info-tooltip" id="infoTooltip">
+                <p>Se queres que as tuas oportunidades sejam destacadas na nossa plataforma, entra em contacto connosco 
+                    diretamente através do nosso formulário de contacto ou por email.</p>
+            </div>
+        </h2>
         <div class="title-background-container">
             <img id="titleP3Background" src="/images/titleP3background.webp" alt="Background for More Opportunities link" loading="lazy">
             <h2 id="titleP3">Ver <a href="/oportunidades/" class="highlightP3">Mais Oportunidades</a></h2>
@@ -690,6 +697,21 @@
             startButton.setAttribute('href', '#opportunityTitlePC');
         }
     }
+    
+    function toggleInfoTooltip() {
+        const tooltip = document.getElementById('infoTooltip');
+        tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
+    }
+    
+    // Close tooltip when clicking outside
+    document.addEventListener('click', function(event) {
+        const tooltip = document.getElementById('infoTooltip');
+        const infoIcon = document.querySelector('.info-icon');
+        if (!infoIcon.contains(event.target) && !tooltip.contains(event.target)) {
+            tooltip.style.display = 'none';
+        }
+    });
+    
     window.addEventListener('DOMContentLoaded', updateStartButtonHref);
     window.addEventListener('resize', updateStartButtonHref);
 </script>

@@ -691,7 +691,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
     }
 
     // Download function with error handling
-   function downloadCalendar() {
+    function downloadCalendar() {
         try {
             const icsContent = createICSFile();
             
@@ -701,35 +701,110 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
                 return;
             }
             
-            // Create blob with proper MIME type
+            const filename = `Calendário StudentX.ics`;
+            
+            // Enhanced mobile detection
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            
+            // For iOS devices, try a different approach
+            if (isIOS) {
+                try {
+                    // Create a data URL for iOS
+                    const dataUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+                    const link = document.createElement('a');
+                    link.href = dataUrl;
+                    link.download = filename;
+                    link.target = '_blank';
+                    
+                    // For iOS, we need to open in a new window
+                    window.open(dataUrl, '_blank');
+                    
+                    // Show instructions for iOS users
+                    setTimeout(() => {
+                        alert('Para importar no iOS:\n1. Toque em "Partilhar"\n2. Selecione "Calendário"\n3. Escolha onde guardar os eventos');
+                    }, 1000);
+                    
+                    return;
+                } catch (iosError) {
+                    console.warn('iOS specific method failed, falling back to standard method');
+                }
+            }
+            
+            // Standard blob download method
             const blob = new Blob([icsContent], { 
                 type: 'text/calendar;charset=utf-8' 
             });
             
-            const filename = `Calendário StudentX.ics`;
-            
-            // Create download link
+            // Check if the browser supports the download attribute
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            link.style.display = 'none';
+            const supportsDownload = typeof link.download !== 'undefined';
             
-            // Trigger download
-            document.body.appendChild(link);
-            link.click();
+            if (supportsDownload) {
+                // Modern browsers
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    URL.revokeObjectURL(link.href);
+                    document.body.removeChild(link);
+                }, 100);
+                
+            } else {
+                // Fallback for older browsers
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const dataUrl = reader.result;
+                    const newWindow = window.open();
+                    if (newWindow) {
+                        newWindow.document.write(`
+                            <html>
+                                <head><title>Calendário StudentX</title></head>
+                                <body>
+                                    <h3>Calendário StudentX</h3>
+                                    <p>Copie o conteúdo abaixo e guarde como "${filename}":</p>
+                                    <textarea style="width:100%;height:400px;" readonly>${icsContent}</textarea>
+                                </body>
+                            </html>
+                        `);
+                    } else {
+                        alert('Por favor, permita pop-ups para transferir o calendário');
+                    }
+                };
+                reader.readAsDataURL(blob);
+            }
             
-            // Clean up
-            setTimeout(() => {
-                URL.revokeObjectURL(link.href);
-                document.body.removeChild(link);
-            }, 100);
+            // Show success message with instructions
+            if (!isIOS) {
+                setTimeout(() => {
+                    if (isMobile) {
+                        alert('Calendário transferido! Pode importá-lo na sua aplicação de calendário preferida.');
+                    } else {
+                        alert('Calendário transferido com sucesso!');
+                    }
+                }, 500);
+            }
             
-            console.log('Calendar downloaded successfully');
+            console.log('Calendar download initiated successfully');
             
         } catch (error) {
             console.error('Error generating calendar file:', error);
-            alert('Ocorreu um erro ao gerar o calendário. Por favor, dê refresh ao website e tente novamente.');
+            
+            // Enhanced error handling
+            if (error.name === 'QuotaExceededError') {
+                alert('Não há espaço suficiente para transferir o calendário. Por favor, liberte espaço e tente novamente.');
+            } else if (error.name === 'SecurityError') {
+                alert('O seu navegador bloqueou a transferência. Por favor, verifique as definições de segurança.');
+            } else {
+                alert('Ocorreu um erro ao gerar o calendário. Por favor, atualize a página e tente novamente.');
+            }
         }
     }
-    
+        
     init();
