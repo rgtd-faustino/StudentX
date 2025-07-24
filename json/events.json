@@ -17,6 +17,7 @@
         "startTime": "23:00",
         "endTime": "23:59",
         "colorOfEvent": "red",
+        "destaque": false,
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
         "day": 22,
@@ -35,6 +36,7 @@
         "startTime": "19:00",
         "endTime": "19:50",
         "colorOfEvent": "green",
+        "destaque": false,
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
         "day": 23,
@@ -53,6 +55,7 @@
         "startTime": "19:00",
         "endTime": "19:50",
         "colorOfEvent": "green",
+        "destaque": false,
         "moreInfoText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."      },
       {
         "day": 24,
@@ -89,6 +92,7 @@
         "startTime": "10:00",
         "endTime": "15:00",
         "colorOfEvent": "green",
+        "destaque": true,
         "moreInfoText": "No dia 24 de julho, a Faculdade de Arquitetura da Universidade de Lisboa acolhe duas conversas que marcam os 60 anos do Dia Nacional do Estudante. Pela manhã, será explorada a memória das crises académicas, analisando o impacto desses momentos na vida estudantil ao longo das décadas. À tarde, o foco será nos desafios atuais e futuros dos estudantes do Ensino Superior, com uma reflexão sobre como melhorar as suas condições. Uma oportunidade única para refletir sobre o passado e o futuro da vida académica!"      }
       
       ]

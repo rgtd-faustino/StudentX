@@ -57,7 +57,7 @@ function createCarouselItems(data) {
 
     } else {
         const currentEvents = data.items.filter(item => {
-            return isFutureEvent(item);
+            return isFutureEvent(item) && item.destaque === true;
         });
 
         const nonInteractedEvents = currentEvents.filter(item => {

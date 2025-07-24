@@ -748,6 +748,81 @@ nav {
     background: rgba(21, 108, 247, 0.05);
 }
 
+.file-input-label.drag-over {
+    border-color: #156CF7;
+    border-style: solid;
+    background: linear-gradient(135deg, rgba(21, 108, 247, 0.05) 0%, rgba(21, 108, 247, 0.1) 100%);
+    color: #156CF7;
+    transform: scale(1.02);
+    box-shadow: 0 1vw 2vw rgba(21, 108, 247, 0.3);
+}
+
+.file-input-label.drag-over::before {
+    content: "Largue a imagem aqui";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(21, 108, 247, 0.95);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1vw;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(1vw);
+    animation: fadeInScale 0.2s ease-out;
+}
+
+/* File Selected State */
+.file-input-label.file-selected {
+    border-color: #156CF7;
+    background: rgba(21, 108, 247, 0.05);
+    color: #156CF7;
+}
+
+.file-input-label.file-selected::after {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #156CF7;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+/* Hidden file input */
+.file-input-label input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
 
 
 
@@ -955,6 +1030,11 @@ nav {
     font-size: 1.5vw;
 }
 
+.event-logo-container img {
+    width: 3.3vw;
+    height: auto;
+}
+
 .event-image-expanded {
     width: 100%;
     height: 100%;
@@ -963,10 +1043,15 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 10vw;
     background-color:#f5f5f5;
     font-size: 3vw;
     margin: 0;
+}
+
+.event-image-expanded img{
+    width: 100%;
+    height: 100%;
+    border-radius: 0.8vw;
 }
 
 .description-title-calendar-expanded {
@@ -1004,8 +1089,11 @@ nav {
 .event-logo-expanded {
     width: 3vw;
     height: auto;
+    border-radius: 0.8vw;
     margin-right: 1vw;
 }
+
+
 
 .place-info-expanded {
     flex-grow: 1;
@@ -1715,18 +1803,6 @@ input[type="checkbox"] {
                 align-self: stretch;
             }
 
-            /* File Input Responsive */
-            .file-input-label {
-                padding: 5vw 10vw;
-                font-size: 16px;
-                border-radius: 8px;
-                text-align: center;
-            }
-
-            .file-input-container {
-                margin-bottom: 5vw;
-                margin-top: 2vw;
-            }
 
             /* Select Dropdown Responsive */
             .form-section select {
@@ -1765,6 +1841,12 @@ input[type="checkbox"] {
                 background: rgba(21, 108, 247, 0.1);
             }
 
+
+            .file-input-container {
+                margin-bottom: 5vw;
+                margin-top: 2vw;
+            }
+
             .file-input-label {
                 display: flex;
                 align-items: center;
@@ -1773,6 +1855,7 @@ input[type="checkbox"] {
                 border: 0.7vw dashed #c4c8ce;
                 border-radius: 1vw;
                 cursor: pointer;
+                text-align: center;
                 transition: all 0.3s ease;
                 color: #6B7280;
                 font-size: 1vw;
@@ -1780,6 +1863,83 @@ input[type="checkbox"] {
             .file-input-label:hover {
                 border-color: #156CF7;
                 background: rgba(21, 108, 247, 0.05);
+            }
+
+            /* Mobile Drag and Drop Styles */
+            .file-input-label.drag-over {
+                border-color: #156CF7;
+                background: linear-gradient(135deg, rgba(21, 108, 247, 0.1) 0%, rgba(21, 108, 247, 0.15) 100%);
+                border-style: solid;
+                border-width: 0.8vw;
+                transform: scale(1.02);
+                box-shadow: 0 2vw 6vw rgba(21, 108, 247, 0.3);
+                animation: pulse-drag-mobile 1.5s infinite;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .file-input-label.drag-over::before {
+                content: "Largue a imagem aqui";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(21, 108, 247, 0.95);
+                color: white;
+                padding: 3vw 4vw;
+                border-radius: 2vw;
+                font-weight: 600;
+                font-size: 4vw;
+                box-shadow: 0 1vw 3vw rgba(0, 0, 0, 0.3);
+                animation: bounce-in-mobile 0.3s ease-out;
+                z-index: 10;
+                backdrop-filter: blur(0.5vw);
+                text-align: center;
+            }
+
+            .file-input-label.drag-over::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+                animation: shimmer-mobile 1.5s infinite;
+                z-index: 5;
+            }
+
+            @keyframes pulse-drag-mobile {
+                0%, 100% {
+                    box-shadow: 0 2vw 6vw rgba(21, 108, 247, 0.3);
+                }
+                50% {
+                    box-shadow: 0 3vw 8vw rgba(21, 108, 247, 0.5);
+                }
+            }
+
+            @keyframes bounce-in-mobile {
+                0% {
+                    transform: translate(-50%, -50%) scale(0.5);
+                    opacity: 0;
+                }
+                60% {
+                    transform: translate(-50%, -50%) scale(1.1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes shimmer-mobile {
+                0% {
+                    left: -100%;
+                }
+                100% {
+                    left: 100%;
+                }
             }
 
 
