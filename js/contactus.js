@@ -19,10 +19,8 @@ function showForm(formType) {
     const eventForm = document.getElementById('event-form');
     const previewContainer = document.getElementById('preview-container');
    
-    // Hide overlay with animation
     overlay.classList.add('hidden');
    
-    // Show appropriate form after overlay animation completes
     setTimeout(() => {
         if (formType === 'message') {
             messageForm.classList.add('active');
@@ -41,12 +39,10 @@ function hideForm() {
     const eventForm = document.getElementById('event-form');
     const previewContainer = document.getElementById('preview-container');
    
-    // Hide forms and preview
     messageForm.classList.remove('active');
     eventForm.classList.remove('active');
     previewContainer.classList.remove('active');
    
-    // Show overlay after form animation completes
     setTimeout(() => {
         overlay.classList.remove('hidden');
     }, 300);
@@ -68,14 +64,12 @@ function setupEventPreview() {
 
     const previewContainer = document.getElementById('preview-container');
 
-    // Category color mapping
     const categoryColors = {
         'Desenvolvimento Curricular': 'green',
         'Desenvolvimento Pessoal': 'red',
         'Desenvolvimento Profissional': 'blue'
     };
 
-    // Store current image sources
     let currentImageSrc = '📷';
     let currentImageSrc2 = '📷';
 
@@ -101,23 +95,15 @@ function setupEventPreview() {
         return result;
     }
 
-    function convertTimeToMinutes(timeString) {
-        if (!timeString) return 0;
-        const [hours, minutes] = timeString.split(':').map(Number);
-        return hours * 60 + minutes;
-    }
-
     function getEventDuration(startTime, endTime) {
         if (!startTime || !endTime) return 60;
-        const startMinutes = convertTimeToMinutes(startTime);
-        const endMinutes = convertTimeToMinutes(endTime);
-        return endMinutes - startMinutes;
+        const startMinutes = startTime.split(':').map(Number);
+        const endMinutes = endTime.split(':').map(Number);
+        return (endMinutes[0] * 60 + endMinutes[1]) - (startMinutes[0] * 60 + startMinutes[1]);
     }
 
     function getSimulatedEventHeight(duration) {
-        const hourHeight = 13.1;
-        const minuteHeight = hourHeight / 60;
-        return (duration * minuteHeight);
+        return (duration * 13.1) / 60;
     }
 
     function updatePreviewHTML() {
@@ -131,7 +117,7 @@ function setupEventPreview() {
         const selectedStartTime = eventStartTime.value;
         const selectedEndTime = eventEndTime.value;
 
-        if (eventLink && !eventLink.startsWith('http://') && !eventLink.startsWith('https://')) {
+        if (eventLink && !eventLink.startsWith('http')) {
             eventLink = 'https://' + eventLink;
         }
         
@@ -218,11 +204,9 @@ function setupEventPreview() {
             expandButton.onclick = () => {
                 showExpandedEventPreview({
                     imageSrc: currentImageSrc,
-                    altText: 'Event Image',
                     descriptionTitle: eventName,
                     descriptionSubtitle: formattedDateTime,
                     logoSrc: currentImageSrc2,
-                    logoAlt: 'Event Logo',
                     oppPlaceTitle: eventLoc,
                     oppPlaceSubtitle: eventLoc2,
                     moreInfoLink: eventLink || '#',
@@ -243,13 +227,13 @@ function setupEventPreview() {
 
         modalContainer.innerHTML = `
             <div class="modal-content">
-                <div class="event-image-expanded">${event.imageSrc === '📷' ? event.imageSrc : `<img src="${event.imageSrc}" alt="${event.altText}" />`}</div>
+                <div class="event-image-expanded">${event.imageSrc === '📷' ? event.imageSrc : `<img src="${event.imageSrc}" alt="Event Image" />`}</div>
                 <p class="description-title-calendar-expanded">${event.descriptionTitle}</p>
                 <p class="description-subtitle-calendar-expanded">${event.descriptionSubtitle}</p>
                 <div class="carousel-line-calendar-expanded"></div>
             
                 <div class="logo-and-place-info-expanded">
-                    <div class="event-logo-container">${event.logoSrc === '📷' ? event.logoSrc : `<img src="${event.logoSrc}" alt="${event.logoAlt}" />`}</div>
+                    <div class="event-logo-container">${event.logoSrc === '📷' ? event.logoSrc : `<img src="${event.logoSrc}" alt="Event Logo" />`}</div>
                     <div class="place-info-expanded">
                         <p class="opp-place-title-calendar-expanded">${event.oppPlaceTitle}</p>
                         <p class="opp-place-subtitle-calendar-expanded">${event.oppPlaceSubtitle}</p>
@@ -267,10 +251,6 @@ function setupEventPreview() {
                 modalContainer.style.display = 'none';
             }
         };
-    }
-
-    function updatePreview() {
-        updatePreviewHTML();
     }
 
     function handleImageChange(fileInput, imageType) {
@@ -297,233 +277,124 @@ function setupEventPreview() {
     }
 
     // Add event listeners for real-time updates
-    if (eventTitle) eventTitle.addEventListener('input', updatePreview);
-    if (eventDescription) eventDescription.addEventListener('input', updatePreview);
-    if (eventLinkWebsite) eventLinkWebsite.addEventListener('input', updatePreview);
-    if (eventLocation) eventLocation.addEventListener('input', updatePreview);
-    if (eventLocation2) eventLocation2.addEventListener('input', updatePreview);
-    if (eventCategory) eventCategory.addEventListener('change', updatePreview);
-    if (eventDate) eventDate.addEventListener('change', updatePreview);
-    if (eventStartTime) eventStartTime.addEventListener('change', updatePreview);
-    if (eventEndTime) eventEndTime.addEventListener('change', updatePreview);
+    [eventTitle, eventDescription, eventLinkWebsite, eventLocation, eventLocation2].forEach(el => {
+        if (el) el.addEventListener('input', updatePreviewHTML);
+    });
+    
+    [eventCategory, eventDate, eventStartTime, eventEndTime].forEach(el => {
+        if (el) el.addEventListener('change', updatePreviewHTML);
+    });
 
-    // Handle image preview for thumbnail
+    // Handle image previews
     if (eventImage) {
         eventImage.addEventListener('change', function() {
             const file = this.files[0];
             const label = document.getElementById('file-label');
             
-            if (file) {
-                if (label) {
-                    label.innerHTML = `📷 ${file.name}`;
-                }
-                handleImageChange(this, 'thumbnail');
-            } else {
-                if (label) {
-                    label.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
-                }
-                handleImageChange(this, 'thumbnail');
+            if (file && label) {
+                label.innerHTML = `📷 ${file.name}`;
+            } else if (label) {
+                label.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
             }
+            handleImageChange(this, 'thumbnail');
         });
     }
 
-    // Handle image preview for logo
     if (eventImage2) {
         eventImage2.addEventListener('change', function() {
             const file = this.files[0];
             const label2 = document.getElementById('file-label2');
             
-            if (file) {
-                if (label2) {
-                    label2.innerHTML = `📷 ${file.name}`;
-                }
-                handleImageChange(this, 'logo');
-            } else {
-                if (label2) {
-                    label2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
-                }
-                handleImageChange(this, 'logo');
+            if (file && label2) {
+                label2.innerHTML = `📷 ${file.name}`;
+            } else if (label2) {
+                label2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
             }
+            handleImageChange(this, 'logo');
         });
     }
 
-    // Initial update to set default values
-    updatePreview();
+    updatePreviewHTML();
 }
 
 // ========== FIREBASE FUNCTIONS ==========
-
-// Function to upload image to Firebase Storage
 async function uploadImage(file, path) {
-    try {
-        console.log('Starting upload for:', file.name, 'Size:', file.size, 'Type:', file.type);
-        
-        // Validate file
-        if (!file || file.size === 0) {
-            throw new Error('Arquivo inválido ou vazio');
-        }
-
-        // Check if file is actually an image
-        if (!file.type.startsWith('image/')) {
-            throw new Error('Arquivo deve ser uma imagem');
-        }
-
-        const storageRef = storage.ref().child(path);
-        
-        // Upload with metadata
-        const metadata = {
-            contentType: file.type,
-            customMetadata: {
-                'uploadedAt': new Date().toISOString()
-            }
-        };
-
-        console.log('Uploading to path:', path);
-        const snapshot = await storageRef.put(file, metadata);
-        const downloadURL = await snapshot.ref.getDownloadURL();
-        console.log('Upload successful, URL:', downloadURL);
-        return downloadURL;
-    } catch (error) {
-        console.error('Erro detalhado no upload da imagem:', error);
-        console.error('File info:', {
-            name: file?.name,
-            size: file?.size,
-            type: file?.type
-        });
-        throw error;
+    if (!file || file.size === 0 || !file.type.startsWith('image/')) {
+        throw new Error('Arquivo inválido');
     }
+
+    const storageRef = storage.ref().child(path);
+    const snapshot = await storageRef.put(file);
+    return await snapshot.ref.getDownloadURL();
 }
 
-// Function to submit message
 async function submitMessage(formData) {
-    try {
-        const docRef = await db.collection('mensagens').add({
-            nome: formData.get('name'),
-            apelido: formData.get('apelido'),
-            email: formData.get('email'),
-            assunto: formData.get('assunto'),
-            mensagem: formData.get('message'),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'nova'
-        });
-        
-        return true;
-    } catch (error) {
-        console.error('Erro ao enviar mensagem: ', error);
-        throw error;
-    }
+    await db.collection('mensagens').add({
+        nome: formData.get('name'),
+        apelido: formData.get('apelido'),
+        email: formData.get('email'),
+        assunto: formData.get('assunto'),
+        mensagem: formData.get('message'),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        status: 'nova'
+    });
+    return true;
 }
 
-// Function to submit event - FIXED VERSION
-async function submitEventFromFormData(formData) {
-    try {
-        console.log('Starting event submission using FormData...');
-        
-        let imagemEventoURL = '';
-        let logotipoOrganizacaoURL = '';
+async function submitEvent(formData) {
+    let imagemEventoURL = '';
+    let logotipoOrganizacaoURL = '';
 
-        // Debug: Log all FormData entries
-        console.log('=== All FormData entries ===');
-        for (let [key, value] of formData.entries()) {
-            if (value instanceof File) {
-                console.log(`${key}:`, {
-                    name: value.name,
-                    size: value.size,
-                    type: value.type,
-                    lastModified: value.lastModified
-                });
-            } else {
-                console.log(`${key}: ${value}`);
-            }
+    // Handle image uploads
+    const eventImageFile = formData.get('event_image');
+    const logoImageFile = formData.get('event_image2');
+
+    if (eventImageFile && eventImageFile.size > 0) {
+        const timestamp = Date.now();
+        const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
+        try {
+            imagemEventoURL = await uploadImage(eventImageFile, imagePath);
+        } catch (error) {
+            console.error('Failed to upload event image:', error);
         }
-
-        // Get files from FormData - these should be the correct field names
-        const eventImageFile = formData.get('event_image');
-        const logoImageFile = formData.get('event_image2');
-
-        console.log('Event image file:', eventImageFile);
-        console.log('Logo image file:', logoImageFile);
-
-        // Check if eventImageFile is a valid file
-        if (eventImageFile && eventImageFile instanceof File && eventImageFile.size > 0) {
-            console.log('Processing event image:', eventImageFile.name);
-            
-            const timestamp = Date.now();
-            const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
-            
-            try {
-                imagemEventoURL = await uploadImage(eventImageFile, imagePath);
-                console.log('Event image uploaded successfully:', imagemEventoURL);
-            } catch (error) {
-                console.error('Failed to upload event image:', error);
-                // Don't throw here, continue with submission
-            }
-        } else {
-            console.log('No valid event image file. File details:', {
-                file: eventImageFile,
-                isFile: eventImageFile instanceof File,
-                size: eventImageFile?.size,
-                name: eventImageFile?.name
-            });
-        }
-
-        // Check if logoImageFile is a valid file
-        if (logoImageFile && logoImageFile instanceof File && logoImageFile.size > 0) {
-            console.log('Processing logo image:', logoImageFile.name);
-            
-            const timestamp = Date.now();
-            const logoPath = `eventos/logos/${timestamp}_${logoImageFile.name}`;
-            
-            try {
-                logotipoOrganizacaoURL = await uploadImage(logoImageFile, logoPath);
-                console.log('Logo image uploaded successfully:', logotipoOrganizacaoURL);
-            } catch (error) {
-                console.error('Failed to upload logo image:', error);
-                // Don't throw here, continue with submission
-            }
-        } else {
-            console.log('No valid logo image file. File details:', {
-                file: logoImageFile,
-                isFile: logoImageFile instanceof File,
-                size: logoImageFile?.size,
-                name: logoImageFile?.name
-            });
-        }
-
-        // Create the document data
-        const eventData = {
-            nome: formData.get('name'),
-            apelido: formData.get('apelido'),
-            email: formData.get('email'),
-            nomeEvento: formData.get('event_title'),
-            categoria: formData.get('event_category'),
-            dataEvento: formData.get('event_date'),
-            horaInicio: formData.get('event_start_time'),
-            horaFim: formData.get('event_end_time'),
-            organizacao: formData.get('event_location'),
-            localEvento: formData.get('event_location2'),
-            descricao: formData.get('event_description'),
-            linkEvento: formData.get('event_link') || '',
-            imagemEvento: imagemEventoURL,
-            logotipoOrganizacao: logotipoOrganizacaoURL,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'pendente',
-            aprovado: false
-        };
-
-        console.log('Final event data before saving:', eventData);
-
-        const docRef = await db.collection('eventos').add(eventData);
-        console.log('Event saved successfully with ID:', docRef.id);
-        return true;
-    } catch (error) {
-        console.error('Erro ao submeter evento: ', error);
-        throw error;
     }
+
+    if (logoImageFile && logoImageFile.size > 0) {
+        const timestamp = Date.now();
+        const logoPath = `eventos/logos/${timestamp}_${logoImageFile.name}`;
+        try {
+            logotipoOrganizacaoURL = await uploadImage(logoImageFile, logoPath);
+        } catch (error) {
+            console.error('Failed to upload logo image:', error);
+        }
+    }
+
+    // Save to Firestore
+    const eventData = {
+        nome: formData.get('name'),
+        apelido: formData.get('apelido'),
+        email: formData.get('email'),
+        nomeEvento: formData.get('event_title'),
+        categoria: formData.get('event_category'),
+        dataEvento: formData.get('event_date'),
+        horaInicio: formData.get('event_start_time'),
+        horaFim: formData.get('event_end_time'),
+        organizacao: formData.get('event_location'),
+        localEvento: formData.get('event_location2'),
+        descricao: formData.get('event_description'),
+        linkEvento: formData.get('event_link') || '',
+        imagemEvento: imagemEventoURL,
+        logotipoOrganizacao: logotipoOrganizacaoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        status: 'pendente',
+        aprovado: false
+    };
+
+    await db.collection('eventos').add(eventData);
+    return true;
 }
 
-// ========== FORM SUBMISSION HANDLERS ==========
-
+// ========== UI HELPERS ==========
 function showLoading() {
     document.getElementById('loadingOverlay').style.display = 'flex';
 }
@@ -532,168 +403,58 @@ function hideLoading() {
     document.getElementById('loadingOverlay').style.display = 'none';
 }
 
-function showSuccessMessage(message) {
+function showMessage(message, isError = false) {
     alert(message);
 }
 
-function showErrorMessage(message) {
-    alert(message);
-}
-
-async function submitEventAlternative(formElement) {
-    try {
-        console.log('Starting event submission using FormData...');
-        
-        let imagemEventoURL = '';
-        let logotipoOrganizacaoURL = '';
-
-        // Get FormData from the form
-        const formData = new FormData(formElement);
-        
-        // Debug: Log all form data
-        console.log('=== All Form Data ===');
-        for (let [key, value] of formData.entries()) {
-            if (value instanceof File) {
-                console.log(`${key}:`, {
-                    name: value.name,
-                    size: value.size,
-                    type: value.type
-                });
-            } else {
-                console.log(`${key}: ${value}`);
-            }
-        }
-
-        // Get files from FormData - these names match your HTML
-        const eventImageFile = formData.get('event_image');
-        const logoImageFile = formData.get('event_image2');
-
-        console.log('Event image file from FormData:', eventImageFile);
-        console.log('Logo image file from FormData:', logoImageFile);
-
-        // Check event image
-        if (eventImageFile && eventImageFile instanceof File && eventImageFile.size > 0) {
-            console.log('Processing event image:', {
-                name: eventImageFile.name,
-                size: eventImageFile.size,
-                type: eventImageFile.type
-            });
-
-            // Create unique filename to avoid conflicts
-            const timestamp = Date.now();
-            const randomId = Math.random().toString(36).substring(2, 15);
-            const cleanFileName = eventImageFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
-            const imagePath = `eventos/imagens/${timestamp}_${randomId}_${cleanFileName}`;
-            
-            try {
-                imagemEventoURL = await uploadImage(eventImageFile, imagePath);
-                console.log('Event image uploaded successfully:', imagemEventoURL);
-            } catch (error) {
-                console.error('Failed to upload event image:', error);
-                // Don't throw here, continue with submission
-                console.log('Continuing without event image...');
-            }
-        } else {
-            console.log('No valid event image file selected');
-        }
-
-        // Check logo image
-        if (logoImageFile && logoImageFile instanceof File && logoImageFile.size > 0) {
-            console.log('Processing logo image:', {
-                name: logoImageFile.name,
-                size: logoImageFile.size,
-                type: logoImageFile.type
-            });
-
-            // Create unique filename to avoid conflicts
-            const timestamp = Date.now();
-            const randomId = Math.random().toString(36).substring(2, 15);
-            const cleanFileName = logoImageFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
-            const logoPath = `eventos/logos/${timestamp}_${randomId}_${cleanFileName}`;
-            
-            try {
-                logotipoOrganizacaoURL = await uploadImage(logoImageFile, logoPath);
-                console.log('Logo image uploaded successfully:', logotipoOrganizacaoURL);
-            } catch (error) {
-                console.error('Failed to upload logo image:', error);
-                // Don't throw here, continue with submission
-                console.log('Continuing without logo image...');
-            }
-        } else {
-            console.log('No valid logo image file selected');
-        }
-
-        // Create the document data
-        const eventData = {
-            nome: formData.get('name'),
-            apelido: formData.get('apelido'),
-            email: formData.get('email'),
-            nomeEvento: formData.get('event_title'),
-            categoria: formData.get('event_category'),
-            dataEvento: formData.get('event_date'),
-            horaInicio: formData.get('event_start_time'),
-            horaFim: formData.get('event_end_time'),
-            organizacao: formData.get('event_location'),
-            localEvento: formData.get('event_location2'),
-            descricao: formData.get('event_description'),
-            linkEvento: formData.get('event_link') || '',
-            imagemEvento: imagemEventoURL,
-            logotipoOrganizacao: logotipoOrganizacaoURL,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'pendente',
-            aprovado: false
-        };
-
-        console.log('Final event data before saving:', eventData);
-
-        const docRef = await db.collection('eventos').add(eventData);
-        console.log('Event saved successfully with ID:', docRef.id);
-        return true;
-    } catch (error) {
-        console.error('Erro ao submeter evento: ', error);
-        throw error;
-    }
-}
-
-// ========== EVENT LISTENERS (SINGLE, CLEAN VERSION) ==========
+// ========== FORM HANDLERS ==========
 document.addEventListener('DOMContentLoaded', function() {
     const eventForm = document.getElementById('event-form-element');
+    const messageForm = document.getElementById('message-form-element');
+    
     if (eventForm) {
-        console.log('Event form found, attaching listener...');
-        
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            console.log('Event form submitted!');
             showLoading();
             
             try {
-                // Try the alternative approach first
-                const success = await submitEventAlternative(e.target);
+                const formData = new FormData(e.target);
+                await submitEvent(formData);
+                showMessage('Evento submetido com sucesso!');
+                e.target.reset();
+                hideForm();
                 
-                if (success) {
-                    showSuccessMessage('Evento submetido com sucesso!');
-                    e.target.reset();
-                    hideForm();
-                    
-                    // Reset file labels
-                    const fileLabel = document.getElementById('file-label');
-                    const fileLabel2 = document.getElementById('file-label2');
-                    if (fileLabel) {
-                        fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
-                    }
-                    if (fileLabel2) {
-                        fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo da empresa';
-                    }
-                }
+                // Reset file labels
+                const fileLabel = document.getElementById('file-label');
+                const fileLabel2 = document.getElementById('file-label2');
+                if (fileLabel) fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
+                if (fileLabel2) fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo da empresa';
             } catch (error) {
-                console.error('Full error details:', error);
-                showErrorMessage('Erro ao submeter evento. Tenta novamente.');
+                console.error('Error submitting event:', error);
+                showMessage('Erro ao submeter evento. Tenta novamente.', true);
             } finally {
                 hideLoading();
             }
         });
-    } else {
-        console.error('Event form not found! Check if the ID "event-form-element" exists.');
+    }
+
+    if (messageForm) {
+        messageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+            
+            try {
+                const formData = new FormData(e.target);
+                await submitMessage(formData);
+                showMessage('Mensagem enviada com sucesso!');
+                e.target.reset();
+                hideForm();
+            } catch (error) {
+                console.error('Error submitting message:', error);
+                showMessage('Erro ao enviar mensagem. Tenta novamente.', true);
+            } finally {
+                hideLoading();
+            }
+        });
     }
 });
