@@ -36,6 +36,9 @@ function hideForm() {
     }, 300);
 }
 
+let storedEventImage = null;
+let storedEventLogo = null;
+
 // ========== DRAG AND DROP FUNCTIONALITY ==========
 function setupDragAndDrop() {
     const fileInputs = [
@@ -72,6 +75,13 @@ function setupDragAndDrop() {
                         input.files = dt.files;
                         
                         console.log(`✅ File successfully set for ${type}:`, input.files[0]?.name, input.files[0]?.size);
+                        
+                        // FIXED: Store file reference globally to prevent loss
+                        if (type === 'thumbnail') {
+                            storedEventImage = file;
+                        } else if (type === 'logo') {
+                            storedEventLogo = file;
+                        }
                         
                         // Update label text
                         label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('${type}')">✕</span>`;
@@ -554,6 +564,9 @@ function showMessage(message, isError = false) {
 
 // ========== FORM HANDLERS ==========
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize drag and drop ONCE when page loads
+    setupDragAndDrop();
+    
     const eventForm = document.getElementById('event-form-element');
     const messageForm = document.getElementById('message-form-element');
     
@@ -591,27 +604,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 const eventImage = document.getElementById('event-image');
                 const eventImage2 = document.getElementById('event-image2');
                 
-                // Debug: Check what's actually in the inputs
+                // FIXED: Use stored files as fallback if input.files is empty
                 console.log('Pre-submission file check:');
-                console.log('Event Image input files:', eventImage?.files);
-                console.log('Event Logo input files:', eventImage2?.files);
+                console.log('Event Image input:', eventImage);
+                console.log('Event Image files property:', eventImage ? eventImage.files : 'input not found');
+                console.log('Stored Event Image:', storedEventImage);
+                console.log('Event Logo input:', eventImage2);  
+                console.log('Event Logo files property:', eventImage2 ? eventImage2.files : 'input not found');
+                console.log('Stored Event Logo:', storedEventLogo);
                 
-                // FIXED: Double-check and force-set files if they exist
-                if (eventImage?.files?.[0]) {
-                    formData.set('event_image', eventImage.files[0]);
-                    console.log('✅ Event Image attached:', eventImage.files[0].name, eventImage.files[0].size);
+                // FIXED: Use stored files if input files are lost
+                const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
+                const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
+                
+                if (eventImageFile) {
+                    formData.set('event_image', eventImageFile);
+                    console.log('✅ Event Image attached:', eventImageFile.name, eventImageFile.size);
                 } else {
-                    console.log('❌ Event Image: No file found in input');
-                    // Remove any empty file field
+                    console.log('❌ Event Image: No valid file found');
                     formData.delete('event_image');
                 }
                 
-                if (eventImage2?.files?.[0]) {
-                    formData.set('event_image2', eventImage2.files[0]);
-                    console.log('✅ Event Logo attached:', eventImage2.files[0].name, eventImage2.files[0].size);
+                if (eventLogoFile) {
+                    formData.set('event_image2', eventLogoFile);
+                    console.log('✅ Event Logo attached:', eventLogoFile.name, eventLogoFile.size);
                 } else {
-                    console.log('❌ Event Logo: No file found in input');
-                    // Remove any empty file field
+                    console.log('❌ Event Logo: No valid file found');
                     formData.delete('event_image2');
                 }
                 
@@ -620,11 +638,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.target.reset();
                 hideForm();
                 
-                // Reset file labels
+                // Reset file labels and stored files
                 const fileLabel = document.getElementById('file-label');
                 const fileLabel2 = document.getElementById('file-label2');
                 if (fileLabel) fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
                 if (fileLabel2) fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo da empresa';
+                
+                // Clear stored files
+                storedEventImage = null;
+                storedEventLogo = null;
                 
             } catch (error) {
                 console.error('Error submitting event:', error);
@@ -729,6 +751,14 @@ function handleDrop(e, input, label, originalText) {
                     }, 10);
                     
                     console.log('✅ File dropped and verified:', file.name, input.files[0].name);
+                    
+                    // FIXED: Store file reference globally
+                    const imageType = input.id === 'event-image' ? 'thumbnail' : 'logo';
+                    if (imageType === 'thumbnail') {
+                        storedEventImage = file;
+                    } else if (imageType === 'logo') {
+                        storedEventLogo = file;
+                    }
                 } else {
                     console.error('❌ File drop failed - not found in input after setting');
                 }
