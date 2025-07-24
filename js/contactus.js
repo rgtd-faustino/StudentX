@@ -64,19 +64,24 @@ function setupDragAndDrop() {
             if (files.length > 0) {
                 const file = files[0];
                 if (file.type.startsWith('image/')) {
-                    // FIXED: Properly set files using DataTransfer
+                    // FIXED: Properly set files using DataTransfer - IMPROVED
                     const dt = new DataTransfer();
                     dt.items.add(file);
                     input.files = dt.files;
                     
-                    // Update label text
-                    label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('${type}')">✕</span>`;
-                    
-                    // Trigger change event manually
-                    const changeEvent = new Event('change', { bubbles: true });
-                    input.dispatchEvent(changeEvent);
-                    
-                    console.log(`File dropped and set for ${type}:`, file.name, file.size);
+                    // Verify the file was actually set
+                    if (input.files && input.files[0]) {
+                        console.log(`✅ File successfully set for ${type}:`, input.files[0].name, input.files[0].size);
+                        
+                        // Update label text
+                        label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('${type}')">✕</span>`;
+                        
+                        // Trigger change event manually
+                        const changeEvent = new Event('change', { bubbles: true });
+                        input.dispatchEvent(changeEvent);
+                    } else {
+                        console.error(`❌ Failed to set file for ${type}`);
+                    }
                 } else {
                     console.warn('Invalid file type dropped:', file.type);
                 }
@@ -579,10 +584,26 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const formData = new FormData(e.target);
                 
-                // Additional debugging for file inputs
+                // FIXED: Ensure files are properly attached to FormData
                 const eventImage = document.getElementById('event-image');
                 const eventImage2 = document.getElementById('event-image2');
                 
+                // Force re-attach files to FormData if they exist
+                if (eventImage && eventImage.files && eventImage.files[0]) {
+                    formData.set('event_image', eventImage.files[0]);
+                    console.log('Manually attached Event Image:', eventImage.files[0].name, eventImage.files[0].size);
+                } else {
+                    console.log('Event Image: No file found in input');
+                }
+                
+                if (eventImage2 && eventImage2.files && eventImage2.files[0]) {
+                    formData.set('event_image2', eventImage2.files[0]);
+                    console.log('Manually attached Event Logo:', eventImage2.files[0].name, eventImage2.files[0].size);
+                } else {
+                    console.log('Event Logo: No file found in input');
+                }
+                
+                // Additional debugging for file inputs
                 console.log('Before submission - Image files:');
                 if (eventImage && eventImage.files[0]) {
                     console.log('Event Image:', eventImage.files[0].name, eventImage.files[0].size, eventImage.files[0].type);
