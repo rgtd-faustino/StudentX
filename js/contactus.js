@@ -64,16 +64,30 @@ function setupDragAndDrop() {
             if (files.length > 0) {
                 const file = files[0];
                 if (file.type.startsWith('image/')) {
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    input.files = dataTransfer.files;
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                    // FIXED: Properly set files using DataTransfer
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    input.files = dt.files;
+                    
+                    // Update label text
+                    label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('${type}')">✕</span>`;
+                    
+                    // Trigger change event manually
+                    const changeEvent = new Event('change', { bubbles: true });
+                    input.dispatchEvent(changeEvent);
+                    
+                    console.log(`File dropped and set for ${type}:`, file.name, file.size);
+                } else {
+                    console.warn('Invalid file type dropped:', file.type);
                 }
             }
         });
 
-        label.addEventListener('click', () => {
-            input.click();
+        label.addEventListener('click', (e) => {
+            // Don't trigger file dialog if clicking on remove button
+            if (!e.target.classList.contains('remove-image')) {
+                input.click();
+            }
         });
     });
 
@@ -355,13 +369,17 @@ function setupEventPreview() {
 
     function handleImageChange(fileInput, imageType) {
         const file = fileInput.files[0];
+        console.log(`handleImageChange called for ${imageType}:`, file);
+        
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 if (imageType === 'thumbnail') {
                     currentImageSrc = e.target.result;
+                    console.log('Thumbnail image loaded');
                 } else if (imageType === 'logo') {
                     currentImageSrc2 = e.target.result;
+                    console.log('Logo image loaded');
                 }
                 updatePreviewHTML();
             };
@@ -418,11 +436,13 @@ function setupEventPreview() {
     // Handle image previews with improved functionality
     if (eventImage) {
         eventImage.addEventListener('change', function() {
+            console.log('Event image change detected:', this.files[0]);
             const file = this.files[0];
             const label = document.getElementById('file-label');
             
             if (file && file.type.startsWith('image/') && label) {
-                label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('thumbnail')"></span>`;
+                label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('thumbnail')">✕</span>`;
+                console.log('Updated label for thumbnail:', file.name);
             } else if (label) {
                 label.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
             }
@@ -432,11 +452,13 @@ function setupEventPreview() {
 
     if (eventImage2) {
         eventImage2.addEventListener('change', function() {
+            console.log('Event logo change detected:', this.files[0]);
             const file = this.files[0];
             const label2 = document.getElementById('file-label2');
             
             if (file && file.type.startsWith('image/') && label2) {
-                label2.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('logo')"></span>`;
+                label2.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('logo')">✕</span>`;
+                console.log('Updated label for logo:', file.name);
             } else if (label2) {
                 label2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
             }
@@ -481,6 +503,16 @@ async function submitMessage(formData) {
 async function submitEvent(formData) {
     // Add submission type identifier
     formData.append('submission_type', 'event');
+    
+    // Debug: Log form data contents
+    console.log('Form data being submitted:');
+    for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(`${key}: File - ${value.name} (${value.size} bytes, ${value.type})`);
+        } else {
+            console.log(`${key}: ${value}`);
+        }
+    }
     
     const response = await fetch(WORKER_URL, {
         method: 'POST',
@@ -542,6 +574,24 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 const formData = new FormData(e.target);
+                
+                // Additional debugging for file inputs
+                const eventImage = document.getElementById('event-image');
+                const eventImage2 = document.getElementById('event-image2');
+                
+                console.log('Before submission - Image files:');
+                if (eventImage && eventImage.files[0]) {
+                    console.log('Event Image:', eventImage.files[0].name, eventImage.files[0].size, eventImage.files[0].type);
+                } else {
+                    console.log('Event Image: No file selected');
+                }
+                
+                if (eventImage2 && eventImage2.files[0]) {
+                    console.log('Event Logo:', eventImage2.files[0].name, eventImage2.files[0].size, eventImage2.files[0].type);
+                } else {
+                    console.log('Event Logo: No file selected');
+                }
+                
                 const result = await submitEvent(formData);
                 showMessage(result.message || 'Evento submetido com sucesso!');
                 e.target.reset();
@@ -583,37 +633,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// ========== ENHANCED DRAG DROP FUNCTIONALITY ==========
 function initializeDragDrop() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
     
     fileInputs.forEach(input => {
-        const label = input.closest('.file-input-label');
+        const label = input.closest('.file-input-label') || document.querySelector(`label[for="${input.id}"]`);
+        if (!label) return;
+        
         const originalText = label.textContent.trim();
         
         // Prevent default drag behaviors
@@ -661,12 +688,18 @@ function handleDrop(e, input, label, originalText) {
         
         // Check if it's an image
         if (file.type.startsWith('image/')) {
-            input.files = files;
+            // Use DataTransfer to properly set files
+            const newDt = new DataTransfer();
+            newDt.items.add(file);
+            input.files = newDt.files;
+            
             updateLabelWithFile(label, file, originalText);
             
             // Trigger change event
             const event = new Event('change', { bubbles: true });
             input.dispatchEvent(event);
+            
+            console.log('File dropped successfully:', file.name);
         } else {
             showError(label, 'Por favor, selecione apenas imagens.');
         }
@@ -677,6 +710,7 @@ function handleFileSelect(input, label, originalText) {
     if (input.files.length > 0) {
         const file = input.files[0];
         updateLabelWithFile(label, file, originalText);
+        console.log('File selected via click:', file.name);
     } else {
         resetLabel(label, originalText);
     }
@@ -685,6 +719,9 @@ function handleFileSelect(input, label, originalText) {
 function updateLabelWithFile(label, file, originalText) {
     label.classList.add('file-selected');
     
+    // Determine image type for remove function
+    const imageType = label.id === 'file-label' ? 'thumbnail' : 'logo';
+    
     // Create preview container
     const preview = document.createElement('div');
     preview.style.cssText = `
@@ -692,6 +729,15 @@ function updateLabelWithFile(label, file, originalText) {
         align-items: center;
         gap: 0.75rem;
         font-weight: 600;
+        justify-content: space-between;
+    `;
+    
+    // Add file info container
+    const fileInfo = document.createElement('div');
+    fileInfo.style.cssText = `
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     `;
     
     // Add file icon
@@ -706,8 +752,27 @@ function updateLabelWithFile(label, file, originalText) {
         <div style="color: #6b7280; font-size: 0.8rem;">${formatFileSize(file.size)}</div>
     `;
     
-    preview.appendChild(icon);
-    preview.appendChild(info);
+    // Add remove button
+    const removeBtn = document.createElement('span');
+    removeBtn.textContent = '✕';
+    removeBtn.className = 'remove-image';
+    removeBtn.style.cssText = `
+        cursor: pointer;
+        color: #ef4444;
+        font-weight: bold;
+        padding: 0.25rem;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+    `;
+    removeBtn.onclick = (e) => {
+        e.stopPropagation();
+        window.removeImage(imageType);
+    };
+    
+    fileInfo.appendChild(icon);
+    fileInfo.appendChild(info);
+    preview.appendChild(fileInfo);
+    preview.appendChild(removeBtn);
     
     label.innerHTML = '';
     label.appendChild(preview);
