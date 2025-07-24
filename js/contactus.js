@@ -1,5 +1,5 @@
 // Replace the Firebase configuration section with this:
-const WORKER_URL = 'https://your-worker-name.your-subdomain.workers.dev'; // Replace with your actual worker URL
+const WORKER_URL = 'https://formsubmissions.contact-studentx.workers.dev/';
 
 // ========== FORM MANAGEMENT ==========
 function showForm(formType) {
