@@ -460,29 +460,6 @@ function setupEventPreview() {
     updatePreviewHTML();
 }
 
-// ========== FIREBASE FUNCTIONS ==========
-async function uploadImage(file, path) {
-    // Enhanced validation
-    if (!file || !(file instanceof File) || file.size === 0 || !file.type.startsWith('image/')) {
-        console.error('Invalid file:', {
-            exists: !!file,
-            isFile: file instanceof File,
-            size: file?.size,
-            type: file?.type
-        });
-        throw new Error('Arquivo inválido');
-    }
-
-    console.log(`Uploading file: ${file.name} (${file.size} bytes) to ${path}`);
-    
-    const storageRef = storage.ref().child(path);
-    const snapshot = await storageRef.put(file);
-    const downloadURL = await snapshot.ref.getDownloadURL();
-    
-    console.log(`File uploaded successfully: ${downloadURL}`);
-    return downloadURL;
-}
-
 // ========== SUBMISSION FUNCTIONS ==========
 async function submitMessage(formData) {
     // Add submission type identifier
