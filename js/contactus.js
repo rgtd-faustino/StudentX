@@ -319,13 +319,25 @@ function setupEventPreview() {
 
 // ========== FIREBASE FUNCTIONS ==========
 async function uploadImage(file, path) {
-    if (!file || file.size === 0 || !file.type.startsWith('image/')) {
+    // Enhanced validation
+    if (!file || !(file instanceof File) || file.size === 0 || !file.type.startsWith('image/')) {
+        console.error('Invalid file:', {
+            exists: !!file,
+            isFile: file instanceof File,
+            size: file?.size,
+            type: file?.type
+        });
         throw new Error('Arquivo inválido');
     }
 
+    console.log(`Uploading file: ${file.name} (${file.size} bytes) to ${path}`);
+    
     const storageRef = storage.ref().child(path);
     const snapshot = await storageRef.put(file);
-    return await snapshot.ref.getDownloadURL();
+    const downloadURL = await snapshot.ref.getDownloadURL();
+    
+    console.log(`File uploaded successfully: ${downloadURL}`);
+    return downloadURL;
 }
 
 async function submitMessage(formData) {
@@ -349,21 +361,27 @@ async function submitEvent(formData) {
     const eventImageFile = formData.get('event_image');
     const logoImageFile = formData.get('event_image2');
 
-    if (eventImageFile && eventImageFile.size > 0) {
+    console.log('Event image file:', eventImageFile); // Debug log
+    console.log('Logo image file:', logoImageFile);   // Debug log
+
+    // Fixed condition - check if file exists and is actually a file (not empty string)
+    if (eventImageFile && eventImageFile instanceof File && eventImageFile.size > 0) {
         const timestamp = Date.now();
         const imagePath = `eventos/imagens/${timestamp}_${eventImageFile.name}`;
         try {
             imagemEventoURL = await uploadImage(eventImageFile, imagePath);
+            console.log('Event image uploaded:', imagemEventoURL); // Debug log
         } catch (error) {
             console.error('Failed to upload event image:', error);
         }
     }
 
-    if (logoImageFile && logoImageFile.size > 0) {
+    if (logoImageFile && logoImageFile instanceof File && logoImageFile.size > 0) {
         const timestamp = Date.now();
         const logoPath = `eventos/logos/${timestamp}_${logoImageFile.name}`;
         try {
             logotipoOrganizacaoURL = await uploadImage(logoImageFile, logoPath);
+            console.log('Logo image uploaded:', logotipoOrganizacaoURL); // Debug log
         } catch (error) {
             console.error('Failed to upload logo image:', error);
         }
@@ -390,6 +408,7 @@ async function submitEvent(formData) {
         aprovado: false
     };
 
+    console.log('Event data being saved:', eventData); // Debug log
     await db.collection('eventos').add(eventData);
     return true;
 }
