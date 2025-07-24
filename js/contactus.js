@@ -231,9 +231,13 @@ function setupEventPreview() {
         const selectedStartTime = eventStartTime.value;
         const selectedEndTime = eventEndTime.value;
 
-        if (eventLink && !eventLink.startsWith('http')) {
+        // Process link without affecting images
+        if (eventLink && !eventLink.startsWith('http://') && !eventLink.startsWith('https://')) {
             eventLink = 'https://' + eventLink;
         }
+        
+        // Ensure we have a valid link for display
+        const displayLink = eventLink || '#';
         
         const formattedDateTime = formatDate(selectedDate, selectedStartTime, selectedEndTime);
         const duration = getEventDuration(selectedStartTime, selectedEndTime);
@@ -269,7 +273,7 @@ function setupEventPreview() {
                                 <p class="opp-place-subtitle-calendar-expanded">${eventLoc2}</p>
                             </div>
                         </div>
-                        <a class="more-info-link-calendar-expanded" href="${eventLink}" target="_blank">Mais Informações</a>
+                        <a class="more-info-link-calendar-expanded" href="${displayLink}" target="_blank">Mais Informações</a>
                     </div>
                 </div>
             `;
@@ -298,7 +302,7 @@ function setupEventPreview() {
                                 <p class="opp-place-subtitle-calendar-expanded">${eventLoc2}</p>
                             </div>
                         </div>
-                        <a class="more-info-link-calendar-expanded" href="${eventLink}" target="_blank">Mais Informações</a>
+                        <a class="more-info-link-calendar-expanded" href="${displayLink}" target="_blank">Mais Informações</a>
                     </div>
                 </div>
             `;
@@ -323,7 +327,7 @@ function setupEventPreview() {
                     logoSrc: currentImageSrc2,
                     oppPlaceTitle: eventLoc,
                     oppPlaceSubtitle: eventLoc2,
-                    moreInfoLink: eventLink || '#',
+                    moreInfoLink: displayLink,
                     moreInfoText: eventDesc
                 });
             };
