@@ -465,8 +465,15 @@ function setupEventPreview() {
             if (file && file.type.startsWith('image/') && label) {
                 label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('thumbnail')">✕</span>`;
                 console.log('Updated label for thumbnail:', file.name);
+                
+                // FIXED: Store file globally for manual input too
+                storedEventImage = file;
+                
             } else if (label) {
                 label.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
+                
+                // FIXED: Clear stored file when no valid file
+                storedEventImage = null;
             }
             handleImageChange(this, 'thumbnail');
         });
@@ -481,8 +488,15 @@ function setupEventPreview() {
             if (file && file.type.startsWith('image/') && label2) {
                 label2.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('logo')">✕</span>`;
                 console.log('Updated label for logo:', file.name);
+                
+                // FIXED: Store file globally for manual input too
+                storedEventLogo = file;
+                
             } else if (label2) {
                 label2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
+                
+                // FIXED: Clear stored file when no valid file
+                storedEventLogo = null;
             }
             handleImageChange(this, 'logo');
         });
@@ -494,10 +508,12 @@ function setupEventPreview() {
             const input = document.getElementById('event-image');
             const label = document.getElementById('file-label');
             resetImageInput(input, label, '📷 Clica para selecionar a imagem principal do evento (thumbnail)', 'thumbnail');
+            storedEventImage = null; // Clear stored file
         } else if (imageType === 'logo') {
             const input = document.getElementById('event-image2');
             const label = document.getElementById('file-label2');
             resetImageInput(input, label, '📷 Clica para selecionar o logotipo do evento/empresa', 'logo');
+            storedEventLogo = null; // Clear stored file
         }
     };
 
