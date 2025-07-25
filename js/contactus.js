@@ -116,6 +116,13 @@ function setupDragAndDrop() {
 }
 
 
+    function clearDateError() {
+        const existingError = document.getElementById('date-validation-error');
+        if (existingError) {
+            existingError.remove();
+        }
+    }
+
 function clearTimeError() {
     const existingError = document.getElementById('time-validation-error');
     if (existingError) {
@@ -171,6 +178,52 @@ function setupEventPreview() {
         }
         
         return result;
+    }
+
+    function validateEventDate() {
+        const eventDate = document.getElementById('event-date');
+        
+        if (!eventDate || !eventDate.value) return true;
+        
+        const selectedDate = new Date(eventDate.value);
+        const today = new Date();
+        
+        // Reset time to compare only dates (not time)
+        today.setHours(0, 0, 0, 0);
+        selectedDate.setHours(0, 0, 0, 0);
+        
+        if (selectedDate < today) {
+            // Show error message
+            showDateError('A data do evento deve ser hoje ou no futuro');
+            return false;
+        } else {
+            // Clear any existing error
+            clearDateError();
+            return true;
+        }
+    }
+
+
+    function showDateError(message) {
+        // Remove existing error if any
+        clearDateError();
+        
+        const eventDate = document.getElementById('event-date');
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'date-validation-error';
+        errorDiv.style.cssText = `
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.25rem;
+            padding: 0.5rem;
+            background-color: #fee2e2;
+            border: 1px solid #fca5a5;
+            border-radius: 0.375rem;
+        `;
+        errorDiv.textContent = message;
+        
+        eventDate.parentNode.insertBefore(errorDiv, eventDate.nextSibling);
     }
 
 
@@ -457,16 +510,28 @@ function setupEventPreview() {
     setupTextFieldUpdates(eventLinkWebsite);
     setupTextFieldUpdates(eventLocation);
     setupTextFieldUpdates(eventLocation2);
-    
-    [eventCategory, eventDate].forEach(el => {
+
+    [eventCategory].forEach(el => {
         if (el) el.addEventListener('change', updatePreviewHTML);
     });
+    
+    if (eventDate) {
+        eventDate.addEventListener('change', function() {
+            if (validateEventDate()) {
+                updatePreviewHTML();
+            }
+        });
+    }
 
     // Special handling for time inputs with validation
     [eventStartTime, eventEndTime].forEach(el => {
         if (el) {
             el.addEventListener('change', function() {
-                if (validateEventTimes()) {
+                // Validate both date and times
+                const dateValid = validateEventDate();
+                const timeValid = validateEventTimes();
+                
+                if (dateValid && timeValid) {
                     updatePreviewHTML();
                 }
             });
@@ -611,9 +676,7 @@ function resetEventForm() {
     
     // Clear any validation errors
     clearTimeError();
-    
-    // Update preview
-    updatePreviewHTML();
+    clearDateError();
 }
 
 // ========== UI HELPERS ==========
@@ -640,6 +703,20 @@ document.addEventListener('DOMContentLoaded', function() {
     if (eventForm) {
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // Validate event date is not in the past
+            const eventDate = document.getElementById('event-date');
+            if (eventDate && eventDate.value) {
+                const selectedDate = new Date(eventDate.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                selectedDate.setHours(0, 0, 0, 0);
+                
+                if (selectedDate < today) {
+                    showMessage('Por favor, selecione uma data futura para o evento.', true);
+                    return;
+                }
+            }
 
             // ADDED: Validate required fields including images and link
             const eventLinkWebsite = document.getElementById('event-link');
