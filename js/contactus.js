@@ -115,6 +115,14 @@ function setupDragAndDrop() {
     }
 }
 
+
+function clearTimeError() {
+    const existingError = document.getElementById('time-validation-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
 // ========== EVENT PREVIEW FUNCTIONALITY ==========
 function setupEventPreview() {
     const eventTitle = document.getElementById('event-title');
@@ -165,12 +173,6 @@ function setupEventPreview() {
         return result;
     }
 
-    function clearTimeError() {
-        const existingError = document.getElementById('time-validation-error');
-        if (existingError) {
-            existingError.remove();
-        }
-    }
 
     function validateEventTimes() {
         const eventStartTime = document.getElementById('event-start-time');
