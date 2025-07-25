@@ -435,10 +435,28 @@ function setupEventPreview() {
         updatePreviewHTML();
     }
 
-    // Add event listeners for real-time updates
-    [eventTitle, eventDescription, eventLinkWebsite, eventLocation, eventLocation2].forEach(el => {
-        if (el) el.addEventListener('input', updatePreviewHTML);
-    });
+    function setupTextFieldUpdates(element) {
+        if (!element) return;
+        
+        // Update on blur (when user clicks out of field)
+        element.addEventListener('blur', updatePreviewHTML);
+        
+        // Update on Enter key press
+        element.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                updatePreviewHTML();
+                // Optional: blur the field to remove focus
+                element.blur();
+            }
+        });
+    }
+
+    // Apply blur/enter updates to text fields
+    setupTextFieldUpdates(eventTitle);
+    setupTextFieldUpdates(eventDescription);
+    setupTextFieldUpdates(eventLinkWebsite);
+    setupTextFieldUpdates(eventLocation);
+    setupTextFieldUpdates(eventLocation2);
     
     [eventCategory, eventDate].forEach(el => {
         if (el) el.addEventListener('change', updatePreviewHTML);
@@ -674,34 +692,61 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const formData = new FormData(e.target);
                 
-                console.log('Pre-submission file check:');
-                console.log('Event Image input:', eventImage);
-                console.log('Event Image files property:', eventImage ? eventImage.files : 'input not found');
-                console.log('Stored Event Image:', storedEventImage);
-                console.log('Event Logo input:', eventImage2);  
-                console.log('Event Logo files property:', eventImage2 ? eventImage2.files : 'input not found');
-                console.log('Stored Event Logo:', storedEventLogo);
+                // FIXED: Use the correct field names that match your worker
+                const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
+                const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
                 
+                console.log('=== IMAGE FILES CHECK ===');
+                console.log('Event Image File:', {
+                    exists: !!eventImageFile,
+                    name: eventImageFile?.name,
+                    size: eventImageFile?.size,
+                    type: eventImageFile?.type
+                });
+                
+                console.log('Event Logo File:', {
+                    exists: !!eventLogoFile,
+                    name: eventLogoFile?.name,
+                    size: eventLogoFile?.size,
+                    type: eventLogoFile?.type
+                });
+                
+                // FIXED: Use the exact field names your worker expects
                 if (eventImageFile) {
-                    formData.set('event_image', eventImageFile);
-                    console.log('✅ Event Image attached:', eventImageFile.name, eventImageFile.size);
+                    formData.set('event_image', eventImageFile); // Matches worker
+                    console.log('✅ Event Image attached as "event_image"');
                 } else {
-                    console.log('❌ Event Image: No valid file found');
                     formData.delete('event_image');
+                    console.log('❌ Event Image: No file attached');
                 }
                 
                 if (eventLogoFile) {
-                    formData.set('event_image2', eventLogoFile);
-                    console.log('✅ Event Logo attached:', eventLogoFile.name, eventLogoFile.size);
+                    formData.set('event_image2', eventLogoFile); // Matches worker
+                    console.log('✅ Event Logo attached as "event_image2"');
                 } else {
-                    console.log('❌ Event Logo: No valid file found');
                     formData.delete('event_image2');
+                    console.log('❌ Event Logo: No file attached');
+                }
+                
+                // ADDED: Final verification before sending
+                console.log('=== FINAL FORM DATA CHECK ===');
+                const hasEventImage = formData.has('event_image');
+                const hasEventLogo = formData.has('event_image2');
+                console.log(`FormData contains event_image: ${hasEventImage}`);
+                console.log(`FormData contains event_image2: ${hasEventLogo}`);
+                
+                // Log all form data
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        console.log(`${key}: ${value.name} (${value.size} bytes, ${value.type})`);
+                    } else {
+                        console.log(`${key}: ${value}`);
+                    }
                 }
                 
                 const result = await submitEvent(formData);
                 showMessage(result.message || 'Evento submetido com sucesso!');
                 
-                // CHANGED: Use the new complete reset function
                 resetEventForm();
                 hideForm();
                 
