@@ -74,8 +74,6 @@ function setupDragAndDrop() {
                         dt.items.add(file);
                         input.files = dt.files;
                         
-                        console.log(`✅ File successfully set for ${type}:`, input.files[0]?.name, input.files[0]?.size);
-                        
                         // FIXED: Store file reference globally to prevent loss
                         if (type === 'thumbnail') {
                             storedEventImage = file;
@@ -444,17 +442,14 @@ function setupEventPreview() {
 
     function handleImageChange(fileInput, imageType) {
         const file = fileInput.files[0];
-        console.log(`handleImageChange called for ${imageType}:`, file);
         
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 if (imageType === 'thumbnail') {
                     currentImageSrc = e.target.result;
-                    console.log('Thumbnail image loaded');
                 } else if (imageType === 'logo') {
                     currentImageSrc2 = e.target.result;
-                    console.log('Logo image loaded');
                 }
                 updatePreviewHTML();
             };
@@ -541,13 +536,11 @@ function setupEventPreview() {
     // Handle image previews with improved functionality
     if (eventImage) {
         eventImage.addEventListener('change', function() {
-            console.log('Event image change detected:', this.files[0]);
             const file = this.files[0];
             const label = document.getElementById('file-label');
             
             if (file && file.type.startsWith('image/') && label) {
                 label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('thumbnail')">✕</span>`;
-                console.log('Updated label for thumbnail:', file.name);
                 
                 // FIXED: Store file globally for manual input too
                 storedEventImage = file;
@@ -564,13 +557,11 @@ function setupEventPreview() {
 
     if (eventImage2) {
         eventImage2.addEventListener('change', function() {
-            console.log('Event logo change detected:', this.files[0]);
             const file = this.files[0];
             const label2 = document.getElementById('file-label2');
             
             if (file && file.type.startsWith('image/') && label2) {
                 label2.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('logo')">✕</span>`;
-                console.log('Updated label for logo:', file.name);
                 
                 // FIXED: Store file globally for manual input too
                 storedEventLogo = file;
@@ -624,16 +615,6 @@ async function submitMessage(formData) {
 async function submitEvent(formData) {
     // Add submission type identifier
     formData.append('submission_type', 'event');
-    
-    // Debug: Log form data contents
-    console.log('Form data being submitted:');
-    for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-            console.log(`${key}: File - ${value.name} (${value.size} bytes, ${value.type})`);
-        } else {
-            console.log(`${key}: ${value}`);
-        }
-    }
     
     const response = await fetch(WORKER_URL, {
         method: 'POST',
@@ -773,53 +754,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
                 const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
                 
-                console.log('=== IMAGE FILES CHECK ===');
-                console.log('Event Image File:', {
-                    exists: !!eventImageFile,
-                    name: eventImageFile?.name,
-                    size: eventImageFile?.size,
-                    type: eventImageFile?.type
-                });
-                
-                console.log('Event Logo File:', {
-                    exists: !!eventLogoFile,
-                    name: eventLogoFile?.name,
-                    size: eventLogoFile?.size,
-                    type: eventLogoFile?.type
-                });
-                
                 // FIXED: Use the exact field names your worker expects
                 if (eventImageFile) {
                     formData.set('event_image', eventImageFile); // Matches worker
-                    console.log('✅ Event Image attached as "event_image"');
                 } else {
                     formData.delete('event_image');
-                    console.log('❌ Event Image: No file attached');
                 }
                 
                 if (eventLogoFile) {
                     formData.set('event_image2', eventLogoFile); // Matches worker
-                    console.log('✅ Event Logo attached as "event_image2"');
                 } else {
                     formData.delete('event_image2');
-                    console.log('❌ Event Logo: No file attached');
                 }
                 
                 // ADDED: Final verification before sending
-                console.log('=== FINAL FORM DATA CHECK ===');
                 const hasEventImage = formData.has('event_image');
                 const hasEventLogo = formData.has('event_image2');
-                console.log(`FormData contains event_image: ${hasEventImage}`);
-                console.log(`FormData contains event_image2: ${hasEventLogo}`);
-                
-                // Log all form data
-                for (let [key, value] of formData.entries()) {
-                    if (value instanceof File) {
-                        console.log(`${key}: ${value.name} (${value.size} bytes, ${value.type})`);
-                    } else {
-                        console.log(`${key}: ${value}`);
-                    }
-                }
                 
                 const result = await submitEvent(formData);
                 showMessage(result.message || 'Evento submetido com sucesso!');
@@ -929,8 +879,6 @@ function handleDrop(e, input, label, originalText) {
                         input.dispatchEvent(event);
                     }, 10);
                     
-                    console.log('✅ File dropped and verified:', file.name, input.files[0].name);
-                    
                     // FIXED: Store file reference globally
                     const imageType = input.id === 'event-image' ? 'thumbnail' : 'logo';
                     if (imageType === 'thumbnail') {
@@ -955,7 +903,6 @@ function handleFileSelect(input, label, originalText) {
     if (input.files.length > 0) {
         const file = input.files[0];
         updateLabelWithFile(label, file, originalText);
-        console.log('File selected via click:', file.name);
     } else {
         resetLabel(label, originalText);
     }
