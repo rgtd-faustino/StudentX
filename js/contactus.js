@@ -165,26 +165,6 @@ function setupEventPreview() {
         return result;
     }
 
-    function validateEventDate() {
-        const eventDate = document.getElementById('event-date');
-        
-        if (!eventDate || !eventDate.value) return true;
-        
-        const selectedDate = new Date(eventDate.value);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
-        
-        if (selectedDate < today) {
-            // Show error message
-            showDateError('A data do evento deve ser no futuro');
-            return false;
-        } else {
-            // Clear any existing error
-            clearDateError();
-            return true;
-        }
-    }
-
     function validateEventTimes() {
         const eventStartTime = document.getElementById('event-start-time');
         const eventEndTime = document.getElementById('event-end-time');
@@ -216,35 +196,6 @@ function setupEventPreview() {
     function timeToMinutes(timeString) {
         const [hours, minutes] = timeString.split(':').map(Number);
         return hours * 60 + minutes;
-    }
-
-    function clearDateError() {
-        const existingError = document.getElementById('date-validation-error');
-        if (existingError) {
-            existingError.remove();
-        }
-    }
-
-    function showDateError(message) {
-        // Remove existing error if any
-        clearDateError();
-        
-        const eventDate = document.getElementById('event-date');
-        const errorDiv = document.createElement('div');
-        errorDiv.id = 'date-validation-error';
-        errorDiv.style.cssText = `
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            margin-bottom: 0.25rem;
-            padding: 0.5rem;
-            background-color: #fee2e2;
-            border: 1px solid #fca5a5;
-            border-radius: 0.375rem;
-        `;
-        errorDiv.textContent = message;
-        
-        eventDate.parentNode.insertBefore(errorDiv, eventDate.nextSibling);
     }
 
     function showTimeError(message) {
@@ -488,38 +439,12 @@ function setupEventPreview() {
     [eventTitle, eventDescription, eventLinkWebsite, eventLocation, eventLocation2].forEach(el => {
         if (el) el.addEventListener('input', updatePreviewHTML);
     });
-
-    if (eventLinkWebsite) {
-        eventLinkWebsite.addEventListener('input', function() {
-            // Store current images before update
-            const tempImageSrc = currentImageSrc;
-            const tempImageSrc2 = currentImageSrc2;
-            
-            updatePreviewHTML();
-            
-            // Restore images after update
-            currentImageSrc = tempImageSrc;
-            currentImageSrc2 = tempImageSrc2;
-        });
-    }
-
-    if (eventCategory) {
-        eventCategory.addEventListener('change', updatePreviewHTML);
-    }
-
-    // Special handling for date input with validation
-    if (eventDate) {
-        eventDate.addEventListener('change', function() {
-            if (validateEventDate()) {
-                updatePreviewHTML();
-            }
-        });
-    }
     
     [eventCategory, eventDate].forEach(el => {
         if (el) el.addEventListener('change', updatePreviewHTML);
     });
 
+    // Special handling for time inputs with validation
     [eventStartTime, eventEndTime].forEach(el => {
         if (el) {
             el.addEventListener('change', function() {
@@ -661,15 +586,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const eventForm = document.getElementById('event-form-element');
     const messageForm = document.getElementById('message-form-element');
     
-        if (eventForm) {
+    if (eventForm) {
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            // Validate date before submission
-            if (!validateEventDate()) {
-                showMessage('Por favor, selecione uma data futura para o evento.', true);
-                return;
-            }
 
             // Validate times before submission
             const eventStartTime = document.getElementById('event-start-time');
@@ -692,15 +611,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Rest of the submission code remains the same...
             showLoading();
             
             try {
+                // FIXED: Create FormData and manually verify files
                 const formData = new FormData(e.target);
                 
                 const eventImage = document.getElementById('event-image');
                 const eventImage2 = document.getElementById('event-image2');
                 
+                // FIXED: Use stored files as fallback if input.files is empty
                 console.log('Pre-submission file check:');
                 console.log('Event Image input:', eventImage);
                 console.log('Event Image files property:', eventImage ? eventImage.files : 'input not found');
@@ -709,6 +629,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Event Logo files property:', eventImage2 ? eventImage2.files : 'input not found');
                 console.log('Stored Event Logo:', storedEventLogo);
                 
+                // FIXED: Use stored files if input files are lost
                 const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
                 const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
                 
@@ -733,11 +654,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.target.reset();
                 hideForm();
                 
+                // Reset file labels and stored files
                 const fileLabel = document.getElementById('file-label');
                 const fileLabel2 = document.getElementById('file-label2');
                 if (fileLabel) fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
                 if (fileLabel2) fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo da empresa';
                 
+                // Clear stored files
                 storedEventImage = null;
                 storedEventLogo = null;
                 
