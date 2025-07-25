@@ -249,13 +249,9 @@ function setupEventPreview() {
         const selectedStartTime = eventStartTime.value;
         const selectedEndTime = eventEndTime.value;
 
-        // Process link without affecting images
-        if (eventLink && !eventLink.startsWith('http://') && !eventLink.startsWith('https://')) {
-            eventLink = 'https://' + eventLink;
-        }
-        
-        // Ensure we have a valid link for display
-        const displayLink = eventLink || '#';
+        // FIXED: Don't modify link processing if it affects images - separate the logic
+        const processedLink = eventLink ? (eventLink.startsWith('http://') || eventLink.startsWith('https://') ? eventLink : 'https://' + eventLink) : '';
+        const displayLink = processedLink || '#';
         
         const formattedDateTime = formatDate(selectedDate, selectedStartTime, selectedEndTime);
         const duration = getEventDuration(selectedStartTime, selectedEndTime);
@@ -565,6 +561,39 @@ async function submitEvent(formData) {
     return await response.json();
 }
 
+function resetEventForm() {
+    // Reset form fields
+    const eventForm = document.getElementById('event-form-element');
+    if (eventForm) {
+        eventForm.reset();
+    }
+    
+    // Reset file inputs and labels
+    const eventImage = document.getElementById('event-image');
+    const eventImage2 = document.getElementById('event-image2');
+    const fileLabel = document.getElementById('file-label');
+    const fileLabel2 = document.getElementById('file-label2');
+    
+    if (eventImage) eventImage.value = '';
+    if (eventImage2) eventImage2.value = '';
+    if (fileLabel) fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
+    if (fileLabel2) fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
+    
+    // Reset image previews
+    currentImageSrc = '📷';
+    currentImageSrc2 = '📷';
+    
+    // Clear stored files
+    storedEventImage = null;
+    storedEventLogo = null;
+    
+    // Clear any validation errors
+    clearTimeError();
+    
+    // Update preview
+    updatePreviewHTML();
+}
+
 // ========== UI HELPERS ==========
 function showLoading() {
     document.getElementById('loadingOverlay').style.display = 'flex';
@@ -590,6 +619,31 @@ document.addEventListener('DOMContentLoaded', function() {
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // ADDED: Validate required fields including images and link
+            const eventLinkWebsite = document.getElementById('event-link');
+            const eventImage = document.getElementById('event-image');
+            const eventImage2 = document.getElementById('event-image2');
+            
+            // Check if link is provided
+            if (!eventLinkWebsite || !eventLinkWebsite.value.trim()) {
+                showMessage('Por favor, forneça um link para o evento.', true);
+                return;
+            }
+            
+            // Check if thumbnail image is provided
+            const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
+            if (!eventImageFile) {
+                showMessage('Por favor, selecione uma imagem principal (thumbnail) para o evento.', true);
+                return;
+            }
+            
+            // Check if logo image is provided
+            const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
+            if (!eventLogoFile) {
+                showMessage('Por favor, selecione um logotipo para o evento/empresa.', true);
+                return;
+            }
+
             // Validate times before submission
             const eventStartTime = document.getElementById('event-start-time');
             const eventEndTime = document.getElementById('event-end-time');
@@ -614,13 +668,8 @@ document.addEventListener('DOMContentLoaded', function() {
             showLoading();
             
             try {
-                // FIXED: Create FormData and manually verify files
                 const formData = new FormData(e.target);
                 
-                const eventImage = document.getElementById('event-image');
-                const eventImage2 = document.getElementById('event-image2');
-                
-                // FIXED: Use stored files as fallback if input.files is empty
                 console.log('Pre-submission file check:');
                 console.log('Event Image input:', eventImage);
                 console.log('Event Image files property:', eventImage ? eventImage.files : 'input not found');
@@ -628,10 +677,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Event Logo input:', eventImage2);  
                 console.log('Event Logo files property:', eventImage2 ? eventImage2.files : 'input not found');
                 console.log('Stored Event Logo:', storedEventLogo);
-                
-                // FIXED: Use stored files if input files are lost
-                const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
-                const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
                 
                 if (eventImageFile) {
                     formData.set('event_image', eventImageFile);
@@ -651,18 +696,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const result = await submitEvent(formData);
                 showMessage(result.message || 'Evento submetido com sucesso!');
-                e.target.reset();
+                
+                // CHANGED: Use the new complete reset function
+                resetEventForm();
                 hideForm();
-                
-                // Reset file labels and stored files
-                const fileLabel = document.getElementById('file-label');
-                const fileLabel2 = document.getElementById('file-label2');
-                if (fileLabel) fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
-                if (fileLabel2) fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo da empresa';
-                
-                // Clear stored files
-                storedEventImage = null;
-                storedEventLogo = null;
                 
             } catch (error) {
                 console.error('Error submitting event:', error);
