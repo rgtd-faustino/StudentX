@@ -697,7 +697,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
             
             // Check if there are any events to export
             if (!icsContent.includes('BEGIN:VEVENT')) {
-                alert('Não existem eventos futuros para exportar.');
+                notifications.warning('Nenhum Evento', 'Não existem eventos futuros para exportar.');
                 return;
             }
             
@@ -723,7 +723,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
                     
                     // Show instructions for iOS users
                     setTimeout(() => {
-                        alert('Para importar no iOS:\n1. Toque em "Partilhar"\n2. Selecione "Calendário"\n3. Escolha onde guardar os eventos');
+                        notifications.info('Instruções iOS', 'Para importar no iOS:\n1. Toque em "Partilhar"\n2. Selecione "Calendário"\n3. Escolha onde guardar os eventos');
                     }, 1000);
                     
                     return;
@@ -774,7 +774,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
                             </html>
                         `);
                     } else {
-                        alert('Por favor, permita pop-ups para transferir o calendário');
+                        notifications.warning('Pop-ups Bloqueados', 'Por favor, permita pop-ups para transferir o calendário');
                     }
                 };
                 reader.readAsDataURL(blob);
@@ -784,9 +784,9 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
             if (!isIOS) {
                 setTimeout(() => {
                     if (isMobile) {
-                        alert('Calendário transferido! Pode importá-lo na sua aplicação de calendário preferida.');
+                        notifications.success('Calendário Transferido!', 'Calendário transferido! Pode importá-lo na sua aplicação de calendário preferida.');
                     } else {
-                        alert('Calendário transferido com sucesso!');
+                        notifications.success('Sucesso!', 'Calendário transferido com sucesso!');
                     }
                 }, 500);
             }
@@ -798,13 +798,16 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
             
             // Enhanced error handling
             if (error.name === 'QuotaExceededError') {
-                alert('Não há espaço suficiente para transferir o calendário. Por favor, liberte espaço e tente novamente.');
+                notifications.error('Espaço Insuficiente', 'Não há espaço suficiente para transferir o calendário. Por favor, liberte espaço e tente novamente.');
             } else if (error.name === 'SecurityError') {
-                alert('O seu navegador bloqueou a transferência. Por favor, verifique as definições de segurança.');
+                notifications.error('Erro de Segurança', 'O seu navegador bloqueou a transferência. Por favor, verifique as definições de segurança.');
             } else {
-                alert('Ocorreu um erro ao gerar o calendário. Por favor, atualize a página e tente novamente.');
+                notifications.error('Erro Inesperado', 'Ocorreu um erro ao gerar o calendário. Por favor, atualize a página e tente novamente.');
             }
         }
     }
+
+    // Initialize notification system
+    const notifications = new NotificationSystem();
         
     init();
