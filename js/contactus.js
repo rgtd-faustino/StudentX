@@ -165,6 +165,13 @@ function setupEventPreview() {
         return result;
     }
 
+    function clearTimeError() {
+        const existingError = document.getElementById('time-validation-error');
+        if (existingError) {
+            existingError.remove();
+        }
+    }
+
     function validateEventTimes() {
         const eventStartTime = document.getElementById('event-start-time');
         const eventEndTime = document.getElementById('event-end-time');
@@ -220,12 +227,7 @@ function setupEventPreview() {
         eventEndTime.parentNode.insertBefore(errorDiv, eventEndTime.nextSibling);
     }
 
-    function clearTimeError() {
-        const existingError = document.getElementById('time-validation-error');
-        if (existingError) {
-            existingError.remove();
-        }
-    }
+
 
     function getEventDuration(startTime, endTime) {
         if (!startTime || !endTime) return 60;
