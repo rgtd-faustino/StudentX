@@ -67,24 +67,19 @@ function setupDragAndDrop() {
             if (files.length > 0) {
                 const file = files[0];
                 if (file.type.startsWith('image/')) {
-                    // FIXED: Use a more reliable method to set files
                     try {
-                        // Method 1: Direct assignment (most reliable)
                         const dt = new DataTransfer();
                         dt.items.add(file);
                         input.files = dt.files;
                         
-                        // FIXED: Store file reference globally to prevent loss
                         if (type === 'thumbnail') {
                             storedEventImage = file;
                         } else if (type === 'logo') {
                             storedEventLogo = file;
                         }
                         
-                        // Update label text
-                        label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('${type}')">✕</span>`;
+                        label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('${type}')"></span>`;
                         
-                        // Force trigger change event after a small delay to ensure file is set
                         setTimeout(() => {
                             const changeEvent = new Event('change', { bubbles: true });
                             input.dispatchEvent(changeEvent);
@@ -100,7 +95,6 @@ function setupDragAndDrop() {
         });
 
         label.addEventListener('click', (e) => {
-            // Don't trigger file dialog if clicking on remove button
             if (!e.target.classList.contains('remove-image')) {
                 input.click();
             }
@@ -113,18 +107,61 @@ function setupDragAndDrop() {
     }
 }
 
-
-    function clearDateError() {
-        const existingError = document.getElementById('date-validation-error');
-        if (existingError) {
-            existingError.remove();
-        }
+function clearDateError() {
+    const existingError = document.getElementById('date-validation-error');
+    if (existingError) {
+        existingError.remove();
     }
+}
 
 function clearTimeError() {
     const existingError = document.getElementById('time-validation-error');
     if (existingError) {
         existingError.remove();
+    }
+}
+
+// ========== DESCRIPTION FIELD MANAGEMENT ==========
+function updateDescriptionFieldState(duration) {
+    const eventDescription = document.getElementById('event-description');
+    const descriptionContainer = eventDescription?.parentElement;
+    
+    if (!eventDescription) return;
+    
+    if (duration >= 132) {
+        // Large event - description required
+        eventDescription.disabled = false;
+        eventDescription.required = true;
+        eventDescription.placeholder = "Descrição obrigatória para eventos longos (132+ min)";
+        
+        if (descriptionContainer) {
+            descriptionContainer.style.opacity = '1';
+            descriptionContainer.style.cursor = 'auto';
+        }
+        
+        // Add visual indicator for required field
+        const label = descriptionContainer?.querySelector('label');
+        if (label && !label.textContent.includes('*')) {
+            label.textContent = label.textContent + ' *';
+        }
+        
+    } else {
+        // Small/medium event - description disabled
+        eventDescription.disabled = true;
+        eventDescription.required = false;
+        eventDescription.value = ''; // Clear any existing text
+        eventDescription.placeholder = "Descrição não necessária para eventos curtos";
+        
+        if (descriptionContainer) {
+            descriptionContainer.style.opacity = '1';
+            descriptionContainer.style.cursor = 'not-allowed';
+        }
+        
+        // Remove required indicator
+        const label = descriptionContainer?.querySelector('label');
+        if (label && label.textContent.includes('*')) {
+            label.textContent = label.textContent.replace(' *', '');
+        }
     }
 }
 
@@ -153,7 +190,6 @@ function setupEventPreview() {
     let currentImageSrc = '📷';
     let currentImageSrc2 = '📷';
 
-    // Setup drag and drop functionality
     setupDragAndDrop();
 
     function formatDate(dateString, timeStartString, timeEndString) {
@@ -186,24 +222,19 @@ function setupEventPreview() {
         const selectedDate = new Date(eventDate.value);
         const today = new Date();
         
-        // Reset time to compare only dates (not time)
         today.setHours(0, 0, 0, 0);
         selectedDate.setHours(0, 0, 0, 0);
         
         if (selectedDate < today) {
-            // Show error message
             showDateError('A data do evento deve ser hoje ou no futuro');
             return false;
         } else {
-            // Clear any existing error
             clearDateError();
             return true;
         }
     }
 
-
     function showDateError(message) {
-        // Remove existing error if any
         clearDateError();
         
         const eventDate = document.getElementById('event-date');
@@ -224,7 +255,6 @@ function setupEventPreview() {
         eventDate.parentNode.insertBefore(errorDiv, eventDate.nextSibling);
     }
 
-
     function validateEventTimes() {
         const eventStartTime = document.getElementById('event-start-time');
         const eventEndTime = document.getElementById('event-end-time');
@@ -234,17 +264,14 @@ function setupEventPreview() {
         const startTime = eventStartTime.value;
         const endTime = eventEndTime.value;
         
-        // If both times are selected, validate
         if (startTime && endTime) {
             const startMinutes = timeToMinutes(startTime);
             const endMinutes = timeToMinutes(endTime);
             
             if (startMinutes >= endMinutes) {
-                // Show error message
                 showTimeError('A hora de início deve ser anterior à hora de fim');
                 return false;
             } else {
-                // Clear any existing error
                 clearTimeError();
                 return true;
             }
@@ -259,7 +286,6 @@ function setupEventPreview() {
     }
 
     function showTimeError(message) {
-        // Remove existing error if any
         clearTimeError();
         
         const eventEndTime = document.getElementById('event-end-time');
@@ -279,8 +305,6 @@ function setupEventPreview() {
         
         eventEndTime.parentNode.insertBefore(errorDiv, eventEndTime.nextSibling);
     }
-
-
 
     function getEventDuration(startTime, endTime) {
         if (!startTime || !endTime) return 60;
@@ -304,13 +328,15 @@ function setupEventPreview() {
         const selectedStartTime = eventStartTime.value;
         const selectedEndTime = eventEndTime.value;
 
-        // FIXED: Don't modify link processing if it affects images - separate the logic
         const processedLink = eventLink ? (eventLink.startsWith('http://') || eventLink.startsWith('https://') ? eventLink : 'https://' + eventLink) : '';
         const displayLink = processedLink || '#';
         
         const formattedDateTime = formatDate(selectedDate, selectedStartTime, selectedEndTime);
         const duration = getEventDuration(selectedStartTime, selectedEndTime);
         const simulatedHeight = getSimulatedEventHeight(duration);
+        
+        // Update description field state based on duration
+        updateDescriptionFieldState(duration);
         
         let previewHTML = '';
 
@@ -455,7 +481,6 @@ function setupEventPreview() {
             };
             reader.readAsDataURL(file);
         } else {
-            // Reset to default if no valid file
             if (imageType === 'thumbnail') {
                 currentImageSrc = '📷';
             } else if (imageType === 'logo') {
@@ -466,40 +491,31 @@ function setupEventPreview() {
     }
 
     function resetImageInput(inputElement, labelElement, defaultText, imageType) {
-        // Clear the file input
         inputElement.value = '';
-        
-        // Reset the label text
         labelElement.innerHTML = defaultText;
         
-        // Reset the preview
         if (imageType === 'thumbnail') {
             currentImageSrc = '📷';
         } else if (imageType === 'logo') {
             currentImageSrc2 = '📷';
         }
         
-        // Update preview
         updatePreviewHTML();
     }
 
     function setupTextFieldUpdates(element) {
         if (!element) return;
         
-        // Update on blur (when user clicks out of field)
         element.addEventListener('blur', updatePreviewHTML);
         
-        // Update on Enter key press
         element.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 updatePreviewHTML();
-                // Optional: blur the field to remove focus
                 element.blur();
             }
         });
     }
 
-    // Apply blur/enter updates to text fields
     setupTextFieldUpdates(eventTitle);
     setupTextFieldUpdates(eventDescription);
     setupTextFieldUpdates(eventLinkWebsite);
@@ -518,11 +534,9 @@ function setupEventPreview() {
         });
     }
 
-    // Special handling for time inputs with validation
     [eventStartTime, eventEndTime].forEach(el => {
         if (el) {
             el.addEventListener('change', function() {
-                // Validate both date and times
                 const dateValid = validateEventDate();
                 const timeValid = validateEventTimes();
                 
@@ -533,22 +547,16 @@ function setupEventPreview() {
         }
     });
 
-    // Handle image previews with improved functionality
     if (eventImage) {
         eventImage.addEventListener('change', function() {
             const file = this.files[0];
             const label = document.getElementById('file-label');
             
             if (file && file.type.startsWith('image/') && label) {
-                label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('thumbnail')">✕</span>`;
-                
-                // FIXED: Store file globally for manual input too
+                label.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('thumbnail')"></span>`;
                 storedEventImage = file;
-                
             } else if (label) {
                 label.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
-                
-                // FIXED: Clear stored file when no valid file
                 storedEventImage = null;
             }
             handleImageChange(this, 'thumbnail');
@@ -561,42 +569,92 @@ function setupEventPreview() {
             const label2 = document.getElementById('file-label2');
             
             if (file && file.type.startsWith('image/') && label2) {
-                label2.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('logo')">✕</span>`;
-                
-                // FIXED: Store file globally for manual input too
+                label2.innerHTML = `${file.name} <span class="remove-image" onclick="removeImage('logo')"></span>`;
                 storedEventLogo = file;
-                
             } else if (label2) {
                 label2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
-                
-                // FIXED: Clear stored file when no valid file
                 storedEventLogo = null;
             }
             handleImageChange(this, 'logo');
         });
     }
 
-    // Global function to remove images
     window.removeImage = function(imageType) {
         if (imageType === 'thumbnail') {
             const input = document.getElementById('event-image');
             const label = document.getElementById('file-label');
             resetImageInput(input, label, '📷 Clica para selecionar a imagem principal do evento (thumbnail)', 'thumbnail');
-            storedEventImage = null; // Clear stored file
+            storedEventImage = null;
         } else if (imageType === 'logo') {
             const input = document.getElementById('event-image2');
             const label = document.getElementById('file-label2');
             resetImageInput(input, label, '📷 Clica para selecionar o logotipo do evento/empresa', 'logo');
-            storedEventLogo = null; // Clear stored file
+            storedEventLogo = null;
         }
     };
 
     updatePreviewHTML();
 }
 
+// ========== FORM VALIDATION ==========
+function validateEventForm() {
+    const requiredFields = [
+        { id: 'event-title', name: 'Título do Evento' },
+        { id: 'event-category', name: 'Categoria do Evento' },
+        { id: 'event-date', name: 'Data do Evento' },
+        { id: 'event-start-time', name: 'Hora de Início' },
+        { id: 'event-end-time', name: 'Hora de Fim' },
+        { id: 'event-location', name: 'Organização' },
+        { id: 'event-location2', name: 'Local do Evento' },
+        { id: 'event-link', name: 'Link do Evento' }
+    ];
+
+    const missingFields = [];
+    
+    // Check basic required fields
+    requiredFields.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (!element || !element.value.trim()) {
+            missingFields.push(field.name);
+        }
+    });
+
+    // Check images (always required)
+    const eventImage = document.getElementById('event-image');
+    const eventImage2 = document.getElementById('event-image2');
+    
+    if (!eventImage?.files?.[0] && !storedEventImage) {
+        missingFields.push('Imagem Principal (Thumbnail)');
+    }
+    
+    if (!eventImage2?.files?.[0] && !storedEventLogo) {
+        missingFields.push('Logotipo do Evento/Empresa');
+    }
+
+    // Check description for large events
+    const eventStartTime = document.getElementById('event-start-time');
+    const eventEndTime = document.getElementById('event-end-time');
+    const eventDescription = document.getElementById('event-description');
+    
+    if (eventStartTime?.value && eventEndTime?.value) {
+        const duration = getEventDuration(eventStartTime.value, eventEndTime.value);
+        if (duration >= 132 && (!eventDescription?.value?.trim())) {
+            missingFields.push('Descrição do Evento (obrigatória para eventos longos)');
+        }
+    }
+
+    return missingFields;
+}
+
+function getEventDuration(startTime, endTime) {
+    if (!startTime || !endTime) return 60;
+    const startMinutes = startTime.split(':').map(Number);
+    const endMinutes = endTime.split(':').map(Number);
+    return (endMinutes[0] * 60 + endMinutes[1]) - (startMinutes[0] * 60 + startMinutes[1]);
+}
+
 // ========== SUBMISSION FUNCTIONS ==========
 async function submitMessage(formData) {
-    // Add submission type identifier
     formData.append('submission_type', 'message');
     
     const response = await fetch(WORKER_URL, {
@@ -613,7 +671,6 @@ async function submitMessage(formData) {
 }
 
 async function submitEvent(formData) {
-    // Add submission type identifier
     formData.append('submission_type', 'event');
     
     const response = await fetch(WORKER_URL, {
@@ -630,34 +687,106 @@ async function submitEvent(formData) {
 }
 
 function resetEventForm() {
-    // Reset form fields
     const eventForm = document.getElementById('event-form-element');
     if (eventForm) {
         eventForm.reset();
     }
     
-    // Reset file inputs and labels
     const eventImage = document.getElementById('event-image');
     const eventImage2 = document.getElementById('event-image2');
     const fileLabel = document.getElementById('file-label');
     const fileLabel2 = document.getElementById('file-label2');
     
-    if (eventImage) eventImage.value = '';
-    if (eventImage2) eventImage2.value = '';
-    if (fileLabel) fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
-    if (fileLabel2) fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
+    if (eventImage) {
+        eventImage.value = '';
+        try {
+            const dt = new DataTransfer();
+            eventImage.files = dt.files;
+        } catch (e) {
+            console.warn('Could not clear file input completely:', e);
+        }
+    }
     
-    // Reset image previews
-    currentImageSrc = '📷';
-    currentImageSrc2 = '📷';
+    if (eventImage2) {
+        eventImage2.value = '';
+        try {
+            const dt = new DataTransfer();
+            eventImage2.files = dt.files;
+        } catch (e) {
+            console.warn('Could not clear file input completely:', e);
+        }
+    }
     
-    // Clear stored files
+    if (fileLabel) {
+        fileLabel.innerHTML = '📷 Clica para selecionar a imagem principal do evento (thumbnail)';
+        fileLabel.className = fileLabel.className.replace(/drag-over|file-selected/g, '').trim();
+        fileLabel.style.borderColor = '';
+        fileLabel.style.color = '';
+        fileLabel.style.backgroundColor = '';
+    }
+    
+    if (fileLabel2) {
+        fileLabel2.innerHTML = '📷 Clica para selecionar o logotipo do evento/empresa';
+        fileLabel2.className = fileLabel2.className.replace(/drag-over|file-selected/g, '').trim();
+        fileLabel2.style.borderColor = '';
+        fileLabel2.style.color = '';
+        fileLabel2.style.backgroundColor = '';
+    }
+    
+    // Reset description field state
+    const eventDescription = document.getElementById('event-description');
+    const descriptionContainer = eventDescription?.parentElement;
+    if (eventDescription) {
+        eventDescription.disabled = false;
+        eventDescription.required = false;
+        eventDescription.value = '';
+        eventDescription.placeholder = "Descrição do evento";
+        
+        if (descriptionContainer) {
+            descriptionContainer.style.opacity = '1';
+            descriptionContainer.style.cursor = 'auto';
+        }
+        
+        const label = descriptionContainer?.querySelector('label');
+        if (label && label.textContent.includes('*')) {
+            label.textContent = label.textContent.replace(' *', '');
+        }
+    }
+    
+    if (typeof currentImageSrc !== 'undefined') {
+        currentImageSrc = '📷';
+    }
+    if (typeof currentImageSrc2 !== 'undefined') {
+        currentImageSrc2 = '📷';
+    }
+    
     storedEventImage = null;
     storedEventLogo = null;
     
-    // Clear any validation errors
     clearTimeError();
     clearDateError();
+    
+    const previewContainer = document.getElementById('preview-container');
+    if (previewContainer) {
+        previewContainer.innerHTML = '';
+        previewContainer.classList.remove('active');
+    }
+    
+    const eventModal = document.getElementById('eventModal');
+    if (eventModal) {
+        eventModal.style.display = 'none';
+    }
+    
+    if (typeof updatePreviewHTML === 'function') {
+        setTimeout(() => {
+            updatePreviewHTML();
+        }, 50);
+    }
+    
+    const errorElements = document.querySelectorAll('#date-validation-error, #time-validation-error');
+    errorElements.forEach(el => el.remove());
+    
+    console.log('✅ Form completely reset');
 }
 
 // ========== UI HELPERS ==========
@@ -669,13 +798,8 @@ function hideLoading() {
     document.getElementById('loadingOverlay').style.display = 'none';
 }
 
-function showMessage(message, isError = false) {
-    alert(message);
-}
-
 // ========== FORM HANDLERS ==========
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize drag and drop ONCE when page loads
     setupDragAndDrop();
     
     const eventForm = document.getElementById('event-form-element');
@@ -684,6 +808,23 @@ document.addEventListener('DOMContentLoaded', function() {
     if (eventForm) {
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // *** DEFINE VARIABLES FIRST ***
+            const eventImage = document.getElementById('event-image');
+            const eventImage2 = document.getElementById('event-image2');
+
+            // Comprehensive form validation - THIS RUNS FIRST
+            const missingFields = validateEventForm();
+            
+            if (missingFields.length > 0) {
+                const fieldsList = missingFields.join(', ');
+                notifications.warning(
+                    'Campos Obrigatórios em Falta', 
+                    `Por favor, preencha os seguintes campos: ${fieldsList}`,
+                    { duration: 8000 }
+                );
+                return; // STOPS HERE if validation fails
+            }
 
             // Validate event date is not in the past
             const eventDate = document.getElementById('event-date');
@@ -694,37 +835,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectedDate.setHours(0, 0, 0, 0);
                 
                 if (selectedDate < today) {
-                    showMessage('Por favor, selecione uma data futura para o evento.', true);
+                    notifications.warning('Data Inválida', 'Por favor, selecione uma data futura para o evento.');
                     return;
                 }
             }
 
-            // ADDED: Validate required fields including images and link
-            const eventLinkWebsite = document.getElementById('event-link');
-            const eventImage = document.getElementById('event-image');
-            const eventImage2 = document.getElementById('event-image2');
-            
-            // Check if link is provided
-            if (!eventLinkWebsite || !eventLinkWebsite.value.trim()) {
-                showMessage('Por favor, forneça um link para o evento.', true);
-                return;
-            }
-            
-            // Check if thumbnail image is provided
-            const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
-            if (!eventImageFile) {
-                showMessage('Por favor, selecione uma imagem principal (thumbnail) para o evento.', true);
-                return;
-            }
-            
-            // Check if logo image is provided
-            const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
-            if (!eventLogoFile) {
-                showMessage('Por favor, selecione um logotipo para o evento/empresa.', true);
-                return;
-            }
-
-            // Validate times before submission
+            // Validate times
             const eventStartTime = document.getElementById('event-start-time');
             const eventEndTime = document.getElementById('event-end-time');
             
@@ -739,7 +855,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const endTotal = endMinutes[0] * 60 + endMinutes[1];
                     
                     if (startTotal >= endTotal) {
-                        showMessage('Por favor, corrija os horários antes de submeter.', true);
+                        notifications.warning('Horários Inválidos', 'A hora de início deve ser anterior à hora de fim.');
                         return;
                     }
                 }
@@ -750,57 +866,79 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const formData = new FormData(e.target);
                 
-                // FIXED: Use the correct field names that match your worker
+                // NOW these variables are properly defined
                 const eventImageFile = (eventImage && eventImage.files && eventImage.files[0]) || storedEventImage;
                 const eventLogoFile = (eventImage2 && eventImage2.files && eventImage2.files[0]) || storedEventLogo;
                 
-                // FIXED: Use the exact field names your worker expects
                 if (eventImageFile) {
-                    formData.set('event_image', eventImageFile); // Matches worker
+                    formData.set('event_image', eventImageFile);
                 } else {
                     formData.delete('event_image');
                 }
                 
                 if (eventLogoFile) {
-                    formData.set('event_image2', eventLogoFile); // Matches worker
+                    formData.set('event_image2', eventLogoFile);
                 } else {
                     formData.delete('event_image2');
                 }
                 
-                // ADDED: Final verification before sending
-                const hasEventImage = formData.has('event_image');
-                const hasEventLogo = formData.has('event_image2');
-                
                 const result = await submitEvent(formData);
-                showMessage(result.message || 'Evento submetido com sucesso!');
+                notifications.success('Evento Submetido!', 'O seu evento foi submetido com sucesso e será analisado pela nossa equipa.');
                 
                 resetEventForm();
                 hideForm();
                 
             } catch (error) {
                 console.error('Error submitting event:', error);
-                showMessage(error.message || 'Erro ao submeter evento. Tenta novamente.', true);
+                notifications.error('Erro na Submissão', error.message || 'Erro ao submeter evento. Tenta novamente.');
             } finally {
                 hideLoading();
             }
         });
     }
 
-    // Message form handler remains the same
     if (messageForm) {
         messageForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Validate message form
+            const name = document.getElementById('message-name');
+            const email = document.getElementById('message-email');
+            const message = document.getElementById('message-text');
+            
+            const missingMessageFields = [];
+            
+            if (!name?.value?.trim()) missingMessageFields.push('Nome');
+            if (!email?.value?.trim()) missingMessageFields.push('Email');
+            if (!message?.value?.trim()) missingMessageFields.push('Mensagem');
+            
+            if (missingMessageFields.length > 0) {
+                const fieldsList = missingMessageFields.join(', ');
+                notifications.warning(
+                    'Campos Obrigatórios em Falta', 
+                    `Por favor, preencha os seguintes campos: ${fieldsList}`
+                );
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email?.value && !emailRegex.test(email.value.trim())) {
+                notifications.warning('Email Inválido', 'Por favor, insira um endereço de email válido.');
+                return;
+            }
+            
             showLoading();
             
             try {
                 const formData = new FormData(e.target);
                 const result = await submitMessage(formData);
-                showMessage(result.message || 'Mensagem enviada com sucesso!');
+                notifications.success('Mensagem Enviada!', 'A sua mensagem foi enviada com sucesso. Responderemos em breve.');
                 e.target.reset();
                 hideForm();
             } catch (error) {
                 console.error('Error submitting message:', error);
-                showMessage(error.message || 'Erro ao enviar mensagem. Tenta novamente.', true);
+                notifications.error('Erro no Envio', error.message || 'Erro ao enviar mensagem. Tenta novamente.');
             } finally {
                 hideLoading();
             }
@@ -818,13 +956,11 @@ function initializeDragDrop() {
         
         const originalText = label.textContent.trim();
         
-        // Prevent default drag behaviors
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             label.addEventListener(eventName, preventDefaults, false);
             document.body.addEventListener(eventName, preventDefaults, false);
         });
         
-        // Highlight drop area when item is dragged over it
         ['dragenter', 'dragover'].forEach(eventName => {
             label.addEventListener(eventName, () => highlight(label), false);
         });
@@ -833,10 +969,7 @@ function initializeDragDrop() {
             label.addEventListener(eventName, () => unhighlight(label), false);
         });
         
-        // Handle dropped files
         label.addEventListener('drop', (e) => handleDrop(e, input, label, originalText), false);
-        
-        // Handle file selection via click
         input.addEventListener('change', () => handleFileSelect(input, label, originalText));
     });
 }
@@ -861,25 +994,20 @@ function handleDrop(e, input, label, originalText) {
     if (files.length > 0) {
         const file = files[0];
         
-        // Check if it's an image
         if (file.type.startsWith('image/')) {
-            // FIXED: More robust file setting
             try {
                 const newDt = new DataTransfer();
                 newDt.items.add(file);
                 input.files = newDt.files;
                 
-                // Verify the file was actually set
                 if (input.files && input.files[0]) {
                     updateLabelWithFile(label, file, originalText);
                     
-                    // Trigger change event after ensuring file is set
                     setTimeout(() => {
                         const event = new Event('change', { bubbles: true });
                         input.dispatchEvent(event);
                     }, 10);
                     
-                    // FIXED: Store file reference globally
                     const imageType = input.id === 'event-image' ? 'thumbnail' : 'logo';
                     if (imageType === 'thumbnail') {
                         storedEventImage = file;
@@ -911,10 +1039,8 @@ function handleFileSelect(input, label, originalText) {
 function updateLabelWithFile(label, file, originalText) {
     label.classList.add('file-selected');
     
-    // Determine image type for remove function
     const imageType = label.id === 'file-label' ? 'thumbnail' : 'logo';
     
-    // Create preview container
     const preview = document.createElement('div');
     preview.style.cssText = `
         display: flex;
@@ -924,7 +1050,6 @@ function updateLabelWithFile(label, file, originalText) {
         justify-content: space-between;
     `;
     
-    // Add file info container
     const fileInfo = document.createElement('div');
     fileInfo.style.cssText = `
         display: flex;
@@ -932,19 +1057,16 @@ function updateLabelWithFile(label, file, originalText) {
         gap: 0.75rem;
     `;
     
-    // Add file icon
     const icon = document.createElement('span');
     icon.textContent = '🖼️';
     icon.style.fontSize = '1.2rem';
     
-    // Add file info
     const info = document.createElement('div');
     info.innerHTML = `
         <div style="color: #059669; font-size: 0.9rem;">${file.name}</div>
         <div style="color: #6b7280; font-size: 0.8rem;">${formatFileSize(file.size)}</div>
     `;
     
-    // Add remove button
     const removeBtn = document.createElement('span');
     removeBtn.textContent = '✕';
     removeBtn.className = 'remove-image';
@@ -998,5 +1120,176 @@ function formatFileSize(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeDragDrop);
+
+// ========== NOTIFICATION SYSTEM ==========
+class NotificationSystem {
+    constructor() {
+        this.container = document.getElementById('notificationContainer');
+        this.notifications = new Map();
+        this.counter = 0;
+    }
+
+    show(type = 'info', title = '', message = '', options = {}) {
+        const id = ++this.counter;
+        const notification = this.createNotification(id, type, title, message, options);
+        
+        this.container.appendChild(notification);
+        this.notifications.set(id, notification);
+
+        requestAnimationFrame(() => {
+            notification.classList.add('show');
+        });
+
+        if (!options.persistent) {
+            const duration = options.duration || 5000;
+            setTimeout(() => this.hide(id), duration);
+        }
+
+        return id;
+    }
+
+    createNotification(id, type, title, message, options) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.dataset.id = id;
+
+        const icons = {
+            success: '✅',
+            error: '❌', 
+            warning: '⚠️',
+            info: 'ℹ️'
+        };
+
+        const titles = {
+            success: title || 'Sucesso!',
+            error: title || 'Erro!',
+            warning: title || 'Atenção!',
+            info: title || 'Informação'
+        };
+
+        let actionsHTML = '';
+        if (options.actions && options.actions.length > 0) {
+            actionsHTML = '<div class="notification-actions">';
+            options.actions.forEach(action => {
+                actionsHTML += `<button class="notification-action ${action.type || 'primary'}" onclick="${action.onClick}">${action.text}</button>`;
+            });
+            actionsHTML += '</div>';
+        }
+
+        notification.innerHTML = `
+            <div class="notification-content">
+                <div class="notification-icon">${icons[type]}</div>
+                <div class="notification-text">
+                    <div class="notification-title">${titles[type]}</div>
+                    <div class="notification-message">${message}</div>
+                    ${actionsHTML}
+                </div>
+                ${!options.persistent ? '<button class="notification-close" onclick="notifications.hide(' + id + ')">×</button>' : ''}
+            </div>
+            ${!options.persistent ? '<div class="notification-progress"></div>' : ''}
+        `;
+
+        if (!options.silent) {
+            notification.classList.add('sound-wave');
+        }
+
+        return notification;
+    }
+
+    hide(id) {
+        const notification = this.notifications.get(id);
+        if (!notification) return;
+
+        notification.classList.add('hide');
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+            this.notifications.delete(id);
+        }, 400);
+    }
+
+    hideAll() {
+        this.notifications.forEach((notification, id) => {
+            this.hide(id);
+        });
+    }
+
+    success(title, message, options = {}) {
+        return this.show('success', title, message, options);
+    }
+
+    error(title, message, options = {}) {
+        return this.show('error', title, message, options);
+    }
+
+    warning(title, message, options = {}) {
+        return this.show('warning', title, message, options);
+    }
+
+    info(title, message, options = {}) {
+        return this.show('info', title, message, options);
+    }
+}
+
+const notifications = new NotificationSystem();
+
+function showNotification(type, title, message) {
+    notifications.show(type, title, message);
+}
+
+function showNotificationWithActions() {
+    notifications.show('info', 'Confirmação', 'Tem certeza que deseja submeter este evento?', {
+        persistent: true,
+        actions: [
+            { text: 'Submeter', type: 'primary', onClick: 'handleSubmit()' },
+            { text: 'Cancelar', type: 'secondary', onClick: 'handleCancel()' }
+        ]
+    });
+}
+
+function showLongNotification() {
+    notifications.show('success', 'Evento Criado!', 'O seu evento foi submetido com sucesso e será analisado pela nossa equipa. Receberá uma confirmação por email dentro de 24 horas. Obrigado por contribuir para a comunidade Student X!', {
+        duration: 8000
+    });
+}
+
+function showPersistentNotification() {
+    notifications.show('error', 'Erro Crítico', 'Ocorreu um erro inesperado. Por favor, contacte o suporte técnico.', {
+        persistent: true
+    });
+}
+
+function handleSubmit() {
+    notifications.hideAll();
+    notifications.success('Submetido!', 'Evento submetido com sucesso!');
+}
+
+function handleCancel() {
+    notifications.hideAll();
+    notifications.info('Cancelado', 'Submissão cancelada.');
+}
+
+function showMessage(message, isError = false, options = {}) {
+    if (isError) {
+        notifications.error('', message, options);
+    } else {
+        notifications.success('', message, options);
+    }
+}
+
+function showFormValidationError(fieldName, message) {
+    notifications.warning('Campo Obrigatório', `${fieldName}: ${message}`);
+}
+
+function showFormSuccess(message) {
+    notifications.success('Enviado!', message || 'Formulário submetido com sucesso!');
+}
+
+function showNetworkError() {
+    notifications.error('Erro de Conexão', 'Verifique a sua ligação à internet e tente novamente.', {
+        duration: 7000
+    });
+}
