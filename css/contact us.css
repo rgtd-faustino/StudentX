@@ -758,7 +758,7 @@ nav {
 }
 
 .file-input-label.drag-over::before {
-    content: "Largue a imagem aqui";
+    content: "Solte a imagem aqui";
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1918,7 +1918,7 @@ input[type="checkbox"] {
             }
 
             .file-input-label.drag-over::before {
-                content: "Largue a imagem aqui";
+                content: "Solte a imagem aqui";
                 position: absolute;
                 top: 50%;
                 left: 50%;
