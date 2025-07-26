@@ -789,7 +789,6 @@ function resetEventForm() {
     const errorElements = document.querySelectorAll('#date-validation-error, #time-validation-error');
     errorElements.forEach(el => el.remove());
     
-    console.log('✅ Form completely reset');
 }
 
 // ========== UI HELPERS ==========

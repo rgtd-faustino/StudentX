@@ -791,8 +791,6 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
                 }, 500);
             }
             
-            console.log('Calendar download initiated successfully');
-            
         } catch (error) {
             console.error('Error generating calendar file:', error);
             

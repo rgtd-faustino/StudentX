@@ -79,12 +79,33 @@ const CONSENT_CONFIG = {
                         if (!manager.hasConsent('marketing')) return;
                         
                         const existingScript = document.querySelector('script[src*="adsbygoogle.js"]');
-                        if (existingScript) return;
+                        if (existingScript) {
+                            // If script exists, just reinitialize existing ads
+                            manager.initializeExistingAds();
+                            return;
+                        }
                         
+                        // Initialize adsbygoogle array
+                        window.adsbygoogle = window.adsbygoogle || [];
+                        
+                        // Load the AdSense script
                         const adsenseScript = document.createElement('script');
                         adsenseScript.async = true;
                         adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679';
                         adsenseScript.crossOrigin = 'anonymous';
+                        adsenseScript.setAttribute('data-category', 'marketing');
+                        
+                        // Initialize ads after script loads
+                        adsenseScript.onload = function() {
+                            setTimeout(() => {
+                                manager.initializeExistingAds();
+                            }, 100);
+                        };
+                        
+                        adsenseScript.onerror = function() {
+                            console.error('Failed to load Google AdSense script');
+                        };
+                        
                         document.head.appendChild(adsenseScript);
                     }
                 }
@@ -134,6 +155,28 @@ class CookieConsentManager {
         return new Date() < expiryDate;
     }
 
+    initializeExistingAds() {
+        const adElements = document.querySelectorAll('ins.adsbygoogle');
+        
+        if (adElements.length === 0) {
+            console.warn('No AdSense ad units found on page');
+            return;
+        }
+        
+        adElements.forEach((adElement, index) => {
+            if (adElement.getAttribute('data-adsbygoogle-status')) {
+                return; // Already initialized
+            }
+            
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                console.log(`Initialized AdSense ad unit ${index + 1}`);
+            } catch (error) {
+                console.error(`Error initializing AdSense ad unit ${index + 1}:`, error);
+            }
+        });
+    }
+
     blockTrackingScripts() {
         const blockedPatterns = [
             'google-analytics.com',
@@ -152,7 +195,6 @@ class CookieConsentManager {
                             const category = this.getScriptCategory(node.src);
                             
                             if (!this.hasConsent(category)) {
-                                console.log('Blocking unconsented script:', node.src);
                                 if (node.parentNode) {
                                     node.parentNode.removeChild(node);
                                 }
@@ -379,12 +421,6 @@ class CookieConsentManager {
         this.applyConsent();
         this.hideBanner();
         this.dispatchConsentEvent();
-        
-        if (consentData.analytics || consentData.marketing) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        }
     }
 
     async applyConsent() {

@@ -27,7 +27,6 @@ async function loadEventsData() {
         const data = await response.json();
         opportunitiesEventsData = data.items;
         eventsDataLoaded = true;
-        console.log(`Successfully loaded ${opportunitiesEventsData.length} events`);
         return opportunitiesEventsData;
     } catch (error) {
         console.error('Error loading events data:', error);
@@ -53,7 +52,6 @@ function removeEventFromCookies(eventId, type) {
         try {
             eventIds = eventIds.filter(id => id !== parseInt(eventId));
             setEssentialData(cookieName, eventIds);
-            console.log(`Removed event ${eventId} from ${type} preferences. Remaining:`, eventIds);
             window.refreshCarouselAfterEventRemoval();
             loadEventPreferences();
         } catch (e) {
@@ -73,7 +71,6 @@ function isFutureEvent(event) {
 function cleanupExpiredEvents() {
     // Don't run cleanup if events data is not loaded yet
     if (!isEventsDataReady()) {
-        console.log('Skipping cleanup: events data not ready yet');
         return false;
     }
     
@@ -97,7 +94,6 @@ function cleanupExpiredEvents() {
             if (activeAcceptedIds.length !== acceptedIdsInt.length) {
                 setEssentialData('userEventPreferences_accepted', activeAcceptedIds);
                 needsUpdate = true;
-                console.log(`Cleaned up accepted events: removed ${acceptedIdsInt.length - activeAcceptedIds.length} expired events`);
             }
         } catch (e) {
             console.error('Error cleaning up accepted events:', e);
@@ -117,7 +113,6 @@ function cleanupExpiredEvents() {
             if (activeRejectedIds.length !== rejectedIdsInt.length) {
                 setEssentialData('userEventPreferences_rejected', activeRejectedIds);
                 needsUpdate = true;
-                console.log(`Cleaned up rejected events: removed ${rejectedIdsInt.length - activeRejectedIds.length} expired events`);
             }
         } catch (e) {
             console.error('Error cleaning up rejected events:', e);
@@ -185,14 +180,12 @@ function parseEventPreferences() {
         const removedCount = acceptedArray.length - activeAcceptedIds.length;
         if (removedCount > 0) {
             setEssentialData('userEventPreferences_accepted', activeAcceptedIds);
-            console.log(`Updated accepted events cookie: removed ${removedCount} expired events`);
         }
     }
     if (activeRejectedIds.length !== rejectedArray.length) {
         const removedCount = rejectedArray.length - activeRejectedIds.length;
         if (removedCount > 0) {
             setEssentialData('userEventPreferences_rejected', activeRejectedIds);
-            console.log(`Updated rejected events cookie: removed ${removedCount} expired events`);
         }
     }
     return { 
@@ -576,12 +569,6 @@ function loadEventPreferences() {
         `;
     }
 
-    // Debug information (remove in production)
-    console.log('Event preferences loaded:', {
-        accepted: preferences.accepted,
-        rejected: preferences.rejected,
-        hasData: preferences.hasData
-    });
 }
 
 // Essential data cookie management functions (matching carousel.js system)
@@ -636,17 +623,13 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
         
-        console.log(`Loaded ${opportunitiesEventsData.length} events from JSON`);
         
         // Clean up any expired events, but only if we have events data
         const wasUpdated = cleanupExpiredEvents();
         
         // Load and display preferences
         loadEventPreferences();
-        
-        if (wasUpdated) {
-            console.log('Expired events were cleaned up on page load');
-        }
+
     } catch (error) {
         console.error('Error during initialization:', error);
         // Still try to load preferences even if events data failed

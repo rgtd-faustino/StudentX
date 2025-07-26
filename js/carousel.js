@@ -260,7 +260,6 @@ function setupMobileCarousel() {
     let noMoreEventsCard = null;  
 
     if (!carouselItems.length) {
-        console.log('No carousel items found in DOM - checking if we should show no-more-events card');
         
         if (carouselEventsData && Array.isArray(carouselEventsData)) {
             const currentDay = getCurrentDay();
@@ -272,15 +271,7 @@ function setupMobileCarousel() {
                 }
                 return item.dateValue === currentDayValue && isFutureEvent(item);
             });
-            
-            console.log(`Found ${todayEvents.length} total events for today before interaction filtering`);
-            
-            if (todayEvents.length > 0) {
-                console.log('Events exist for today but all have been interacted with - showing no-more-events card');
-            } else {
-                console.log('No events exist for today - showing no-more-events card');
-            }
-            
+
             noMoreEventsCard = createNoMoreEventsCard();
             noMoreEventsCard.style.display = 'block';
         }
@@ -316,7 +307,6 @@ function setupMobileCarousel() {
         });
         
         hasCurrentDayEvent = todayEvents.length > 0;
-        console.log(`Current day ${currentDay.toDateString()}: Found ${todayEvents.length} available events`);
     }
     
     carouselItems.forEach((item) => {
@@ -428,7 +418,6 @@ function setupMobileCarousel() {
     if (!hasCurrentDayEvent) {
         noMoreEventsCard = createNoMoreEventsCard();
         noMoreEventsCard.style.display = 'block';
-        console.log('No events available for today, showing no-more-events card');
         addSwipeInstructions(true);
 
     } else {
@@ -677,7 +666,6 @@ function setupMobileCarousel() {
         const nextDay = findNextDayWithEvents(currentDay);
         
         if (nextDay) {
-            console.log(`Moving to next day: ${nextDay.date.toDateString()}, Events found: ${nextDay.events.length}`);
             
             currentDay = nextDay.date;
             setCurrentDay(currentDay);
@@ -696,7 +684,6 @@ function setupMobileCarousel() {
             createNewDayCarouselItems(nextDay.events);
             
         } else {
-            console.log('No more days with events found');
             if (noMoreEventsCard) {
                 noMoreEventsCard.style.display = 'block';
                 resetCardStyles(noMoreEventsCard);
@@ -889,10 +876,8 @@ function setupMobileCarousel() {
             currentIndex = nextItemIndex;
             carouselItems[currentIndex].style.display = 'block';
             resetCardStyles(carouselItems[currentIndex]);
-            console.log(`Showing next item: ${carouselItems[currentIndex].descriptionTitle || 'Unknown item'}`);
 
         } else {
-            console.log('No more events available for today, showing no-more-events card');
             if (!noMoreEventsCard) {
                 noMoreEventsCard = createNoMoreEventsCard();
             }
@@ -1092,15 +1077,7 @@ function filterExpiredEvents() {
 
 function performMaintenanceCleanup() {
     if (!carouselEventsData || carouselEventsData.length === 0) {
-        console.log('Skipping maintenance cleanup - events data not loaded yet');
         return;
-    }
-    
-    const result = filterExpiredEvents();
-    if (result.removedCount > 0) {
-        console.log(`Removed ${result.removedCount} expired events from preferences`);
-    } else {
-        console.log('No expired events found to remove');
     }
 }
 
@@ -1142,23 +1119,14 @@ function findEarliestDayWithEvents() {
     });
     
     if (daySet.size === 0) {
-        console.log('No valid days found with available events');
         return null;
     }
     
     const sortedDays = Array.from(daySet).sort((a, b) => a - b);
-    console.log(`Available days with events: ${sortedDays.map(d => {
-        const year = Math.floor(d / 10000);
-        const month = Math.floor((d % 10000) / 100) - 1;
-        const day = d % 100;
-        return new Date(year, month, day).toDateString();
-    }).join(', ')}`);
-    
     return sortedDays[0];
 }
 
 async function refreshCarouselAfterEventRemoval() {
-    console.log(carouselEventsData.length +" length of the carousel events data in refresh function");
 
     // If no events are loaded, fetch them
     if (carouselEventsData.length === 0) {
@@ -1166,7 +1134,6 @@ async function refreshCarouselAfterEventRemoval() {
             const response = await fetch('/json/events.json');
             const data = await response.json();
             carouselEventsData = data.items || [];
-            console.log('Fetched events in refreshCarouselAfterEventRemoval:', carouselEventsData.length);
         } catch (error) {
             console.error('Failed to fetch events:', error);
             // Optionally, show an error message or fallback UI here
@@ -1174,7 +1141,6 @@ async function refreshCarouselAfterEventRemoval() {
         }
     }
     
-    console.log('Starting carousel refresh after item removal...');
     
     // Always find the earliest day with events from today onwards
     const earliestDayValue = findEarliestDayWithEvents();
@@ -1185,10 +1151,8 @@ async function refreshCarouselAfterEventRemoval() {
         const day = earliestDayValue % 100;
         const newDate = new Date(year, month, day);
         
-        console.log(`Found earliest day with events: ${newDate.toDateString()}`);
         setCurrentDay(newDate);
         
-        console.log(`Refreshing carousel to earliest day with events: ${newDate.toDateString()}`);
         
         // Force recreation of carousel items
         createCarouselItems({ items: carouselEventsData });
@@ -1202,7 +1166,6 @@ async function refreshCarouselAfterEventRemoval() {
         // No events available, fallback to today and show empty carousel
         const today = new Date();
         setCurrentDay(today);
-        console.log('No events available, showing empty carousel');
         createCarouselItems({ items: carouselEventsData });
         if (isMobile) {
             setupMobileCarousel();
@@ -1216,6 +1179,5 @@ window.refreshCarouselAfterEventRemoval = refreshCarouselAfterEventRemoval;
 
 // Also add a debug function to manually test
 window.debugCarouselRefresh = function() {
-    console.log('Manual carousel refresh triggered');
     refreshCarouselAfterEventRemoval();
 };
