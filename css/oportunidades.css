@@ -296,7 +296,10 @@ nav {
     font-size: 1vw;
     margin-top:1.5vw;
     margin-bottom:1.2vw;
-
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .description-subtitle{
@@ -304,6 +307,10 @@ nav {
     color: grey;
     margin-top: -2.3vh;
     text-align: center;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .carousel-line {
@@ -318,8 +325,14 @@ nav {
 .opp-place-subtitle{
     font-size: 0.8vw;
     color: grey;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    margin-top: 0vh;
+
 }
-    
+
 .opp-place {
     position: relative;
     margin-top: 0vh;
@@ -345,11 +358,13 @@ nav {
     margin-top: 0.9vw;
     margin-bottom: 0vh;
     font-weight: 600;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
     
-.opp-place-subtitle {
-    margin-top: 0vh;
-}
+
 
 .description, .opp-place {
     white-space: nowrap; /* Prevent text from wrapping */

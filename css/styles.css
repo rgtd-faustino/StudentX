@@ -798,19 +798,30 @@ nav {
     font-size: 1vw;
     margin-top:1.5vw;
     margin-bottom:1.2vw;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .description-subtitle-mobile  {
     font-size: 0.8vw;
     color: grey;
     margin-top: -2.3vh;
-    
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 
 }
 
 .opp-place-title-mobile{
     font-weight: 600;
     font-size: 0.9vw;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 
@@ -818,6 +829,10 @@ nav {
 .opp-place-subtitle-mobile{
     font-size: 0.8vw;
     color: grey;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
     
 .opp-place-mobile {
@@ -1165,6 +1180,10 @@ nav {
     position:absolute;
     margin-top:-4.5%;
     margin-left: 79.5%;
+    margin-top: 0%;
+    margin-left: 0vw;
+    right: 0.5vw;
+    top: 0vw;
 
 }
 
@@ -1191,6 +1210,10 @@ nav {
     font-size: 1.2vw;
     margin-top:0.2vw;
     margin-bottom:1.2vw;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .description-subtitle-calendar-expanded  {
@@ -1198,18 +1221,30 @@ nav {
     color: grey;
     margin-top: -2.3vh;
     text-align: center;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 
 }
 
 .opp-place-title-calendar-expanded{
     font-weight: bold;
     font-size: 1vw;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .opp-place-subtitle-calendar-expanded{
     margin-top: -0.8vw;
     font-size: 0.8vw;
     color: grey;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .carousel-line-calendar-expanded{
