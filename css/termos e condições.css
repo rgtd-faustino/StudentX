@@ -150,6 +150,7 @@ nav {
 
 .contact-button:hover {
     background-color: #0056b3;
+    text-decoration: none;
 }
 
 .contribui-wrapper {
@@ -170,6 +171,7 @@ nav {
 
   .contribui-button:hover{
     background-color: #0056b3;
+    text-decoration: none;
   }
   
   .contribui-wrapper:hover .tooltip {
