@@ -661,16 +661,143 @@ document.addEventListener('DOMContentLoaded', async function() {
 // No additional cleanup needed - events are filtered in real-time
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    let allEvents = []; // Store all events for filtering
+    let currentFilteredEvents = []; // Store currently filtered events
+    
+    // Initialize filters after events are loaded
+    function initializeFilters() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const eventCountElement = document.getElementById('event-count');
+        const eventsGrid = document.getElementById('events-grid');
+        
+        if (!filterButtons.length || !eventCountElement || !eventsGrid) {
+            console.warn('Filter elements not found, retrying in 500ms...');
+            setTimeout(initializeFilters, 500);
+            return;
+        }
+        
+        // Add click event listeners to filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // Update active button state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter and display events
+                filterEvents(category);
+            });
+        });
+        
+        // Initial load - show all events
+        filterEvents('all');
+    }
+    
+    // Filter events based on category
+    function filterEvents(category) {
+        if (!allEvents.length) {
+            console.warn('No events loaded yet');
+            return;
+        }
+        
+        let filteredEvents;
+        
+        if (category === 'all') {
+            filteredEvents = allEvents;
+        } else {
+            // Filter events by category (case-insensitive matching)
+            filteredEvents = allEvents.filter(event => {
+                // Assuming category is stored in event.category or similar field
+                // Adjust this based on your actual event data structure
+                const eventCategory = (event.colorOfEvent || '').toLowerCase();
+                return eventCategory.includes(category.toLowerCase());
+            });
+        }
+        
+        currentFilteredEvents = filteredEvents;
+        updateEventGrid(filteredEvents);
+        updateEventCount(filteredEvents.length);
+    }
+    
+    // Update the events grid with filtered events
+    function updateEventGrid(events) {
+        const container = document.getElementById('events-grid');
+        if (!container) return;
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        if (events.length === 0) {
+            // Show empty state
+            container.innerHTML = `
+                <div class="empty-filter-state">
+                    <h3>Nenhum evento encontrado</h3>
+                    <p>Não há eventos disponíveis para esta categoria.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Create grid items for filtered events
+        events.forEach(item => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            gridItem.dataset.category = item.category || '';
+            
+            const color = item.colorOfEvent || '#000000';
+            gridItem.style.setProperty('border', `0.2vw solid ${color}`, 'important');
+            
+            gridItem.innerHTML = `
+                <img src="${item.imageSrc}" alt="${item.altText}">
+                <div class="description">
+                    <p class="description-title">${item.descriptionTitle}</p>
+                    <p class="description-subtitle">${item.descriptionSubtitle}</p>
+                </div>
+                <div class="carousel-line"></div>
+                <div class="opp-place">
+                    <img src="${item.logoSrc}" alt="${item.logoAlt}">
+                    <div>
+                        <p class="opp-place-title">${item.oppPlaceTitle}</p>
+                        <p class="opp-place-subtitle">${item.oppPlaceSubtitle}</p>
+                    </div>
+                </div>
+                <a href="${item.moreInfoLink}" class="button-more-info">Mais Informações</a>
+            `;
+            
+            container.appendChild(gridItem);
+        });
+    }
+    
+    // Update the event count display
+    function updateEventCount(count) {
+        const eventCountElement = document.getElementById('event-count');
+        if (eventCountElement) {
+            eventCountElement.textContent = count;
+        }
+    }
+    
+    // Enhanced createEventGrid function that stores events for filtering
     function createEventGrid(data) {
         const container = document.getElementById('events-grid');
         const oppCountElement = document.getElementById('opp-count');
         
+        // Store all events for filtering
+        allEvents = data.items;
+        
+        // Clear container first
+        if (container) {
+            container.innerHTML = '';
+        }
+        
+        // Create grid items
         data.items.forEach(item => {
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
+            gridItem.dataset.category = item.category || '';
 
-            const color = item.colorOfEvent; // fallback to black if undefined
+            const color = item.colorOfEvent || '#000000';
             gridItem.style.setProperty('border', `0.2vw solid ${color}`, 'important');
 
             gridItem.innerHTML = `
@@ -689,24 +816,53 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
                 <a href="${item.moreInfoLink}" class="button-more-info">Mais Informações</a>
             `;
-            container.appendChild(gridItem);
+            
+            if (container) {
+                container.appendChild(gridItem);
+            }
         });
         
-        oppCountElement.textContent = data.items.length;
+        // Update count displays
+        if (oppCountElement) {
+            oppCountElement.textContent = data.items.length;
+        }
+        updateEventCount(data.items.length);
+        
+        // Initialize filters after events are loaded
+        setTimeout(initializeFilters, 100);
     }
     
+    // Function to check if event is in the future (from your existing code)
     function isFutureEvent(event) {
         const now = new Date();
         const [endHour, endMinute] = event.endTime.split(':').map(Number);
         const eventEnd = new Date(event.year, event.month - 1, event.day, endHour, endMinute);
         return eventEnd >= now;
     }
-   
+    
+    // Load events and set up filtering
     fetch('/json/events.json')
         .then(response => response.json())
-                .then(data => {
-                    const futureItems = data.items.filter(isFutureEvent);
-                    createEventGrid({ items: futureItems });
-                })
-                .catch(error => console.error('Error loading event data:', error));
+        .then(data => {
+            const futureItems = data.items.filter(isFutureEvent);
+            createEventGrid({ items: futureItems });
+        })
+        .catch(error => {
+            console.error('Error loading event data:', error);
+            updateEventCount(0);
+        });
+    
+    // Public function to get current filtered events (useful for other parts of your app)
+    window.getCurrentFilteredEvents = function() {
+        return currentFilteredEvents;
+    };
+    
+    // Public function to refresh filters (useful if events data changes)
+    window.refreshFilters = function() {
+        const activeButton = document.querySelector('.filter-btn.active');
+        if (activeButton) {
+            const category = activeButton.dataset.category;
+            filterEvents(category);
+        }
+    };
 });

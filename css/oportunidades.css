@@ -251,7 +251,35 @@ nav {
     height:100%;
     aspect-ratio: 16/9;
     border: none;
+    opacity: 0; /* depois tira isto para mostrar o video */
+
 }
+
+    .em-breve-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(12, 108, 182, 0.95), rgba(10, 88, 148, 0.6));
+            backdrop-filter: blur(1vw);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            border-radius: 1vw;
+            box-shadow: inset 0 0 2vw rgba(255, 255, 255, 0.1);
+        }
+        
+        .em-breve-text {
+            color: white;
+            font-size: 3vw;
+            font-weight: 600;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 0.2vw 0.5vw rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.1vw;
+        }
 
 #start-now:hover,
 #watch-video:hover {
@@ -265,6 +293,7 @@ nav {
     grid-template-columns: repeat(4, 1fr);
     gap: 1vw;
     padding: 8vw;
+    padding-top: 4vw;
 }
 
 .grid-item {
@@ -533,20 +562,19 @@ nav {
 .opp-text-container{
     position: relative;
     margin-top: 7.5vw;
-    margin-bottom: -7vw;
     margin-left: 8vw;
 }
 
 #opp-title{
-    font-size: 2vw;
+    font-size: 1.6vw;
     font-weight: 500;
 }
 
 #opp-subtitle{
     font-weight: 400;
     color: rgba(0, 0, 24, 0.50);
-    margin-top:-1vw;
-    font-size:1.3vw;
+    margin-top:-0.5vw;
+    font-size:1.2vw;
 
 }
 
@@ -687,6 +715,166 @@ input[type="checkbox"] {
 .privacy-policy a:hover {
     text-decoration: underline;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .filter-section {
+            padding-left: 8vw;
+            padding-right: 8vw;
+            position: relative;
+        }
+        
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1vw;
+            flex-wrap: wrap;
+        }
+        
+        .filter-title {
+            font-size: 1.3vw;
+            font-weight: 600;
+            color: black;
+        }
+        
+        .filter-count {
+            font-size: 0.9vw;
+            color: black;
+            padding: 0.7vw 1vw;
+            border-radius: 1vw;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 1vw;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            border: 0.15vw solid #e1e5e9;
+            padding: 0.7vw 1.2vw;
+            border-radius: 2vw;
+            font-size: 0.9vw;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background-color: white;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+            box-shadow: 0 0.2vw 0.7vw rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-0.1vw);
+            box-shadow: 0 0.4vw 0.7vw rgba(0, 0, 0, 0.3);
+            border-color: #007bff;
+        }
+        
+        .filter-btn::before {
+            content: '';
+            width: 0.8vw;
+            height: 0.8vw;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .filter-btn.all::before {
+            content: unset;
+        }
+        
+        .filter-btn.pessoal::before {
+            background-color: blue;
+        }
+        
+        .filter-btn.profissional::before {
+            background-color: red;
+        }
+        
+        .filter-btn.curricular::before {
+            background-color: green;
+        }
+        
+        .filter-btn.active {
+            background-color: #f8f9fa;
+            border-color: #007bff;
+            color: #007bff;
+            font-weight: 600;
+            transition: none;
+        }
+        
+        .filter-btn.active.pessoal {
+            border-color: #007bff;
+            color: #007bff;
+        }
+        
+        .filter-btn.active.profissional {
+            border-color: #ff6b35;
+            color: #ff6b35;
+        }
+        
+        .filter-btn.active.curricular {
+            border-color: #28a745;
+            color: #28a745;
+        }
+        
+        .filter-count-badge {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: inherit;
+            padding: 0.2vw 0.4vw;
+            border-radius: 0.8vw;
+            font-size: 0.7vw;
+            font-weight: 600;
+            margin-left: 0.3vw;
+        }
+        
+        .filter-btn.active .filter-count-badge {
+            background-color: currentColor;
+            color: white;
+        }
+
+.empty-filter-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+}
+
+.empty-filter-state h3 {
+    margin-bottom: 0vw;
+    color: #333;
+}
+
 
 
 

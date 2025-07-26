@@ -682,7 +682,7 @@ nav {
 
 
 .btn-icon {
-    font-size: 2rem;
+    font-size: 2vw;
     width: 3vw;
     height: 3vw;
     display: flex;
@@ -765,10 +765,10 @@ nav {
     transform: translate(-50%, -50%);
     background: rgba(21, 108, 247, 0.95);
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6vw 0.8vw;
     border-radius: 1vw;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.7vw;
     box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(1vw);
     animation: fadeInScale 0.2s ease-out;
@@ -779,23 +779,6 @@ nav {
     border-color: #156CF7;
     background: rgba(21, 108, 247, 0.05);
     color: #156CF7;
-}
-
-.file-input-label.file-selected::after {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    background: #156CF7;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    animation: fadeInScale 0.3s ease-out;
 }
 
 /* Hidden file input */
@@ -835,46 +818,6 @@ nav {
 
 
 
-        .event-info {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border: 1px solid #0ea5e9;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .event-info h4 {
-            color: #0369a1;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .event-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            font-size: 0.9rem;
-            color: #0c4a6e;
-        }
-
-        .event-detail {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .event-detail strong {
-            font-weight: 600;
-            min-width: 60px;
-        }
-
-        .color-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #22c55e;
-        }
 
 
 

@@ -52,11 +52,11 @@
                 "https://www.instagram.com/studentx.pt",
                 "https://www.linkedin.com/in/studentxpt/",
                 "https://www.tiktok.com/@studentx.pt",
-                "https://x.com/studentx_pt"
+                "https://x.com/StudentXpt"
             ],
             "contactPoint": {
                 "@type": "ContactPoint",
-                "email": "contact.studentx@gmail.com",
+                "email": "contact@studentx.pt",
                 "contactType": "customer service"
             }
         }
@@ -104,17 +104,45 @@
     <!-- Modal -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
-        <!--<span class="close-modal" onclick="closeModal()">&times;</span>-->
-        <video id="modalVideo" class="modal-video" controls>
-            <source src="/videos/slogan.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+            <video id="modalVideo" class="modal-video" controls>
+                <source src="/videos/slogan.mp4" type="video/mp4">
+                O teu Browser não suporta este formado de vídeo.
+            </video>
+            
+            <!-- Em Breve Overlay -->
+            <div class="em-breve-overlay">
+                <div class="em-breve-text">Em Breve...</div>
+            </div>
         </div>
     </div>
 
     <div class="opp-text-container">
         <h1 id="opp-title">Descobre todas as Oportunidades</h1>
         <h2 id="opp-subtitle">Total de <span id="opp-count">0</span> oportunidades</h2>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-header">
+            <h2 class="filter-title">Filtrar por Categoria</h2>
+            <div class="filter-count">
+                Total de <span id="event-count">0</span> oportunidades
+            </div>
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-btn all active" data-category="all">
+                Todas as Categorias
+            </button>
+            <button class="filter-btn curricular" data-category="green">
+                Desenvolvimento Curricular
+            </button>
+            <button class="filter-btn pessoal" data-category="blue">
+                Desenvolvimento Pessoal
+            </button>
+            <button class="filter-btn profissional" data-category="red">
+                Desenvolvimento Profissional
+            </button>
+        </div>
     </div>
 
     <div id="events-grid" class="grid-container"></div>
@@ -191,10 +219,10 @@
             <a href="https://www.instagram.com/studentx.pt" target="_blank">
                 <img class="social-media-icon" src="/images/instagram.webp" alt="Instagram" loading="lazy">
             </a>
-            <a href="https://www.tiktok.com/" target="_blank">
+            <a href="https://www.tiktok.com/@studentx.pt" target="_blank">
                 <img class="social-media-icon" src="/images/tiktok.webp" alt="TikTok" loading="lazy">
             </a>
-            <a href="https://www.twitter.com/" target="_blank">
+            <a href="https://x.com/StudentXpt" target="_blank">
                 <img class="social-media-icon" src="/images/x.webp" alt="Twitter" loading="lazy">
             </a>
             <a href="https://www.linkedin.com/in/studentxpt/" target="_blank">
@@ -213,8 +241,8 @@
     <div class="blue-box">
         <div class="right-text">
             <div class="computer-right-text">
-                <a>Whitepaper</a>
-                <a>Manual de Normas</a>
+                <a href="/PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
+                <a href="/Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
                 <a href="/Termos e Condições/">Termos e Condições</a>
                 <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
                 <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
