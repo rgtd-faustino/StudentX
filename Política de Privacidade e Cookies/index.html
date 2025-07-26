@@ -492,7 +492,51 @@
             </div>
         </div>
 
-
+    <div id="coming-soon-overlay" class="coming-soon-overlay">
+        <video autoplay muted playsinline id="coming-soon-video">
+            <source src="/videos/comingSoon.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <style>
+        .coming-soon-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+        }
+    
+        .coming-soon-overlay video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    
+        /* Disable scrolling when overlay is active */
+        .no-scroll {
+            overflow: hidden;
+            height: 100%;
+        }
+    </style>
+    
+    
+    <script>
+        const overlay = document.getElementById('coming-soon-overlay');
+        const video = document.getElementById('coming-soon-video');
+    
+        // Disable scrolling when the overlay is displayed
+        document.body.classList.add('no-scroll');
+    
+        video.addEventListener('ended', function () {
+            overlay.style.display = 'none';
+            document.body.classList.remove('no-scroll'); // Re-enable scrolling
+        });
+    </script>
         
         <script defer src="/js/script.js"></script>
         <script defer src="/js/cookie-banner.js"></script>
