@@ -1535,6 +1535,10 @@ body {
     padding-left: 4vw;
 }
 
+.filter-section{
+    display: none;
+}
+
 .events-grid {
     display: grid;
     gap: 5vw;
