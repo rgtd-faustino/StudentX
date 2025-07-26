@@ -599,6 +599,9 @@ function setupEventPreview() {
 // ========== FORM VALIDATION ==========
 function validateEventForm() {
     const requiredFields = [
+        { id: 'event-name', name: 'Primeiro Nome' },
+        { id: 'event-apelido', name: 'Último Nome' },
+        { id: 'event-email', name: 'Email' },
         { id: 'event-title', name: 'Título do Evento' },
         { id: 'event-category', name: 'Categoria do Evento' },
         { id: 'event-date', name: 'Data do Evento' },
@@ -902,13 +905,17 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // Validate message form
-            const name = document.getElementById('message-name');
-            const email = document.getElementById('message-email');
-            const message = document.getElementById('message-text');
+            const name = document.getElementById('name');
+            const surname = document.getElementById('apelido');
+            const assunto = document.getElementById('assunto');
+            const email = document.getElementById('email');
+            const message = document.getElementById('message');
             
             const missingMessageFields = [];
             
             if (!name?.value?.trim()) missingMessageFields.push('Nome');
+            if (!surname?.value?.trim()) missingMessageFields.push('Apelido');
+            if (!assunto?.value?.trim()) missingMessageFields.push('Assunto');
             if (!email?.value?.trim()) missingMessageFields.push('Email');
             if (!message?.value?.trim()) missingMessageFields.push('Mensagem');
             
