@@ -570,10 +570,10 @@ nav {
 #titleP3Background {
     pointer-events: none;
     position: absolute; /* Position it absolutely within the container */
-    top: 0; /* Align to the top of the container */
-    left: 0; /* Align to the left of the container */
-    margin-top: 3%; /* Adjust margin-top for better spacing */
-    margin-left: 14%; /* Reduce left margin to fit smaller screens */
+    top: 0.4vw; /* Align to the top of the container */
+    left: 3.6vw; /* Align to the left of the container */
+    margin-top: 0%; /* Adjust margin-top for better spacing */
+    margin-left: 0%; /* Reduce left margin to fit smaller screens */
     width: 90%; /* Increase width to cover more of the screen */
     height: 90%;
     z-index: 0; /* Ensure it is below the title */
@@ -2041,7 +2041,9 @@ input[type="checkbox"] {
     text-decoration: underline;
 }
 
-
+.mobile-filter-section {
+    display: none;
+}
 
 
 
@@ -2165,7 +2167,9 @@ input[type="checkbox"] {
 
     #titleP3Background {
         margin-top: 0%; /* Adjust margin-top for better spacing */
-        margin-left: 14%; /* Reduce left margin to fit smaller screens */
+        margin-left: 0%; /* Reduce left margin to fit smaller screens */
+        left:11vw;
+        top: -1vw;
         width: 90%; /* Increase width to cover more of the screen */
         height: auto;
         z-index:-1;
@@ -3353,6 +3357,7 @@ input[type="checkbox"] {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    display: none;
 }
 .caption-list {
     display: flex;
@@ -4004,19 +4009,241 @@ input[type="checkbox"] {
 
 
 
-}
 
 
 
-@media (max-width:300px) {
 
 
-    #titleP3Background {
-        margin-top: 5%; /* Adjust margin-top for better spacing */
-        margin-left: 14%; /* Reduce left margin to fit smaller screens */
-        width: 90%; /* Increase width to cover more of the screen */
-        height: auto;
-        z-index:-1;
+
+
+
+
+
+
+
+
+
+    .mobile-filter-section {
+        position: relative;
+        display: block;
+        width: 90vw;
+        max-width: 90vw;
+        top: 5vw;
+        left: 5vw;
+        margin-bottom:7vw;
+        background: #ffffff;
+        border-radius: 4vw;
+        box-shadow: 0 1vw 5vw rgba(0, 0, 0, 0.2);
+        overflow: hidden;
     }
 
+    .filter-header-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4vw 5vw;
+        background: linear-gradient(135deg, #108CEC 0%, #0066CC 100%);
+        color: white;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .filter-header-mobile:hover {
+        background: linear-gradient(135deg, #0066CC 0%, #004499 100%);
+    }
+
+    .filter-title-mobile {
+        margin: 0;
+        font-size: 4.3vw;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    /* Dropdown Arrow */
+    .filter-header-mobile::after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 2vw solid transparent;
+        border-right: 2vw solid transparent;
+        border-top: 2vw solid white;
+        margin-left: 3vw;
+    }
+
+    .filter-header-mobile.active::after {
+        transform: rotate(180deg);
+    }
+
+    /* Filter Options Container */
+    .filter-options-mobile {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        background: #ffffff;
+    }
+
+    .filter-options-mobile.open {
+        max-height: 50vw;
+        padding: 4vw 5vw;
+    }
+
+    /* Filter Checkbox Group */
+    .filter-checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    /* Checkbox Label */
+    .filter-checkbox-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 2vw;
+        border-radius: 2vw;
+        position: relative;
+    }
+
+    .filter-checkbox-label:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Hide default checkbox */
+    .filter-checkbox {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    /* Custom Checkmark */
+    .checkmark {
+        height: 5vw;
+        width: 5vw;
+        border-radius: 1vw;
+        border: 0.5vw solid #ddd;
+        margin-right: 3vw;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    /* Checkmark colors for different categories */
+    .profissional-checkmark {
+        border-color: red;
+    }
+
+    .pessoal-checkmark {
+        border-color: blue;
+    }
+
+    .curricular-checkmark {
+        border-color: green;
+    }
+
+    /* When checkbox is checked */
+    .filter-checkbox:checked ~ .profissional-checkmark {
+        background-color: red;
+        border-color: red;
+    }
+
+    .filter-checkbox:checked ~ .pessoal-checkmark {
+        background-color: blue;
+        border-color: blue;
+    }
+
+    .filter-checkbox:checked ~ .curricular-checkmark {
+        background-color: green;
+        border-color: green;
+    }
+
+    /* Checkmark icon */
+    .checkmark::after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 1.5vw;
+        top: 0.8vw;
+        width: 1.2vw;
+        height: 2.2vw;
+        border: solid white;
+        border-width: 0 0.4vw 0.4vw 0;
+        transform: rotate(45deg);
+    }
+
+    /* Show checkmark when checked */
+    .filter-checkbox:checked ~ .checkmark::after {
+        display: block;
+    }
+
+    /* Filter Label Text */
+    .filter-label-text {
+        font-size: 3.8vw;
+        font-weight: 500;
+        color: #333;
+        line-height: 1.4;
+        user-select: none;
+    }
+
+    /* Active state for labels */
+    .filter-checkbox:checked ~ .filter-label-text {
+        font-weight: 600;
+    }
+
+    /* Animation for smooth opening/closing */
+    @keyframes slideDown {
+        from {
+            max-height: 0;
+            opacity: 0;
+        }
+        to {
+            max-height: 50vw;
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            max-height: 50vw;
+            opacity: 1;
+        }
+        to {
+            max-height: 0;
+            opacity: 0;
+        }
+    }
+
+    /* Focus states for accessibility */
+    .filter-checkbox:focus ~ .checkmark {
+        box-shadow: 0 0 0 0.5vw rgba(16, 140, 236, 0.3);
+    }
+
+    .filter-header-mobile:focus {
+        outline: 0.3vw solid rgba(255, 255, 255, 0.5);
+        outline-offset: -0.3vw;
+    }
+    
+    /* Minimum filter message styles */
+    .minimum-filter-message {
+        position: fixed;
+        top: 20vw;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ff5722;
+        color: white;
+        padding: 3vw 5vw;
+        border-radius: 2vw;
+        font-size: 3.5vw;
+        font-weight: 500;
+        z-index: 10000;
+        box-shadow: 0 2vw 4vw rgba(0,0,0,0.3);
+        animation: slideInOut 2s ease-in-out forwards;
+    }
+
+    @keyframes slideInOut {
+        0% { opacity: 0; transform: translateX(-50%) translateY(-10vw); }
+        20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        100% { opacity: 0; transform: translateX(-50%) translateY(-10vw); }
+    }
 }

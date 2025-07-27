@@ -1,6 +1,16 @@
 let carouselEventsData = [];
 const isMobile = window.innerWidth < 600;
 let areInstructionsShowing = false;
+let activeFilters = {
+    red: true,
+    blue: true,
+    green: true
+};
+
+
+
+
+
 
 function initializeCarousel() {
     const itemGroup = document.querySelector('.item-group-mobile');
@@ -32,7 +42,44 @@ function initializeCarousel() {
         });
 }
 
+function getColorCategory(colorOfEvent) {
+    const colorLower = colorOfEvent.toLowerCase();
+    if (colorLower.includes('red') || colorLower === '#ff0000' || colorLower === 'red') {
+        return 'red';
+    } else if (colorLower.includes('blue') || colorLower === '#0000ff' || colorLower === 'blue') {
+        return 'blue';
+    } else if (colorLower.includes('green') || colorLower === '#008000' || colorLower === 'green') {
+        return 'green';
+    }
+    // Default fallback - you might want to adjust this based on your color scheme
+    return 'red';
+}
 
+// Function to check if event matches active filters
+function eventMatchesFilters(item) {
+    if (!item.colorOfEvent) return true; // Show items without color by default
+    
+    const category = getColorCategory(item.colorOfEvent);
+    return activeFilters[category];
+}
+
+function handleFilterChange() {
+    // Update activeFilters based on checkbox states
+    activeFilters.red = document.getElementById('profissional-filter').checked;
+    activeFilters.blue = document.getElementById('pessoal-filter').checked;
+    activeFilters.green = document.getElementById('curricular-filter').checked;
+    
+    // Recreate carousel with new filters
+    if (carouselEventsData && carouselEventsData.length > 0) {
+        createCarouselItems({ items: carouselEventsData });
+        
+        if (isMobile) {
+            setupMobileCarousel();
+        } else {
+            setupDesktopCarousel();
+        }
+    }
+}
 
 function createCarouselItems(data) {
     const container = document.getElementById('item-group-1-mobile');
@@ -48,7 +95,9 @@ function createCarouselItems(data) {
         const currentDayValue = (currentDay.getFullYear() * 10000) + ((currentDay.getMonth() + 1) * 100) + currentDay.getDate();
         
         const currentEvents = data.items.filter(item => {
-            return item.dateValue === currentDayValue && isFutureEvent(item);
+            return item.dateValue === currentDayValue && 
+                   isFutureEvent(item) && 
+                   eventMatchesFilters(item); // Add filter check
         });
 
         filteredItems = currentEvents.filter(item => {
@@ -57,7 +106,9 @@ function createCarouselItems(data) {
 
     } else {
         const currentEvents = data.items.filter(item => {
-            return isFutureEvent(item) && item.destaque === true;
+            return isFutureEvent(item) && 
+                   item.destaque === true && 
+                   eventMatchesFilters(item); // Add filter check
         });
 
         const nonInteractedEvents = currentEvents.filter(item => {
@@ -78,6 +129,7 @@ function createCarouselItems(data) {
         }
     });
     
+    // Rest of the createCarouselItems function remains the same...
     uniqueItems.forEach(item => {
         const itemContainer = document.createElement('div');
         itemContainer.className = 'item-container-mobile';
@@ -102,10 +154,8 @@ function createCarouselItems(data) {
 
         if(isMobile){
             itemContainer.style.border = `0.8vw solid ${item.colorOfEvent}`;
-            
         } else{
             itemContainer.style.border = `0.2vw solid ${item.colorOfEvent}`;
-
         }
 
         const img = document.createElement('img');
@@ -395,7 +445,10 @@ function setupMobileCarousel() {
                 sortItemsByDate([item]);
             }
 
-            return item.dateValue === dateValue && isFutureEvent(item) && !hasUserInteractedWithItem(item);
+            return item.dateValue === dateValue && 
+                isFutureEvent(item) && 
+                !hasUserInteractedWithItem(item) &&
+                eventMatchesFilters(item); // Add filter check
         });
     }
 
@@ -406,7 +459,7 @@ function setupMobileCarousel() {
         for (let i = 0; i < maxDaysToCheck; i++) {
             checkDate.setDate(checkDate.getDate() + 1);
             const dateValue = getDateValue(checkDate);
-            const events = getEventsForDay(dateValue);
+            const events = getEventsForDayWithFilter(dateValue); // Use filtered version
             
             if (events.length > 0) {
                 return { date: new Date(checkDate), events: events };

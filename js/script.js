@@ -187,3 +187,136 @@ document.addEventListener("DOMContentLoaded", function() {
         initializeCarousel();
     }
 });
+
+// Mobile Filter Dropdown Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterHeader = document.querySelector('.filter-header-mobile');
+    const filterOptions = document.querySelector('.filter-options-mobile');
+   
+    if (filterHeader && filterOptions) {
+        // Add click event to toggle dropdown
+        filterHeader.addEventListener('click', function() {
+            // Toggle the active class on header (for arrow rotation)
+            filterHeader.classList.toggle('active');
+           
+            // Toggle the open class on options (for showing/hiding)
+            filterOptions.classList.toggle('open');
+        });
+        // Make header focusable for accessibility
+        filterHeader.setAttribute('tabindex', '0');
+        filterHeader.setAttribute('role', 'button');
+        filterHeader.setAttribute('aria-expanded', 'false');
+        filterHeader.setAttribute('aria-controls', 'filterOptionsMobile');
+        // Update aria-expanded when dropdown state changes
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const isOpen = filterOptions.classList.contains('open');
+                    filterHeader.setAttribute('aria-expanded', isOpen.toString());
+                }
+            });
+        });
+       
+        observer.observe(filterOptions, { attributes: true });
+    }
+
+    // Function to count how many checkboxes are currently checked
+    function getCheckedCount() {
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
+        let checkedCount = 0;
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                checkedCount++;
+            }
+        });
+        return checkedCount;
+    }
+
+    // Function to update checkbox states (disable/enable based on checked count)
+    function updateCheckboxStates() {
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
+        const checkedCount = getCheckedCount();
+        
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked && checkedCount === 1) {
+                // This is the last checked checkbox, disable it
+                checkbox.disabled = true;
+                checkbox.parentElement.style.opacity = '0.6';
+                checkbox.parentElement.style.cursor = 'not-allowed';
+            } else {
+                // Enable the checkbox
+                checkbox.disabled = false;
+                checkbox.parentElement.style.opacity = '1';
+                checkbox.parentElement.style.cursor = 'pointer';
+            }
+        });
+    }
+
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const category = this.getAttribute('data-category');
+            const isChecked = this.checked;
+            
+            // If trying to uncheck and it would leave no checkboxes checked, prevent it
+            if (!isChecked && getCheckedCount() === 0) {
+                this.checked = true; // Force it back to checked
+                
+                // Show a brief visual feedback
+                const label = this.parentElement;
+                const originalBg = label.style.backgroundColor;
+                label.style.backgroundColor = '#ffebee';
+                label.style.transition = 'background-color 0.3s ease';
+                
+                setTimeout(function() {
+                    label.style.backgroundColor = originalBg;
+                }, 500);
+                
+                // Optional: Show a tooltip or message
+                showMinimumFilterMessage();
+                return;
+            }
+           
+            // Update checkbox states after change
+            updateCheckboxStates();
+            
+            // Handle the filter change
+            handleFilterChange();
+           
+            // Dispatch custom event for other parts of your app
+            document.dispatchEvent(new CustomEvent('filterChange', {
+                detail: {
+                    category: category,
+                    enabled: isChecked,
+                    element: this
+                }
+            }));
+        });
+    });
+
+    // Function to show a brief message when user tries to disable the last filter
+    function showMinimumFilterMessage() {
+        // Remove any existing message
+        const existingMessage = document.querySelector('.minimum-filter-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+
+        // Create and show message
+        const message = document.createElement('div');
+        message.className = 'minimum-filter-message';
+        message.textContent = 'Deve manter pelo menos um filtro ativo!';
+
+        document.body.appendChild(message);
+
+        // Remove message after animation
+        setTimeout(function() {
+            if (message.parentNode) {
+                message.remove();
+            }
+        }, 2000);
+    }
+
+    // Initialize checkbox states on page load
+    updateCheckboxStates();
+});

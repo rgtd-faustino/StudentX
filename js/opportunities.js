@@ -665,21 +665,46 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', function() {
                 const category = this.dataset.category;
                 
-                // Update active button state
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
+                if (category === 'all') {
+                    // If "all" is clicked, deactivate all other filters and activate only "all"
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                } else {
+                    // If a specific category is clicked, toggle its state
+                    const allButton = document.querySelector('.filter-btn[data-category="all"]');
+                    if (allButton) {
+                        allButton.classList.remove('active');
+                    }
+                    this.classList.toggle('active');
+                }
+                
+                // Get all active categories
+                const activeCategories = getActiveCategories();
                 
                 // Filter and display events
-                filterEvents(category);
+                filterEvents(activeCategories);
             });
         });
         
         // Initial load - show all events
-        filterEvents('all');
+        filterEvents(['all']);
     }
     
-    // Filter events based on category
-    function filterEvents(category) {
+    // Get currently active filter categories
+    function getActiveCategories() {
+        const activeButtons = document.querySelectorAll('.filter-btn.active');
+        const categories = Array.from(activeButtons).map(btn => btn.dataset.category);
+        
+        // If no filters are active or if "all" is active, return ['all']
+        if (categories.length === 0 || categories.includes('all')) {
+            return ['all'];
+        }
+        
+        return categories;
+    }
+    
+    // Filter events based on categories array
+    function filterEvents(categories) {
         if (!allEvents.length) {
             console.warn('No events loaded yet');
             return;
@@ -687,15 +712,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let filteredEvents;
         
-        if (category === 'all') {
+        if (categories.includes('all') || categories.length === 0) {
             filteredEvents = allEvents;
         } else {
-            // Filter events by category (case-insensitive matching)
+            // Filter events by any of the selected categories (OR logic)
             filteredEvents = allEvents.filter(event => {
-                // Assuming category is stored in event.category or similar field
-                // Adjust this based on your actual event data structure
                 const eventCategory = (event.colorOfEvent || '').toLowerCase();
-                return eventCategory.includes(category.toLowerCase());
+                return categories.some(category => 
+                    eventCategory.includes(category.toLowerCase())
+                );
             });
         }
         
@@ -842,10 +867,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Public function to refresh filters (useful if events data changes)
     window.refreshFilters = function() {
-        const activeButton = document.querySelector('.filter-btn.active');
-        if (activeButton) {
-            const category = activeButton.dataset.category;
-            filterEvents(category);
-        }
+        const activeCategories = getActiveCategories();
+        filterEvents(activeCategories);
     };
 });
