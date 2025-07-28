@@ -248,14 +248,6 @@
                 document.body.classList.remove('no-scroll'); // Re-enable scrolling
             });
         });
-
-        // Fallback: if video fails to load, hide overlay after 5 seconds
-        setTimeout(function() {
-            if (overlay.style.display !== 'none') {
-                overlay.style.display = 'none';
-                document.body.classList.remove('no-scroll');
-            }
-        }, 5000);
     </script>
 
     <img id="image1" src="/images/ELIPSE GRADIENTE.webp" alt="Blue Gradient Background">
