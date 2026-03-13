@@ -1,50 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
     <head>
-        <!-- Essential Meta Tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Na Student X comprometemo-nos a responder a quaisquer dúvidas que os utilizadores tenham e oferecemos suporte técnico sempre que necessário."/>
-        
-        <!-- Security Headers -->
         <meta http-equiv="X-Content-Type-Options" content="nosniff">
         <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval' *.googleapis.com *.gstatic.com *.google-analytics.com *.googletagmanager.com; img-src 'self' data: https: *.studentx.pt; font-src 'self' https: data: *.googleapis.com *.gstatic.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com">
-
-        <!--Google AdSense-->
         <meta name="google-adsense-account" content="ca-pub-2455279266517679">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679"
-             crossorigin="anonymous"></script>
-        
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679" crossorigin="anonymous"></script>
         <title>Student X - Contact Us</title>
-    
-        <!-- Preconexões críticas -->
         <link rel="preconnect" href="https://www.googletagmanager.com">
         <link rel="preconnect" href="https://www.google-analytics.com">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-        <!-- Preload de recursos críticos -->
-        <link rel="preload" href="/js/script.js" as="script">
-        <link rel="preload" href="/js/contactus.js" as="script">
-        <link rel="preload" href="/js/cookie-banner.js" as="script">
-    
-        <!-- Favicons -->
-        <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
-        
-        <!-- Canonical -->
+        <link rel="preload" href="../js/script.js" as="script">
+        <link rel="preload" href="../js/contactus.js" as="script">
+        <link rel="preload" href="../js/cookie-banner.js" as="script">
+        <link rel="icon" type="image/ico" sizes="96x96" href="../favicon.ico">
         <link rel="canonical" href="https://www.studentx.pt/contacto/" />
-    
-        <!-- Estilos -->
-        <link rel="stylesheet" href="/css/notifications.css">
-        <link rel="stylesheet" href="/css/contact us.css">
-        
-        <!-- Fontes com carregamento otimizado -->
+        <link rel="stylesheet" href="../css/notifications.css">
+        <link rel="stylesheet" href="../css/contact us.css">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-        
-        <!-- Organization Schema -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -66,95 +45,61 @@
             }
         }
         </script>
-        
     </head>
 
 <body>
-    
-        <div id="coming-soon-overlay" class="coming-soon-overlay">
+    <!--
+    <div id="coming-soon-overlay" class="coming-soon-overlay">
         <video autoplay muted playsinline loop id="coming-soon-video" preload="auto">
-            <source src="/videos/comingSoon.mp4" type="video/mp4">
+            <source src="../videos/comingSoon.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
-    
     <style>
-        .coming-soon-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    
-        .coming-soon-overlay video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    
-        /* Disable scrolling when overlay is active */
-        .no-scroll {
-            overflow: hidden;
-            height: 100%;
-        }
+        .coming-soon-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        .coming-soon-overlay video { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+        .no-scroll { overflow: hidden; height: 100%; }
     </style>
-    
-    
     <script>
         const overlay = document.getElementById('coming-soon-overlay');
         const video = document.getElementById('coming-soon-video');
-
-        // Disable scrolling when the overlay is displayed
         document.body.classList.add('no-scroll');
-
-        // Wait for video to be ready before allowing it to be hidden
         video.addEventListener('canplaythrough', function() {
-            // Video is fully loaded and can play through
             video.addEventListener('ended', function () {
                 overlay.style.display = 'none';
-                document.body.classList.remove('no-scroll'); // Re-enable scrolling
+                document.body.classList.remove('no-scroll');
             });
         });
     </script>
+    -->
 
     <div class="nav-color-filler"></div>
 
     <nav>
-        <!-- Hamburger Menu for Mobile -->
         <div class="hamburger" onclick="toggleMenu()">
             <div class="hamburger-line1"></div>
             <div class="hamburger-line2"></div>
             <div class="hamburger-line3"></div>
         </div>
-
-        <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
         <div class="menu-content">
             <ul class="nav-items">
-                <li><a href="/">Início</a></li>
-                <li id="opportunities-item-mobile"><a href="/#logo1">Oportunidades</a></li>
-                <li id="opportunities-item-pc"><a href="/oportunidades/">Oportunidades</a></li>
-                <li id="calendario-title"><a href="/#opportunityTitlePC">Calendário</a></li>
-                <li><a href="/#studentx-ajuda-title">Modus Operandi</a></li>
-                <li><a href="/#questoes-frequentes-title">FAQ</a></li>
+                <li><a href="../">Início</a></li>
+                <li id="opportunities-item-mobile"><a href="../#logo1">Oportunidades</a></li>
+                <li id="opportunities-item-pc"><a href="../oportunidades/">Oportunidades</a></li>
+                <li id="calendario-title"><a href="../#opportunityTitlePC">Calendário</a></li>
+                <li><a href="../#studentx-ajuda-title">Modus Operandi</a></li>
+                <li><a href="../#questoes-frequentes-title">FAQ</a></li>
             </ul>
             <div class="right-side-nav">
                 <div class="contribui-wrapper">
-                    <a href="/" class="contribui-button">Contribui</a>
+                    <a href="../" class="contribui-button">Contribui</a>
                     <div class="tooltip">Ajuda-nos a manter a StudentX ativa através de pequenas, mas imprescindíveis doações, de modo a que consigamos oferecer conteúdo de qualidade.</div>
-                  </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <img id="contact" src="/images/CONTACT.webp" alt="Blue Gradient Background">
-
+    <img id="contact" src="../images/CONTACT.webp" alt="Blue Gradient Background">
 
     <div class="menu-overlay">
         <div class="contact-content">
@@ -167,28 +112,21 @@
         </div>
     </div>
 
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner">
-            <p>A enviar...</p>
-        </div>
+        <div class="loading-spinner"><p>A enviar...</p></div>
     </div>
 
     <div class="main-container">
-        <!-- Event Preview Section -->
         <div class="preview-container" id="preview-container">
             <div class="preview-wrapper">
                 <h2 class="preview-title">Pré-visualização do Evento</h2>
                 <div class="item-container-mobile" id="event-preview">
                     <div class="placeholder-image" id="preview-image">📷</div>
-                    
                     <div class="description-mobile">
                         <p class="description-title-mobile" id="preview-title">Nome do Evento</p>
                         <p class="description-subtitle-mobile" id="preview-description">Descrição do evento...</p>
                     </div>
-                    
                     <div class="carousel-line" id="preview-line"></div>
-                    
                     <div class="opp-place-mobile">
                         <div class="opp-place-container">
                             <div class="placeholder-image2" id="preview-image2">📷</div>
@@ -198,16 +136,13 @@
                             </div>
                         </div>
                     </div>
-                    
                     <a href="#" class="button-carousel-mobile">Mais Informações</a>
                 </div>
             </div>
         </div>
 
-        <!-- Form Section -->
         <div class="message-box-container">
             <div class="message-box">
-                <!-- Dark Overlay with Buttons -->
                 <div class="overlay" id="overlay">
                     <div class="overlay-content">
                         <h2 class="overlay-title">Como podemos ajudar?</h2>
@@ -231,12 +166,10 @@
                     </div>
                 </div>
 
-                <!-- Message Form -->
                 <div class="form-section" id="message-form">
                     <button class="back-btn" onclick="hideForm()">←</button>
                     <h3>Enviar Mensagem</h3>
                     <h1>Partilha as tuas ideias connosco</h1>
-
                     <form id="message-form-element">
                         <div class="name-container">
                             <div>
@@ -264,7 +197,6 @@
                     </form>
                 </div>
 
-                <!-- Event Form -->
                 <div class="form-section" id="event-form">
                     <button class="back-btn" onclick="hideForm()">←</button>
                     <h3>Submeter Evento</h3>
@@ -280,17 +212,14 @@
                                 <input type="text" id="event-apelido" name="apelido" placeholder="Último nome">
                             </div>
                         </div>
-                       
                         <div>
                             <label for="event-email">Email:</label>
                             <input type="email" id="event-email" name="email" placeholder="Email">
                         </div>
-                       
                         <div>
                             <label for="event-title">Nome do Evento:</label>
                             <input type="text" id="event-title" name="event_title" placeholder="Nome do evento">
                         </div>
-
                         <div>
                             <label for="event-category">Categoria de Evento:</label>
                             <select id="event-category" name="event_category">
@@ -300,7 +229,6 @@
                                 <option value="Desenvolvimento Profissional">Desenvolvimento Profissional</option>
                             </select>
                         </div>
-                       
                         <div class="datetime-container">
                             <div>
                                 <label for="event-date">Data:</label>
@@ -315,22 +243,18 @@
                                 <input type="time" id="event-end-time" name="event_end_time">
                             </div>
                         </div>
-                       
                         <div>
                             <label for="event-location">Nome da Empresa / Organização:</label>
                             <input type="text" id="event-location" name="event_location" placeholder="Organização / Empresa">
                         </div>
-
                         <div>
                             <label for="event-location2">Local do Evento:</label>
                             <input type="text" id="event-location2" name="event_location2" placeholder="Local do evento">
                         </div>
-
                         <div>
                             <label for="event-description">Descrição do Evento:</label>
                             <textarea id="event-description" name="event_description" placeholder="Descreve o teu evento..."></textarea>
                         </div>
-                       
                         <div>
                             <div class="file-input-container">
                                 <label for="event-image">Imagem do Evento:</label>
@@ -339,7 +263,6 @@
                                     <input type="file" id="event-image" name="event_image" accept="image/*">
                                 </label>
                             </div>
-
                             <div class="file-input-container">
                                 <label for="event-image2">Logotipo da Organização:</label>
                                 <label for="event-image2" class="file-input-label" id="file-label2">
@@ -348,13 +271,10 @@
                                 </label>
                             </div>
                         </div>
-                        
                         <div>
                             <label for="event-link">Link do Evento:</label>
                             <input type="url" id="event-link" name="event_link" placeholder="https://exemplo.com/evento" pattern="https://.*">
                         </div>
-                       
-                       
                         <input type="submit" value="Submeter Evento">
                     </form>
                 </div>
@@ -365,92 +285,46 @@
     <footer class="footer">
         <div class="social-media-container">
             <a href="https://www.instagram.com/studentx.pt" target="_blank">
-                <img class="social-media-icon" src="/images/instagram.webp" alt="Instagram">
+                <img class="social-media-icon" src="../images/instagram.webp" alt="Instagram">
                 <span class="social-media-text"><span class="social-media-name">Instagram:</span><br><span class="profile-name">@StudentX</span></span>
             </a>
             <a href="https://www.tiktok.com/@studentx.pt" target="_blank">
-                <img class="social-media-icon" src="/images/tiktok.webp" alt="TikTok">
+                <img class="social-media-icon" src="../images/tiktok.webp" alt="TikTok">
                 <span class="social-media-text"><span class="social-media-name">TikTok:</span><br><span class="profile-name">@StudentX</span></span>
             </a>
             <a href="https://x.com/StudentXpt" target="_blank">
-                <img class="social-media-icon" src="/images/x.webp" alt="Twitter">
+                <img class="social-media-icon" src="../images/x.webp" alt="Twitter">
                 <span class="social-media-text"><span class="social-media-name">X:</span><br><span class="profile-name">@StudentX</span></span>
             </a>
             <a href="https://www.linkedin.com/in/studentxpt/" target="_blank">
-                <img class="social-media-icon" src="/images/linkedin.webp" alt="LinkedIn">
+                <img class="social-media-icon" src="../images/linkedin.webp" alt="LinkedIn">
                 <span class="social-media-text"><span class="social-media-name">LinkedIn:</span><br><span class="profile-name">@StudentX</span></span>
             </a>
         </div>
         <div class="footer-text">
             <p class="copyright-text">Copyright © Student X. Todos os direitos reservados.</p>
-            
             <div class="right-text">
                 <div class="computer-right-text">
-                    <a href="/PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
-                    <a href="/Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
-                    <a href="/Termos e Condições/">Termos e Condições</a>
-                    <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                    <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
+                    <a href="../PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
+                    <a href="../Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
+                    <a href="../Termos e Condições/">Termos e Condições</a>
+                    <a href="../Política de Privacidade e Cookies/">Política de Privacidade</a>
+                    <a href="../" onclick="return showCookieBanner()">Gerir Cookies</a>
                 </div>
                 <div class="mobile-right-text">
-                    <a href="/Termos e Condições/">Termos e Condições</a>
-                    <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                    <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
+                    <a href="../Termos e Condições/">Termos e Condições</a>
+                    <a href="../Política de Privacidade e Cookies/">Política de Privacidade</a>
+                    <a href="../" onclick="return showCookieBanner()">Gerir Cookies</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!--
-    <div class="cookie-banner" id="cookieBanner" style="display: none;">
-        <div class="cookie-content">
-            <div class="cookie-initial">
-                <h3>Preferências Cookies</h3>
-                <p>Usamos cookies para melhorar a tua experiência. Escolhe as tuas opções abaixo.</p>
-                <div class="cookie-buttons">
-                    <button id="accept-all" class="cookie-btn">Aceitar Todas</button>
-                    <button id="reject-all" class="cookie-btn">Rejeitar Todas</button>
-                    <button id="more-options" class="cookie-btn">Mais...</button>
-                </div>
-            </div>
-            <div class="cookie-expanded">
-                <h3>Preferências Cookies</h3>
-                <div class="cookie-categories">
-                    <div class="cookie-category">
-                        <input type="checkbox" id="functional-cookies" checked disabled>
-                        <label class="category-name" for="functional-cookies">Essenciais</label>
-                        <span class="category-info">Necessário para o funcionamento do website</span>
-                    </div>
-                    <div class="cookie-category">
-                        <input type="checkbox" id="analytics-cookies">
-                        <label class="category-name" for="analytics-cookies">Análise</label>
-                        <span class="category-info">Ajuda-nos a melhorar o nosso website através do Google Analytics</span>
-                    </div>
-                    <div class="cookie-category">
-                        <input type="checkbox" id="marketing-cookies">
-                        <label class="category-name" for="marketing-cookies">Publicidade</label>
-                        <span class="category-info">Usado para entregar anúncios personalizados através do Google Ads</span>
-                    </div>
-                </div>
-                <div class="cookie-buttons">
-                    <button id="accept-selected" class="cookie-btn">Aceitar Selecionadas</button>
-                    <button id="reject-all-expanded" class="cookie-btn">Rejeitar Todas</button>
-                </div>
-                <div class="privacy-policy">
-                    <a href="/Política de Privacidade e Cookies/" id="read-more">Ler mais sobre a nossa política de cookies</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
-
     <div class="notification-container" id="notificationContainer"></div>
 
-
-    <script defer src="/js/script.js"></script>
-    <script defer src="/js/notifications.js"></script>
-    <script defer src="/js/contactus.js"></script>
-    <script defer src="/js/cookie-banner.js"></script>
-
+    <script defer src="../js/script.js"></script>
+    <script defer src="../js/notifications.js"></script>
+    <script defer src="../js/contactus.js"></script>
+    <script defer src="../js/cookie-banner.js"></script>
 </body>
 </html>
