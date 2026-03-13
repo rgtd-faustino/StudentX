@@ -34,7 +34,7 @@ Hosted on GitHub Pages and maintained by a small team, **Student X** is a non-co
 
 # Contact
 
-- Rafael Faustino - [LinkedIn](https://www.linkedin.com/in/rgtdfaustino/)
+- Rafael Faustino - [LinkedIn](https://www.linkedin.com/in/rgtd-faustino/)
 
 - Tomás Sousa - [LinkedIn](https://www.linkedin.com/in/tomás-lopes-patrão-de-figueiredo-e-sousa-25ab0131a/)
     
