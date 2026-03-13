@@ -1,47 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
     <head>
-        <!-- Essential Meta Tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A Student X oferece inúmeras informações sobre eventos, iniciativas e oportunidades para  jovens melhorarem experiências académicas e extracurriculares."/>
-        
-        <!-- Security Headers -->
         <meta http-equiv="X-Content-Type-Options" content="nosniff">
         <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval' *.googleapis.com *.gstatic.com *.google-analytics.com *.googletagmanager.com; img-src 'self' data: https: *.studentx.pt; font-src 'self' https: data: *.googleapis.com *.gstatic.com; connect-src 'self' https: *.google-analytics.com *.googletagmanager.com">
-        
-        <!--Google AdSense-->
         <meta name="google-adsense-account" content="ca-pub-2455279266517679">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679"
-             crossorigin="anonymous"></script>
-
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2455279266517679" crossorigin="anonymous"></script>
         <title>Student X - Mais Oportunidades</title>
-    
-        <!-- Preconexões críticas -->
         <link rel="preconnect" href="https://www.googletagmanager.com">
         <link rel="preconnect" href="https://www.google-analytics.com">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-        <!-- Preload de recursos críticos -->
-        <link rel="preload" href="/js/script.js" as="script">
-        <link rel="preload" href="/js/cookie-banner.js" as="script">
-        <link rel="preload" href="/js/carousel.js" as="script">
-
-        <!-- Favicons -->
-        <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
-        
-        <!-- Canonical -->
+        <link rel="preload" href="../js/script.js" as="script">
+        <link rel="preload" href="../js/cookie-banner.js" as="script">
+        <link rel="preload" href="../js/carousel.js" as="script">
+        <link rel="icon" type="image/ico" sizes="96x96" href="../favicon.ico">
         <link rel="canonical" href="https://www.studentx.pt/oportunidades/" />
-    
-        <!-- Estilos -->
-        <link rel="stylesheet" href="/css/oportunidades.css">
-        
-        <!-- Fontes com carregamento otimizado -->
+        <link rel="stylesheet" href="../css/oportunidades.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-        
-        <!-- Organization Schema -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -63,108 +42,70 @@
             }
         }
         </script>
-        
     </head>
 
-
 <body>
+    <!--
     <div id="coming-soon-overlay" class="coming-soon-overlay">
         <video autoplay muted playsinline loop id="coming-soon-video" preload="auto">
-            <source src="/videos/comingSoon.mp4" type="video/mp4">
+            <source src="../videos/comingSoon.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
-    
     <style>
-        .coming-soon-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    
-        .coming-soon-overlay video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    
-        /* Disable scrolling when overlay is active */
-        .no-scroll {
-            overflow: hidden;
-            height: 100%;
-        }
+        .coming-soon-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        .coming-soon-overlay video { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+        .no-scroll { overflow: hidden; height: 100%; }
     </style>
-    
-    
     <script>
         const overlay = document.getElementById('coming-soon-overlay');
         const video = document.getElementById('coming-soon-video');
-
-        // Disable scrolling when the overlay is displayed
         document.body.classList.add('no-scroll');
-
-        // Wait for video to be ready before allowing it to be hidden
         video.addEventListener('canplaythrough', function() {
-            // Video is fully loaded and can play through
             video.addEventListener('ended', function () {
                 overlay.style.display = 'none';
-                document.body.classList.remove('no-scroll'); // Re-enable scrolling
+                document.body.classList.remove('no-scroll');
             });
         });
     </script>
+    -->
 
     <nav>
-        <!-- Hamburger Menu for Mobile -->
         <div class="hamburger" onclick="toggleMenu()">
             <div class="hamburger-line1"></div>
             <div class="hamburger-line2"></div>
             <div class="hamburger-line3"></div>
         </div>
-    
-        <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
         <div class="menu-content">
             <ul class="nav-items">
-                <li><a href="/">Início</a></li>
-                <li><a href="/oportunidades/" style="color:#108CEC">Oportunidades</a></li>
-                <li id="calendario-title"><a href="/#opportunityTitlePC">Calendário</a></li>
-                <li><a href="/#studentx-ajuda-title">Modus Operandi</a></li>
-                <li><a href="/#questoes-frequentes-title">FAQ</a></li>
+                <li><a href="../">Início</a></li>
+                <li><a href="../oportunidades/" style="color:#108CEC">Oportunidades</a></li>
+                <li id="calendario-title"><a href="../#opportunityTitlePC">Calendário</a></li>
+                <li><a href="../#studentx-ajuda-title">Modus Operandi</a></li>
+                <li><a href="../#questoes-frequentes-title">FAQ</a></li>
             </ul>
             <div class="right-side-nav">
                 <div class="contribui-wrapper">
-                    <a href="/" class="contribui-button">Contribui</a>
+                    <a href="../" class="contribui-button">Contribui</a>
                     <div class="tooltip">Ajuda-nos a manter a StudentX ativa através de pequenas, mas imprescindíveis doações, de modo a que consigamos oferecer conteúdo de qualidade.</div>
-                  </div>
-                <a href="/contacto/" class="contact-button">Contacta-nos</a>
+                </div>
+                <a href="../contacto/" class="contact-button">Contacta-nos</a>
             </div>
         </div>
     </nav>
 
-
     <div class="image-container">
-        <img id="gradiente" src="/images/oppPageGradiente.webp" alt="Start page gradient image">
-        <a href="/#opportunityTitle" id="start-now" class="button">Começar Agora</a>
+        <img id="gradiente" src="../images/oppPageGradiente.webp" alt="Start page gradient image">
+        <a href="../#opportunityTitle" id="start-now" class="button">Começar Agora</a>
         <a onclick="openModal()" id="watch-video" class="button">Ver Vídeo</a>
-
     </div>
 
-    <!-- Modal -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <video id="modalVideo" class="modal-video" controls>
-                <source src="/videos/slogan.mp4" type="video/mp4">
+                <source src="../videos/slogan.mp4" type="video/mp4">
                 O teu Browser não suporta este formado de vídeo.
             </video>
-            
-            <!-- Em Breve Overlay -->
             <div class="em-breve-overlay">
                 <div class="em-breve-text">Em Breve...</div>
             </div>
@@ -179,24 +120,13 @@
     <div class="filter-section">
         <div class="filter-header">
             <h2 class="filter-title">Filtrar por Categoria</h2>
-            <div class="filter-count">
-                Total de <span id="event-count">0</span> oportunidades
-            </div>
+            <div class="filter-count">Total de <span id="event-count">0</span> oportunidades</div>
         </div>
-        
         <div class="filter-buttons">
-            <button class="filter-btn all active" data-category="all">
-                Todas as Categorias
-            </button>
-            <button class="filter-btn curricular" data-category="green">
-                Desenvolvimento Curricular
-            </button>
-            <button class="filter-btn pessoal" data-category="blue">
-                Desenvolvimento Pessoal
-            </button>
-            <button class="filter-btn profissional" data-category="red">
-                Desenvolvimento Profissional
-            </button>
+            <button class="filter-btn all active" data-category="all">Todas as Categorias</button>
+            <button class="filter-btn curricular" data-category="green">Desenvolvimento Curricular</button>
+            <button class="filter-btn pessoal" data-category="blue">Desenvolvimento Pessoal</button>
+            <button class="filter-btn profissional" data-category="red">Desenvolvimento Profissional</button>
         </div>
     </div>
 
@@ -207,45 +137,26 @@
             <h1>Preferências de Eventos</h1>
             <p>Visualize os eventos que aceitou ou rejeitou</p>
         </div>
-
         <div id="noCookiesWarning" class="no-cookies-warning" style="display: none;">
             <h3>⚠️ Nenhuma preferência encontrada</h3>
             <p>Não foram encontradas preferências de eventos guardadas. Dê swipe nos eventos que disponibilizamos para poder visualizar as suas escolhas aqui!</p>
         </div>
-
         <div class="content">
             <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number" id="acceptedCount">0</span>
-                    <span class="stat-label">Aceites</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="rejectedCount">0</span>
-                    <span class="stat-label">Rejeitados</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="totalCount">0</span>
-                    <span class="stat-label">Total</span>
-                </div>
+                <div class="stat-item"><span class="stat-number" id="acceptedCount">0</span><span class="stat-label">Aceites</span></div>
+                <div class="stat-item"><span class="stat-number" id="rejectedCount">0</span><span class="stat-label">Rejeitados</span></div>
+                <div class="stat-item"><span class="stat-number" id="totalCount">0</span><span class="stat-label">Total</span></div>
             </div>
-
             <div class="section">
                 <h2 class="section-title">Eventos Aceites</h2>
                 <div class="events-grid" id="acceptedEvents">
-                    <div class="empty-state">
-                        <h3>Nenhum evento aceite</h3>
-                        <p>Os eventos que aceitar aparecerão aqui</p>
-                    </div>
+                    <div class="empty-state"><h3>Nenhum evento aceite</h3><p>Os eventos que aceitar aparecerão aqui</p></div>
                 </div>
             </div>
-
             <div class="section">
                 <h2 class="section-title">Eventos Rejeitados</h2>
                 <div class="events-grid" id="rejectedEvents">
-                    <div class="empty-state">
-                        <h3>Nenhum evento rejeitado</h3>
-                        <p>Os eventos que rejeitar aparecerão aqui</p>
-                    </div>
+                    <div class="empty-state"><h3>Nenhum evento rejeitado</h3><p>Os eventos que rejeitar aparecerão aqui</p></div>
                 </div>
             </div>
         </div>
@@ -253,116 +164,52 @@
 
     <div id="eventModal" class="event-modal"></div>
 
-
-<footer class="footer">
-    <div class="footer-image-container">
-        <img id="gradienteFooter" src="/images/gradienteFooter.webp" alt="Footer's gradient" loading="lazy">
-        
-        <img id="footerlogoStudentX" src="/images/logoStudentX.webp" alt="Footer's StudentX logo" loading="lazy">
-
-        <div class="footer-links-text">
-            <ul>
-                <li><a href="/">Início</a></li>
-                <li><a href="#titulo-aboutus">Sobre</a></li>
-                <li><a href="#questoes-frequentes-title">FAQs</a></li>
-                <li><a href="/">Contribui</a></li>
-                <li><a href="/contacto/">Contacta-nos</a></li>
-            </ul>
-        </div>
-
-        <div class="social-media-container">
-            <a href="https://www.instagram.com/studentx.pt" target="_blank">
-                <img class="social-media-icon" src="/images/instagram.webp" alt="Instagram" loading="lazy">
-            </a>
-            <a href="https://www.tiktok.com/@studentx.pt" target="_blank">
-                <img class="social-media-icon" src="/images/tiktok.webp" alt="TikTok" loading="lazy">
-            </a>
-            <a href="https://x.com/StudentXpt" target="_blank">
-                <img class="social-media-icon" src="/images/x.webp" alt="Twitter" loading="lazy">
-            </a>
-            <a href="https://www.linkedin.com/in/studentxpt/" target="_blank">
-                <img class="social-media-icon" src="/images/linkedin.webp" alt="LinkedIn" loading="lazy">
-            </a>
-        </div>
-
-        <div id="inicio-button-container">
-            <a id="inicio-button" href="/oportunidades/">De volta ao Início</a>
-            <img id="arrowUp" src="/images/arrowUp.webp" alt="Arrow pointing up" loading="lazy">
-        </div>
-        
-    </div>
-
-
-    <div class="blue-box">
-        <div class="right-text">
-            <div class="computer-right-text">
-                <a href="/PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
-                <a href="/Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
-                <a href="/Termos e Condições/">Termos e Condições</a>
-                <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
+    <footer class="footer">
+        <div class="footer-image-container">
+            <img id="gradienteFooter" src="../images/gradienteFooter.webp" alt="Footer's gradient" loading="lazy">
+            <img id="footerlogoStudentX" src="../images/logoStudentX.webp" alt="Footer's StudentX logo" loading="lazy">
+            <div class="footer-links-text">
+                <ul>
+                    <li><a href="../">Início</a></li>
+                    <li><a href="../#titulo-aboutus">Sobre</a></li>
+                    <li><a href="../#questoes-frequentes-title">FAQs</a></li>
+                    <li><a href="../">Contribui</a></li>
+                    <li><a href="../contacto/">Contacta-nos</a></li>
+                </ul>
             </div>
-            <div class="mobile-right-text">
-                <a href="/Termos e Condições/">Termos e Condições</a>
-                <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
+            <div class="social-media-container">
+                <a href="https://www.instagram.com/studentx.pt" target="_blank"><img class="social-media-icon" src="../images/instagram.webp" alt="Instagram" loading="lazy"></a>
+                <a href="https://www.tiktok.com/@studentx.pt" target="_blank"><img class="social-media-icon" src="../images/tiktok.webp" alt="TikTok" loading="lazy"></a>
+                <a href="https://x.com/StudentXpt" target="_blank"><img class="social-media-icon" src="../images/x.webp" alt="Twitter" loading="lazy"></a>
+                <a href="https://www.linkedin.com/in/studentxpt/" target="_blank"><img class="social-media-icon" src="../images/linkedin.webp" alt="LinkedIn" loading="lazy"></a>
+            </div>
+            <div id="inicio-button-container">
+                <a id="inicio-button" href="../oportunidades/">De volta ao Início</a>
+                <img id="arrowUp" src="../images/arrowUp.webp" alt="Arrow pointing up" loading="lazy">
             </div>
         </div>
-
-        <div>
-            <p class="left-text">Copyright © Student X. Todos os direitos reservados.</p>
-        </div>
-    </div>
-</footer>
-
-<!--
-<div class="cookie-banner" id="cookieBanner" style="display: none;">
-    <div class="cookie-content">
-        <div class="cookie-initial">
-            <h3>Preferências Cookies</h3>
-            <p>Usamos cookies para melhorar a tua experiência. Escolhe as tuas opções abaixo.</p>
-            <div class="cookie-buttons">
-                <button id="accept-all" class="cookie-btn">Aceitar Todas</button>
-                <button id="reject-all" class="cookie-btn">Rejeitar Todas</button>
-                <button id="more-options" class="cookie-btn">Mais...</button>
-            </div>
-        </div>
-        <div class="cookie-expanded">
-            <h3>Preferências Cookies</h3>
-            <div class="cookie-categories">
-                <div class="cookie-category">
-                    <input type="checkbox" id="functional-cookies" checked disabled>
-                    <label class="category-name" for="functional-cookies">Essenciais</label>
-                    <span class="category-info">Necessário para o funcionamento do website</span>
+        <div class="blue-box">
+            <div class="right-text">
+                <div class="computer-right-text">
+                    <a href="../PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
+                    <a href="../Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
+                    <a href="../Termos e Condições/">Termos e Condições</a>
+                    <a href="../Política de Privacidade e Cookies/">Política de Privacidade</a>
+                    <a href="../" onclick="return showCookieBanner()">Gerir Cookies</a>
                 </div>
-                <div class="cookie-category">
-                    <input type="checkbox" id="analytics-cookies">
-                    <label class="category-name" for="analytics-cookies">Análise</label>
-                    <span class="category-info">Ajuda-nos a melhorar o nosso website através do Google Analytics</span>
-                </div>
-                <div class="cookie-category">
-                    <input type="checkbox" id="marketing-cookies">
-                    <label class="category-name" for="marketing-cookies">Publicidade</label>
-                    <span class="category-info">Usado para entregar anúncios personalizados através do Google Ads</span>
+                <div class="mobile-right-text">
+                    <a href="../Termos e Condições/">Termos e Condições</a>
+                    <a href="../Política de Privacidade e Cookies/">Política de Privacidade</a>
+                    <a href="../" onclick="return showCookieBanner()">Gerir Cookies</a>
                 </div>
             </div>
-            <div class="cookie-buttons">
-                <button id="accept-selected" class="cookie-btn">Aceitar Selecionadas</button>
-                <button id="reject-all-expanded" class="cookie-btn">Rejeitar Todas</button>
-            </div>
-            <div class="privacy-policy">
-                <a href="/" id="read-more">Ler mais sobre a nossa política de cookies</a>
-            </div>
+            <div><p class="left-text">Copyright © Student X. Todos os direitos reservados.</p></div>
         </div>
-    </div>
-</div>
--->
+    </footer>
 
-<script defer src="/js/script.js"></script>
-<script defer src="/js/cookie-banner.js"></script>
-<script defer src="/js/carousel.js"></script>
-<script defer src="/js/opportunities.js"></script>
-
+    <script defer src="../js/script.js"></script>
+    <script defer src="../js/cookie-banner.js"></script>
+    <script defer src="../js/carousel.js"></script>
+    <script defer src="../js/opportunities.js"></script>
 </body>
 </html>
-
