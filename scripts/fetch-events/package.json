@@ -1,0 +1,16 @@
+{
+  "name": "studentx-fetch-events",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline que recolhe eventos de fontes externas (iCal, Eventbrite) e gera json/events.json para a StudentX",
+  "main": "index.mjs",
+  "scripts": {
+    "fetch": "node index.mjs"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "node-ical": "^0.27.1",
+    "rss-parser": "^3.13.0"
+  }
+}

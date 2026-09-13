@@ -1,0 +1,3 @@
+{
+  "_leiam": "Correções pontuais por id de evento, aplicadas por cima do que vem da fonte automática. Exemplo: \"900012345\": { \"colorOfEvent\": \"blue\", \"destaque\": true }. O id de cada evento automático aparece nos logs da GitHub Action e no PR gerado."
+}

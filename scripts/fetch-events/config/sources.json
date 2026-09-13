@@ -1,0 +1,45 @@
+{
+  "_leiam": "Ver README.md nesta pasta para explicação completa e para saberem como encontrar e adicionar novas fontes.",
+
+  "_leiamRSS": "NENHUMA das fontes no array 'rss' foi testada com um feed real - são URLs construídos por mim a partir do padrão -site-/feed/ e -site-/category/-slug-/feed/ do WordPress, depois de confirmar por fetch direto que cada site corre em WordPress. Têm boas hipóteses de funcionar, mas só saberemos a sério quando alguém abrir o link (deve devolver XML) e verificar se o texto 'Date:'/'Data de início:' aparece mesmo dentro do conteúdo do feed - pode ser que o WordPress só inclua um resumo sem essa informação, e nesse caso o rss.mjs vai simplesmente ignorar esses eventos (com aviso nos logs) em vez de inventar datas erradas. Ver README.md para uma fonte candidata que NÃO está aqui ainda de propósito (o blog de investigação do ISCTE, que publica vários eventos no mesmo post por semana - o adaptador atual não está pronto para esse formato).",
+
+  "ical": [
+    {
+      "name": "cesem-fcsh-unl",
+      "placeName": "CESEM - FCSH NOVA",
+      "url": "https://cesem.fcsh.unl.pt/events/?ical=1",
+      "colorOfEvent": "green",
+      "_nota": "CONFIRMADO A FUNCIONAR (testado com um ficheiro real descarregado a 12/09/2026) - devolve um feed iCal válido com 2 eventos. Mas atenção: os eventos que lá estavam eram conferências académicas de musicologia/história religiosa, público muito mais académico/investigador do que os workshops, feiras de emprego e vida associativa que a StudentX quer mostrar. Serve como prova de que o mecanismo (?ical=1 do plugin The Events Calendar) funciona - mas troquem por uma fonte cujo conteúdo interesse mesmo ao público-alvo (núcleo de estudantes, gabinete de carreiras, associação académica) assim que encontrarem uma."
+    }
+  ],
+
+  "rss": [
+    {
+      "name": "ist-alameda",
+      "placeName": "Técnico Lisboa - Alameda",
+      "url": "https://tecnico.ulisboa.pt/en/category/events/feed/",
+      "colorOfEvent": null
+    },
+    {
+      "name": "ist-oeiras",
+      "placeName": "Técnico Lisboa - Oeiras",
+      "url": "https://oeiras.tecnico.ulisboa.pt/en/category/events/feed/",
+      "colorOfEvent": null
+    },
+    {
+      "name": "ist-taguspark",
+      "placeName": "Técnico Lisboa - Taguspark",
+      "url": "https://taguspark.tecnico.ulisboa.pt/en/category/events/feed/",
+      "colorOfEvent": null
+    },
+    {
+      "name": "nova-cultura",
+      "placeName": "NOVA Cultura",
+      "url": "https://novacultura.unl.pt/en/cultural-agenda/feed/",
+      "colorOfEvent": "blue",
+      "_nota": "Agenda cultural cross-escolas da NOVA. Mais provável de vir vazia do que as do IST - a data no site vem de um campo de template dedicado (banner com datas), não necessariamente de texto tipo 'Date:' dentro do conteúdo do post, por isso o adaptador atual pode não conseguir ler nada daqui. Testem primeiro; se vier vazio, digam-me e ajusto o adaptador a este site especificamente."
+    }
+  ],
+
+  "eventbrite": []
+}

@@ -1,0 +1,54 @@
+name: Atualizar eventos
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # todos os dias às 06:00 UTC (07:00/08:00 em Lisboa, consoante hora de verão)
+  workflow_dispatch: {} # permite correr manualmente a partir do separador "Actions" no GitHub
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  fetch-events:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: scripts/fetch-events/package-lock.json
+
+      - name: Instalar dependências do pipeline
+        working-directory: scripts/fetch-events
+        run: npm ci
+
+      - name: Correr o pipeline de eventos
+        working-directory: scripts/fetch-events
+        run: npm run fetch
+        env:
+          # Só é preciso configurar isto se adicionarem uma fonte Eventbrite
+          # em config/sources.json (ver README). Criem o secret em
+          # Settings -> Secrets and variables -> Actions.
+          EVENTBRITE_TOKEN: ${{ secrets.EVENTBRITE_TOKEN }}
+
+      - name: Abrir Pull Request se houver eventos novos
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: atualizar eventos automaticamente'
+          title: 'Atualização automática de eventos'
+          body: |
+            Eventos recolhidos automaticamente a partir das fontes configuradas
+            em `scripts/fetch-events/config/sources.json`, mais os eventos
+            manuais em `sources/manual-events.json`.
+
+            Dá uma vista de olhos rápida e faz merge se estiver tudo bem.
+            Repara em particular nos avisos de "possível duplicado entre
+            fontes" no log desta execução, se houver algum.
+          branch: auto/update-events
+          delete-branch: true
+          add-paths: json/events.json
