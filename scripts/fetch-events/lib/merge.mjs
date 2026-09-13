@@ -12,9 +12,10 @@ import { isStillRelevant } from './normalize.mjs';
  * demasiados falsos positivos para correr sem supervisão.
  */
 export function mergeAndPrune(allEvents, { now = new Date() } = {}) {
-    warnPossibleCrossSourceDuplicates(allEvents);
+    const deduped = dedupeByLink(allEvents);
+    warnPossibleCrossSourceDuplicates(deduped);
 
-    const withResolvedIds = resolveIdCollisions(allEvents);
+    const withResolvedIds = resolveIdCollisions(deduped);
 
     return withResolvedIds
         .filter((ev) => isStillRelevant(ev, now))
@@ -23,6 +24,36 @@ export function mergeAndPrune(allEvents, { now = new Date() } = {}) {
             const db = new Date(b.year, b.month - 1, b.day);
             return da - db;
         });
+}
+
+// Se duas fontes diferentes derem eventos com o MESMO moreInfoLink no mesmo
+// dia, é a sério o mesmo evento, não só uma coincidência de título - vimos
+// isto ao vivo (o feed de Taguspark devolvia os mesmos artigos do de
+// Oeiras). Isto é mais forte do que o aviso de "possível duplicado" abaixo,
+// por isso removemos mesmo, ficando só com a primeira ocorrência. A chave
+// inclui o dia para não apagar por engano os vários dias de um evento
+// multi-dia que, esse sim, repete o mesmo link de propósito.
+function dedupeByLink(events) {
+    const seen = new Map();
+    const result = [];
+
+    for (const ev of events) {
+        const link = ev.moreInfoLink;
+        const isRealLink = Boolean(link) && link !== '#';
+        const key = isRealLink ? `${link}::${ev.day}-${ev.month}-${ev.year}` : null;
+
+        if (key && seen.has(key)) {
+            console.log(
+                `[merge] "${ev.descriptionTitle}" (fonte: ${ev.source}) descartado - mesmo link e dia que a fonte "${seen.get(key)}"`
+            );
+            continue;
+        }
+
+        if (key) seen.set(key, ev.source);
+        result.push(ev);
+    }
+
+    return result;
 }
 
 function warnPossibleCrossSourceDuplicates(events) {

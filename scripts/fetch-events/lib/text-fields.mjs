@@ -4,12 +4,15 @@
 // / "Hora de Início: Y" / "Local: Z"). Cada campo tenta várias etiquetas
 // possíveis (aliases) e fica com a primeira que encontrar.
 
+// NOTA: as etiquetas toleram espaço antes dos dois pontos ("Date :" e não só
+// "Date:") - um exemplo real do IST veio formatado assim, e sem essa
+// tolerância a extração falhava silenciosamente.
 const FIELD_ALIASES = {
-    date: [/date:\s*([^\n\r]+)/i, /data de in[íi]cio:\s*([^\n\r]+)/i],
-    endDate: [/data de fim:\s*([^\n\r]+)/i],
-    time: [/time:\s*([^\n\r]+)/i, /hora de in[íi]cio:\s*([^\n\r]+)/i],
-    endTimeLabeled: [/hora de fim:\s*([^\n\r]+)/i],
-    location: [/location:\s*([^\n\r]+)/i, /\blocal:\s*([^\n\r]+)/i],
+    date: [/date\s*:\s*([^\n\r]+)/i, /data de in[íi]cio\s*:\s*([^\n\r]+)/i],
+    endDate: [/data de fim\s*:\s*([^\n\r]+)/i],
+    time: [/time\s*:\s*([^\n\r]+)/i, /hora de in[íi]cio\s*:\s*([^\n\r]+)/i],
+    endTimeLabeled: [/hora de fim\s*:\s*([^\n\r]+)/i],
+    location: [/location\s*:\s*([^\n\r]+)/i, /venue\s*:\s*([^\n\r]+)/i, /\blocal\s*:\s*([^\n\r]+)/i],
 };
 
 export function extractLabeledFields(text) {

@@ -100,14 +100,21 @@ function inferYear(month, day, referenceDate) {
     return bestYear;
 }
 
-// "4:00 p.m." / "4:00pm" / "16h00" / "16h" / "09:30" / "9h"
+// "4:00 p.m." / "4:00pm" / "16h00" / "16h" / "09:30" / "9h" / "5 p.m." (sem
+// minutos - visto num exemplo real do IST) / "noon" / "midnight"
 const TIME_12H_RE = /\b(\d{1,2}):(\d{2})\s*([ap])\.?m\.?/i;
 const TIME_24H_COLON_RE = /\b([01]?\d|2[0-3]):([0-5]\d)\b/;
 const TIME_PT_H_RE = /\b([01]?\d|2[0-3])h(\d{2})?\b/i;
+const TIME_12H_HOUR_ONLY_RE = /\b(\d{1,2})\s*([ap])\.?m\.?/i;
+const NOON_RE = /\bnoon\b/i;
+const MIDNIGHT_RE = /\bmidnight\b/i;
 
 export function parseHumanTime(rawText) {
     if (!rawText) return null;
     const text = rawText.trim();
+
+    if (NOON_RE.test(text)) return '12:00';
+    if (MIDNIGHT_RE.test(text)) return '00:00';
 
     let match = text.match(TIME_12H_RE);
     if (match) {
@@ -126,6 +133,16 @@ export function parseHumanTime(rawText) {
     match = text.match(TIME_24H_COLON_RE);
     if (match) {
         return `${match[1].padStart(2, '0')}:${match[2]}`;
+    }
+
+    // esta vai por último, de propósito: é a mais permissiva (só "5 p.m.",
+    // sem dois pontos nem minutos) e as anteriores, mais específicas, têm
+    // sempre prioridade quando também dão match
+    match = text.match(TIME_12H_HOUR_ONLY_RE);
+    if (match) {
+        let hour = Number(match[1]) % 12;
+        if (match[2].toLowerCase() === 'p') hour += 12;
+        return `${String(hour).padStart(2, '0')}:00`;
     }
 
     return null;

@@ -115,6 +115,22 @@ com vários eventos dentro do mesmo post, não funciona bem aqui - o
 adaptador tentaria ler o post inteiro como um evento só. Não o adicionem
 sem primeiro me dizerem, para eu ajustar o adaptador a esse formato.
 
+## Correções feitas depois do primeiro PR real
+
+O primeiro Pull Request real (com dados verdadeiros do IST e da CESEM) veio
+com problemas que nenhum teste sintético meu tinha apanhado:
+- As etiquetas "Date :" / "Venue :" (com espaço antes dos dois pontos) não
+  eram reconhecidas - só "Date:" sem espaço. Corrigido.
+- Horas sem minutos tipo "5 p.m." (em vez de "5:00 p.m.") não eram
+  reconhecidas. Corrigido.
+- O Taguspark do IST devolvia exatamente os mesmos artigos que o Oeiras
+  (confirmado por dois pares de eventos idênticos no PR) - removi-o da
+  lista ativa em `sources.json`.
+- Acrescentei uma deduplicação por `moreInfoLink` (quando duas fontes
+  diferentes dão o mesmo link no mesmo dia, fica só uma) como rede de
+  segurança para o caso de isto voltar a acontecer com outra fonte no
+  futuro.
+
 ## Limitações que vale a pena conhecer
 
 - **Testei o adaptador iCal contra um ficheiro real do CESEM** (descarregado
