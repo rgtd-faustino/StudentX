@@ -32,15 +32,6 @@ Hosted on GitHub Pages and maintained by a small team, **Student X** is a non-co
 - cd studentx
 - Open index.html in your browser
 
-# Contact
-
-- Rafael Faustino - [LinkedIn](https://www.linkedin.com/in/rgtdfaustino/)
-
-- Tomás Sousa - [LinkedIn](https://www.linkedin.com/in/tomás-lopes-patrão-de-figueiredo-e-sousa-25ab0131a/)
-    
-- Miguel Abelho - [LinkedIn](https://www.linkedin.com/in/miguelabelho/)
-
-
 
 # License
 

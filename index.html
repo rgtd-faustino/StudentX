@@ -25,22 +25,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Preload de recursos críticos -->
-    <link rel="preload" href="/js/carousel.js" as="script">
-    <link rel="preload" href="/js/calendar.js" as="script">
-    <link rel="preload" href="/js/cookie-banner.js" as="script">
-    <link rel="preload" href="/js/script.js" as="script">
-    <link rel="preload" href="/videos/slogan.mp4" as="video" type="video/mp4">
-    <link rel="preload" as="image" href="/images/ELIPSE GRADIENTE TELEMOVEL.webp" type="image/png">
+    <link rel="preload" href="js/carousel.js" as="script">
+    <link rel="preload" href="js/calendar.js" as="script">
+    <link rel="preload" href="js/cookie-banner.js" as="script">
+    <link rel="preload" href="js/script.js" as="script">
+    <link rel="preload" href="videos/slogan.mp4" as="video" type="video/mp4">
+    <link rel="preload" as="image" href="images/ELIPSE GRADIENTE TELEMOVEL.webp" type="image/png">
 
     <!-- Favicons -->
-    <link rel="icon" type="image/ico" sizes="96x96" href="/favicon.ico">
+    <link rel="icon" type="image/ico" sizes="96x96" href="favicon.ico">
     
     <!-- Canonical -->
     <link rel="canonical" href="https://www.studentx.pt" />
 
     <!-- Estilos -->
-    <link rel="stylesheet" href="/css/notifications.css">
-    <link rel="stylesheet" href="/css/styles.css?v=2">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/styles.css?v=2">
     
     <!-- Fontes com display swap -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -57,7 +57,7 @@
         "description": "A Student X é uma plataforma criada por estudantes para estudantes que oferece eventos, workshops e oportunidades.",
         "sameAs": [
             "https://www.instagram.com/studentx.pt",
-            "https://https://www.linkedin.com/in/studentxpt/",
+            "https://www.linkedin.com/in/studentxpt/",
             "https://www.tiktok.com/@studentx.pt",
             "https://x.com/StudentXpt"
         ],
@@ -190,68 +190,12 @@
         }
     </script>
 
-    
-
-
 </head>
 
 <body>
 
-        <div id="coming-soon-overlay" class="coming-soon-overlay">
-        <video autoplay muted playsinline loop id="coming-soon-video" preload="auto">
-            <source src="/videos/comingSoon.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <style>
-        .coming-soon-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    
-        .coming-soon-overlay video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    
-        /* Disable scrolling when overlay is active */
-        .no-scroll {
-            overflow: hidden;
-            height: 100%;
-        }
-    </style>
-    
-    
-    <script>
-        const overlay = document.getElementById('coming-soon-overlay');
-        const video = document.getElementById('coming-soon-video');
-
-        // Disable scrolling when the overlay is displayed
-        document.body.classList.add('no-scroll');
-
-        // Wait for video to be ready before allowing it to be hidden
-        video.addEventListener('canplaythrough', function() {
-            // Video is fully loaded and can play through
-            video.addEventListener('ended', function () {
-                overlay.style.display = 'none';
-                document.body.classList.remove('no-scroll'); // Re-enable scrolling
-            });
-        });
-    </script>
-
-    <img id="image1" src="/images/ELIPSE GRADIENTE.webp" alt="Blue Gradient Background">
-    <img id="image1tlm" src="/images/ELIPSE GRADIENTE TELEMOVEL.webp" alt="Blue Gradient Background, phones' version">
+    <img id="image1" src="images/ELIPSE GRADIENTE.webp" alt="Blue Gradient Background">
+    <img id="image1tlm" src="images/ELIPSE GRADIENTE TELEMOVEL.webp" alt="Blue Gradient Background, phones' version">
 
     <nav>
         <!-- Hamburger Menu for Mobile -->
@@ -264,18 +208,18 @@
         <!-- Navigation Items and Right-Side Items (Language & Contact Us) -->
         <div class="menu-content">
             <ul class="nav-items">
-                <li><a href="/" style="color:#108CEC">Início</a></li>
-                <li id="opportunities-item"><a href="/oportunidades/">Oportunidades</a></li>
-                <li id="calendario-title"><a href="/#opportunityTitlePC">Calendário</a></li>
+                <li><a href="" style="color:#108CEC">Início</a></li>
+                <li id="opportunities-item"><a href="oportunidades/index.html">Oportunidades</a></li>
+                <li id="calendario-title"><a href="#opportunityTitlePC">Calendário</a></li>
                 <li><a href="#studentx-ajuda-title">Modus Operandi</a></li>
                 <li><a href="#questoes-frequentes-title">FAQ</a></li>
             </ul>
             <div class="right-side-nav">
                 <div class="contribui-wrapper">
-                    <a href="/" class="contribui-button">Contribui</a>
+                    <a href="" class="contribui-button">Contribui</a>
                     <div class="tooltip">Ajuda-nos a manter a StudentX ativa através de pequenas, mas imprescindíveis doações, de modo a que consigamos oferecer conteúdo de qualidade.</div>
                   </div>
-                <a href="/contacto/" class="contact-button">Contacta-nos</a>
+                <a href="contacto/index.html" class="contact-button">Contacta-nos</a>
             </div>
         </div>
     </nav>
@@ -293,14 +237,14 @@
         
         <div class="slogan-buttons">
             <div class="start-button">
-                <a href="#opportunityTitlePC">Começar Agora &nbsp; <img id="ArrowStartButton" src="/images/ArrowStartButton.webp" alt="Arrow For Starting Now"></a>
+                <a href="#opportunityTitlePC">Começar Agora &nbsp; <img id="ArrowStartButton" src="images/ArrowStartButton.webp" alt="Arrow For Starting Now"></a>
             </div>
             <div class="watch-button">
-                <button onclick="openModal()"><img id="ArrowWatchButton" src="/images/ArrowWatchButton.webp" alt="Arrow For Watching Video"> Ver Vídeo</button>
+                <button onclick="openModal()"><img id="ArrowWatchButton" src="images/ArrowWatchButton.webp" alt="Arrow For Watching Video"> Ver Vídeo</button>
             </div>
         </div>
 
-        <img id="image2" src="/images/laptop.webp" alt="Image of the Computer's View">
+        <img id="image2" src="images/laptop.webp" alt="Image of the Computer's View">
 
     </div>
     
@@ -308,7 +252,7 @@
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <video id="modalVideo" class="modal-video" controls>
-                <source src="/videos/slogan.mp4" type="video/mp4">
+                <source src="videos/slogan.mp4" type="video/mp4">
                 O teu Browser não suporta este formado de vídeo.
             </video>
             
@@ -320,28 +264,23 @@
     </div>
 
     <div id="parentContainer">
-        <img id="gradienteP2" src="/images/gradiente pagina 2.webp" alt="Blue Gradient Background Page 2" loading="lazy">
-        <img id="tlmP2" src="/images/telemovel imagem pagina 2.webp" alt="Image of the Phone's View" loading="lazy">
-        <img id="logos" src="/images/logos.webp" alt="Important Logos" loading="lazy">
-
+        <img id="gradienteP2" src="images/gradiente pagina 2.webp" alt="Blue Gradient Background Page 2" loading="lazy">
+        <img id="tlmP2" src="images/telemovel imagem pagina 2.webp" alt="Image of the Phone's View" loading="lazy">
+        <img id="logos" src="images/logos.webp" alt="Important Logos" loading="lazy">
 
         <div id="logoWrapper">
-            <img id="logo1" src="/images/logo1tlm.webp" alt="logo 1" loading="lazy">
-            <img id="logo2" src="/images/logo2tlm.webp" alt="logo 2" loading="lazy">
-            <img id="logo3" src="/images/logo3tlm.webp" alt="logo 3" loading="lazy">
-            <img id="logo4" src="/images/logo4tlm.webp" alt="logo 4" loading="lazy">
+            <img id="logo1" src="images/logo1tlm.webp" alt="logo 1" loading="lazy">
+            <img id="logo2" src="images/logo2tlm.webp" alt="logo 2" loading="lazy">
+            <img id="logo3" src="images/logo3tlm.webp" alt="logo 3" loading="lazy">
+            <img id="logo4" src="images/logo4tlm.webp" alt="logo 4" loading="lazy">
         </div>
 
         <div id="starsContainer">
-            <img id="stars" src="/images/5stars.webp" alt="5 Stars" loading="lazy">
+            <img id="stars" src="images/5stars.webp" alt="5 Stars" loading="lazy">
             <div class="starsText">| 100+ estudantes confiam na Student X</div>
         </div>
-
-
     </div>
 
-
-    
     <div class="secondPText">
         A <span class="highlight">STUDENT X</span> é uma plataforma desenvolvida por estudantes,
         que aproxima os jovens das inúmeras oportunidades organizadas por:<br>
@@ -351,11 +290,6 @@
             </div>
         </div>
     </div>
-
-    
-
-
-
 
     <div class="title-container" id="oportunidadesCarrossel">
         <h2 id="subtitle">
@@ -367,8 +301,8 @@
             </div>
         </h2>
         <div class="title-background-container">
-            <img id="titleP3Background" src="/images/titleP3background.webp" alt="Background for More Opportunities link" loading="lazy">
-            <h2 id="titleP3">Ver <a href="/oportunidades/" class="highlightP3">Mais Oportunidades</a></h2>
+            <img id="titleP3Background" src="images/titleP3background.webp" alt="Background for More Opportunities link" loading="lazy">
+            <h2 id="titleP3">Ver <a href="oportunidades/index.html" class="highlightP3">Mais Oportunidades</a></h2>
             <h2 id="titleP3Mobile">Ver <span class="highlightP3">Mais Oportunidades</span></h2>
         </div>
     </div>
@@ -378,7 +312,6 @@
     <!-- Mobile Filter Section -->
     <div class="mobile-filter-section" id="mobileFilterSection">
         <div class="filter-header-mobile">
-            
                 <h3 class="filter-title-mobile">Filtrar por Categoria</h3>
         </div>
         
@@ -408,22 +341,21 @@
     <div class="carousel-container-mobile" id="carousel-container">
         <div class="carousel-mobile">
             <div class="item-group-mobile" id="item-group-1-mobile">
-
             </div>
         </div>
 
         <div class="arrows-and-dots">
             <button id="prev-mobile">
-                <img id="prev-mobile-img" src="/images/leftarrow.webp" alt="Previous image" loading="lazy">
+                <img id="prev-mobile-img" src="images/leftarrow.webp" alt="Previous image" loading="lazy">
             </button>
         
             <script>
                 document.getElementById('prev-mobile').addEventListener('click', function() {
                     var img = document.getElementById('prev-mobile-img');
-                    img.src = '/images/leftarrowclicked-mirrored.webp'; // Use the mirrored image
+                    img.src = 'images/leftarrowclicked-mirrored.webp';
                     setTimeout(function() {
-                        img.src = '/images/leftarrow.webp'; // Revert back to the original image
-                    }, 300); // 300 milliseconds = 0.3 seconds
+                        img.src = 'images/leftarrow.webp';
+                    }, 300);
                 });
             </script>
         
@@ -434,16 +366,16 @@
             </div>
             
             <button id="next-mobile">
-                <img id="next-mobile-img" src="/images/rightarrow.webp" alt="Next image" loading="lazy">
+                <img id="next-mobile-img" src="images/rightarrow.webp" alt="Next image" loading="lazy">
             </button>
         
             <script>
                 document.getElementById('next-mobile').addEventListener('click', function() {
                     var img = document.getElementById('next-mobile-img');
-                    img.src = '/images/rightarrowclicked-mirrored.webp'; // Use the mirrored image
+                    img.src = 'images/rightarrowclicked-mirrored.webp';
                     setTimeout(function() {
-                        img.src = '/images/rightarrow.webp'; // Revert back to the original image
-                    }, 300); // 300 milliseconds = 0.3 seconds
+                        img.src = 'images/rightarrow.webp';
+                    }, 300);
                 });
             </script>
         </div>
@@ -456,8 +388,6 @@
         <div id="monthYear"></div>
         <button class="nextWeek" onclick="nextWeek()">|&gt;</button>
     </div>
-
-    
 
     <div id="dayButtons" class="day-buttons"></div>
 
@@ -489,27 +419,25 @@
         </div>
     </div>
       
-      
     <div class="parent-element">
         <h1 id="studentx-ajuda-title">COMO PODE A&nbsp;<span class="highlight2">STUDENT X</span>&nbsp;AJUDAR?</h1>
         <h2 id="studentx-ajuda-subtitle">Se és estudante, a Student X ajuda-te a descobrir e aproveitar estas oportunidades,
          se representas uma organização, garantimos a promoção das tuas iniciativas a um público-alvo motivado.</h2>
     </div>  
 
-    <img id="fluxograma" src="/images/fluxograma.webp" alt="Flowchart of how StudentX can Help" loading="lazy">
-    <img id="fluxogramaMobile" src="/images/fluxogramaMobile.webp" alt="Flowchart of how StudentX can Help, Phones' version" loading="lazy">
+    <img id="fluxograma" src="images/fluxograma.webp" alt="Flowchart of how StudentX can Help" loading="lazy">
+    <img id="fluxogramaMobile" src="images/fluxogramaMobile.webp" alt="Flowchart of how StudentX can Help, Phones' version" loading="lazy">
 
     <div class="parent-element2"></div>
         <h2 id="questoes-frequentes-title">Questões Frequentes</h2>
-        <img id="tituloFAQ" src="/images/tituloFAQ.webp" alt="FAQ title's image" loading="lazy">
+        <img id="tituloFAQ" src="images/tituloFAQ.webp" alt="FAQ title's image" loading="lazy">
         <h2 id="questoes-frequentes-subtitle">Encontra aqui as respostas às perguntas mais frequentes dos nossos utilizadores</h2>
     </div>
 
-    <img id="gradienteFAQMobile" src="/images/gradienteFAQMobile.webp" alt="Gradient for FAQ page, phones' version" loading="lazy">
+    <img id="gradienteFAQMobile" src="images/gradienteFAQMobile.webp" alt="Gradient for FAQ page, phones' version" loading="lazy">
 
-    
     <div class="faq">
-        <img id="gradienteFAQ" src="/images/gradienteFAQ.webp" alt="Gradient for FAQ page" loading="lazy">
+        <img id="gradienteFAQ" src="images/gradienteFAQ.webp" alt="Gradient for FAQ page" loading="lazy">
 
         <div class="faq-item">
             <p class="faq-question">1. O que é a Student X?</p>
@@ -530,7 +458,6 @@
             </div>
         </div>
 
-        <!-- Add more FAQ items here in the same format -->
         <div class="faq-item">
             <p class="faq-question">3. Como pode a Student X ajudar a tua organização?</p>
             <div class="faq-answer">
@@ -555,15 +482,14 @@
         <div class="faq-item">
             <p class="faq-question">5. As iniciativas divulgadas são regularmente atualizadas?</p>
             <div class="faq-answer">
-                <p>	Sim, comprometemo-nos a manter todas as informações e iniciativas atualizadas. Trabalhamos continuamente para garantir que não perdes nenhuma oportunidade.
-                </p>
+                <p>Sim, comprometemo-nos a manter todas as informações e iniciativas atualizadas. Trabalhamos continuamente para garantir que não perdes nenhuma oportunidade.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <p class="faq-question">6. Preciso de pagar para ter acesso à Student X?</p>
             <div class="faq-answer">
-                <p>	Não, a Student X é completamente gratuito! Acreditamos que todos os alunos	devem ter conhecimento e acesso igualitário às oportunidades que os levarão 
+                <p>Não, a Student X é completamente gratuito! Acreditamos que todos os alunos devem ter conhecimento e acesso igualitário às oportunidades que os levarão 
                     a alcançar o sucesso académico e profissional, daí disponibilizarmos a plataforma de forma gratuita.</p>
             </div>
         </div>
@@ -581,7 +507,7 @@
             <p class="faq-question">8. Tens alguma pergunta, dúvida ou sugestão?</p>
             <div class="faq-answer">
                 <p>Questões, dúvidas ou sugestões serão sempre bem vindas! Não hesites em contactar-nos via email:
-                     <a href="mailto:contact&#64;studentx&#46;pt">contact&#64;studentx&#46;pt</a>, através das nossas redes sociais ou através do formulário
+                     <a href="mailto:contact@studentx.pt">contact@studentx.pt</a>, através das nossas redes sociais ou através do formulário
                     na nossa página de contacto.</p>
             </div>
         </div>
@@ -589,7 +515,7 @@
         <div class="faq-item">
             <p class="faq-question">9. Como posso submeter um evento para aparecer na StudentX?</p>
             <div class="faq-answer">
-                <p>	Para submeter um evento de forma a que este seja publicado no nosso website, deverás aceder à página de contacto. No formulário encontrarás 
+                <p>Para submeter um evento de forma a que este seja publicado no nosso website, deverás aceder à página de contacto. No formulário encontrarás 
                     uma opção específica para submissão de eventos. Preenche todas as informações necessárias e anexa as imagens relevantes. A nossa equipa 
                     vai entrar em contacto consigo brevemente para dar seguimento à sua proposta.</p>
             </div>
@@ -610,7 +536,6 @@
                 • Transfere apenas os eventos que aceitaste para o teu calendário,<br>
                 • Na página "Oportunidades" podes ver todos os eventos aceites e rejeitados.<br>
                 </p>
-                
             </div>
         </div>
 
@@ -634,17 +559,17 @@
         <div class="faq-item">
             <p class="faq-question">12. Posso aceder à plataforma da Student X pelo meu telemóvel ou tablet?</p>
             <div class="faq-answer">
-                <p>	Sim, a nossa plataforma é adaptável a diferentes dispositivos de forma a que estejas sempre a par de novas iniciativas, estejas onde estiveres.</p>
+                <p>Sim, a nossa plataforma é adaptável a diferentes dispositivos de forma a que estejas sempre a par de novas iniciativas, estejas onde estiveres.</p>
             </div>
         </div>
     </div>
 
-    <img id="gradienteAboutUs" src="/images/aboutusGradiente.webp" alt="Gradient for the About Us page">
+    <img id="gradienteAboutUs" src="images/aboutusGradiente.webp" alt="Gradient for the About Us page">
     
     <div class="aboutus-page">
         <div class="tituloimage">
             <h2 id="titulo-aboutus">ABOUT <span class="highlight-us">US</span></h2>
-            <img id="aboututsTitleImage" src="/images/aboututsTitleImage.webp" alt="About Us Title Image">
+            <img id="aboututsTitleImage" src="images/aboututsTitleImage.webp" alt="About Us Title Image">
         </div>
         <div class="text-aboutus">
             <p>Atualmente, existem inúmeras iniciativas e oportunidades organizadas pelas mais diversas associações e instituições, mas 
@@ -657,31 +582,31 @@
         </div>
         <div class="team-container">
             <div class="team-member">
-                <img src="/images/abelho.webp" alt="Miguel Abelho" loading="lazy">
+                <img src="images/abelho.webp" alt="Miguel Abelho" loading="lazy">
                 <h3>
                 <a href="https://www.linkedin.com/in/miguelabelho" target="_blank" rel="noopener">
                     Miguel Abelho
-                    <img src="/images/linkedinAboutUs.webp" alt="LinkedIn" class="linkedin-icon" loading="lazy">
+                    <img src="images/linkedinAboutUs.webp" alt="LinkedIn" class="linkedin-icon" loading="lazy">
                 </a>
                 </h3>
                 <p>ISCSP - Gestão de Recursos Humanos</p>
             </div>
             <div class="team-member">
-                <img src="/images/rafael.webp" alt="Rafael Faustino" loading="lazy">
+                <img src="images/rafael.webp" alt="Rafael Faustino" loading="lazy">
                 <h3>
                 <a href="https://www.linkedin.com/in/rgtdfaustino" target="_blank" rel="noopener">
                     Rafael Faustino
-                    <img src="/images/linkedinAboutUs.webp" alt="LinkedIn" class="linkedin-icon" loading="lazy">
+                    <img src="images/linkedinAboutUs.webp" alt="LinkedIn" class="linkedin-icon" loading="lazy">
                 </a>
                 </h3>
                 <p>ISEL - Engenharia Informática e Multimédia</p>
             </div>
             <div class="team-member">
-                <img src="/images/tomas.webp" alt="Tomás Sousa" loading="lazy">
+                <img src="images/tomas.webp" alt="Tomás Sousa" loading="lazy">
                 <h3>
                 <a href="https://www.linkedin.com/in/tomás-lopes-patrão-de-figueiredo-e-sousa-25ab0131a" target="_blank" rel="noopener">
                     Tomás Sousa
-                    <img src="/images/linkedinAboutUs.webp" alt="LinkedIn" class="linkedin-icon" loading="lazy">
+                    <img src="images/linkedinAboutUs.webp" alt="LinkedIn" class="linkedin-icon" loading="lazy">
                 </a>
                 </h3>
                 <p>ULL - Design</p>
@@ -691,38 +616,38 @@
 
     <footer class="footer">
         <div class="footer-image-container">
-            <img id="gradienteFooter" src="/images/gradienteFooter.webp" alt="Footer's Gradient" loading="lazy">
+            <img id="gradienteFooter" src="images/gradienteFooter.webp" alt="Footer's Gradient" loading="lazy">
             
-            <img id="footerlogoStudentX" src="/images/logoStudentX.webp" alt="Footer StudentX's logo" loading="lazy">
+            <img id="footerlogoStudentX" src="images/logoStudentX.webp" alt="Footer StudentX's logo" loading="lazy">
     
             <div class="footer-links-text">
                 <ul>
                     <li><a href="#">Início</a></li>
                     <li><a href="#titulo-aboutus">Sobre</a></li>
                     <li><a href="#questoes-frequentes-title">FAQs</a></li>
-                    <li><a href="/">Contribui</a></li>
-                    <li><a href="/contacto/">Contacta-nos</a></li>
+                    <li><a href="">Contribui</a></li>
+                    <li><a href="contacto/index.html">Contacta-nos</a></li>
                 </ul>
             </div>
     
             <div class="social-media-container">
                 <a href="https://www.instagram.com/studentx.pt" target="_blank">
-                    <img class="social-media-icon" src="/images/instagram.webp" alt="Instagram" loading="lazy">
+                    <img class="social-media-icon" src="images/instagram.webp" alt="Instagram" loading="lazy">
                 </a>
                 <a href="https://www.tiktok.com/@studentx.pt" target="_blank">
-                    <img class="social-media-icon" src="/images/tiktok.webp" alt="TikTok" loading="lazy">
+                    <img class="social-media-icon" src="images/tiktok.webp" alt="TikTok" loading="lazy">
                 </a>
                 <a href="https://x.com/StudentXpt" target="_blank">
-                    <img class="social-media-icon" src="/images/x.webp" alt="Twitter" loading="lazy">
+                    <img class="social-media-icon" src="images/x.webp" alt="Twitter" loading="lazy">
                 </a>
                 <a href="https://www.linkedin.com/in/studentxpt/" target="_blank">
-                    <img class="social-media-icon" src="/images/linkedin.webp" alt="LinkedIn" loading="lazy">
+                    <img class="social-media-icon" src="images/linkedin.webp" alt="LinkedIn" loading="lazy">
                 </a>
             </div>
 
             <div id="inicio-button-container">
                 <a id="inicio-button" href="#">De volta ao Início</a>
-                <img id="arrowUp" src="/images/arrowUp.webp" alt="Arrow pointing Up" loading="lazy">
+                <img id="arrowUp" src="images/arrowUp.webp" alt="Arrow pointing Up" loading="lazy">
             </div>
             
         </div>
@@ -730,16 +655,16 @@
 
             <div class="right-text">
                 <div class="computer-right-text">
-                    <a href="/PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
-                    <a href="/Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
-                    <a href="/Termos e Condições/">Termos e Condições</a>
-                    <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                    <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
+                    <a href="PitchDeck - Student X.pdf" target="_blank">Whitepaper</a>
+                    <a href="Manual de Normas - Student X.pdf" target="_blank">Manual de Normas</a>
+                    <a href="Termos e Condições/index.html">Termos e Condições</a>
+                    <a href="Política de Privacidade e Cookies/index.html">Política de Privacidade</a>
+                    <a href="" onclick="return showCookieBanner()">Gerir Cookies</a>
                 </div>
                 <div class="mobile-right-text">
-                    <a href="/Termos e Condições/">Termos e Condições</a>
-                    <a href="/Política de Privacidade e Cookies/">Política de Privacidade</a>
-                    <a href="/" onclick="return showCookieBanner()">Gerir Cookies</a>
+                    <a href="Termos e Condições/index.html">Termos e Condições</a>
+                    <a href="Política de Privacidade e Cookies/index.html">Política de Privacidade</a>
+                    <a href="" onclick="return showCookieBanner()">Gerir Cookies</a>
                 </div>
             </div>
 
@@ -749,9 +674,6 @@
         </div>
     </footer>
 
-    
-
-<!--
     <div class="cookie-banner" id="cookieBanner" style="display: none;">
         <div class="cookie-content">
             <div class="cookie-initial">
@@ -787,22 +709,19 @@
                     <button id="reject-all-expanded" class="cookie-btn">Rejeitar Todas</button>
                 </div>
                 <div class="privacy-policy">
-                    <a href="/Política de Privacidade e Cookies/" id="read-more">Ler mais sobre a nossa política de cookies</a>
+                    <a href="Política de Privacidade e Cookies/index.html" id="read-more">Ler mais sobre a nossa política de cookies</a>
                 </div>
             </div>
         </div>
     </div>
--->
+
     <div class="notification-container" id="notificationContainer"></div>
 
-
-
-
-    <script defer src="/js/notifications.js"></script>
-    <script defer src="/js/carousel.js?v=2"></script>
-    <script defer src="/js/calendar.js?v=2"></script>
-    <script defer src="/js/cookie-banner.js?v=2"></script>
-    <script defer src="/js/script.js?v=2"></script>
+    <script defer src="js/notifications.js"></script>
+    <script defer src="js/carousel.js?v=2"></script>
+    <script defer src="js/calendar.js?v=2"></script>
+    <script defer src="js/cookie-banner.js?v=2"></script>
+    <script defer src="js/script.js?v=2"></script>
     
     <script>
     function updateStartButtonHref() {
@@ -827,13 +746,10 @@
             tooltip.style.display = 'none';
         }
     });
-    
-    window.addEventListener('DOMContentLoaded', updateStartButtonHref);
+
+    updateStartButtonHref();
     window.addEventListener('resize', updateStartButtonHref);
-</script>
-
-
-
+    </script>
 
 </body>
 </html>
