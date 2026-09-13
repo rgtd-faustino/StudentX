@@ -5,6 +5,15 @@ este script vai buscar eventos a fontes externas, normaliza-os para o
 formato que `calendar.js`/`carousel.js`/`opportunities.js` já esperam, e
 gera `json/events.json` de novo a cada execução.
 
+## Antes da primeira Pull Request funcionar
+
+O GitHub bloqueia por omissão que as Actions criem Pull Requests. Sem isto
+ativado, o pipeline corre e gera o `events.json` bem, mas falha no último
+passo com "GitHub Actions is not permitted to create or approve pull
+requests." Para ativar: no repositório, **Settings → Actions → General →
+Workflow permissions → marcar "Allow GitHub Actions to create and approve
+pull requests" → Save.** É uma vez só.
+
 ## Como correr
 
 ```bash

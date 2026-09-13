@@ -35,7 +35,13 @@ const MONTH_DAY_YEAR_RE = new RegExp(
     'i'
 );
 
-export function parseHumanDate(rawText) {
+// O mesmo, mas SEM ano (ex: "19 September", visto no feed real do IST -
+// muitos sites omitem o ano para eventos "deste ano"). Tentados só depois
+// dos anteriores falharem.
+const DAY_MONTH_NOYEAR_RE = new RegExp(`\\b(\\d{1,2})\\s+(?:de\\s+)?(${MONTH_NAME_RE})[a-z]*\\.?\\b`, 'i');
+const MONTH_DAY_NOYEAR_RE = new RegExp(`\\b(${MONTH_NAME_RE})[a-z]*\\.?\\s+(\\d{1,2})\\b`, 'i');
+
+export function parseHumanDate(rawText, referenceDate = new Date()) {
     if (!rawText) return null;
     const text = rawText.trim();
 
@@ -53,7 +59,45 @@ export function parseHumanDate(rawText) {
         if (month) return { day: Number(day), month, year: Number(year) };
     }
 
+    match = text.match(DAY_MONTH_NOYEAR_RE);
+    if (match) {
+        const [, day, monthName] = match;
+        const month = MONTHS[monthName.toLowerCase()];
+        if (month) return { day: Number(day), month, year: inferYear(month, Number(day), referenceDate) };
+    }
+
+    match = text.match(MONTH_DAY_NOYEAR_RE);
+    if (match) {
+        const [, monthName, day] = match;
+        const month = MONTHS[monthName.toLowerCase()];
+        if (month) return { day: Number(day), month, year: inferYear(month, Number(day), referenceDate) };
+    }
+
     return null;
+}
+
+// Sem ano escrito, assumimos o ano (entre o anterior, o de referência, e o
+// seguinte) que fica mais perto da data de referência - por omissão "agora",
+// mas em rss.mjs passamos antes a data de publicação do post, que é uma
+// pista muito melhor do que a data em que o pipeline por acaso está a
+// correr (um post publicado em junho sobre um evento de "27 June" deve
+// ficar em junho do ANO EM QUE FOI PUBLICADO, não no ano em que alguém
+// carregou em "Run workflow").
+function inferYear(month, day, referenceDate) {
+    const refYear = referenceDate.getFullYear();
+    let bestYear = refYear;
+    let bestDiff = Infinity;
+
+    for (const candidateYear of [refYear - 1, refYear, refYear + 1]) {
+        const candidate = new Date(candidateYear, month - 1, day);
+        const diff = Math.abs(candidate.getTime() - referenceDate.getTime());
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            bestYear = candidateYear;
+        }
+    }
+
+    return bestYear;
 }
 
 // "4:00 p.m." / "4:00pm" / "16h00" / "16h" / "09:30" / "9h"

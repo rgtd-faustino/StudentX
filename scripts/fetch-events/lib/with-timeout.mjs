@@ -24,3 +24,13 @@ export async function fetchTextWithTimeout(url, ms) {
     }
     return res.text();
 }
+
+// O feed de Alameda do IST partia o parser de XML logo na linha 6 com
+// "Invalid character in entity name" - um "&" a espaços de um "=" que não
+// é uma entidade válida (normalmente um URL com parâmetros tipo
+// "?a=1&b=2" que devia ter sido escrito "&amp;" e não foi). Escapamos
+// qualquer "&" que não seja já uma entidade reconhecida, para o XML pelo
+// menos conseguir ser interpretado.
+export function sanitizeXmlEntities(xml) {
+    return xml.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)/g, '&amp;');
+}

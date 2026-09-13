@@ -6,25 +6,23 @@ import { extractLabeledFields, splitTimeRange } from '../lib/text-fields.mjs';
 import { parseHumanDate, parseHumanTime } from '../lib/text-datetime.mjs';
 import { dateRangeInclusive, ymdToUtcMs } from '../lib/daterange.mjs';
 import { formatWhen } from '../lib/format.mjs';
-import { fetchTextWithTimeout } from '../lib/with-timeout.mjs';
+import { fetchTextWithTimeout, sanitizeXmlEntities } from '../lib/with-timeout.mjs';
+import { htmlToText } from '../lib/html-text.mjs';
 
 // IMPORTANTE - este adaptador é mais frágil do que o ical.mjs, avisadamente.
 //
 // RSS não tem campos estruturados de data/hora como o iCal (DTSTART/DTEND) -
-// dá-nos título + um bocado de texto/HTML do post. Sites como o do IST
-// escrevem a data dentro desse texto ("Date: October 16, 2025 / Time: 4:00
-// p.m. - 5:00 p.m. / Location: X"), e é isso que tentamos "ler". Construí
-// isto a partir do HTML que vi numa página de eventos do IST - NUNCA vi um
-// feed RSS real, porque o meu sandbox não tem acesso à internet em geral.
-// Pode ser que a informação de data/hora nem sequer venha incluída no feed
-// (pode ser um bloco só da página, fora do conteúdo do post) - só saberemos
-// depois de testar com um feed a sério. Sempre que não conseguirmos
-// reconhecer uma data, ignoramos o item (com aviso) em vez de arriscar.
+// dá-nos título + um bocado de HTML do post. Sites como o do IST escrevem a
+// data dentro desse HTML ("Date: October 16, 2025" / "Time: 4:00 p.m. - 5:00
+// p.m." / "Location: X"), e é isso que tentamos "ler" depois de converter o
+// HTML em texto (ver lib/html-text.mjs - sem isto, tags tipo <br /> colavam-se
+// ao valor extraído, como se viu num teste real contra o feed do IST).
+// Sempre que não conseguirmos reconhecer uma data, ignoramos o item (com
+// aviso) em vez de arriscar.
 const ALL_DAY_START = '09:00';
 const ALL_DAY_END = '19:00';
 
 const parser = new Parser({
-    timeout: 15_000,
     customFields: {
         item: [['content:encoded', 'contentEncoded']],
     },
@@ -42,7 +40,7 @@ export async function fetchRssSource(source) {
     let feed;
     try {
         const xmlText = await fetchTextWithTimeout(url, 15_000);
-        feed = await parser.parseString(xmlText);
+        feed = await parser.parseString(sanitizeXmlEntities(xmlText));
     } catch (err) {
         console.warn(`[rss:${name}] falhou a obter "${url}": ${err.message}`);
         return events;
@@ -50,9 +48,17 @@ export async function fetchRssSource(source) {
 
     for (const item of feed.items || []) {
         const sourceId = item.guid || item.link || item.title;
-        const fullText = [item.title, item.contentEncoded, item.content, item.contentSnippet, item.summary]
+
+        // a data de publicação do post é a melhor pista para adivinhar o
+        // ano quando o texto do evento não o diz (ex: "19 September") -
+        // muito melhor do que assumir o ano em que o pipeline por acaso
+        // está a correr, que pode ser meses depois de o post ter sido escrito
+        const referenceDate = parsePubDate(item) || new Date();
+
+        const rawHtml = [item.title, item.contentEncoded, item.content, item.summary]
             .filter(Boolean)
             .join('\n');
+        const fullText = htmlToText(rawHtml);
 
         const fields = extractLabeledFields(fullText);
 
@@ -63,7 +69,7 @@ export async function fetchRssSource(source) {
             continue;
         }
 
-        const startDateParts = parseHumanDate(fields.date);
+        const startDateParts = parseHumanDate(fields.date, referenceDate);
         if (!startDateParts) {
             console.warn(
                 `[rss:${name}] não consegui interpretar a data "${fields.date}" em "${item.title}" - a ignorar`
@@ -71,7 +77,7 @@ export async function fetchRssSource(source) {
             continue;
         }
 
-        const endDateParts = fields.endDate ? parseHumanDate(fields.endDate) : null;
+        const endDateParts = fields.endDate ? parseHumanDate(fields.endDate, referenceDate) : null;
 
         const [startTimeRaw, endTimeFromRange] = splitTimeRange(fields.time);
         const parsedStartTime = parseHumanTime(startTimeRaw);
@@ -92,7 +98,7 @@ export async function fetchRssSource(source) {
         }
 
         const id = stableAutoId(name, sourceId);
-        const description = stripHtml(item.contentEncoded || item.content || item.summary || '');
+        const description = htmlToText(item.contentEncoded || item.content || item.summary || '');
 
         for (const dayInfo of days) {
             events.push(
@@ -125,15 +131,14 @@ export async function fetchRssSource(source) {
     return events;
 }
 
+function parsePubDate(item) {
+    const raw = item.isoDate || item.pubDate;
+    if (!raw) return null;
+    const d = new Date(raw);
+    return Number.isNaN(d.getTime()) ? null : d;
+}
+
 function addOneHour(hm) {
     const [h, m] = hm.split(':').map(Number);
     return `${String((h + 1) % 24).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-}
-
-function stripHtml(html) {
-    return html
-        .replace(/<[^>]*>/g, ' ')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
 }

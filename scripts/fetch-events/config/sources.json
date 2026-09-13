@@ -30,7 +30,8 @@
       "name": "ist-taguspark",
       "placeName": "Técnico Lisboa - Taguspark",
       "url": "https://taguspark.tecnico.ulisboa.pt/en/category/events/feed/",
-      "colorOfEvent": null
+      "colorOfEvent": null,
+      "_nota": "No primeiro teste real, os URLs dos artigos que vieram desta fonte eram todos de oeiras.tecnico.ulisboa.pt, não de taguspark - parece que este feed espelha o de Oeiras em vez de ter conteúdo próprio. Não é um bug do código, é assim que a fonte responde. Se se confirmar depois de mais execuções, não vale a pena manter as duas - fica só a duplicar eventos com ids diferentes."
     },
     {
       "name": "nova-cultura",
