@@ -1,3 +1,18 @@
+// ===== Resolve caminhos absolutos ("/x") corretamente, independentemente
+// de o site estar hospedado na raiz do domínio (studentx.pt) ou numa
+// subpasta (ex: github.io/StudentX/) - ver calendar.js para mais contexto.
+var SITE_ROOT = (() => {
+    try {
+        return new URL(document.currentScript.src).pathname.replace(/js\/[^/]+\.js(?:\?.*)?$/, '');
+    } catch (e) {
+        return '/';
+    }
+})();
+function resolveSitePath(path) {
+    if (!path || /^(https?:)?\/\//i.test(path)) return path;
+    return path.startsWith('/') ? SITE_ROOT + path.slice(1) : path;
+}
+
 // Global variable to store all events data
 let opportunitiesEventsData = [];
 let eventsDataLoaded = false;
@@ -23,7 +38,7 @@ function getCookie(name) {
 // Load events data from JSON
 async function loadEventsData() {
     try {
-        const response = await fetch('/json/events.json');
+        const response = await fetch(resolveSitePath('/json/events.json'));
         const data = await response.json();
         opportunitiesEventsData = data.items;
         eventsDataLoaded = true;
@@ -243,7 +258,7 @@ function createEventCard(event, type) {
     const expandButton = document.createElement('button');
     expandButton.classList.add('expand-event-details');
     const img = document.createElement('img');
-    img.src = '/images/plus.webp';
+    img.src = resolveSitePath('/images/plus.webp');
     img.alt = 'Expand event details';
     expandButton.appendChild(img);
     expandButton.onclick = () => showExpandedView(event);
@@ -483,12 +498,12 @@ function showExpandedView(event) {
     
     modalContainer.innerHTML = `
     <div class="modal-content">
-        <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-expanded">
+        <img src="${resolveSitePath(event.imageSrc)}" alt="${event.altText}" class="event-image-expanded">
         <p class="description-title-calendar-expanded">${event.descriptionTitle}</p>
         <p class="description-subtitle-calendar-expanded">${event.descriptionSubtitle}</p>
         <div class="carousel-line-calendar-expanded"></div>
         <div class="logo-and-place-info-expanded">
-            <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo-expanded">
+            <img src="${resolveSitePath(event.logoSrc)}" alt="${event.logoAlt}" class="event-logo-expanded">
             <div class="place-info-expanded">
                 <p class="opp-place-title-calendar-expanded">${event.oppPlaceTitle}</p>
                 <p class="opp-place-subtitle-calendar-expanded">${event.oppPlaceSubtitle}</p>
@@ -758,14 +773,14 @@ document.addEventListener('DOMContentLoaded', function() {
             gridItem.style.setProperty('border', `0.2vw solid ${color}`, 'important');
             
             gridItem.innerHTML = `
-                <img src="${item.imageSrc}" alt="${item.altText}">
+                <img src="${resolveSitePath(item.imageSrc)}" alt="${item.altText}">
                 <div class="description">
                     <p class="description-title">${item.descriptionTitle}</p>
                     <p class="description-subtitle">${item.descriptionSubtitle}</p>
                 </div>
                 <div class="carousel-line"></div>
                 <div class="opp-place">
-                    <img src="${item.logoSrc}" alt="${item.logoAlt}">
+                    <img src="${resolveSitePath(item.logoSrc)}" alt="${item.logoAlt}">
                     <div>
                         <p class="opp-place-title">${item.oppPlaceTitle}</p>
                         <p class="opp-place-subtitle">${item.oppPlaceSubtitle}</p>
@@ -809,14 +824,14 @@ document.addEventListener('DOMContentLoaded', function() {
             gridItem.style.setProperty('border', `0.2vw solid ${color}`, 'important');
 
             gridItem.innerHTML = `
-                <img src="${item.imageSrc}" alt="${item.altText}">
+                <img src="${resolveSitePath(item.imageSrc)}" alt="${item.altText}">
                 <div class="description">
                     <p class="description-title">${item.descriptionTitle}</p>
                     <p class="description-subtitle">${item.descriptionSubtitle}</p>
                 </div>
                 <div class="carousel-line"></div>
                 <div class="opp-place">
-                    <img src="${item.logoSrc}" alt="${item.logoAlt}">
+                    <img src="${resolveSitePath(item.logoSrc)}" alt="${item.logoAlt}">
                     <div>
                         <p class="opp-place-title">${item.oppPlaceTitle}</p>
                         <p class="opp-place-subtitle">${item.oppPlaceSubtitle}</p>
@@ -849,7 +864,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Load events and set up filtering
-    fetch('/json/events.json')
+    fetch(resolveSitePath('/json/events.json'))
         .then(response => response.json())
         .then(data => {
             const futureItems = data.items.filter(isFutureEvent);

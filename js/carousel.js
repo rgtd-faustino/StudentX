@@ -1,3 +1,18 @@
+// ===== Resolve caminhos absolutos ("/x") corretamente, independentemente
+// de o site estar hospedado na raiz do domínio (studentx.pt) ou numa
+// subpasta (ex: github.io/StudentX/) - ver calendar.js para mais contexto.
+var SITE_ROOT = (() => {
+    try {
+        return new URL(document.currentScript.src).pathname.replace(/js\/[^/]+\.js(?:\?.*)?$/, '');
+    } catch (e) {
+        return '/';
+    }
+})();
+function resolveSitePath(path) {
+    if (!path || /^(https?:)?\/\//i.test(path)) return path;
+    return path.startsWith('/') ? SITE_ROOT + path.slice(1) : path;
+}
+
 let carouselEventsData = [];
 const isMobile = window.innerWidth < 600;
 let areInstructionsShowing = false;
@@ -17,7 +32,7 @@ function initializeCarousel() {
     
     if (!itemGroup) return;
     
-    fetch('/json/events.json')
+    fetch(resolveSitePath('/json/events.json'))
         .then(response => response.json())
         .then(data => {
             carouselEventsData = data.items;
@@ -140,11 +155,11 @@ function createCarouselItems(data) {
         itemContainer.year = item.year;
         itemContainer.month = item.month;
         itemContainer.day = item.day;
-        itemContainer.imageSrc = item.imageSrc;
+        itemContainer.imageSrc = resolveSitePath(item.imageSrc);
         itemContainer.altText = item.altText;
         itemContainer.descriptionTitle = item.descriptionTitle;
         itemContainer.descriptionSubtitle = item.descriptionSubtitle;
-        itemContainer.logoSrc = item.logoSrc;
+        itemContainer.logoSrc = resolveSitePath(item.logoSrc);
         itemContainer.logoAlt = item.logoAlt;
         itemContainer.oppPlaceTitle = item.oppPlaceTitle;
         itemContainer.oppPlaceSubtitle = item.oppPlaceSubtitle;
@@ -159,7 +174,7 @@ function createCarouselItems(data) {
         }
 
         const img = document.createElement('img');
-        img.src = item.imageSrc;
+        img.src = resolveSitePath(item.imageSrc);
         img.alt = item.altText;
         itemContainer.appendChild(img);
         
@@ -189,7 +204,7 @@ function createCarouselItems(data) {
         oppPlaceContainer.className = 'opp-place-container';
         
         const logoImg = document.createElement('img');
-        logoImg.src = item.logoSrc;
+        logoImg.src = resolveSitePath(item.logoSrc);
         logoImg.alt = item.logoAlt;
         
         const oppPlaceTexts = document.createElement('div');
@@ -762,11 +777,11 @@ function setupMobileCarousel() {
             itemContainer.month = item.month;
             itemContainer.day = item.day;
             itemContainer.endTime = item.endTime;
-            itemContainer.imageSrc = item.imageSrc;
+            itemContainer.imageSrc = resolveSitePath(item.imageSrc);
             itemContainer.altText = item.altText;
             itemContainer.descriptionTitle = item.descriptionTitle;
             itemContainer.descriptionSubtitle = item.descriptionSubtitle;
-            itemContainer.logoSrc = item.logoSrc;
+            itemContainer.logoSrc = resolveSitePath(item.logoSrc);
             itemContainer.logoAlt = item.logoAlt;
             itemContainer.oppPlaceTitle = item.oppPlaceTitle;
             itemContainer.oppPlaceSubtitle = item.oppPlaceSubtitle;
@@ -784,7 +799,7 @@ function setupMobileCarousel() {
             itemContainer.style.display = index === 0 ? 'block' : 'none';
             
             const img = document.createElement('img');
-            img.src = item.imageSrc;
+            img.src = resolveSitePath(item.imageSrc);
             img.alt = item.altText;
             itemContainer.appendChild(img);
             
@@ -814,7 +829,7 @@ function setupMobileCarousel() {
             oppPlaceContainer.className = 'opp-place-container';
             
             const logoImg = document.createElement('img');
-            logoImg.src = item.logoSrc;
+            logoImg.src = resolveSitePath(item.logoSrc);
             logoImg.alt = item.logoAlt;
             
             const oppPlaceTexts = document.createElement('div');
@@ -1184,7 +1199,7 @@ async function refreshCarouselAfterEventRemoval() {
     // If no events are loaded, fetch them
     if (carouselEventsData.length === 0) {
         try {
-            const response = await fetch('/json/events.json');
+            const response = await fetch(resolveSitePath('/json/events.json'));
             const data = await response.json();
             carouselEventsData = data.items || [];
         } catch (error) {

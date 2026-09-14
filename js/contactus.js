@@ -1,3 +1,18 @@
+// ===== Resolve caminhos absolutos ("/x") corretamente, independentemente
+// de o site estar hospedado na raiz do domínio (studentx.pt) ou numa
+// subpasta (ex: github.io/StudentX/) - ver calendar.js para mais contexto.
+var SITE_ROOT = (() => {
+    try {
+        return new URL(document.currentScript.src).pathname.replace(/js\/[^/]+\.js(?:\?.*)?$/, '');
+    } catch (e) {
+        return '/';
+    }
+})();
+function resolveSitePath(path) {
+    if (!path || /^(https?:)?\/\//i.test(path)) return path;
+    return path.startsWith('/') ? SITE_ROOT + path.slice(1) : path;
+}
+
 const WORKER_URL = 'https://formsubmissions.contact-studentx.workers.dev/';
 
 // ========== FORM MANAGEMENT ==========
@@ -346,7 +361,7 @@ function setupEventPreview() {
                     <h2 class="preview-title">Pré-visualização do Evento (Evento Pequeno - ${duration} min)</h2>
                     <div class="modal-content small-event" style="height: ${simulatedHeight}vw; min-height: ${simulatedHeight}vw;">
                         <button class="expand-event-details">
-                            <img src="/images/plus.webp" alt="Expande os detalhes do evento">
+                            <img src="${resolveSitePath('/images/plus.webp')}" alt="Expande os detalhes do evento">
                         </button>
                         <div class="event-image-expanded${currentImageSrc !== '📷' ? ' has-image' : ''}"${currentImageSrc !== '📷' ? ' style="background-color: transparent;"' : ''}>${currentImageSrc === '📷' ? currentImageSrc : `<img src="${currentImageSrc}" alt="Event Image" />`}</div>
                     </div>

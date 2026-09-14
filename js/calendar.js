@@ -1,3 +1,20 @@
+// ===== Resolve caminhos absolutos ("/x") corretamente, independentemente
+// de o site estar hospedado na raiz do domínio (studentx.pt) ou numa
+// subpasta (ex: github.io/StudentX/) - sem isto, fetch('/json/events.json')
+// ia sempre parar à raiz do domínio, ignorando a subpasta, e os eventos
+// nunca apareciam quando o site corria fora do domínio próprio.
+var SITE_ROOT = (() => {
+    try {
+        return new URL(document.currentScript.src).pathname.replace(/js\/[^/]+\.js(?:\?.*)?$/, '');
+    } catch (e) {
+        return '/';
+    }
+})();
+function resolveSitePath(path) {
+    if (!path || /^(https?:)?\/\//i.test(path)) return path;
+    return path.startsWith('/') ? SITE_ROOT + path.slice(1) : path;
+}
+
 const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     let events = [];
@@ -83,7 +100,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
     
     // para apanharmos os eventos usamos um fetch para o ficheiro json e apanhamos as informações relevantes (não precisamos do id do evento)
     function fetchEvents() {
-        fetch('/json/events.json')
+        fetch(resolveSitePath('/json/events.json'))
             .then(response => response.json())
             .then(data => {
                 events = data.items.map(event => ({ // atualizamos a variável que contém todos os eventos
@@ -199,7 +216,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
         const expandButton = document.createElement('button');
         expandButton.classList.add('expand-event-details');
         const img = document.createElement('img');
-        img.src = '/images/plus.webp';
+        img.src = resolveSitePath('/images/plus.webp');
         img.alt = 'Expand event details';
         expandButton.appendChild(img);
         expandButton.onclick = () => showExpandedView(event); // função que expande o evento
@@ -218,7 +235,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
             
             const baseContentDiv = document.createElement('div');
             baseContentDiv.innerHTML = `
-                <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-full">
+                <img src="${resolveSitePath(event.imageSrc)}" alt="${event.altText}" class="event-image-full">
                 <p class="description-title-calendar">${event.descriptionTitle}</p>
                 <p class="description-subtitle-calendar">${event.descriptionSubtitle}</p>
                 <div class="carousel-line-calendar"></div>
@@ -237,7 +254,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
         } else {
             eventDiv.appendChild(createExpandButton(event));
             const eventImage = document.createElement('img');
-            eventImage.src = event.imageSrc;
+            eventImage.src = resolveSitePath(event.imageSrc);
             eventImage.alt = `${event.altText}`;
             eventImage.className = 'event-image';
             condensedView.appendChild(eventImage);
@@ -271,7 +288,7 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
         footerDiv.style.marginTop = 'auto';
         footerDiv.innerHTML = `
             <div class="logo-and-place-info">
-                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo">
+                <img src="${resolveSitePath(event.logoSrc)}" alt="${event.logoAlt}" class="event-logo">
                 <div class="place-info">
                     <p class="opp-place-title-calendar">${event.oppPlaceTitle}</p>
                     <p class="opp-place-subtitle-calendar">${event.oppPlaceSubtitle}</p>
@@ -356,12 +373,12 @@ const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta
         const modalContainer = document.getElementById('eventModal');
         modalContainer.innerHTML = `
         <div class="modal-content">
-            <img src="${event.imageSrc}" alt="${event.altText}" class="event-image-expanded">
+            <img src="${resolveSitePath(event.imageSrc)}" alt="${event.altText}" class="event-image-expanded">
             <p class="description-title-calendar-expanded">${event.descriptionTitle}</p>
             <p class="description-subtitle-calendar-expanded">${event.descriptionSubtitle}</p>
             <div class="carousel-line-calendar-expanded"></div>
             <div class="logo-and-place-info-expanded">
-                <img src="${event.logoSrc}" alt="${event.logoAlt}" class="event-logo-expanded">
+                <img src="${resolveSitePath(event.logoSrc)}" alt="${event.logoAlt}" class="event-logo-expanded">
                 <div class="place-info-expanded">
                     <p class="opp-place-title-calendar-expanded">${event.oppPlaceTitle}</p>
                     <p class="opp-place-subtitle-calendar-expanded">${event.oppPlaceSubtitle}</p>
