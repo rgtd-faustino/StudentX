@@ -8,6 +8,7 @@ import { dateRangeInclusive, ymdToUtcMs } from '../lib/daterange.mjs';
 import { formatWhen } from '../lib/format.mjs';
 import { fetchTextWithTimeout, sanitizeXmlEntities } from '../lib/with-timeout.mjs';
 import { htmlToText } from '../lib/html-text.mjs';
+import { faviconLogoFor } from '../lib/logo.mjs';
 
 // IMPORTANTE - este adaptador é mais frágil do que o ical.mjs, avisadamente.
 //
@@ -24,7 +25,11 @@ const ALL_DAY_END = '19:00';
 
 const parser = new Parser({
     customFields: {
-        item: [['content:encoded', 'contentEncoded']],
+        item: [
+            ['content:encoded', 'contentEncoded'],
+            ['media:content', 'mediaContent'],
+            ['media:thumbnail', 'mediaThumbnail'],
+        ],
     },
 });
 
@@ -99,6 +104,8 @@ export async function fetchRssSource(source) {
 
         const id = stableAutoId(name, sourceId);
         const description = htmlToText(item.contentEncoded || item.content || item.summary || '');
+        const imageUrl = extractImageUrl(item);
+        const logoUrl = faviconLogoFor(item.link || url);
 
         for (const dayInfo of days) {
             events.push(
@@ -115,6 +122,8 @@ export async function fetchRssSource(source) {
                     place: placeName || name,
                     placeSubtitle: fields.location || '',
                     moreInfoLink: item.link,
+                    imageUrl,
+                    logoUrl,
                     colorOfEvent: categorizeEvent({
                         title: item.title,
                         description,
@@ -136,6 +145,26 @@ function parsePubDate(item) {
     if (!raw) return null;
     const d = new Date(raw);
     return Number.isNaN(d.getTime()) ? null : d;
+}
+
+// Tenta várias formas conhecidas de um RSS trazer uma imagem, da mais fiável
+// para a menos: campos de media dedicados primeiro, e só como último recurso
+// a primeira <img> lá encontrada dentro do texto do post (mais frágil, pode
+// apanhar um ícone decorativo em vez da imagem principal, mas é melhor do
+// que não ter imagem nenhuma). NÃO testei isto contra um feed real do IST
+// (só tinha o HTML da página, não o XML do feed, quando construí isto) -
+// se vier sempre vazio, digam-me e eu ajusto com base num feed real.
+function extractImageUrl(item) {
+    const mediaUrl = item.mediaContent?.$?.url || item.mediaThumbnail?.$?.url;
+    if (mediaUrl) return mediaUrl;
+
+    if (item.enclosure?.url && /^image\//.test(item.enclosure.type || '')) {
+        return item.enclosure.url;
+    }
+
+    const html = item.contentEncoded || item.content || item.summary || '';
+    const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    return match ? match[1] : null;
 }
 
 function addOneHour(hm) {

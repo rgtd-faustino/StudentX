@@ -115,6 +115,29 @@ com vários eventos dentro do mesmo post, não funciona bem aqui - o
 adaptador tentaria ler o post inteiro como um evento só. Não o adicionem
 sem primeiro me dizerem, para eu ajustar o adaptador a esse formato.
 
+## Imagens e logótipos
+
+- **iCal**: se a fonte tiver um `ATTACH` no evento (a CESEM tem), usamos essa
+  imagem como thumbnail. Confirmado a funcionar com o ficheiro real da CESEM.
+- **RSS**: tentamos `media:content`/`media:thumbnail` primeiro, depois a
+  primeira `<img>` encontrada no conteúdo do post. **Não testei isto contra
+  um feed real do IST** (só tinha visto o HTML da página, nunca o XML do
+  feed) - se vier sempre vazio, mandem-me um feed real e ajusto.
+- **Logótipo da instituição**: calculado automaticamente a partir do
+  favicon do site de cada fonte (`lib/logo.mjs`), em vez de precisarmos de
+  guardar/atualizar um logo à mão por instituição. Funciona sozinho para
+  qualquer fonte nova que adicionem.
+- Se nada disto encontrar uma imagem, cai para o logo da StudentX (nunca
+  fica com uma imagem partida).
+
+## Eventos passados
+
+O pipeline nunca publica eventos já terminados - `lib/normalize.mjs` compara
+o fim de cada evento com a data/hora atual e descarta os que já passaram,
+antes de escrever o `events.json` (ver `isStillRelevant`, usado dentro de
+`mergeAndPrune` em `lib/merge.mjs`). Isto acontece sempre, em toda a
+execução, para todas as fontes.
+
 ## Correções feitas depois do primeiro PR real
 
 O primeiro Pull Request real (com dados verdadeiros do IST e da CESEM) veio

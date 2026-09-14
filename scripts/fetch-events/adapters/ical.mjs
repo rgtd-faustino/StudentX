@@ -6,6 +6,7 @@ import { toLisbonDayMonthYear, toLisbonHM } from '../lib/timezone.mjs';
 import { dateRangeInclusive, ymdToUtcMs } from '../lib/daterange.mjs';
 import { formatWhen } from '../lib/format.mjs';
 import { fetchTextWithTimeout } from '../lib/with-timeout.mjs';
+import { faviconLogoFor } from '../lib/logo.mjs';
 
 // Eventos de dia inteiro (VALUE=DATE, ex: um congresso "24-26 de setembro")
 // não têm hora real - o node-ical devolve-os como meia-noite UTC, o que sem
@@ -84,6 +85,8 @@ export async function fetchIcalSource(source) {
                     place: placeName || name,
                     placeSubtitle: comp.location || '',
                     moreInfoLink: comp.url,
+                    imageUrl: comp.attach?.val,
+                    logoUrl: faviconLogoFor(comp.url || url),
                     colorOfEvent: categorizeEvent({
                         title: comp.summary,
                         description: comp.description,
